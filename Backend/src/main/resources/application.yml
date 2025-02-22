@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: datn
+  datasource:
+    url: jdbc:mysql://localhost:3333/datn?createDatabaseIfNotExist=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  jackson:
+    default-property-inclusion: NON_NULL
+  web:
+    resources:
+      static-locations: file:uploads/
+  mail:
+    from: buixuanhienmy@gmail.com
+    name: Bùi Xuân Hiền
+    host: smtp.gmail.com
+    port: 587
+    username: buixuanhienmy@gmail.com
+    password: vbmkdevfvocjaebh
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+      mail.smtp.starttls.required: true
+      mail.smtp.ssl.protocols: TLSv1.2
+endpoint:
+  confirmUser: http://localhost:${server.port}/auth/reset-password
+server:
+  port: 8080
+jwt:
+  expiryHour: 1
+  expiryDay: 14
+  accessKey: c2VjcmV0QGtleS5hcGlfaGFzX2JlZW5fZGVzaWduZWRfYnlfVGF5TFE=
+  refreshKey: 9k1jJAWAKQCnCEz1pwcPNegbHoLugf9hgEnn6sz5pFc=
+  resetKey: 2OeEeG48CvIcH1K0UAXbSo/7gPj3QLJ7MnQZuscRirQ=
+
+maxFailedLoginAttempts: 5
