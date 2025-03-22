@@ -1,4 +1,4 @@
-package com.buihien.datn.reflection;
+package com.buihien.datn.util;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -8,7 +8,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Documented
-@Target(ElementType.FIELD)
+@Target(ElementType.METHOD)
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ExcelColumn {
@@ -16,6 +16,8 @@ public @interface ExcelColumn {
     int index();
 
     String title();
+
+    boolean numericalOrder() default false;
 
     String description() default "Default value";
 

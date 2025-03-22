@@ -1,4 +1,4 @@
-package com.buihien.datn.dto.base;
+package com.buihien.datn.dto;
 
 import com.buihien.datn.domain.BaseObject;
 

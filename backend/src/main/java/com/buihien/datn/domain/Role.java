@@ -12,7 +12,7 @@ import java.util.Set;
 @Entity
 public class Role extends AuditableEntity {
     private static final long serialVersionUID = 1L;
-    @Column(name = "name")
+    @Column(name = "name", unique = true, nullable = false)
     private String name;
 
     @Column(name = "description")
@@ -22,11 +22,6 @@ public class Role extends AuditableEntity {
     private Set<UserRole> roles;
 
     public Role() {
-    }
-
-    public Role(String name, String description) {
-        this.name = name;
-        this.description = description;
     }
 
     public String getName() {

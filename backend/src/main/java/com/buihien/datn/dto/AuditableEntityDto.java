@@ -1,10 +1,10 @@
-package com.buihien.datn.dto.base;
+package com.buihien.datn.dto;
 
 import com.buihien.datn.domain.AuditableEntity;
 
 import java.time.LocalDateTime;
 
-public abstract class AuditableEntityDto<T, Dto> implements Convertible<T, Dto> {
+public abstract class AuditableEntityDto {
     private Long id;
     private Boolean voided;
     private LocalDateTime createdAt;

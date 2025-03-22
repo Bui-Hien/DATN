@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class ForgetPasswordController {
 //    "http://localhost:8080/auth/reset-password?resetToken=abc123";
     @GetMapping("/reset-password")

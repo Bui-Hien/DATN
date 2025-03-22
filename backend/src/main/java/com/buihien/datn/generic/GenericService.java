@@ -1,4 +1,4 @@
-package com.buihien.datn.service.generic;
+package com.buihien.datn.generic;
 
 import com.buihien.datn.dto.AuditableEntityDto;
 import com.buihien.datn.dto.search.SearchDto;

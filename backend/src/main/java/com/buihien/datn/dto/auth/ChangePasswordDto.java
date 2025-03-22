@@ -1,4 +1,4 @@
-package com.buihien.datn.dto;
+package com.buihien.datn.dto.auth;
 
 import jakarta.validation.constraints.NotBlank;
 

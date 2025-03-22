@@ -3,16 +3,17 @@ package com.buihien.datn.dto.search;
 import java.time.LocalDateTime;
 
 public class SearchDto {
-    private Long id;
-    private Integer pageIndex;
-    private Integer pageSize;
-    private String keyword;
-    private LocalDateTime fromDate;
-    private LocalDateTime toDate;
-    private LocalDateTime date;
-    private Boolean voided;
-    private Boolean orderBy; //mặc định là DESC của trường createdAt
-    private Long roleId;
+    public Long id;
+    public Integer pageIndex;
+    public Integer pageSize;
+    public String keyword;
+    public LocalDateTime fromDate;
+    public LocalDateTime toDate;
+    public LocalDateTime date;
+    public Boolean voided;
+    public Boolean orderBy; //mặc định là DESC của trường createdAt
+    public Long roleId;
+    public Boolean isExportExcel;
 
     public Long getId() {
         return id;
@@ -92,5 +93,13 @@ public class SearchDto {
 
     public void setOrderBy(Boolean orderBy) {
         this.orderBy = orderBy;
+    }
+
+    public Boolean getIsExportExcel() {
+        return isExportExcel;
+    }
+
+    public void setIsExportExcel(Boolean exportExcel) {
+        this.isExportExcel = exportExcel;
     }
 }

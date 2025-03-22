@@ -16,14 +16,10 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.List;
 
 @Validated
-public class GenericApiImpl<DTO extends AuditableEntityDto, S extends SearchDto> {
+public class GenericApi<DTO extends AuditableEntityDto, S extends SearchDto> {
 
     @Autowired
     private GenericService<DTO, S> genericService;

@@ -1,8 +1,8 @@
 package com.buihien.datn.configuration;
 
-
 import com.buihien.datn.service.JwtService;
 import com.buihien.datn.service.UserService;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -33,7 +33,6 @@ public class PreFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
-
         final String authorization = request.getHeader(AUTHORIZATION);
 
         if (StringUtils.isBlank(authorization) || !authorization.startsWith("Bearer ")) {
@@ -43,19 +42,28 @@ public class PreFilter extends OncePerRequestFilter {
 
         final String token = authorization.substring("Bearer ".length());
 
-        final String userName = jwtService.extractUsername(token, ACCESS_TOKEN.getValue());
+        try {
+            final String userName = jwtService.extractUsername(token, ACCESS_TOKEN.getValue());
 
-        if (StringUtils.isNotEmpty(userName) && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userService.userDetailsService().loadUserByUsername(userName);
-            if (jwtService.isValid(token, ACCESS_TOKEN.getValue(), userDetails)) {
-                SecurityContext context = SecurityContextHolder.createEmptyContext();
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                context.setAuthentication(authentication);
-                SecurityContextHolder.setContext(context);
+            if (StringUtils.isNotEmpty(userName) && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = userService.userDetailsService().loadUserByUsername(userName);
+
+                if (jwtService.isValid(token, ACCESS_TOKEN.getValue(), userDetails)) {
+                    SecurityContext context = SecurityContextHolder.createEmptyContext();
+                    UsernamePasswordAuthenticationToken authentication =
+                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    context.setAuthentication(authentication);
+                    SecurityContextHolder.setContext(context);
+                }
             }
+        } catch (ExpiredJwtException e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Access token expired");
+            return;
         }
 
         filterChain.doFilter(request, response);
     }
+
 }

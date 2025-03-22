@@ -1,12 +1,16 @@
 package com.buihien.datn;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class DatnConstants {
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
     public static final String ROLE_SUPER_ADMIN = "ROLE_SUPER_ADMIN";
     public static final String ROLE_USER = "ROLE_USER";
     public static final String ROLE_MANAGER = "ROLE_MANAGER";
     public static final String ROLE_HR = "ROLE_HR"; // Quản lý nhân sự
-    public static final String ROLE_ACCOUNTANT  = "ROLE_ACCOUNTANT"; // Kế toán
+    public static final String ROLE_ACCOUNTANT = "ROLE_ACCOUNTANT"; // Kế toán
     public static final String ROLE_PROJECT_MANAGER = "ROLE_PROJECT_MANAGER"; // Quản lý dự án
     public static final String ROLE_EMPLOYEE = "ROLE_EMPLOYEE"; // Nhân viên
     public static final String ROLE_AUDITOR = "ROLE_AUDITOR"; // Kiểm toán
@@ -35,13 +39,14 @@ public class DatnConstants {
             return name;
         }
 
-        public static boolean isValidValue(Integer value) {
+        public static String getNameByValue(Integer value) {
+            if (value == null) return "";
             for (Platform item : Platform.values()) {
                 if (item.getValue().equals(value)) {
-                    return true;
+                    return item.getName();
                 }
             }
-            return false;
+            return "";
         }
     }
 
@@ -65,13 +70,14 @@ public class DatnConstants {
             return name;
         }
 
-        public static boolean isValidValue(Integer value) {
+        public static String getNameByValue(Integer value) {
+            if (value == null) return "";
             for (Gender item : Gender.values()) {
                 if (item.getValue().equals(value)) {
-                    return true;
+                    return item.getName();
                 }
             }
-            return false;
+            return "";
         }
     }
 
@@ -95,13 +101,14 @@ public class DatnConstants {
             return name;
         }
 
-        public static boolean isValidValue(Integer value) {
+        public static String getNameByValue(Integer value) {
+            if (value == null) return "";
             for (TokenType item : TokenType.values()) {
                 if (item.getValue().equals(value)) {
-                    return true;
+                    return item.getName();
                 }
             }
-            return false;
+            return "";
         }
     }
 

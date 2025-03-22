@@ -1,9 +1,60 @@
 package com.buihien.datn.util;
 
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 
 public class DateTimeUtil {
+
+    // Định dạng mặc định: yyyy-MM-dd
+    public static String formatDate(LocalDate localDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return localDate.format(formatter);
+    }
+
+    // Định dạng ngắn: dd/MM/yyyy
+    public static String formatShortDate(LocalDate localDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return localDate.format(formatter);
+    }
+
+    // Định dạng đầy đủ với ngày trong tuần: EEEE, dd MMMM yyyy
+    public static String formatFullDate(LocalDate localDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy");
+        return localDate.format(formatter);
+    }
+
+    // ---------------------- Định dạng cho LocalDateTime ----------------------
+
+    // Định dạng mặc định: yyyy-MM-dd HH:mm:ss
+    public static String formatDateTime(LocalDateTime localDateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return localDateTime.format(formatter);
+    }
+
+    // Định dạng ngắn: dd/MM/yyyy
+    public static String formatShortDateTime(LocalDateTime localDateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return localDateTime.format(formatter);
+    }
+
+    // Định dạng đầy đủ với ngày trong tuần: EEEE, dd MMMM yyyy HH:mm:ss
+    public static String formatFullDateTime(LocalDateTime localDateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy HH:mm:ss");
+        return localDateTime.format(formatter);
+    }
+
+    // Định dạng chỉ có giờ phút giây: HH:mm:ss
+    public static String formatTimeOnly(LocalDateTime localDateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        return localDateTime.format(formatter);
+    }
+
+    // Định dạng ISO 8601: yyyy-MM-dd'T'HH:mm:ss
+    public static String formatISO(LocalDateTime localDateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        return localDateTime.format(formatter);
+    }
 
     // Lấy thời điểm bắt đầu của ngày (00:00:00)
     public static LocalDateTime getStartOfDay(LocalDateTime date) {

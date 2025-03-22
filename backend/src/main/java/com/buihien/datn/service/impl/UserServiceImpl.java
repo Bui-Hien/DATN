@@ -5,6 +5,7 @@ import com.buihien.datn.domain.User;
 import com.buihien.datn.dto.UserDto;
 import com.buihien.datn.dto.search.SearchDto;
 import com.buihien.datn.exception.InvalidDataException;
+import com.buihien.datn.generic.GenericServiceImpl;
 import com.buihien.datn.repository.PersonRepository;
 import com.buihien.datn.repository.UserRepository;
 import com.buihien.datn.service.UserRoleService;
@@ -16,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,7 +26,7 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends GenericServiceImpl<User, UserDto, SearchDto> implements UserService {
     @PersistenceContext
     public EntityManager manager;
     @Autowired
@@ -39,7 +39,42 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDto saveOrUpdate(UserDto dto) {
+    public void saveUser(User user) {
+        userRepository.save(user);
+    }
+
+    @Override
+    public User getByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found " + username));
+    }
+
+    @Override
+    public UserDetailsService userDetailsService() {
+        return username -> userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    @Override
+    public List<String> getAllRolesByUserId(long userId) {
+        return userRepository.findAllRolesByUserId(userId);
+    }
+
+    @Override
+    public List<String> getAllRolesByUserUserName(String username) {
+        return userRepository.findAllRolesByUserName(username);
+    }
+
+    @Override
+    public User findUserByRole(String role) {
+        return userRepository.findUserByRole(role).orElse(null);
+    }
+
+    @Override
+    protected UserDto convertToDto(User entity) {
+        return new UserDto(entity);
+    }
+
+    @Override
+    protected User convertToEntity(UserDto dto) {
         if (dto == null) return null;
         User entity = null;
         if (dto.getId() != null) {
@@ -68,108 +103,55 @@ public class UserServiceImpl implements UserService {
             entity.setPerson(person);
         }
         userRoleService.handleSetRoleListInUser(dto, entity);
-        User response = userRepository.save(entity);
-        return new UserDto(response);
+        return entity;
     }
 
     @Override
-    public void saveUser(User user) {
-        userRepository.save(user);
-    }
+    public Page<UserDto> pagingSearch(SearchDto dto) {
+        int pageIndex = (dto.getPageIndex() == null || dto.getPageIndex() < 1) ? 0 : dto.getPageIndex() - 1;
+        int pageSize = (dto.getPageSize() == null || dto.getPageSize() < 10) ? 10 : dto.getPageSize();
+        boolean isExportExcel = dto.getIsExportExcel() != null && dto.getIsExportExcel();
 
-    @Override
-    public void deleteById(long id) {
-        User entity = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        if (entity != null) {
-            userRepository.delete(entity);
-        }
-    }
+        StringBuilder sqlCount = new StringBuilder("SELECT COUNT(entity.id) FROM User entity WHERE (1=1) ");
+        StringBuilder sql = new StringBuilder("SELECT new UserDto(entity) FROM User entity WHERE (1=1) ");
+        StringBuilder whereClause = new StringBuilder();
 
-    @Override
-    public User getByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found " + username));
-    }
-
-    @Override
-    public UserDetailsService userDetailsService() {
-        return username -> userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-    }
-
-    @Override
-    public List<String> getAllRolesByUserId(long userId) {
-        return userRepository.findAllRolesByUserId(userId);
-    }
-
-    @Override
-    public List<String> getAllRolesByUserUserName(String username) {
-        return userRepository.findAllRolesByUserName(username);
-    }
-
-    @Override
-    public UserDto getById(long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        return new UserDto(user);
-    }
-
-    @Override
-    public User findUserByRole(String role) {
-        return userRepository.findUserByRole(role).orElse(null);
-    }
-
-    @Override
-    public Page<UserDto> pagingUser(SearchDto dto) {
-        if (dto == null) return null;
-
-        int pageIndex = (dto.getPageIndex() != null || dto.getPageIndex() < 1) ? dto.getPageIndex() : 1;
-        int pageSize = (dto.getPageSize() != null || dto.getPageSize() < 10) ? dto.getPageSize() : 10;
-
-        if (pageIndex > 0) pageIndex--;
-        else pageIndex = 0;
-
-        String sqlCount = "SELECT COUNT (entity.id) from User entity WHERE (1=1) ";
-        String sql = "SELECT new com.buihien.datn.dto.UserDto(entity) FROM User AS entity WHERE (1=1) ";
-
-        String whereClause = " AND ( entity.voided = :voided) ";
-        String orderBy = "";
-        if (StringUtils.hasText(dto.getKeyword())) {
-            whereClause += " AND ( entity.username LIKE :text OR entity.email LIKE :text) ";
-        }
-        if (dto.getRoleId() != null) {
-            whereClause += " AND ( entity.roles.role.id = :roleId) ";
-        }
-        if (dto.getOrderBy() != null && dto.getOrderBy()) {
-            orderBy = "ORDER BY entity.createdAt ASC";
+        if (dto.getVoided() == null || !dto.getVoided()) {
+            whereClause.append(" AND (entity.voided = false OR entity.voided IS NULL) ");
         } else {
-            orderBy = "ORDER BY entity.createdAt DESC";
+            whereClause.append(" AND entity.voided = true ");
         }
 
-        sql += whereClause + orderBy;
-        sqlCount += whereClause;
+        if (StringUtils.hasText(dto.getKeyword())) {
+            whereClause.append(" AND (LOWER(entity.username) LIKE LOWER(:text) OR LOWER(entity.email) LIKE LOWER(:text)) ");
+        }
 
-        Query q = manager.createQuery(sql, UserDto.class);
-        Query qCount = manager.createQuery(sqlCount);
+        if (dto.getRoleId() != null) {
+            whereClause.append(" AND entity.roles.role.id = :roleId ");
+        }
 
-        boolean voided = dto.getVoided() != null ? dto.getVoided() : false;
-        q.setParameter("voided", voided);
-        qCount.setParameter("voided", voided);
+        sql.append(whereClause);
+        sqlCount.append(whereClause);
+        sql.append(dto.getOrderBy() != null && dto.getOrderBy() ? " ORDER BY entity.createdAt ASC" : " ORDER BY entity.createdAt DESC");
+
+        Query q = manager.createQuery(sql.toString(), UserDto.class);
+        Query qCount = manager.createQuery(sqlCount.toString());
 
         if (StringUtils.hasText(dto.getKeyword())) {
             q.setParameter("text", '%' + dto.getKeyword() + '%');
             qCount.setParameter("text", '%' + dto.getKeyword() + '%');
         }
+
         if (dto.getRoleId() != null) {
             q.setParameter("roleId", dto.getRoleId());
             qCount.setParameter("roleId", dto.getRoleId());
         }
-        int startPosition = pageIndex * pageSize;
-        q.setFirstResult(startPosition);
-        q.setMaxResults(pageSize);
 
-        List<UserDto> entities = q.getResultList();
-        long count = (long) qCount.getSingleResult();
-
-        Pageable pageable = PageRequest.of(pageIndex, pageSize);
-        return new PageImpl<>(entities, pageable, count);
+        if (!isExportExcel) {
+            q.setFirstResult(pageIndex * pageSize);
+            q.setMaxResults(pageSize);
+            return new PageImpl<>(q.getResultList(), PageRequest.of(pageIndex, pageSize), (long) qCount.getSingleResult());
+        }
+        return new PageImpl<>(q.getResultList());
     }
-
 }

@@ -6,10 +6,17 @@ public class PersonDto extends AuditableEntityDto {
     public PersonDto() {
     }
 
-    public PersonDto(Person entity) {
+    public PersonDto(Person entity, Boolean isGetFull) {
         super(entity);
         if (entity != null) {
-            //todo
+            //Todo
+            if (isGetFull) {
+                //Todo
+            }
         }
+    }
+
+    public PersonDto(Person entity) {
+        this(entity, true);
     }
 }

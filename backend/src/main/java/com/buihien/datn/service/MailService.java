@@ -26,7 +26,6 @@ public class MailService {
     private JavaMailSender mailSender;
     @Autowired
     private SpringTemplateEngine templateEngine;
-
     @Value("${spring.mail.from}")
     private String emailFrom;
     @Value("${spring.mail.name}")

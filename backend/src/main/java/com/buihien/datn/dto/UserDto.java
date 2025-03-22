@@ -17,21 +17,28 @@ public class UserDto extends AuditableEntityDto {
     public UserDto() {
     }
 
-    public UserDto(User entity) {
+    public UserDto(User entity, Boolean isGetFull) {
         super(entity);
         if (entity != null) {
             this.username = entity.getUsername();
             this.email = entity.getEmail();
-            if (entity.getPerson() != null) {
-                this.person = new PersonDto(entity.getPerson());
-            }
-            if (entity.getRoles() != null && !entity.getRoles().isEmpty()) {
-                this.roles = new ArrayList<>();
-                for (UserRole role : entity.getRoles()) {
-                    this.roles.add(new UserRoleDto(role));
+
+            if (isGetFull) {
+                if (entity.getPerson() != null) {
+                    this.person = new PersonDto(entity.getPerson(), false);
+                }
+                if (entity.getRoles() != null && !entity.getRoles().isEmpty()) {
+                    this.roles = new ArrayList<>();
+                    for (UserRole role : entity.getRoles()) {
+                        this.roles.add(new UserRoleDto(role));
+                    }
                 }
             }
         }
+    }
+
+    public UserDto(User entity) {
+        this(entity, true);
     }
 
     public String getUsername() {

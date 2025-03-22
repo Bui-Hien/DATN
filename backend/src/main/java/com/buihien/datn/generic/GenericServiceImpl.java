@@ -1,4 +1,4 @@
-package com.buihien.datn.service.generic;
+package com.buihien.datn.generic;
 
 import com.buihien.datn.domain.AuditableEntity;
 import com.buihien.datn.dto.AuditableEntityDto;
@@ -15,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

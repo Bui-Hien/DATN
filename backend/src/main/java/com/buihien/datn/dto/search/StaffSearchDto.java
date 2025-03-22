@@ -1,4 +1,4 @@
 package com.buihien.datn.dto.search;
 
-public class StaffSearch {
+public class StaffSearchDto extends SearchDto {
 }

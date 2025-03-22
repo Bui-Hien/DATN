@@ -1,9 +1,9 @@
 package com.buihien.datn.controller;
 
 
-import com.buihien.datn.dto.ChangePasswordDto;
-import com.buihien.datn.dto.SignInDto;
-import com.buihien.datn.dto.TokenResponseDto;
+import com.buihien.datn.dto.auth.ChangePasswordDto;
+import com.buihien.datn.dto.auth.SignInDto;
+import com.buihien.datn.dto.auth.TokenResponseDto;
 import com.buihien.datn.service.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Validated
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class RestAuthenticationController {
     @Autowired
     private AuthenticationService authenticationService;

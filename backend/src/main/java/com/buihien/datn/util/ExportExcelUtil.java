@@ -1,690 +1,349 @@
 package com.buihien.datn.util;
 
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.util.StringUtils;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.*;
 
 public class ExportExcelUtil {
-//    public static ByteArrayResource handleExcelStaffLabourAgreements(List<StaffLabourAgreementDto> datas, SearchStaffLabourAgreementDto searchDto, XSSFWorkbook workbook) throws IOException {
-//        if (datas == null || datas.isEmpty()) return null;
-//        XSSFSheet sheet = workbook.getSheetAt(0);
-//        Font font = workbook.getFontAt((short) 0);
-//        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-//        XSSFCellStyle stringStyle = workbook.createCellStyle();
-//        stringStyle.setFont(font);
-//        XSSFCellStyle cellStyle = workbook.createCellStyle();
-//        cellStyle.setBorderBottom(BorderStyle.THIN);
-//        cellStyle.setBorderTop(BorderStyle.THIN);
-//        cellStyle.setBorderLeft(BorderStyle.THIN);
-//        cellStyle.setBorderRight(BorderStyle.THIN);
-//        cellStyle.setAlignment(HorizontalAlignment.CENTER);
-//        cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-//        cellStyle.setWrapText(true);
-//        cellStyle.setFont(font);
-//        XSSFRow row = sheet.getRow(3);
-//        if (row == null) {
-//            row = sheet.createRow(3); // Tạo mới nếu dòng không tồn tại
-//        }
-//
-//        XSSFCell cell = row.getCell(2); // Cột C = index 2
-//        if (cell == null) {
-//            cell = row.createCell(2); // Tạo ô nếu chưa tồn tại
-//        }
-//        String exportType = "";
-//        if (searchDto == null || searchDto.getExportType() == null) return null;
-//        int type = searchDto.getExportType();
-//        if (type == HrConstants.StaffHasSocialInsuranceExportType.INCREASE_2007.getValue()) {
-//            exportType = HrConstants.StaffHasSocialInsuranceExportType.INCREASE_2007.getName();
-//        } else if (type == HrConstants.StaffHasSocialInsuranceExportType.INCREASE_97_2003.getValue()) {
-//            exportType = HrConstants.StaffHasSocialInsuranceExportType.INCREASE_97_2003.getName();
-//        } else if (type == HrConstants.StaffHasSocialInsuranceExportType.DECREASE_2007.getValue()) {
-//            exportType = HrConstants.StaffHasSocialInsuranceExportType.DECREASE_2007.getName();
-//        } else if (type == HrConstants.StaffHasSocialInsuranceExportType.DECREASE_97_2003.getValue()) {
-//            exportType = HrConstants.StaffHasSocialInsuranceExportType.DECREASE_97_2003.getName();
-//        } else if (type == HrConstants.StaffHasSocialInsuranceExportType.MODIFY_2007.getValue()) {
-//            exportType = HrConstants.StaffHasSocialInsuranceExportType.MODIFY_2007.getName();
-//        } else if (type == HrConstants.StaffHasSocialInsuranceExportType.MODIFY_97_2003.getValue()) {
-//            exportType = HrConstants.StaffHasSocialInsuranceExportType.MODIFY_97_2003.getName();
-//        }
-//        cell.setCellValue(exportType); // Đặt giá trị cho ô hợp nhất
-//
-//        List<List<Object>> tempData = new ArrayList<>();
-//        for (int rowIndex = 17; rowIndex < 24; rowIndex++) {
-//            XSSFRow rowTemp = sheet.getRow(rowIndex);
-//            List<Object> rowData = new ArrayList<>();
-//            for (int cn = 0; cn < rowTemp.getLastCellNum(); cn++) {
-//                XSSFCell cellTemp = rowTemp.getCell(cn);
-//                Map<String, Object> cellInfo = new HashMap<>();
-//                cellInfo.put("value", cellTemp.toString());
-//                cellInfo.put("style", cellTemp.getCellStyle());
-//                rowData.add(cellInfo);
-//            }
-//            tempData.add(rowData);
-//        }
-//
-//        for (int i = 17; i < 24; i++) {
-//            XSSFRow removingRow = sheet.getRow(i);
-//            if (removingRow != null) {
-//                sheet.removeRow(removingRow);
-//            }
-//        }
-//
-//        int rowIndex = 6;
-//        int index = 0;
-//
-//        for (StaffLabourAgreementDto item : datas) {
-//            if (index > 0) {
-//                ++rowIndex;
-//            }
-//
-//            ++index;
-//            row = sheet.createRow(rowIndex);
-//            sheet.getRow(rowIndex + 1);
-//            if (row != null) {
-//                //STT
-//                cell = row.createCell(0);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue((double) index);
-//                //LoaiD02
-//                cell = row.createCell(1);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue(exportType);
-//                //HoTen
-//                cell = row.createCell(2);
-//                cell.setCellStyle(cellStyle);
-//                if (item.getStaff() != null && item.getStaff().getDisplayName() != null) {
-//                    cell.setCellValue(item.getStaff().getDisplayName());
-//                } else {
-//                    cell.setCellValue("");
-//                }
-//
-////                MaSoBHXH
-//                cell = row.createCell(3);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-//                if (item.getStaff() != null && item.getStaff().getContractNumber() != null) {
-//                    cell.setCellValue(item.getStaff().getContractNumber());
-//                } else {
-//                    cell.setCellValue("");
-//                }
-//
-////                SoSoBHXH
-//                cell = row.createCell(4);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-//                if (item.getStaff() != null && item.getStaff().getSocialInsuranceNumber() != null) {
-//                    cell.setCellValue(item.getStaff().getSocialInsuranceNumber());
-//                } else {
-//                    cell.setCellValue("");
-//                }
-//
-////                SoLanKeKhai
-//                cell = row.createCell(5);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//
-//                //ThangNamKeKhai
-//                cell = row.createCell(6);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//
-//                //NguoiLapBieu
-//                cell = row.createCell(7);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//                //ThuTruongDonVi
-//                cell = row.createCell(8);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//                //TongSoBHXH
-//                cell = row.createCell(9);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//                //TongTheBHYT
-//                cell = row.createCell(10);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//                //ChucVu
-//                cell = row.createCell(11);
-//                cell.setCellStyle(cellStyle);
-//                if (item.getStaff() != null && item.getStaff().getCurrentPosition() != null && item.getStaff().getCurrentPosition().getName() != null) {
-//                    cell.setCellValue(item.getStaff().getCurrentPosition().getName());
-//                } else {
-//                    cell.setCellValue("");
-//                }
-//                //Muc/HeSoLuong
-//                cell = row.createCell(12);
-//                cell.setCellStyle(cellStyle);
-//                if (item.getStaff() != null && item.getStaff().getInsuranceSalaryCoefficient() != null) {
-//                    cell.setCellValue(item.getStaff().getInsuranceSalaryCoefficient());
-//                } else {
-//                    cell.setCellValue("");
-//                }
-//                //PCChucVu
-//                cell = row.createCell(13);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//                //PCThamNienVK
-//                cell = row.createCell(14);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//                //PCThamNienNghe
-//                cell = row.createCell(15);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//                //PCLuong
-//                cell = row.createCell(16);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//                //PCCacKhoanBS
-//                cell = row.createCell(17);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//                //TuThangNam
-//                cell = row.createCell(18);
-//                cell.setCellStyle(cellStyle);
-//                if (item.getStaff() != null && item.getStaff().getInsuranceStartDate() != null) {
-//                    cell.setCellValue(formatter.format(item.getStaff().getInsuranceStartDate()));
-//                } else {
-//                    cell.setCellValue("");
-//                }
-//                //DenThangNam
-//                cell = row.createCell(19);
-//                cell.setCellStyle(cellStyle);
-//                if (item.getStaff() != null && item.getStaff().getInsuranceEndDate() != null) {
-//                    cell.setCellValue(formatter.format(item.getStaff().getInsuranceEndDate()));
-//                } else {
-//                    cell.setCellValue("");
-//                }
-//                //PhuongAn
-//                cell = row.createCell(20);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//                //GhiChu
-//                cell = row.createCell(21);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//                //TyLeDong
-//                cell = row.createCell(22);
-//                cell.setCellStyle(cellStyle);
-//                if (item.getStaffPercentage() != null) {
-//                    cell.setCellValue(item.getStaffPercentage());
-//                } else {
-//                    cell.setCellValue("");
-//                }
-//                //PhongBanLamViec
-//                cell = row.createCell(23);
-//                cell.setCellStyle(cellStyle);
-//                if (item.getStaff() != null && item.getStaff().getDepartment() != null && item.getStaff().getDepartment().getName() != null) {
-//                    cell.setCellValue(item.getStaff().getDepartment().getName());
-//                } else {
-//                    cell.setCellValue("");
-//                }
-//                //NoiLamViec
-//                cell = row.createCell(24);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-//                if (item.getWorkingPlace() != null) {
-//                    cell.setCellValue(item.getWorkingPlace());
-//                } else {
-//                    cell.setCellValue("");
-//                }
-//                //MaVungSS
-//                cell = row.createCell(25);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//                //MaLuongTT
-//                cell = row.createCell(26);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//                //LoaiVTLV
-//                cell = row.createCell(27);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//                //NgayBatDauVTLV
-//                cell = row.createCell(28);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//                //NgayKetThucVTLV
-//                cell = row.createCell(29);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//
-//                //LoaiHDLD
-//                cell = row.createCell(30);
-//                cell.setCellStyle(cellStyle);
-//                if (item.getLabourAgreementType() != null && item.getLabourAgreementType().getName() != null) {
-//                    cell.setCellValue(item.getLabourAgreementType().getName());
-//                } else {
-//                    cell.setCellValue("");
-//                }
-//                //NgayBatDauHDLD
-//                cell = row.createCell(31);
-//                cell.setCellStyle(cellStyle);
-//                if (item.getStartDate() != null) {
-//                    cell.setCellValue(formatter.format(item.getStartDate()));
-//                } else {
-//                    cell.setCellValue("");
-//                }
-//                //NgayKetThucHDLD
-//                cell = row.createCell(32);
-//                cell.setCellStyle(cellStyle);
-//                if (item.getEndDate() != null) {
-//                    cell.setCellValue(formatter.format(item.getEndDate()));
-//                } else {
-//                    cell.setCellValue("");
-//                }
-//                //NgayBatDauNNDH
-//                cell = row.createCell(33);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//                //NgayKetThucNNDH
-//                cell = row.createCell(34);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//                //NgaySinh
-//                cell = row.createCell(35);
-//                cell.setCellStyle(cellStyle);
-//                if (item.getStaff() != null && item.getStaff().getBirthDate() != null) {
-//                    cell.setCellValue(formatter.format(item.getStaff().getBirthDate()));
-//                } else {
-//                    cell.setCellValue("");
-//                }
-//                //GioiTinh
-//                cell = row.createCell(36);
-//                cell.setCellStyle(cellStyle);
-//                if (item.getStaff() != null && item.getStaff().getGender() != null) {
-//                    if (item.getStaff().getGender().equals(Const.GENDER_ENUM.FEMALE.getValue())) {
-//                        cell.setCellValue(Const.GENDER_ENUM.FEMALE.getDisplay());
-//                    } else {
-//                        cell.setCellValue(Const.GENDER_ENUM.MALE.getDisplay());
-//                    }
-//                } else {
-//                    cell.setCellValue("");
-//                }
-//                //QuocTich
-//                cell = row.createCell(37);
-//                cell.setCellStyle(cellStyle);
-//                if (item.getStaff() != null && item.getStaff().getNationality() != null && item.getStaff().getNationality().getName() != null) {
-//                    cell.setCellValue(item.getStaff().getNationality().getName());
-//                } else {
-//                    cell.setCellValue("");
-//                }
-//
-//                //DanToc
-//                cell = row.createCell(38);
-//                cell.setCellStyle(cellStyle);
-//                if (item.getStaff() != null && item.getStaff().getEthnics() != null && item.getStaff().getEthnics().getName() != null) {
-//                    cell.setCellValue(item.getStaff().getEthnics().getName());
-//                } else {
-//                    cell.setCellValue("");
-//                }
-//                //GKSTinh/TP
-//                cell = row.createCell(39);
-//                cell.setCellStyle(cellStyle);
-//                if (item.getStaff() != null && item.getStaff().getBirthPlace() != null) {
-//                    cell.setCellValue(item.getStaff().getBirthPlace());
-//                } else {
-//                    cell.setCellValue("");
-//                }
-//                //GKSHuyen/Quan
-//                cell = row.createCell(40);
-//                cell.setCellStyle(cellStyle);
-//                if (item.getStaff() != null && item.getStaff().getBirthPlace() != null) {
-//                    cell.setCellValue(item.getStaff().getBirthPlace());
-//                } else {
-//                    cell.setCellValue("");
-//                }
-//                //GKSXa/Phuong
-//                cell = row.createCell(41);
-//                cell.setCellStyle(cellStyle);
-//                if (item.getStaff() != null && item.getStaff().getBirthPlace() != null) {
-//                    cell.setCellValue(item.getStaff().getBirthPlace());
-//                } else {
-//                    cell.setCellValue("");
-//                }
-//                //SoCMND
-//                cell = row.createCell(42);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-//                if (item.getStaff() != null && item.getStaff().getIdNumber() != null) {
-//                    cell.setCellValue(item.getStaff().getIdNumber());
-//                } else {
-//                    cell.setCellValue("");
-//                }
-//                //LHSoNha
-//                cell = row.createCell(43);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//                //LHTinh/TP
-//                cell = row.createCell(44);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//                //LHHuyen/Quan
-//                cell = row.createCell(45);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//                //LHXa/Phuong
-//                cell = row.createCell(46);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//                //SoDienThoaiLH
-//                cell = row.createCell(47);
-//                cell.setCellStyle(cellStyle);
-//                if (item.getStaff() != null && item.getStaff().getPhoneNumber() != null) {
-//                    cell.setCellValue(item.getStaff().getPhoneNumber());
-//                } else {
-//                    cell.setCellValue("");
-//                }
-//                //MucTienDong
-//                cell = row.createCell(48);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-//                if (item.getTotalInsuranceAmount() != null) {
-//                    cell.setCellValue(item.getTotalInsuranceAmount());
-//                } else {
-//                    cell.setCellValue("");
-//                }
-//                //PhuongThucDong
-//                cell = row.createCell(49);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//                //MaNoiKCB
-//                cell = row.createCell(50);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//                //NDThayDoiYeuCau
-//                cell = row.createCell(51);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//                //TLKemTheo
-//                cell = row.createCell(52);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//                //NDLapBangKe
-//                cell = row.createCell(53);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//                //TKKemTheo
-//                cell = row.createCell(54);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//                //TenLoaiVanBan
-//                cell = row.createCell(55);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//                //SoHieuVanBan
-//                cell = row.createCell(56);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//                //NgayBanHanh
-//                cell = row.createCell(57);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//                //NgayHieuLuc
-//                cell = row.createCell(58);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//                //CQBanHanhVanBan
-//                cell = row.createCell(59);
-//                cell.setCellStyle(cellStyle);
-//                if (item.getStaff() != null &&
-//                        item.getStaff().getDepartment() != null &&
-//                        item.getStaff().getDepartment().getOrganization() != null &&
-//                        item.getStaff().getDepartment().getOrganization().getName() != null
-//                ) {
-//                    cell.setCellValue(item.getStaff().getDepartment().getOrganization().getName());
-//                } else {
-//                    cell.setCellValue("");
-//                }
-//                //TrichYeuVanBan
-//                cell = row.createCell(60);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue("");
-////                if () {
-////                    cell.setCellValue();
-////                } else {
-////                    cell.setCellValue("");
-////                }
-//                //TrichLuocNoiDungCanThamDinh
-//                cell = row.createCell(61);
-//                cell.setCellStyle(cellStyle);
-//                cell.setCellValue(exportType);
-//            }
-//        }
-//        rowIndex += 1;
-//        for (List<Object> rowData : tempData) {
-//            row = sheet.createRow(++rowIndex);
-//            for (int i = 0; i < rowData.size(); i++) {
-//                Map<String, Object> cellInfo = (Map<String, Object>) rowData.get(i);
-//                cell = row.createCell(i);
-//                cell.setCellValue(cellInfo.get("value").toString());
-//                cell.setCellStyle((XSSFCellStyle) cellInfo.get("style"));
-//            }
-//        }
-//
-//
-//        ByteArrayOutputStream out = new ByteArrayOutputStream();
-//        workbook.write(out);
-//        workbook.close();
-//        return new ByteArrayResource(out.toByteArray());
-//    }
-//@Secured({HrConstants.ROLE_HR_MANAGEMENT, Constants.ROLE_ADMIN})
-//@RequestMapping(path = "/export-excel-staff-social-insurance-by-type", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-//public ResponseEntity<?> exportExcelStaffSIByType(@RequestBody SearchStaffLabourAgreementDto dto) {
-//    try {
-////                    List<StaffLabourAgreementDto> dataList = staffLabourAgreementService.getAll(); //fetch data
-//        List<StaffLabourAgreementDto> dataList = staffLabourAgreementService.getAllStaffLabourAgreementWithSearch(dto);
-//
-//        if (dataList.isEmpty()) {
-//            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-//        }
-//
-//        InputStream inputStream = new ClassPathResource("Excel/XuatDanhsachBHXH.xlsx").getInputStream();
-//        XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
-//
-//        ByteArrayResource excelFile = ExportExcelUtil.handleExcelStaffLabourAgreements(dataList, dto, workbook);
-//
-//        if (excelFile == null) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
-//
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.add("Content-Disposition", "attachment; filename=XuatDanhsachBHXH.xlsx");
-//
-//        return ResponseEntity.ok()
-//                .headers(headers)
-//                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-//                .body(excelFile);
-//    } catch (Exception e) {
-//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//    }
-//}
+    private static final Logger log = LoggerFactory.getLogger(ExportExcelUtil.class);
+
+    public static <T> ByteArrayResource writeExcel(List<T> dataList, Class<T> clazz) {
+        try (Workbook workbook = new SXSSFWorkbook(100); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            // Lấy font mặc định
+            Font defaultFont = workbook.createFont();
+            defaultFont.setFontHeightInPoints((short) 12); // Kích thước chữ mặc định
+
+            // Font đậm
+            Font boldFont = workbook.createFont();
+            boldFont.setBold(true);
+            boldFont.setFontHeightInPoints((short) 12); // Kích thước chữ
+
+            // Tạo các style
+            CellStyle boldCenterStyle = createCellStyle(workbook, boldFont, HorizontalAlignment.CENTER); // Chữ đậm, căn giữa, border
+            CellStyle normalCenterStyle = createCellStyle(workbook, defaultFont, HorizontalAlignment.CENTER); // Chữ bình, căn giữa, border
+            CellStyle normalLeftStyle = createCellStyle(workbook, defaultFont, HorizontalAlignment.LEFT); // Chữ bình, căn trái, border
+            CellStyle normalRightStyle = createCellStyle(workbook, defaultFont, HorizontalAlignment.RIGHT); // Chữ bình, căn phải, border
+
+            Row row = null;
+            Cell cell = null;
+            boolean numericalOrder = false;
+            Excel excelAnnotation = clazz.getAnnotation(Excel.class);
+            String sheetName = (excelAnnotation != null) ? excelAnnotation.name() : "Sheet1";
+            int startRow = (excelAnnotation != null) ? excelAnnotation.startRow() : 0;
+            Sheet sheet = workbook.createSheet(sheetName);
+
+            // Tạo cache cho các phương thức được đánh dấu bằng ExcelColumn
+            Map<Integer, Method> columnMethods = new HashMap<>();
+            for (Method method : clazz.getDeclaredMethods()) {
+                if (method.isAnnotationPresent(ExcelColumn.class)) {
+                    ExcelColumn column = method.getAnnotation(ExcelColumn.class);
+                    int columnIndex = column.index();
+                    columnMethods.put(columnIndex, method);
+                    method.setAccessible(true); // Cải thiện hiệu suất reflection
+                }
+            }
+            // Tạo hàng tiêu đề
+            row = sheet.createRow(startRow);
+            for (Map.Entry<Integer, Method> entry : columnMethods.entrySet()) {
+                int columnIndex = entry.getKey();
+                Method method = entry.getValue();
+                ExcelColumn column = method.getAnnotation(ExcelColumn.class);
+
+                cell = row.createCell(columnIndex);
+                cell.setCellValue(column.title());
+                cell.setCellStyle(boldCenterStyle);
+                if (column.numericalOrder()) {
+                    numericalOrder = true;
+                }
+
+                try {
+                    // Đặt độ rộng cột dựa trên tiêu đề
+                    String title = column.title();
+                    if (StringUtils.hasText(title)) {
+                        sheet.setColumnWidth(columnIndex, (title.length() + 5) * 256); // Cộng thêm padding
+                    } else {
+                        sheet.setColumnWidth(columnIndex, 15 * 256);
+                    }
+                } catch (Exception e) {
+                    log.error("Lỗi khi thiết lập độ rộng cột: " + e.getMessage());
+                    sheet.setColumnWidth(columnIndex, 15 * 256);
+                }
+            }
+            // Ghi dữ liệu vào Excel
+            int rowNum = startRow + 1;
+            int index = 1;
+            for (T obj : dataList) {
+                row = sheet.createRow(rowNum++);
+
+                // Sử dụng cache columnMethods thay vì quét lại các phương thức
+                for (Map.Entry<Integer, Method> entry : columnMethods.entrySet()) {
+                    int columnIndex = entry.getKey();
+                    Method method = entry.getValue();
+
+                    cell = row.createCell(columnIndex);
+                    try {
+                        Object value = method.invoke(obj);
+                        if (value != null) {
+                            setCellValue(cell, value, method.getReturnType());
+                            if (method.getReturnType() == String.class || method.getReturnType() == Date.class || method.getReturnType() == LocalDate.class || method.getReturnType() == LocalDateTime.class) {
+                                cell.setCellStyle(normalLeftStyle);
+                            } else if (method.getReturnType() == Boolean.class || method.getReturnType() == boolean.class) {
+                                cell.setCellStyle(normalCenterStyle);
+                            } else {
+                                cell.setCellStyle(normalRightStyle);
+                            }
+                        }
+                        if (columnIndex == 0 && numericalOrder) {
+                            cell.setCellValue(index++);
+                            cell.setCellStyle(normalCenterStyle);
+                        }
+                    } catch (Exception e) {
+                        log.error("Lỗi khi lấy giá trị từ method {}: {}", method.getName(), e.getMessage(), e);
+                    }
+                }
+            }
+
+            workbook.write(out);
+            return new ByteArrayResource(out.toByteArray());
+        } catch (Exception e) {
+            log.error("Lỗi khi tạo file Excel: {}", e.getMessage(), e);
+            return null;
+        }
+    }
+
+    private static void setCellValue(Cell cell, Object value, Class<?> returnType) {
+        try {
+            if (returnType == int.class || returnType == Integer.class) {
+                cell.setCellValue((Integer) value);
+            } else if (returnType == double.class || returnType == Double.class) {
+                cell.setCellValue((Double) value);
+            } else if (returnType == long.class || returnType == Long.class) {
+                cell.setCellValue((Long) value);
+            } else if (returnType == boolean.class || returnType == Boolean.class) {
+                cell.setCellValue((Boolean) value);
+            } else if (returnType == LocalDate.class) {
+                cell.setCellValue(DateTimeUtil.formatShortDate((LocalDate) value)); // Hoặc format ngày theo yêu cầu
+            } else if (returnType == LocalDateTime.class) {
+                cell.setCellValue(DateTimeUtil.formatShortDateTime((LocalDateTime) value)); // Hoặc format ngày theo yêu cầu
+            } else {
+                cell.setCellValue(value.toString());
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            cell.setCellValue(value.toString());
+        }
+    }
+
+    public static <T> List<T> readExcel(InputStream fileInputStream, Class<T> clazz) {
+        List<T> dataList = new ArrayList<>();
+        try (Workbook workbook = new XSSFWorkbook(fileInputStream)) {
+
+            // Lấy thông tin từ annotation @Excel
+            Excel excelAnnotation = clazz.getAnnotation(Excel.class);
+            Sheet sheet = workbook.getSheetAt((excelAnnotation != null) ? excelAnnotation.index() : 0);
+            int startRow = ((excelAnnotation != null) ? excelAnnotation.startRow() : 0) + 1;
+
+            // Lấy danh sách các phương thức getter có @ExcelColumn
+            Method[] methods = clazz.getDeclaredMethods();
+            Map<Integer, Method> columnGetters = new HashMap<>();
+            Map<String, Method> setters = new HashMap<>();
+
+            for (Method method : methods) {
+                ExcelColumn column = method.getAnnotation(ExcelColumn.class);
+                if (column != null && isGetter(method)) {
+                    columnGetters.put(column.index(), method);
+                } else if (isSetter(method)) {
+                    setters.put(method.getName(), method);
+                }
+            }
+
+            for (int rowIndex = startRow; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
+                Row row = sheet.getRow(rowIndex);
+                if (row == null) continue;
+                try {
+                    // Tạo một instance của class T
+                    T obj = clazz.getDeclaredConstructor().newInstance();
+
+                    for (Map.Entry<Integer, Method> entry : columnGetters.entrySet()) {
+                        int columnIndex = entry.getKey();
+                        Method getter = entry.getValue();
+                        Cell cell = row.getCell(columnIndex);
+                        if (cell != null) {
+                            String fieldName = getter.getName().replace("get", "set");
+                            Method setter = setters.get(fieldName);
+                            if (setter != null) {
+                                Class<?> paramType = setter.getParameterTypes()[0];
+                                setter.invoke(obj, getCellValue(cell, paramType));
+                            }
+                        }
+                    }
+                    dataList.add(obj);
+                } catch (Exception e) {
+                    log.error("Lỗi khi tạo đối tượng từ dòng {}: {}", rowIndex, e.getMessage(), e);
+                }
+            }
+        } catch (Exception e) {
+            log.error("Lỗi khi đọc file Excel: {}", e.getMessage(), e);
+        }
+        return dataList;
+    }
+
+    // Kiểm tra xem một method có phải là getter không
+    private static boolean isGetter(Method method) {
+        return method.getName().startsWith("get") && method.getParameterCount() == 0;
+    }
+
+    // Kiểm tra xem một method có phải là setter không
+    private static boolean isSetter(Method method) {
+        return method.getName().startsWith("set") && method.getParameterCount() == 1;
+    }
+
+    public static Object getCellValue(Cell cell, Class<?> type) {
+        if (cell == null) return getDefaultValue(type);
+
+        Object value;
+        try {
+            switch (cell.getCellType()) {
+                case STRING:
+                    value = cell.getStringCellValue();
+                    if (type == LocalDate.class) {
+                        return handleDateString(cell.getStringCellValue(), type);
+                    }
+                    if (type == LocalDateTime.class) {
+                        return handleDateString(cell.getStringCellValue(), type);
+                    }
+                    break;
+                case NUMERIC:
+                    if (DateUtil.isCellDateFormatted(cell)) { // Kiểm tra Date
+                        Date date = cell.getDateCellValue();
+                        if (type == LocalDate.class)
+                            return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                        if (type == LocalDateTime.class)
+                            return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+                        return date;
+                    }
+                    if (type == LocalDate.class) {
+                        return handleDateString(String.valueOf(cell.getNumericCellValue()), type);
+                    }
+                    if (type == LocalDateTime.class) {
+                        return handleDateString(String.valueOf(cell.getNumericCellValue()), type);
+                    }
+                    value = cell.getNumericCellValue();
+                    break;
+                case BOOLEAN:
+                    value = cell.getBooleanCellValue();
+                    break;
+                case FORMULA:
+                    try {
+                        value = cell.getNumericCellValue();
+                    } catch (IllegalStateException e) {
+                        value = cell.getStringCellValue();
+                    }
+                    break;
+                case ERROR:
+                    value = "ERROR_" + cell.getErrorCellValue();
+                    break;
+                case BLANK:
+                default:
+                    return getDefaultValue(type);
+            }
+            return castToType(value, type);
+        } catch (Exception e) {
+            log.error("Lỗi khi xử lý ô Excel: {}", type.getSimpleName());
+            return getDefaultValue(type); // Trả về giá trị mặc định khi lỗi
+        }
+    }
+
+    private static Object castToType(Object value, Class<?> type) {
+        if (value == null || !StringUtils.hasText(value.toString())) return getDefaultValue(type);
+
+        try {
+            if (type == String.class) return value.toString();
+            if (type == Integer.class || type == int.class) return (int) Double.parseDouble(value.toString());
+            if (type == Long.class || type == long.class)
+                return (long) Double.parseDouble(value.toString()); // Fix lỗi ép kiểu
+            if (type == Double.class || type == double.class) return Double.parseDouble(value.toString());
+            if (type == Float.class || type == float.class) return Float.parseFloat(value.toString());
+            if (type == Short.class || type == short.class) return (short) Double.parseDouble(value.toString());
+            if (type == Byte.class || type == byte.class) return (byte) Double.parseDouble(value.toString());
+            if (type == BigDecimal.class) return new BigDecimal(value.toString());
+            if (type == Boolean.class || type == boolean.class) return Boolean.parseBoolean(value.toString());
+            return value;
+        } catch (Exception e) {
+            log.error("Lỗi ép kiểu: {} -> {}", value, type.getSimpleName());
+            return getDefaultValue(type);
+        }
+    }
+
+
+    private static Object handleDateString(String value, Class<?> type) {
+        if (value == null || !StringUtils.hasText(value.toString())) return getDefaultValue(type);
+        try {
+            String strValue = value.toString().trim();
+
+            // Kiểm tra nếu là số (dữ liệu từ Excel có thể bị chuyển thành số thực)
+            if (strValue.matches("\\d+\\.\\d+")) {
+                strValue = strValue.split("\\.")[0]; // Lấy phần nguyên nếu là số thực (e.g., "2000.0" -> "2000")
+            }
+            if (type == LocalDate.class || type == LocalDateTime.class) {
+                String[] parts = strValue.split("/");
+                int day = 1, month = 1, year = 1000;
+
+                if (parts.length == 1) { // Chỉ có năm
+                    year = Integer.parseInt(parts[0]);
+                } else if (parts.length == 2) { // Chỉ có tháng và năm
+                    month = Integer.parseInt(parts[0]);
+                    year = Integer.parseInt(parts[1]);
+                } else if (parts.length == 3) { // Đủ ngày/tháng/năm
+                    day = Integer.parseInt(parts[0]);
+                    month = Integer.parseInt(parts[1]);
+                    year = Integer.parseInt(parts[2]);
+                }
+                LocalDate date = LocalDate.of(year, month, day);
+                return type == LocalDate.class ? date : date.atStartOfDay();
+            }
+        } catch (Exception e) {
+            log.error("Lỗi khi xử lý chuỗi ngày tháng: {}", value);
+        }
+        return value;
+    }
+
+    private static Object getDefaultValue(Class<?> type) {
+        if (type == int.class) return 0;
+        if (type == double.class) return 0.0;
+        if (type == float.class) return 0.0f;
+        if (type == long.class) return 0L;
+        if (type == short.class) return (short) 0;
+        if (type == byte.class) return (byte) 0;
+        if (type == boolean.class) return false;
+        return null; // Các kiểu Object mặc định là null
+    }
+
+    // Hàm tạo style
+    private static CellStyle createCellStyle(Workbook workbook, Font font, HorizontalAlignment align) {
+        CellStyle style = workbook.createCellStyle();
+        style.setBorderBottom(BorderStyle.THIN);
+        style.setBorderTop(BorderStyle.THIN);
+        style.setBorderLeft(BorderStyle.THIN);
+        style.setBorderRight(BorderStyle.THIN);
+        style.setAlignment(align);
+        style.setVerticalAlignment(VerticalAlignment.CENTER);
+        style.setWrapText(true);
+        style.setFont(font);
+        return style;
+    }
 }

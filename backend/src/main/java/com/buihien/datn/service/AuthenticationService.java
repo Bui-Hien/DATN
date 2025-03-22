@@ -1,8 +1,8 @@
 package com.buihien.datn.service;
 
-import com.buihien.datn.dto.ChangePasswordDto;
-import com.buihien.datn.dto.SignInDto;
-import com.buihien.datn.dto.TokenResponseDto;
+import com.buihien.datn.dto.auth.ChangePasswordDto;
+import com.buihien.datn.dto.auth.SignInDto;
+import com.buihien.datn.dto.auth.TokenResponseDto;
 import jakarta.servlet.http.HttpServletRequest;
 
 public interface AuthenticationService {

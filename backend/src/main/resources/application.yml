@@ -1,4 +1,9 @@
 spring:
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB   # Giới hạn file tối đa 100MB
+      max-request-size: 100MB  # Giới hạn tổng request tối đa
   application:
     name: datn
   datasource:
@@ -24,14 +29,14 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: buixuanhienmy@gmail.com
-    password: vbmkdevfvocjaebh
+    password: oikykwowpdyyoqkm
     properties:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
       mail.smtp.starttls.required: true
       mail.smtp.ssl.protocols: TLSv1.2
 endpoint:
-  confirmUser: http://localhost:${server.port}/auth/reset-password
+  confirmUser: http://localhost:${server.port}/api/auth/reset-password
 server:
   port: 8080
 jwt:
