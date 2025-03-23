@@ -31,25 +31,25 @@ public class PublicController {
     //http://localhost:8080/api/public/export-excel
     @GetMapping("/export-excel")
     public ResponseEntity<?> handleExportAdministrativeUnit(HttpServletResponse response) {
-//        for (int i = 0; i < 1000; i++) {
-//            EmployeeDTO employee = new EmployeeDTO(
-//                    (long) i,
-//                    "First name " + i,
-//                    "Last name " + i,
-//                    LocalDate.now(),
-//                    "Nam",
-//                    "Email " + i,
-//                    "Phone " + i,
-//                    new AddressDTO(
-//                            "Đường " + i,
-//                            "Thành phố " + i,
-//                            "Tiểu bang " + i,
-//                            "Mã bưu kiện " + i,
-//                            "Quốc gia " + i
-//                    )
-//            );
-//            this.employees.add(employee);
-//        }
+        for (int i = 0; i < 1000; i++) {
+            EmployeeDTO employee = new EmployeeDTO(
+                    (long) i,
+                    "First name " + i,
+                    "Last name " + i,
+                    LocalDate.now(),
+                    "Nam",
+                    "Email " + i,
+                    "Phone " + i,
+                    new AddressDTO(
+                            "Đường " + i,
+                            "Thành phố " + i,
+                            "Tiểu bang " + i,
+                            "Mã bưu kiện " + i,
+                            "Quốc gia " + i
+                    )
+            );
+            this.employees.add(employee);
+        }
         ByteArrayResource excelFile;
         if (true) {
             try {

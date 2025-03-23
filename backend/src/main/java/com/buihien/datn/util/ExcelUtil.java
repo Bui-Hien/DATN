@@ -34,12 +34,6 @@ public class ExcelUtil {
             boldFont.setBold(true);
             boldFont.setFontHeightInPoints((short) 12); // Kích thước chữ
 
-            // Tạo các style
-            CellStyle boldCenterStyle = createCellStyle(workbook, boldFont, HorizontalAlignment.CENTER); // Chữ đậm, căn giữa, border
-            CellStyle normalCenterStyle = createCellStyle(workbook, defaultFont, HorizontalAlignment.CENTER); // Chữ bình, căn giữa, border
-            CellStyle normalLeftStyle = createCellStyle(workbook, defaultFont, HorizontalAlignment.LEFT); // Chữ bình, căn trái, border
-            CellStyle normalRightStyle = createCellStyle(workbook, defaultFont, HorizontalAlignment.RIGHT); // Chữ bình, căn phải, border
-
             Row row = null;
             Cell cell = null;
             boolean numericalOrder = false;
@@ -47,6 +41,20 @@ public class ExcelUtil {
             String sheetName = (excelAnnotation != null) ? excelAnnotation.name() : "Sheet 1";
             int startRow = (excelAnnotation != null) ? excelAnnotation.startRow() : 0;
             Sheet sheet = workbook.createSheet(sheetName);
+
+            // Đọc thông tin màu từ annotation Excel
+            short backgroundColor = (excelAnnotation != null && excelAnnotation.backgroundColor() != -1) ? excelAnnotation.backgroundColor() : IndexedColors.WHITE.getIndex();
+            short textColor = (excelAnnotation != null && excelAnnotation.textColor() != -1) ? excelAnnotation.textColor() : IndexedColors.BLACK.getIndex();
+            short headerBackgroundColor = (excelAnnotation != null && excelAnnotation.headerBackgroundColor() != -1) ? excelAnnotation.headerBackgroundColor() : IndexedColors.LIGHT_BLUE.getIndex();
+            short headerTextColor = (excelAnnotation != null && excelAnnotation.headerTextColor() != -1) ? excelAnnotation.headerTextColor() : IndexedColors.WHITE.getIndex();
+
+            // Tạo style cho header
+            CellStyle boldCenterStyle = createCellStyle(workbook, boldFont, HorizontalAlignment.CENTER, headerBackgroundColor, headerTextColor);
+
+            // Tạo style cho dữ liệu thông thường
+            CellStyle normalCenterStyle = createCellStyle(workbook, defaultFont, HorizontalAlignment.CENTER, backgroundColor, textColor);
+            CellStyle normalLeftStyle = createCellStyle(workbook, defaultFont, HorizontalAlignment.LEFT, backgroundColor, textColor);
+            CellStyle normalRightStyle = createCellStyle(workbook, defaultFont, HorizontalAlignment.RIGHT, backgroundColor, textColor);
 
             // Tạo cache cho các phương thức được đánh dấu bằng ExcelColumn
             Map<Integer, Method> columnMethods = new HashMap<>();
@@ -319,16 +327,29 @@ public class ExcelUtil {
     }
 
     // Hàm tạo style
-    private static CellStyle createCellStyle(Workbook workbook, Font font, HorizontalAlignment align) {
+    private static CellStyle createCellStyle(Workbook workbook, Font font, HorizontalAlignment alignment, Short backgroundColor, Short textColor) {
         CellStyle style = workbook.createCellStyle();
-        style.setBorderBottom(BorderStyle.THIN);
+        style.setFont(font);
+        style.setAlignment(alignment);
+        style.setVerticalAlignment(VerticalAlignment.CENTER);
         style.setBorderTop(BorderStyle.THIN);
+        style.setBorderBottom(BorderStyle.THIN);
         style.setBorderLeft(BorderStyle.THIN);
         style.setBorderRight(BorderStyle.THIN);
-        style.setAlignment(align);
-        style.setVerticalAlignment(VerticalAlignment.CENTER);
-        style.setWrapText(true);
-        style.setFont(font);
+
+        if (backgroundColor != null) {
+            style.setFillForegroundColor(backgroundColor);
+            style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        }
+
+        if (textColor != null) {
+            Font newFont = workbook.createFont();
+            newFont.setColor(textColor);
+            newFont.setBold(font.getBold());
+            newFont.setFontHeightInPoints(font.getFontHeightInPoints());
+            style.setFont(newFont);
+        }
+
         return style;
     }
 }
