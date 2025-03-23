@@ -1,11 +1,12 @@
 package com.buihien.datn.dto.test;
 
-import com.buihien.datn.util.Excel;
-import com.buihien.datn.util.ExcelColumn;
+import com.buihien.datn.util.anotation.Excel;
+import com.buihien.datn.util.anotation.ExcelColumnGetter;
+import com.buihien.datn.util.anotation.ExcelColumnSetter;
 
 import java.time.LocalDate;
 
-@Excel(name = "Dữ liệu nhân viên", startRow = 10, index = 10)
+@Excel(name = "Dữ liệu nhân viên")
 public class EmployeeDTO {
     private Long id;
     private String firstName;
@@ -30,65 +31,72 @@ public class EmployeeDTO {
         this.address = address;
     }
 
-    @ExcelColumn(index = 0, title = "STT", numericalOrder = true)
+    @ExcelColumnGetter(index = 0, title = "STT", numericalOrder = true)
     public Long getId() {
         return id;
     }
 
+    @ExcelColumnSetter(index = 0)
     public void setId(Long id) {
         this.id = id;
     }
 
-    @ExcelColumn(index = 1, title = "Họ nhân viên")
+    @ExcelColumnGetter(index = 1, title = "Họ nhân viên")
     public String getFirstName() {
         return firstName;
     }
 
+    @ExcelColumnSetter(index = 1)
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    @ExcelColumn(index = 2, title = "Tên nhân viên")
+    @ExcelColumnGetter(index = 2, title = "Tên nhân viên")
     public String getLastName() {
         return lastName;
     }
 
+    @ExcelColumnSetter(index = 2)
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-    @ExcelColumn(index = 3, title = "Ngày sinh")
+    @ExcelColumnGetter(index = 3, title = "Ngày sinh")
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
+    @ExcelColumnSetter(index = 3)
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
-    @ExcelColumn(index = 4, title = "Giới tính")
+    @ExcelColumnGetter(index = 4, title = "Giới tính")
     public String getGender() {
         return gender;
     }
 
+    @ExcelColumnSetter(index = 4)
     public void setGender(String gender) {
         this.gender = gender;
     }
 
-    @ExcelColumn(index = 5, title = "Email")
+    @ExcelColumnGetter(index = 5, title = "Email")
     public String getEmail() {
         return email;
     }
 
+    @ExcelColumnSetter(index = 5)
     public void setEmail(String email) {
         this.email = email;
     }
 
-    @ExcelColumn(index = 6, title = "Số điện thoại")
+    @ExcelColumnGetter(index = 6, title = "Số điện thoại")
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
+    @ExcelColumnSetter(index = 6)
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
@@ -101,11 +109,12 @@ public class EmployeeDTO {
         this.address = address;
     }
 
-    @ExcelColumn(index = 7, title = "Đường")
+    @ExcelColumnGetter(index = 7, title = "Đường")
     public String getStreet() {
         return address != null ? address.getStreet() : null;
     }
 
+    @ExcelColumnSetter(index = 7)
     public void setStreet(String street) {
         if (this.address == null) {
             this.address = new AddressDTO();
@@ -113,11 +122,12 @@ public class EmployeeDTO {
         this.address.setStreet(street);
     }
 
-    @ExcelColumn(index = 8, title = "Thành phố")
+    @ExcelColumnGetter(index = 8, title = "Thành phố")
     public String getCity() {
         return address != null ? address.getCity() : null;
     }
 
+    @ExcelColumnSetter(index = 8)
     public void setCity(String city) {
         if (this.address == null) {
             this.address = new AddressDTO();
@@ -125,11 +135,12 @@ public class EmployeeDTO {
         this.address.setCity(city);
     }
 
-    @ExcelColumn(index = 9, title = "Tiểu bang")
+    @ExcelColumnGetter(index = 9, title = "Tiểu bang")
     public String getState() {
         return address != null ? address.getState() : null;
     }
 
+    @ExcelColumnSetter(index = 9)
     public void setState(String state) {
         if (this.address == null) {
             this.address = new AddressDTO();
@@ -137,11 +148,12 @@ public class EmployeeDTO {
         this.address.setState(state);
     }
 
-    @ExcelColumn(index = 10, title = "Mã bưu điện")
+    @ExcelColumnGetter(index = 10, title = "Mã bưu điện")
     public String getZipCode() {
         return address != null ? address.getZipCode() : null;
     }
 
+    @ExcelColumnSetter(index = 10)
     public void setZipCode(String zipCode) {
         if (this.address == null) {
             this.address = new AddressDTO();
@@ -149,11 +161,12 @@ public class EmployeeDTO {
         this.address.setZipCode(zipCode);
     }
 
-    @ExcelColumn(index = 11, title = "Quốc gia")
+    @ExcelColumnGetter(index = 11, title = "Quốc gia")
     public String getCountry() {
         return address != null ? address.getCountry() : null;
     }
 
+    @ExcelColumnSetter(index = 11)
     public void setCountry(String country) {
         if (this.address == null) {
             this.address = new AddressDTO();

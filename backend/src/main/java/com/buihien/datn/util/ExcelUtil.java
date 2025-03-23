@@ -1,8 +1,10 @@
 package com.buihien.datn.util;
 
+import com.buihien.datn.util.anotation.Excel;
+import com.buihien.datn.util.anotation.ExcelColumnGetter;
+import com.buihien.datn.util.anotation.ExcelColumnSetter;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,8 +20,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 
-public class ExportExcelUtil {
-    private static final Logger log = LoggerFactory.getLogger(ExportExcelUtil.class);
+public class ExcelUtil {
+    private static final Logger log = LoggerFactory.getLogger(ExcelUtil.class);
 
     public static <T> ByteArrayResource writeExcel(List<T> dataList, Class<T> clazz) {
         try (Workbook workbook = new SXSSFWorkbook(100); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
@@ -42,15 +44,15 @@ public class ExportExcelUtil {
             Cell cell = null;
             boolean numericalOrder = false;
             Excel excelAnnotation = clazz.getAnnotation(Excel.class);
-            String sheetName = (excelAnnotation != null) ? excelAnnotation.name() : "Sheet1";
+            String sheetName = (excelAnnotation != null) ? excelAnnotation.name() : "Sheet 1";
             int startRow = (excelAnnotation != null) ? excelAnnotation.startRow() : 0;
             Sheet sheet = workbook.createSheet(sheetName);
 
             // Tạo cache cho các phương thức được đánh dấu bằng ExcelColumn
             Map<Integer, Method> columnMethods = new HashMap<>();
             for (Method method : clazz.getDeclaredMethods()) {
-                if (method.isAnnotationPresent(ExcelColumn.class)) {
-                    ExcelColumn column = method.getAnnotation(ExcelColumn.class);
+                if (method.isAnnotationPresent(ExcelColumnGetter.class)) {
+                    ExcelColumnGetter column = method.getAnnotation(ExcelColumnGetter.class);
                     int columnIndex = column.index();
                     columnMethods.put(columnIndex, method);
                     method.setAccessible(true); // Cải thiện hiệu suất reflection
@@ -61,7 +63,7 @@ public class ExportExcelUtil {
             for (Map.Entry<Integer, Method> entry : columnMethods.entrySet()) {
                 int columnIndex = entry.getKey();
                 Method method = entry.getValue();
-                ExcelColumn column = method.getAnnotation(ExcelColumn.class);
+                ExcelColumnGetter column = method.getAnnotation(ExcelColumnGetter.class);
 
                 cell = row.createCell(columnIndex);
                 cell.setCellValue(column.title());
@@ -125,6 +127,54 @@ public class ExportExcelUtil {
         }
     }
 
+    public static <T> List<T> readExcel(InputStream fileInputStream, Class<T> clazz) {
+        List<T> dataList = new ArrayList<>();
+        try (Workbook workbook = new XSSFWorkbook(fileInputStream)) {
+
+            // Lấy thông tin từ annotation @Excel
+            Excel excelAnnotation = clazz.getAnnotation(Excel.class);
+            Sheet sheet = workbook.getSheetAt((excelAnnotation != null) ? excelAnnotation.index() : 0);
+            int startRow = ((excelAnnotation != null) ? excelAnnotation.startRow() : 0) + 1;
+
+            // Lấy danh sách các phương thức setter có @ExcelColumnSetter
+            Method[] methods = clazz.getDeclaredMethods();
+            Map<Integer, Method> columnSetters = new HashMap<>();
+
+            for (Method method : methods) {
+                if (method.isAnnotationPresent(ExcelColumnSetter.class)) {
+                    ExcelColumnSetter column = method.getAnnotation(ExcelColumnSetter.class);
+                    columnSetters.put(column.index(), method);
+                    method.setAccessible(true); // Cải thiện hiệu suất reflection
+                }
+            }
+
+            for (int rowIndex = startRow; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
+                Row row = sheet.getRow(rowIndex);
+                if (row == null) continue;
+                try {
+                    // Tạo một instance của class T
+                    T obj = clazz.getDeclaredConstructor().newInstance();
+
+                    for (Map.Entry<Integer, Method> entry : columnSetters.entrySet()) {
+                        int columnIndex = entry.getKey();
+                        Method setter = entry.getValue();
+                        Cell cell = row.getCell(columnIndex);
+                        if (cell != null) {
+                            Class<?> paramType = setter.getParameterTypes()[0];
+                            setter.invoke(obj, getCellValue(cell, paramType));
+                        }
+                    }
+                    dataList.add(obj);
+                } catch (Exception e) {
+                    log.error("Lỗi khi tạo đối tượng từ dòng {}: {}", rowIndex, e.getMessage(), e);
+                }
+            }
+        } catch (Exception e) {
+            log.error("Lỗi khi đọc file Excel: {}", e.getMessage(), e);
+        }
+        return dataList;
+    }
+
     private static void setCellValue(Cell cell, Object value, Class<?> returnType) {
         try {
             if (returnType == int.class || returnType == Integer.class) {
@@ -146,70 +196,6 @@ public class ExportExcelUtil {
             log.error(e.getMessage());
             cell.setCellValue(value.toString());
         }
-    }
-
-    public static <T> List<T> readExcel(InputStream fileInputStream, Class<T> clazz) {
-        List<T> dataList = new ArrayList<>();
-        try (Workbook workbook = new XSSFWorkbook(fileInputStream)) {
-
-            // Lấy thông tin từ annotation @Excel
-            Excel excelAnnotation = clazz.getAnnotation(Excel.class);
-            Sheet sheet = workbook.getSheetAt((excelAnnotation != null) ? excelAnnotation.index() : 0);
-            int startRow = ((excelAnnotation != null) ? excelAnnotation.startRow() : 0) + 1;
-
-            // Lấy danh sách các phương thức getter có @ExcelColumn
-            Method[] methods = clazz.getDeclaredMethods();
-            Map<Integer, Method> columnGetters = new HashMap<>();
-            Map<String, Method> setters = new HashMap<>();
-
-            for (Method method : methods) {
-                ExcelColumn column = method.getAnnotation(ExcelColumn.class);
-                if (column != null && isGetter(method)) {
-                    columnGetters.put(column.index(), method);
-                } else if (isSetter(method)) {
-                    setters.put(method.getName(), method);
-                }
-            }
-
-            for (int rowIndex = startRow; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
-                Row row = sheet.getRow(rowIndex);
-                if (row == null) continue;
-                try {
-                    // Tạo một instance của class T
-                    T obj = clazz.getDeclaredConstructor().newInstance();
-
-                    for (Map.Entry<Integer, Method> entry : columnGetters.entrySet()) {
-                        int columnIndex = entry.getKey();
-                        Method getter = entry.getValue();
-                        Cell cell = row.getCell(columnIndex);
-                        if (cell != null) {
-                            String fieldName = getter.getName().replace("get", "set");
-                            Method setter = setters.get(fieldName);
-                            if (setter != null) {
-                                Class<?> paramType = setter.getParameterTypes()[0];
-                                setter.invoke(obj, getCellValue(cell, paramType));
-                            }
-                        }
-                    }
-                    dataList.add(obj);
-                } catch (Exception e) {
-                    log.error("Lỗi khi tạo đối tượng từ dòng {}: {}", rowIndex, e.getMessage(), e);
-                }
-            }
-        } catch (Exception e) {
-            log.error("Lỗi khi đọc file Excel: {}", e.getMessage(), e);
-        }
-        return dataList;
-    }
-
-    // Kiểm tra xem một method có phải là getter không
-    private static boolean isGetter(Method method) {
-        return method.getName().startsWith("get") && method.getParameterCount() == 0;
-    }
-
-    // Kiểm tra xem một method có phải là setter không
-    private static boolean isSetter(Method method) {
-        return method.getName().startsWith("set") && method.getParameterCount() == 1;
     }
 
     public static Object getCellValue(Cell cell, Class<?> type) {
@@ -288,7 +274,6 @@ public class ExportExcelUtil {
             return getDefaultValue(type);
         }
     }
-
 
     private static Object handleDateString(String value, Class<?> type) {
         if (value == null || !StringUtils.hasText(value.toString())) return getDefaultValue(type);

@@ -1,4 +1,4 @@
-package com.buihien.datn.util;
+package com.buihien.datn.util.anotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ExcelColumn {
+public @interface ExcelColumnGetter {
 
     int index();
 

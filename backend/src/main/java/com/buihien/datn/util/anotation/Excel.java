@@ -1,4 +1,4 @@
-package com.buihien.datn.util;
+package com.buihien.datn.util.anotation;
 
 import java.lang.annotation.*;
 

@@ -2,17 +2,13 @@ package com.buihien.datn.controller;
 
 import com.buihien.datn.dto.test.AddressDTO;
 import com.buihien.datn.dto.test.EmployeeDTO;
-import com.buihien.datn.util.ExportExcelUtil;
+import com.buihien.datn.util.ExcelUtil;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,31 +25,31 @@ import java.util.List;
 @RequestMapping("/api/public")
 @Validated
 public class PublicController {
-    private static final Logger log = LoggerFactory.getLogger(ExportExcelUtil.class);
+    private static final Logger log = LoggerFactory.getLogger(ExcelUtil.class);
     List<EmployeeDTO> employees = new ArrayList<>();
 
-    //http://localhost:8080/api/public//export-excel
+    //http://localhost:8080/api/public/export-excel
     @GetMapping("/export-excel")
     public ResponseEntity<?> handleExportAdministrativeUnit(HttpServletResponse response) {
-        for (int i = 0; i < 1000; i++) {
-            EmployeeDTO employee = new EmployeeDTO(
-                    (long) i,
-                    "First name " + i,
-                    "Last name " + i,
-                    LocalDate.now(),
-                    "Nam",
-                    "Email " + i,
-                    "Phone " + i,
-                    new AddressDTO(
-                            "Đường " + i,
-                            "Thành phố " + i,
-                            "Tiểu bang " + i,
-                            "Mã bưu kiện " + i,
-                            "Quốc gia " + i
-                    )
-            );
-            this.employees.add(employee);
-        }
+//        for (int i = 0; i < 1000; i++) {
+//            EmployeeDTO employee = new EmployeeDTO(
+//                    (long) i,
+//                    "First name " + i,
+//                    "Last name " + i,
+//                    LocalDate.now(),
+//                    "Nam",
+//                    "Email " + i,
+//                    "Phone " + i,
+//                    new AddressDTO(
+//                            "Đường " + i,
+//                            "Thành phố " + i,
+//                            "Tiểu bang " + i,
+//                            "Mã bưu kiện " + i,
+//                            "Quốc gia " + i
+//                    )
+//            );
+//            this.employees.add(employee);
+//        }
         ByteArrayResource excelFile;
         if (true) {
             try {
@@ -62,7 +58,7 @@ public class PublicController {
                 response.addHeader("Content-Disposition", "attachment; filename=DU_LIEU_DON_VI_HANH_CHINH.xlsx");
 
                 Instant startFetch = Instant.now(); // Bắt đầu tính thời gian lấy dữ liệu
-                excelFile = ExportExcelUtil.writeExcel(this.employees, EmployeeDTO.class);
+                excelFile = ExcelUtil.writeExcel(this.employees, EmployeeDTO.class);
                 Instant endFetch = Instant.now(); // Kết thúc lấy dữ liệu
                 log.info("Finished write data. Time: {} m", Duration.between(startFetch, endFetch).toMillis() / 1000);
 
@@ -91,7 +87,7 @@ public class PublicController {
 
         try (InputStream inputStream = file.getInputStream()) {
             Instant startFetch = Instant.now(); // Bắt đầu tính thời gian lấy dữ liệu
-            this.employees = ExportExcelUtil.readExcel(inputStream, EmployeeDTO.class);
+            this.employees = ExcelUtil.readExcel(inputStream, EmployeeDTO.class);
             Instant endFetch = Instant.now(); // Kết thúc lấy dữ liệu
             log.info("Finished read data. Time: {} m", Duration.between(startFetch, endFetch).toMillis() / 1000);
             return ResponseEntity.ok(employees);
