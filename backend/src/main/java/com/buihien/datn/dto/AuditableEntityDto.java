@@ -1,9 +1,11 @@
 package com.buihien.datn.dto;
 
 import com.buihien.datn.domain.AuditableEntity;
+import com.buihien.datn.util.anotation.Excel;
 
 import java.time.LocalDateTime;
 
+@Excel
 public abstract class AuditableEntityDto {
     private Long id;
     private Boolean voided;

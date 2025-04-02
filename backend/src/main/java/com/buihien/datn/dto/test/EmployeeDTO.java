@@ -1,13 +1,15 @@
 package com.buihien.datn.dto.test;
 
+import com.buihien.datn.domain.Employee;
+import com.buihien.datn.dto.AuditableEntityDto;
 import com.buihien.datn.util.anotation.Excel;
 import com.buihien.datn.util.anotation.ExcelColumnGetter;
 import com.buihien.datn.util.anotation.ExcelColumnSetter;
 
 import java.time.LocalDate;
 
-@Excel(name = "Dữ liệu nhân viên")
-public class EmployeeDTO {
+@Excel(name = "DU_LIEU_NHAN_VIEN hiền", numericalOrder = true, numericalOrderName = "STT")
+public class EmployeeDTO extends AuditableEntityDto {
     private Long id;
     private String firstName;
     private String lastName;
@@ -18,6 +20,20 @@ public class EmployeeDTO {
     private AddressDTO address;
 
     public EmployeeDTO() {
+    }
+
+    public EmployeeDTO(Employee entity) {
+        super(entity);
+        if (entity != null) {
+            this.id = entity.getId();
+            this.firstName = entity.getFirstName();
+            this.lastName = entity.getLastName();
+            this.dateOfBirth = entity.getDateOfBirth();
+            this.gender = entity.getGender();
+            this.email = entity.getEmail();
+            this.phoneNumber = entity.getPhoneNumber();
+            this.address = new AddressDTO(entity.getAddress());
+        }
     }
 
     public EmployeeDTO(Long id, String firstName, String lastName, LocalDate dateOfBirth, String gender, String email, String phoneNumber, AddressDTO address) {
@@ -31,7 +47,7 @@ public class EmployeeDTO {
         this.address = address;
     }
 
-    @ExcelColumnGetter(index = 0, title = "STT", numericalOrder = true)
+    @ExcelColumnGetter(index = 0, title = "ID")
     public Long getId() {
         return id;
     }

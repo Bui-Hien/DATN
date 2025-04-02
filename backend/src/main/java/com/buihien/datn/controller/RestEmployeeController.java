@@ -1,17 +1,17 @@
 package com.buihien.datn.controller;
 
-import com.buihien.datn.dto.RoleDto;
 import com.buihien.datn.dto.search.SearchDto;
+import com.buihien.datn.dto.test.EmployeeDTO;
 import com.buihien.datn.generic.GenericApi;
 import com.buihien.datn.generic.GenericService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/api/public/role")
+@RequestMapping("/api/public/employee")
 @RestController
-public class RestRoleController extends GenericApi<RoleDto, SearchDto> {
+public class RestEmployeeController extends GenericApi<EmployeeDTO, SearchDto> {
 
-    public RestRoleController(GenericService<RoleDto, SearchDto> genericService) {
-        super(RoleDto.class, genericService);
+    public RestEmployeeController(GenericService<EmployeeDTO, SearchDto> genericService) {
+        super(EmployeeDTO.class, genericService);
     }
 }

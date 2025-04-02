@@ -110,7 +110,7 @@ public class UserServiceImpl extends GenericServiceImpl<User, UserDto, SearchDto
     public Page<UserDto> pagingSearch(SearchDto dto) {
         int pageIndex = (dto.getPageIndex() == null || dto.getPageIndex() < 1) ? 0 : dto.getPageIndex() - 1;
         int pageSize = (dto.getPageSize() == null || dto.getPageSize() < 10) ? 10 : dto.getPageSize();
-        boolean isExportExcel = dto.getIsExportExcel() != null && dto.getIsExportExcel();
+        boolean isExportExcel = dto.getExportExcel() != null && dto.getExportExcel();
 
         StringBuilder sqlCount = new StringBuilder("SELECT COUNT(entity.id) FROM User entity WHERE (1=1) ");
         StringBuilder sql = new StringBuilder("SELECT new UserDto(entity) FROM User entity WHERE (1=1) ");

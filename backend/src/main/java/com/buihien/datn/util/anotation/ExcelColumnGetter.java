@@ -16,8 +16,8 @@ public @interface ExcelColumnGetter {
     int index();
 
     String title();
-
-    boolean numericalOrder() default false;
+    
+    int width() default -1;
 
     String description() default "Default value";
 

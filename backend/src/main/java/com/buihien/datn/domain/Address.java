@@ -1,35 +1,19 @@
-package com.buihien.datn.dto.test;
+package com.buihien.datn.domain;
 
-import com.buihien.datn.domain.Address;
-import com.buihien.datn.dto.AuditableEntityDto;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
-public class    AddressDTO extends AuditableEntityDto {
+@Entity
+@Table(name = "addresses")
+public class Address extends AuditableEntity {
+    private static final long serialVersionUID = 1L;
     private String street;
     private String city;
     private String state;
     private String zipCode;
     private String country;
 
-    public AddressDTO() {
-    }
-
-    public AddressDTO(Address entity) {
-        super(entity);
-        if (entity != null) {
-            this.street = entity.getStreet();
-            this.city = entity.getCity();
-            this.state = entity.getState();
-            this.zipCode = entity.getZipCode();
-            this.country = entity.getCountry();
-        }
-    }
-
-    public AddressDTO(String street, String city, String state, String zipCode, String country) {
-        this.street = street;
-        this.city = city;
-        this.state = state;
-        this.zipCode = zipCode;
-        this.country = country;
+    public Address() {
     }
 
     public String getStreet() {

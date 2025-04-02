@@ -85,6 +85,30 @@ public abstract class GenericServiceImpl<E extends AuditableEntity, DTO extends 
     }
 
     @Override
+    public Integer saveOrUpdateList(List<DTO> dtos) {
+        if (dtos == null || dtos.isEmpty()) {
+            logger.warn("Save or update list called with empty data.");
+            return 0;
+        }
+
+        try {
+            // Chuyển đổi DTO thành Entity
+            List<E> entities = dtos.stream()
+                    .map(this::convertToEntity)
+                    .collect(Collectors.toList());
+
+            // Lưu vào database
+            List<E> savedEntities = repository.saveAll(entities);
+
+            logger.info("Successfully saved {} records.", savedEntities.size());
+            return savedEntities.size();
+        } catch (Exception e) {
+            logger.error("Error saving/updating list: {}", e.getMessage(), e);
+            throw new RuntimeException("Failed to save/update records.");
+        }
+    }
+
+    @Override
     public DTO getById(Long id) {
         logger.info("Fetching entity with ID: {}", id);
         try {

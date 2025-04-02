@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2b4639dc-5fba-442e-b137-c28f120c9007" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/LocalConstants.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/appConfig.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/auth/AuthStore.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/auth/authService.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/axiosCustom.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/stores.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/login/LoginIndex.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/login/LoginStore.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/.gitattributes" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/.gitattributes" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/mvnw" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/mvnw" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/mvnw.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/mvnw.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/DatnApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/DatnApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/DatnConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/DatnConstants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/configuration/AppConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/configuration/AppConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/configuration/AuditAwareConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/configuration/AuditAwareConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/configuration/PasswordEncoderConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/configuration/PasswordEncoderConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/configuration/PreFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/configuration/PreFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/configuration/ThymeleafConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/configuration/ThymeleafConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/controller/ForgetPasswordController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/controller/ForgetPasswordController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/controller/RestAuthenticationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/controller/RestAuthenticationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/controller/RestUserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/controller/RestUserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/domain/AuditableEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/domain/AuditableEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/domain/BaseObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/domain/BaseObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/domain/Person.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/domain/Person.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/domain/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/domain/Role.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/domain/Token.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/domain/Token.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/domain/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/domain/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/domain/UserRole.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/domain/UserRole.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/dto/AuditableEntityDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/AuditableEntityDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/dto/BaseObjectDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/BaseObjectDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/dto/ChangePasswordDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/ChangePasswordDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/dto/PersonDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/PersonDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/dto/RoleDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/RoleDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/dto/SignInDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/SignInDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/dto/TokenResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/TokenResponseDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/dto/UserDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/UserDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/dto/UserRoleDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/UserRoleDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/dto/search/SearchDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/search/SearchDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/exception/ConflictDataException.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/exception/ConflictDataException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/exception/ErrorResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/exception/ErrorResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/exception/InvalidDataException.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/exception/InvalidDataException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/exception/ResourceNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/exception/ResourceNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/listeners/DataInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/listeners/DataInitializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/repository/PersonRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/repository/PersonRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/repository/RoleRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/repository/RoleRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/repository/TokenRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/repository/TokenRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/repository/UserRoleRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/repository/UserRoleRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/service/AuthenticationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/AuthenticationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/service/ExtractCurrentUserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/ExtractCurrentUserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/service/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/JwtService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/service/MailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/MailService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/service/SetupDateService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/SetupDateService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/service/TokenService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/TokenService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/service/UserRoleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/UserRoleService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/service/impl/AuthenticationServiceImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/AuthenticationServiceImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/service/impl/ExtractCurrentUserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/ExtractCurrentUserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/service/impl/JwtServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/JwtServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/service/impl/SetupDateServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/SetupDateServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/service/impl/TokenServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/TokenServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/service/impl/UserRoleServiceImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/UserRoleServiceImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/util/DateTimeUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/util/DateTimeUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/buihien/datn/util/ExportExcelUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/util/ExportExcelUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/resources/templates/confirm-email.html" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/resources/templates/confirm-email.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Backend/src/main/resources/templates/reset-password.html" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/resources/templates/reset-password.html" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="2tXUFW3wQXyFpcw56qWEtH8NmiK" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/workspace/DATN/frontend/src/views/login",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_interpreter_path": "node",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\workspace\DATN\frontend\src\views\login" />
+      <recent name="C:\workspace\DATN\frontend\src\common" />
+      <recent name="C:\workspace\DATN\frontend\src" />
+    </key>
+  </component>
+  <component name="RunManager" selected="npm.npm start">
+    <configuration name="Debug Application" type="JavascriptDebugType" uri="http://localhost:3000">
+      <method v="2" />
+    </configuration>
+    <configuration name="npm start" type="js.build_tools.npm">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="start" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-WS-243.22562.222" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2b4639dc-5fba-442e-b137-c28f120c9007" name="Changes" comment="" />
+      <created>1740497809738</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1740497809738</updated>
+      <workItem from="1740497810785" duration="4411000" />
+      <workItem from="1740540274962" duration="407000" />
+      <workItem from="1741276010724" duration="6000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

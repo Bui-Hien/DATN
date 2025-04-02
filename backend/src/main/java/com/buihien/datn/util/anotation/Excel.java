@@ -17,15 +17,23 @@ public @interface Excel {
 
     String name() default "Sheet 1";
 
+    boolean numericalOrder() default false;
+
+    String numericalOrderName() default "Numerical order";
+
     // Màu nền toàn bảng
-    short backgroundColor() default -1;
+    // IndexedColors.WHITE.getIndex()
+    short backgroundColor() default 9;
 
     // Màu chữ toàn bảng
-    short textColor() default -1;
+    // IndexedColors.BLACK.getIndex()
+    short textColor() default 8;
 
     // Màu nền của header
-    short headerBackgroundColor() default -1;
+    // IndexedColors.LIGHT_BLUE.getIndex()
+    short headerBackgroundColor() default 48;
 
     // Màu chữ của header
-    short headerTextColor() default -1;
+    // IndexedColors.WHITE.getIndex()
+    short headerTextColor() default 9;
 }

@@ -1,5 +1,7 @@
 package com.buihien.datn.dto.search;
 
+import com.buihien.datn.util.DateTimeUtil;
+
 import java.time.LocalDateTime;
 
 public class SearchDto {
@@ -9,11 +11,10 @@ public class SearchDto {
     public String keyword;
     public LocalDateTime fromDate;
     public LocalDateTime toDate;
-    public LocalDateTime date;
     public Boolean voided;
     public Boolean orderBy; //mặc định là DESC của trường createdAt
     public Long roleId;
-    public Boolean isExportExcel;
+    public Boolean exportExcel;
 
     public Long getId() {
         return id;
@@ -40,7 +41,10 @@ public class SearchDto {
     }
 
     public String getKeyword() {
-        return keyword;
+        if (this.keyword == null) {
+            return "";
+        }
+        return keyword.strip();
     }
 
     public void setKeyword(String keyword) {
@@ -48,7 +52,10 @@ public class SearchDto {
     }
 
     public LocalDateTime getFromDate() {
-        return fromDate;
+        if (fromDate == null) {
+            return null;
+        }
+        return DateTimeUtil.getStartOfDay(fromDate);
     }
 
     public void setFromDate(LocalDateTime fromDate) {
@@ -56,19 +63,14 @@ public class SearchDto {
     }
 
     public LocalDateTime getToDate() {
-        return toDate;
+        if (toDate == null) {
+            return null;
+        }
+        return DateTimeUtil.getEndOfDay(toDate);
     }
 
     public void setToDate(LocalDateTime toDate) {
         this.toDate = toDate;
-    }
-
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
     }
 
     public Boolean getVoided() {
@@ -95,11 +97,11 @@ public class SearchDto {
         this.orderBy = orderBy;
     }
 
-    public Boolean getIsExportExcel() {
-        return isExportExcel;
+    public Boolean getExportExcel() {
+        return exportExcel;
     }
 
-    public void setIsExportExcel(Boolean exportExcel) {
-        this.isExportExcel = exportExcel;
+    public void setExportExcel(Boolean exportExcel) {
+        this.exportExcel = exportExcel;
     }
 }

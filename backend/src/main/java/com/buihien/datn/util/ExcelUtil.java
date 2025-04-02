@@ -1,5 +1,6 @@
 package com.buihien.datn.util;
 
+import com.buihien.datn.dto.AuditableEntityDto;
 import com.buihien.datn.util.anotation.Excel;
 import com.buihien.datn.util.anotation.ExcelColumnGetter;
 import com.buihien.datn.util.anotation.ExcelColumnSetter;
@@ -23,7 +24,7 @@ import java.util.*;
 public class ExcelUtil {
     private static final Logger log = LoggerFactory.getLogger(ExcelUtil.class);
 
-    public static <T> ByteArrayResource writeExcel(List<T> dataList, Class<T> clazz) {
+    public static <DTO extends AuditableEntityDto> ByteArrayResource writeExcel(List<DTO> dataList, Class<? extends AuditableEntityDto> clazz) {
         try (Workbook workbook = new SXSSFWorkbook(100); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             // Lấy font mặc định
             Font defaultFont = workbook.createFont();
@@ -36,17 +37,19 @@ public class ExcelUtil {
 
             Row row = null;
             Cell cell = null;
-            boolean numericalOrder = false;
             Excel excelAnnotation = clazz.getAnnotation(Excel.class);
-            String sheetName = (excelAnnotation != null) ? excelAnnotation.name() : "Sheet 1";
-            int startRow = (excelAnnotation != null) ? excelAnnotation.startRow() : 0;
+            String sheetName = (excelAnnotation != null && StringUtils.hasText(excelAnnotation.name().strip())) ? excelAnnotation.name() : "Sheet 1";
+            int startRow = (excelAnnotation != null && excelAnnotation.startRow() >= 0) ? excelAnnotation.startRow() : 0;
+            boolean numericalOrder = excelAnnotation != null && excelAnnotation.numericalOrder();
+            String numericalOrderName = excelAnnotation != null && excelAnnotation.numericalOrderName() != null ? excelAnnotation.numericalOrderName() : "";
+
             Sheet sheet = workbook.createSheet(sheetName);
 
             // Đọc thông tin màu từ annotation Excel
-            short backgroundColor = (excelAnnotation != null && excelAnnotation.backgroundColor() != -1) ? excelAnnotation.backgroundColor() : IndexedColors.WHITE.getIndex();
-            short textColor = (excelAnnotation != null && excelAnnotation.textColor() != -1) ? excelAnnotation.textColor() : IndexedColors.BLACK.getIndex();
-            short headerBackgroundColor = (excelAnnotation != null && excelAnnotation.headerBackgroundColor() != -1) ? excelAnnotation.headerBackgroundColor() : IndexedColors.LIGHT_BLUE.getIndex();
-            short headerTextColor = (excelAnnotation != null && excelAnnotation.headerTextColor() != -1) ? excelAnnotation.headerTextColor() : IndexedColors.WHITE.getIndex();
+            short backgroundColor = (excelAnnotation != null && excelAnnotation.backgroundColor() >= 0 && excelAnnotation.backgroundColor() <= 64) ? excelAnnotation.backgroundColor() : IndexedColors.WHITE.getIndex();
+            short textColor = (excelAnnotation != null && excelAnnotation.textColor() >= 0 && excelAnnotation.textColor() <= 64) ? excelAnnotation.textColor() : IndexedColors.BLACK.getIndex();
+            short headerBackgroundColor = (excelAnnotation != null && excelAnnotation.headerBackgroundColor() >= 0 && excelAnnotation.headerBackgroundColor() <= 64) ? excelAnnotation.headerBackgroundColor() : IndexedColors.LIGHT_BLUE.getIndex();
+            short headerTextColor = (excelAnnotation != null && excelAnnotation.headerTextColor() >= 0 && excelAnnotation.headerTextColor() <= 64) ? excelAnnotation.headerTextColor() : IndexedColors.WHITE.getIndex();
 
             // Tạo style cho header
             CellStyle boldCenterStyle = createCellStyle(workbook, boldFont, HorizontalAlignment.CENTER, headerBackgroundColor, headerTextColor);
@@ -68,41 +71,65 @@ public class ExcelUtil {
             }
             // Tạo hàng tiêu đề
             row = sheet.createRow(startRow);
+            if (numericalOrder) {
+                cell = row.createCell(0);
+                cell.setCellValue(numericalOrderName);
+                cell.setCellStyle(boldCenterStyle);
+            }
             for (Map.Entry<Integer, Method> entry : columnMethods.entrySet()) {
                 int columnIndex = entry.getKey();
+                if (numericalOrder) {
+                    columnIndex += 1;
+                }
                 Method method = entry.getValue();
                 ExcelColumnGetter column = method.getAnnotation(ExcelColumnGetter.class);
 
                 cell = row.createCell(columnIndex);
                 cell.setCellValue(column.title());
                 cell.setCellStyle(boldCenterStyle);
-                if (column.numericalOrder()) {
-                    numericalOrder = true;
-                }
 
-                try {
-                    // Đặt độ rộng cột dựa trên tiêu đề
-                    String title = column.title();
-                    if (StringUtils.hasText(title)) {
-                        sheet.setColumnWidth(columnIndex, (title.length() + 5) * 256); // Cộng thêm padding
-                    } else {
+                if (column.width() != -1 && column.width() > 0) {
+                    try {
+                        sheet.setColumnWidth(columnIndex, (column.width() + 5) * 256); // Cộng thêm padding
+                    } catch (Exception e) {
+                        log.error("Lỗi khi thiết lập độ rộng cột: " + e.getMessage());
                         sheet.setColumnWidth(columnIndex, 15 * 256);
                     }
-                } catch (Exception e) {
-                    log.error("Lỗi khi thiết lập độ rộng cột: " + e.getMessage());
-                    sheet.setColumnWidth(columnIndex, 15 * 256);
+                } else {
+                    try {
+                        // Đặt độ rộng cột dựa trên tiêu đề
+                        String title = column.title();
+                        if (StringUtils.hasText(title)) {
+                            sheet.setColumnWidth(columnIndex, (title.length() + 5) * 256); // Cộng thêm padding
+                        } else {
+                            sheet.setColumnWidth(columnIndex, 15 * 256);
+                        }
+                    } catch (Exception e) {
+                        log.error("Lỗi khi thiết lập độ rộng cột: " + e.getMessage());
+                        sheet.setColumnWidth(columnIndex, 15 * 256);
+                    }
                 }
+
             }
             // Ghi dữ liệu vào Excel
             int rowNum = startRow + 1;
             int index = 1;
-            for (T obj : dataList) {
+            for (DTO obj : dataList) {
                 row = sheet.createRow(rowNum++);
-
+                if (numericalOrder) {
+                    cell = row.createCell(0);
+                    cell.setCellValue(index++);
+                    cell.setCellStyle(normalCenterStyle);
+                }
                 // Sử dụng cache columnMethods thay vì quét lại các phương thức
                 for (Map.Entry<Integer, Method> entry : columnMethods.entrySet()) {
+
                     int columnIndex = entry.getKey();
                     Method method = entry.getValue();
+                    if (numericalOrder) {
+                        columnIndex += 1;
+                    }
+
 
                     cell = row.createCell(columnIndex);
                     try {
@@ -117,16 +144,11 @@ public class ExcelUtil {
                                 cell.setCellStyle(normalRightStyle);
                             }
                         }
-                        if (columnIndex == 0 && numericalOrder) {
-                            cell.setCellValue(index++);
-                            cell.setCellStyle(normalCenterStyle);
-                        }
                     } catch (Exception e) {
                         log.error("Lỗi khi lấy giá trị từ method {}: {}", method.getName(), e.getMessage(), e);
                     }
                 }
             }
-
             workbook.write(out);
             return new ByteArrayResource(out.toByteArray());
         } catch (Exception e) {
@@ -135,14 +157,15 @@ public class ExcelUtil {
         }
     }
 
-    public static <T> List<T> readExcel(InputStream fileInputStream, Class<T> clazz) {
-        List<T> dataList = new ArrayList<>();
+    public static <DTO> List<DTO> readExcel(InputStream fileInputStream, Class<DTO> clazz) {
+        List<DTO> dataList = new ArrayList<>();
         try (Workbook workbook = new XSSFWorkbook(fileInputStream)) {
 
             // Lấy thông tin từ annotation @Excel
             Excel excelAnnotation = clazz.getAnnotation(Excel.class);
             Sheet sheet = workbook.getSheetAt((excelAnnotation != null) ? excelAnnotation.index() : 0);
             int startRow = ((excelAnnotation != null) ? excelAnnotation.startRow() : 0) + 1;
+            boolean numericalOrder = excelAnnotation != null && excelAnnotation.numericalOrder();
 
             // Lấy danh sách các phương thức setter có @ExcelColumnSetter
             Method[] methods = clazz.getDeclaredMethods();
@@ -161,10 +184,13 @@ public class ExcelUtil {
                 if (row == null) continue;
                 try {
                     // Tạo một instance của class T
-                    T obj = clazz.getDeclaredConstructor().newInstance();
+                    DTO obj = clazz.getDeclaredConstructor().newInstance();
 
                     for (Map.Entry<Integer, Method> entry : columnSetters.entrySet()) {
                         int columnIndex = entry.getKey();
+                        if (numericalOrder) {
+                            columnIndex += 1;
+                        }
                         Method setter = entry.getValue();
                         Cell cell = row.getCell(columnIndex);
                         if (cell != null) {
@@ -351,5 +377,14 @@ public class ExcelUtil {
         }
 
         return style;
+    }
+
+    public static String sanitizeFileName(String name) {
+        if (!StringUtils.hasText(name)) {
+            return "Exported_File";
+        }
+        // Loại bỏ ký tự đặc biệt, chỉ giữ lại chữ, số, gạch ngang (-), gạch dưới (_)
+        String sanitized = name.replaceAll("[^a-zA-Z0-9-_]", "_");
+        return sanitized.length() > 255 ? sanitized.substring(0, 255) : sanitized;
     }
 }

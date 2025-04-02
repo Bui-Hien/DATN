@@ -13,6 +13,8 @@ public interface GenericService<DTO extends AuditableEntityDto, S extends Search
 
     DTO saveOrUpdate(DTO dto);
 
+    Integer saveOrUpdateList(List<DTO> dtos);
+
     Page<DTO> paging(int pageIndex, int pageSize);
 
     Page<DTO> pagingSearch(S search);

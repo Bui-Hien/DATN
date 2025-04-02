@@ -1,49 +1,57 @@
 package com.buihien.datn.service.impl;
 
-import com.buihien.datn.domain.Role;
+import com.buihien.datn.domain.Address;
+import com.buihien.datn.domain.Employee;
 import com.buihien.datn.dto.RoleDto;
 import com.buihien.datn.dto.search.SearchDto;
+import com.buihien.datn.dto.test.EmployeeDTO;
 import com.buihien.datn.generic.GenericServiceImpl;
-import com.buihien.datn.service.RoleService;
+import com.buihien.datn.service.EmployeeService;
 import jakarta.persistence.Query;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 @Service
-public class RoleServiceImpl extends GenericServiceImpl<Role, RoleDto, SearchDto> implements RoleService {
+public class EmployeeServiceImpl extends GenericServiceImpl<Employee, EmployeeDTO, SearchDto> implements EmployeeService {
     @Override
-    protected RoleDto convertToDto(Role entity) {
-        return new RoleDto(entity);
+    protected EmployeeDTO convertToDto(Employee entity) {
+        return new EmployeeDTO(entity);
     }
 
     @Override
-    protected Role convertToEntity(RoleDto dto) {
-        Role entity = null;
-        if (dto.getId() != null) {
-            entity = repository.findById(dto.getId()).orElse(null);
-        }
-        if (entity == null) {
-            entity = new Role();
-        }
-        entity.setName(dto.getName());
-        entity.setDescription(dto.getDescription());
+    protected Employee convertToEntity(EmployeeDTO dto) {
+        if (dto == null) return null;
+        Employee entity = new Employee();
+        entity.setFirstName(dto.getFirstName());
+        entity.setLastName(dto.getLastName());
+        entity.setDateOfBirth(dto.getDateOfBirth());
+        entity.setGender(dto.getGender());
+        entity.setEmail(dto.getEmail());
+        entity.setPhoneNumber(dto.getPhoneNumber());
+
+        Address a = new Address();
+        a.setStreet(dto.getStreet());
+        a.setCity(dto.getCity());
+        a.setState(dto.getState());
+        a.setZipCode(dto.getZipCode());
+        a.setCountry(dto.getCountry());
+        entity.setAddress(a);
         return entity;
     }
 
     @Override
-    public Page<RoleDto> pagingSearch(SearchDto dto) {
+    public Page<EmployeeDTO> pagingSearch(SearchDto dto) {
         int pageIndex = (dto.getPageIndex() == null || dto.getPageIndex() < 1) ? 0 : dto.getPageIndex() - 1;
         int pageSize = (dto.getPageSize() == null || dto.getPageSize() < 10) ? 10 : dto.getPageSize();
 
         boolean isExportExcel = dto.getExportExcel() != null && dto.getExportExcel();
 
 
-        StringBuilder sqlCount = new StringBuilder("SELECT COUNT(entity.id) FROM Role entity WHERE (1=1) ");
-        StringBuilder sql = new StringBuilder("SELECT new com.buihien.datn.dto.RoleDto(entity) FROM Role entity WHERE (1=1) ");
+        StringBuilder sqlCount = new StringBuilder("SELECT COUNT(entity.id) FROM Employee entity WHERE (1=1) ");
+        StringBuilder sql = new StringBuilder("SELECT new com.buihien.datn.dto.test.EmployeeDTO(entity) FROM Employee entity WHERE (1=1) ");
 
         StringBuilder whereClause = new StringBuilder();
 
@@ -69,7 +77,7 @@ public class RoleServiceImpl extends GenericServiceImpl<Role, RoleDto, SearchDto
 
         sql.append(dto.getOrderBy() != null && dto.getOrderBy() ? " ORDER BY entity.createdAt ASC" : " ORDER BY entity.createdAt DESC");
 
-        Query q = manager.createQuery(sql.toString(), RoleDto.class);
+        Query q = manager.createQuery(sql.toString(), EmployeeDTO.class);
         Query qCount = manager.createQuery(sqlCount.toString());
 
         if (dto.getKeyword() != null && StringUtils.hasText(dto.getKeyword())) {
