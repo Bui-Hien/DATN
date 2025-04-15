@@ -50,6 +50,6 @@ maxFailedLoginAttempts: 5
 
 message:
   queue:
-    forgot-password-threads: 2   # Số luồng cho quên mật khẩu
-    confirm-account-threads: 5    # Số luồng cho xác nhận tài khoản
-    retry-max-times: 3            # Số lần retry tối đa
+    forgot-password-threads: 2
+    forgot-password-max-threads: 5
+    retry-max-times: 3

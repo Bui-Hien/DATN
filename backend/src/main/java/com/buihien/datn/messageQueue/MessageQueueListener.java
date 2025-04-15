@@ -19,8 +19,11 @@ import java.util.concurrent.*;
 @Component
 public class MessageQueueListener {
 
-    @Value("${message.queue.forgot-password-threads:2}")
+    @Value("${message.queue.forgot-password-threads:1}")
     private int forgotPasswordThreads;
+
+    @Value("${message.queue.forgot-password-max-threads:1}")
+    private int forgotPasswordMaxThreads;
 
     @Value("${message.queue.retry-max-times:3}")
     private int maxRetry;
@@ -42,9 +45,9 @@ public class MessageQueueListener {
     public void initExecutors() {
         this.forgotPasswordExecutor = new ThreadPoolExecutor(
                 forgotPasswordThreads,
-                forgotPasswordThreads,
+                forgotPasswordMaxThreads,
                 0L, TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<>(),
+                new LinkedBlockingQueue<>(50),
                 new ThreadPoolExecutor.CallerRunsPolicy()
         );
 
