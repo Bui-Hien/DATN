@@ -8,6 +8,7 @@ import com.buihien.datn.dto.auth.TokenResponseDto;
 import com.buihien.datn.exception.ConflictDataException;
 import com.buihien.datn.exception.InvalidDataException;
 import com.buihien.datn.exception.ResourceNotFoundException;
+import com.buihien.datn.messageQueue.MessageQueueService;
 import com.buihien.datn.service.*;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.micrometer.common.util.StringUtils;
@@ -15,6 +16,7 @@ import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -43,11 +45,13 @@ public class AuthenticationServiceImp implements AuthenticationService {
     private JwtService jwtService;
     @Autowired
     private TokenService tokenService;
-    @Autowired
-    private MailService mailService;
 
     @Value("${maxFailedLoginAttempts}")
     private int maxFailedLoginAttempts;
+
+    @Autowired
+    @Qualifier("forgotPasswordQueueService")
+    private MessageQueueService<Token> forgotPasswordQueueService;
 
     @Override
     public TokenResponseDto accessToken(SignInDto signInRequest) {
@@ -140,13 +144,10 @@ public class AuthenticationServiceImp implements AuthenticationService {
         tokenService.deleteToken(user.getUsername());
         Token token = new Token(user);
         token.setResetToken(resetToken);
+
         tokenService.saveRestSetToken(token);
-        try {
-            mailService.sendConfirmLink(user.getEmail(), user.getUsername(), resetToken);
-            tokenService.deleteToken(resetToken);
-        } catch (MessagingException | UnsupportedEncodingException e) {
-            throw new InvalidDataException("Error while sending reset link");
-        }
+        forgotPasswordQueueService.sendMessage(token);
+        tokenService.deleteToken(resetToken);
     }
 
     @Override

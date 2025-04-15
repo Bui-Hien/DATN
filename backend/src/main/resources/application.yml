@@ -38,7 +38,7 @@ spring:
 endpoint:
   confirmUser: http://localhost:${server.port}/api/auth/reset-password
 server:
-  port: 8080
+  port: 8071
 jwt:
   expiryHour: 1
   expiryDay: 14
@@ -47,3 +47,9 @@ jwt:
   resetKey: 2OeEeG48CvIcH1K0UAXbSo/7gPj3QLJ7MnQZuscRirQ=
 
 maxFailedLoginAttempts: 5
+
+message:
+  queue:
+    forgot-password-threads: 2   # Số luồng cho quên mật khẩu
+    confirm-account-threads: 5    # Số luồng cho xác nhận tài khoản
+    retry-max-times: 3            # Số lần retry tối đa

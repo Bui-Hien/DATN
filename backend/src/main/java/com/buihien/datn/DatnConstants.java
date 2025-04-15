@@ -1,9 +1,5 @@
 package com.buihien.datn;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class DatnConstants {
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
     public static final String ROLE_SUPER_ADMIN = "ROLE_SUPER_ADMIN";
@@ -51,8 +47,8 @@ public class DatnConstants {
     }
 
     public enum Gender {
-        MALE(1, "Male"),
-        FEMALE(2, "Female"),
+        MALE(1, "Nam"),
+        FEMALE(2, "Nữ"),
         OTHER(3, "Khác");
         private final Integer value;
         private final String name;
@@ -111,6 +107,63 @@ public class DatnConstants {
             return "";
         }
     }
+    public enum LogMessageQueueStatus {
+        SUCCESS (1, "Thành công"),
+        FAILED(2, "Thất bại");
 
+        private final Integer value;
+        private final String name;
 
+        LogMessageQueueStatus(Integer value, String name) {
+            this.value = value;
+            this.name = name;
+        }
+
+        public Integer getValue() {
+            return value;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public static String getNameByValue(Integer value) {
+            if (value == null) return "";
+            for (TokenType item : TokenType.values()) {
+                if (item.getValue().equals(value)) {
+                    return item.getName();
+                }
+            }
+            return "";
+        }
+    }
+    public enum LogMessageQueueTypes {
+        FORGOT_PASSWORD (1, "Quên mật khẩu");
+
+        private final Integer value;
+        private final String name;
+
+        LogMessageQueueTypes(Integer value, String name) {
+            this.value = value;
+            this.name = name;
+        }
+
+        public Integer getValue() {
+            return value;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public static String getNameByValue(Integer value) {
+            if (value == null) return "";
+            for (TokenType item : TokenType.values()) {
+                if (item.getValue().equals(value)) {
+                    return item.getName();
+                }
+            }
+            return "";
+        }
+    }
 }
