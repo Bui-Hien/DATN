@@ -3,7 +3,7 @@ package com.buihien.datn.dto;
 import com.buihien.datn.domain.Role;
 import com.buihien.datn.domain.UserRole;
 
-public class UserRoleDto extends AuditableEntityDto {
+public class UserRoleDto extends AuditableDto {
     private RoleDto role;
 
     public UserRoleDto() {

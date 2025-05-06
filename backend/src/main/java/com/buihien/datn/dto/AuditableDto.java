@@ -6,7 +6,7 @@ import com.buihien.datn.util.anotation.Excel;
 import java.time.LocalDateTime;
 
 @Excel
-public abstract class AuditableEntityDto {
+public abstract class AuditableDto {
     private Long id;
     private Boolean voided;
     private LocalDateTime createdAt;
@@ -14,10 +14,10 @@ public abstract class AuditableEntityDto {
     private String createdBy;
     private String updatedBy;
 
-    public AuditableEntityDto() {
+    public AuditableDto() {
     }
 
-    public AuditableEntityDto(AuditableEntity entity) {
+    public AuditableDto(AuditableEntity entity) {
         if (entity == null) return;
         this.id = entity.getId();
         this.voided = entity.getVoided();

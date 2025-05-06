@@ -1,21 +1,21 @@
 package com.buihien.datn.dto;
 
-import com.buihien.datn.domain.BaseObject;
+import com.buihien.datn.domain.EducationDegree;
 
-public class BaseObjectDto extends AuditableDto {
+public class EducationDegreeDto extends AuditableDto {
     private String code;
     private String name;
-    private String description;
+    private Integer level;
 
-    public BaseObjectDto() {
+    public EducationDegreeDto() {
     }
 
-    public BaseObjectDto(BaseObject entity) {
+    public EducationDegreeDto(EducationDegree entity) {
         super(entity);
         if (entity != null) {
             this.code = entity.getCode();
             this.name = entity.getName();
-            this.description = entity.getDescription();
+            this.level = entity.getLevel();
         }
     }
 
@@ -35,11 +35,11 @@ public class BaseObjectDto extends AuditableDto {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public Integer getLevel() {
+        return level;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 }

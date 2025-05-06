@@ -1,7 +1,7 @@
 package com.buihien.datn.generic;
 
 import com.buihien.datn.DatnConstants;
-import com.buihien.datn.dto.AuditableEntityDto;
+import com.buihien.datn.dto.AuditableDto;
 import com.buihien.datn.dto.search.SearchDto;
 import com.buihien.datn.exception.ResourceNotFoundException;
 import com.buihien.datn.util.ExcelUtil;
@@ -13,7 +13,6 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -33,7 +32,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Validated
-public class GenericApi<DTO extends AuditableEntityDto, S extends SearchDto> {
+public class GenericApi<DTO extends AuditableDto, S extends SearchDto> {
     private final Logger log = LoggerFactory.getLogger(GenericApi.class);
     private final Class<DTO> dtoClass;
     private final GenericService<DTO, S> genericService;
@@ -45,64 +44,96 @@ public class GenericApi<DTO extends AuditableEntityDto, S extends SearchDto> {
 
 
     @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN})
-    @PostMapping(value = "/save")
-    public ResponseEntity<DTO> saveOrUpdate(@Valid @RequestBody DTO dto) {
-        DTO savedDto = genericService.saveOrUpdate(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedDto);
+    @PostMapping(value = "/save-or-update")
+    public ResponseData<?> saveOrUpdate(@Valid @RequestBody DTO dto) {
+        try {
+            DTO result = genericService.saveOrUpdate(dto);
+            return new ResponseData<>(
+                    dto.getId() == null ? HttpStatus.CREATED.value() : HttpStatus.ACCEPTED.value(),
+                    dto.getId() == null ? "Successfully saved" : "Successfully updated",
+                    result.getId()
+            );
+        } catch (Exception e) {
+            log.error("errorMessage={}", e.getMessage(), e.getCause());
+            return new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    dto.getId() == null ? "Failed to save" : "Failed to update");
+        }
     }
 
     @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN})
     @PostMapping(value = "/save-all")
-    public ResponseEntity<?> saveOrUpdateAll(@Valid @RequestBody List<DTO> dtoList) {
+    public ResponseData<?> saveOrUpdateAll(@Valid @RequestBody List<DTO> dtoList) {
         if (dtoList == null || dtoList.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The input list is empty.");
+            return new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "The input list is empty.");
         }
-
         try {
             Integer savedCount = genericService.saveOrUpdateList(dtoList);
             log.info("Successfully saved {} records.", savedCount);
-            return ResponseEntity.ok("Successfully saved " + savedCount + " records.");
+            return new ResponseData<>(HttpStatus.OK.value(), "Successfully saved list", savedCount);
         } catch (Exception e) {
             log.error("Error saving list: {}", e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving records.");
+            return new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error saving records.");
         }
     }
 
     @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN})
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable @Min(value = 1, message = "Id must be greater than 0") Long id) {
-        boolean deleted = genericService.deleteById(id);
-        if (!deleted) throw new ResourceNotFoundException("Entity with ID " + id + " not found");
-        return ResponseEntity.noContent().build();
+    public ResponseData<?> deleteById(@PathVariable @Min(value = 1) Long id) {
+        try {
+            genericService.deleteById(id);
+            return new ResponseData<>(HttpStatus.NO_CONTENT.value(), "Delete success by id " + id);
+        } catch (Exception e) {
+            log.error("errorMessage={}", e.getMessage(), e.getCause());
+            return new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to delete by ID " + id);
+        }
     }
 
     @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN})
     @PostMapping("/delete-multiple")
-    public ResponseEntity<Integer> deleteMultipleByIds(@RequestBody @NotEmpty(message = "List of IDs cannot be empty") List<@NotNull @Min(1) Long> ids) {
-        int deletedCount = genericService.deleteMultiple(ids);
-        return ResponseEntity.ok(deletedCount);
+    public ResponseData<?> deleteMultipleByIds(@RequestBody @NotEmpty List<@NotNull @Min(1) Long> ids) {
+        try {
+            int deletedCount = genericService.deleteMultiple(ids);
+            return new ResponseData<>(HttpStatus.OK.value(), "Successfully deleted", deletedCount);
+        } catch (Exception e) {
+            log.error("errorMessage={}", e.getMessage(), e);
+            return new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to delete multiple");
+        }
     }
 
     @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN})
     @GetMapping("/{id}")
-    public ResponseEntity<DTO> getById(@PathVariable @Min(value = 1, message = "Id must be greater than 0") Long id) {
-        DTO dto = genericService.getById(id);
-        if (dto == null) throw new ResourceNotFoundException("Entity with ID " + id + " not found");
-        return ResponseEntity.ok(dto);
+    public ResponseData<?> getById(@PathVariable @Min(1) Long id) {
+        try {
+            return new ResponseData<>(HttpStatus.OK.value(), "Get success by id "+ id, genericService.getById(id));
+        } catch (ResourceNotFoundException e) {
+            log.error("errorMessage={}", e.getMessage(), e.getCause());
+            return new ResponseError(HttpStatus.BAD_REQUEST.value(), "Failed to get by ID " + id);
+        }
     }
 
     @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN})
     @GetMapping("/paging")
-    public ResponseEntity<Page<DTO>> paging(@RequestParam(name = "pageSize", defaultValue = "10") @Min(1) int pageSize, @RequestParam(name = "pageIndex", defaultValue = "0") @Min(0) int pageIndex) {
-        Page<DTO> page = genericService.paging(pageIndex, pageSize);
-        return ResponseEntity.ok(page);
+    public ResponseData<?> paging(@RequestParam(defaultValue = "10") @Min(1) int pageSize,
+                                  @RequestParam(defaultValue = "0") @Min(0) int pageIndex) {
+        try {
+            Page<DTO> page = genericService.paging(pageIndex, pageSize);
+            return new ResponseData<>(HttpStatus.OK.value(), "Success", page);
+        } catch (Exception e) {
+            log.error("Paging error: {}", e.getMessage(), e);
+            return new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Paging failed");
+        }
     }
 
     @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN})
     @PostMapping("/paging-search")
-    public ResponseEntity<Page<DTO>> pagingSearch(@Valid @RequestBody S dto) {
-        Page<DTO> page = genericService.pagingSearch(dto);
-        return ResponseEntity.ok(page);
+    public ResponseData<?> pagingSearch(@Valid @RequestBody S dto) {
+        try {
+            Page<DTO> page = genericService.pagingSearch(dto);
+            return new ResponseData<>(HttpStatus.OK.value(), "Success", page);
+        } catch (Exception e) {
+            log.error("Paging search error: {}", e.getMessage(), e);
+            return new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Paging search failed");
+        }
     }
 
     @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN})

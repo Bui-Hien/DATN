@@ -1,12 +1,12 @@
 package com.buihien.datn.generic;
 
-import com.buihien.datn.dto.AuditableEntityDto;
+import com.buihien.datn.dto.AuditableDto;
 import com.buihien.datn.dto.search.SearchDto;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-public interface GenericService<DTO extends AuditableEntityDto, S extends SearchDto> {
+public interface GenericService<DTO extends AuditableDto, S extends SearchDto> {
     Boolean deleteById(Long id);
 
     int deleteMultiple(List<Long> ids);

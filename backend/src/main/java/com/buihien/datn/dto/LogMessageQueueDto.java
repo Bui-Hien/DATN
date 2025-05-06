@@ -2,7 +2,7 @@ package com.buihien.datn.dto;
 
 import com.buihien.datn.domain.LogMessageQueue;
 
-public class LogMessageQueueDto extends AuditableEntityDto {
+public class LogMessageQueueDto extends AuditableDto {
     private String message; //Nội dung của message
     private String action; //Hành động tương ứng với message
     private Integer status; //Trạng thái action đó là thành công hay thất bại định ở DatnConstants.LogMessageQueueStatus

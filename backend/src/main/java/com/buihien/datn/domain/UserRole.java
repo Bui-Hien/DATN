@@ -2,8 +2,10 @@ package com.buihien.datn.domain;
 
 import jakarta.persistence.*;
 
-@Table(name = "tbl_role_user")
 @Entity
+@Table(name = "tbl_role_user", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user_id", "role_id"})  // Đảm bảo cặp user_id và role_id là duy nhất trong bảng
+})
 public class UserRole extends AuditableEntity {
     private static final long serialVersionUID = 1L;
     @ManyToOne(fetch = FetchType.EAGER)

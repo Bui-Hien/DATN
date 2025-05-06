@@ -6,7 +6,7 @@ import com.buihien.datn.domain.UserRole;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDto extends AuditableEntityDto {
+public class UserDto extends AuditableDto {
     private String username;
     private String password;
     private String confirmPassword;

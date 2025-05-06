@@ -1,7 +1,7 @@
 package com.buihien.datn.generic;
 
 import com.buihien.datn.domain.AuditableEntity;
-import com.buihien.datn.dto.AuditableEntityDto;
+import com.buihien.datn.dto.AuditableDto;
 import com.buihien.datn.dto.search.SearchDto;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Transactional
-public abstract class GenericServiceImpl<E extends AuditableEntity, DTO extends AuditableEntityDto, S extends SearchDto> implements GenericService<DTO, S> {
+public abstract class GenericServiceImpl<E extends AuditableEntity, DTO extends AuditableDto, S extends SearchDto> implements GenericService<DTO, S> {
     private static final Logger logger = LoggerFactory.getLogger(GenericServiceImpl.class);
     @Autowired
     protected JpaRepository<E, Long> repository;

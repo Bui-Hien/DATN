@@ -1,6 +1,6 @@
 package com.buihien.datn.util;
 
-import com.buihien.datn.dto.AuditableEntityDto;
+import com.buihien.datn.dto.AuditableDto;
 import com.buihien.datn.util.anotation.Excel;
 import com.buihien.datn.util.anotation.ExcelColumnGetter;
 import com.buihien.datn.util.anotation.ExcelColumnSetter;
@@ -24,7 +24,7 @@ import java.util.*;
 public class ExcelUtil {
     private static final Logger log = LoggerFactory.getLogger(ExcelUtil.class);
 
-    public static <DTO extends AuditableEntityDto> ByteArrayResource writeExcel(List<DTO> dataList, Class<? extends AuditableEntityDto> clazz) {
+    public static <DTO extends AuditableDto> ByteArrayResource writeExcel(List<DTO> dataList, Class<? extends AuditableDto> clazz) {
         try (Workbook workbook = new SXSSFWorkbook(100); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             // Lấy font mặc định
             Font defaultFont = workbook.createFont();

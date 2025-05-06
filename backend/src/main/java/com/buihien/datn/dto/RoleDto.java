@@ -6,7 +6,7 @@ import com.buihien.datn.util.anotation.ExcelColumnGetter;
 import com.buihien.datn.util.anotation.ExcelColumnSetter;
 
 @Excel(name = "")
-public class RoleDto extends AuditableEntityDto {
+public class RoleDto extends AuditableDto {
     private String name;
     private String description;
 

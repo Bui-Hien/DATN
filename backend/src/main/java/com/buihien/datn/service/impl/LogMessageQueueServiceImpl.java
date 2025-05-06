@@ -3,7 +3,6 @@ package com.buihien.datn.service.impl;
 import com.buihien.datn.domain.LogMessageQueue;
 import com.buihien.datn.dto.LogMessageQueueDto;
 import com.buihien.datn.dto.search.LogMessageQueueSearchDto;
-import com.buihien.datn.dto.test.EmployeeDTO;
 import com.buihien.datn.generic.GenericServiceImpl;
 import com.buihien.datn.service.LogMessageQueueService;
 import jakarta.persistence.Query;
@@ -40,7 +39,7 @@ public class LogMessageQueueServiceImpl extends GenericServiceImpl<LogMessageQue
 
 
         StringBuilder sqlCount = new StringBuilder("SELECT COUNT(entity.id) FROM LogMessageQueue entity WHERE (1=1) ");
-        StringBuilder sql = new StringBuilder("SELECT new com.buihien.datn.dto.test.LogMessageQueueDto(entity) FROM LogMessageQueue entity WHERE (1=1) ");
+        StringBuilder sql = new StringBuilder("SELECT new com.buihien.datn.dto.LogMessageQueueDto(entity) FROM LogMessageQueue entity WHERE (1=1) ");
 
         StringBuilder whereClause = new StringBuilder();
 
@@ -73,7 +72,7 @@ public class LogMessageQueueServiceImpl extends GenericServiceImpl<LogMessageQue
 
         sql.append(dto.getOrderBy() != null && dto.getOrderBy() ? " ORDER BY entity.createdAt ASC" : " ORDER BY entity.createdAt DESC");
 
-        Query q = manager.createQuery(sql.toString(), EmployeeDTO.class);
+        Query q = manager.createQuery(sql.toString(), LogMessageQueueDto.class);
         Query qCount = manager.createQuery(sqlCount.toString());
 
         if (dto.getKeyword() != null && StringUtils.hasText(dto.getKeyword())) {

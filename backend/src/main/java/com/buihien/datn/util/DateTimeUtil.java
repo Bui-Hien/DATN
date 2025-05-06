@@ -3,6 +3,8 @@ package com.buihien.datn.util;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
+import java.util.Calendar;
+import java.util.Date;
 
 public class DateTimeUtil {
 
@@ -152,4 +154,14 @@ public class DateTimeUtil {
     public static ZonedDateTime getCurrentTimeInZone(String zoneId) {
         return ZonedDateTime.now(ZoneId.of(zoneId));
     }
+
+    public static Date getTime(int hour, int minute) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, hour);
+        cal.set(Calendar.MINUTE, minute);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTime();
+    }
+
 }
