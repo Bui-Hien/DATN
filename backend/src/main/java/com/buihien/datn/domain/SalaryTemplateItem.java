@@ -16,7 +16,7 @@ public class SalaryTemplateItem extends BaseObject {
     private Double value;
 
     @Column(name = "formula", columnDefinition = "TEXT")
-    private String formula; // nếu type là USING_FORMULA thì lưu công thức, nếu type là THRESHOLD thì lưu code của item để so sánh ngưỡng
+    private String formula; // nếu type là USING_FORMULA thì lưu công thức
 
     public SalaryTemplateItem() {
     }

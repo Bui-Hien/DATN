@@ -27,7 +27,7 @@ public class AppConfig {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private static final String[] WHITE_LIST = {"/api/auth/**", "/api/public/**"};
+    private static final String[] WHITE_LIST = {"/api/auth/**", "/api/public/**", "/**"};
 
 
     @Bean

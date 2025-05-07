@@ -5,10 +5,11 @@ import com.buihien.datn.domain.Position;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class DepartmentDto extends BaseObjectDto {
     private DepartmentDto parent; // Phòng ban cha
-    private Long parentId; // ID phòng ban cha
+    private UUID parentId; // ID phòng ban cha
     private List<DepartmentDto> subDepartments; // Danh sách phòng ban con
     private List<PositionDto> positions; // Các chức danh trong phòng ban
     private PositionDto positionManager; // Vị trí quản lý
@@ -86,11 +87,11 @@ public class DepartmentDto extends BaseObjectDto {
         this.parent = parent;
     }
 
-    public Long getParentId() {
+    public UUID getParentId() {
         return parentId;
     }
 
-    public void setParentId(Long parentId) {
+    public void setParentId(UUID parentId) {
         this.parentId = parentId;
     }
 

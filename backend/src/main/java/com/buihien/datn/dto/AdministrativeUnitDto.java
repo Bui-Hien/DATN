@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Valid
 public class AdministrativeUnitDto extends AuditableDto {
@@ -15,7 +16,7 @@ public class AdministrativeUnitDto extends AuditableDto {
     @ValidEnumValue(enumClass = DatnConstants.AdministrativeUnitLevel.class, message = "Cấp hành chính không hợp lệ")
     private Integer level;
     private AdministrativeUnitDto parent;
-    private Long parentId;
+    private UUID parentId;
     private List<AdministrativeUnitDto> subAdministrativeUnits;
 
     public AdministrativeUnitDto() {
@@ -27,6 +28,9 @@ public class AdministrativeUnitDto extends AuditableDto {
             this.name = entity.getName();
             this.code = entity.getCode();
             this.level = entity.getLevel();
+            if (entity.getParent() != null) {
+                this.parentId = entity.getParent().getId();
+            }
 
             if (isGetParent && entity.getParent() != null) {
                 this.parent = new AdministrativeUnitDto(entity.getParent(), false, false);
@@ -107,11 +111,11 @@ public class AdministrativeUnitDto extends AuditableDto {
         this.parent = parent;
     }
 
-    public Long getParentId() {
+    public UUID getParentId() {
         return parentId;
     }
 
-    public void setParentId(Long parentId) {
+    public void setParentId(UUID parentId) {
         this.parentId = parentId;
     }
 

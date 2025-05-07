@@ -6,7 +6,7 @@ import jakarta.persistence.MappedSuperclass;
 @MappedSuperclass
 public class BaseObject extends AuditableEntity {
     private static final long serialVersionUID = 1L;
-    @Column(name = "code")
+    @Column(name = "code", unique = true)
     private String code;
     @Column(name = "name")
     private String name;

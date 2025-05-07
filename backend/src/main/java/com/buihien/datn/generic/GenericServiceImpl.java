@@ -3,6 +3,7 @@ package com.buihien.datn.generic;
 import com.buihien.datn.domain.AuditableEntity;
 import com.buihien.datn.dto.AuditableDto;
 import com.buihien.datn.dto.search.SearchDto;
+import com.buihien.datn.exception.ResourceNotFoundException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.slf4j.Logger;
@@ -17,13 +18,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Transactional
 public abstract class GenericServiceImpl<E extends AuditableEntity, DTO extends AuditableDto, S extends SearchDto> implements GenericService<DTO, S> {
     private static final Logger logger = LoggerFactory.getLogger(GenericServiceImpl.class);
     @Autowired
-    protected JpaRepository<E, Long> repository;
+    protected JpaRepository<E, UUID> repository;
 
     @PersistenceContext
     protected EntityManager manager;
@@ -33,38 +35,41 @@ public abstract class GenericServiceImpl<E extends AuditableEntity, DTO extends 
     protected abstract E convertToEntity(DTO dto);
 
     @Override
-    public Boolean deleteById(Long id) {
-        logger.info("Attempting to delete entity with ID: {}", id);
-        try {
-            if (repository.existsById(id)) {
-                repository.deleteById(id);
-                logger.info("Successfully deleted entity with ID: {}", id);
-                return true;
-            } else {
-                logger.warn("Entity not found for deletion with ID: {}", id);
-                return false;
-            }
-        } catch (Exception e) {
-            logger.error("Error deleting entity with ID: {}", id, e);
-            return false;
+    public DTO getById(UUID id) {
+        logger.info("Fetching entity with ID: {}", id);
+        Optional<E> entity = repository.findById(id);
+        if (entity.isPresent()) {
+            logger.info("Successfully fetched entity.");
+            return this.convertToDto(entity.get());
+        } else {
+            logger.warn("Entity not found with ID: {}", id);
+            throw new ResourceNotFoundException("Entity not found with ID: " + id); // Ném lỗi nếu không tìm thấy entity
         }
     }
 
     @Override
-    public int deleteMultiple(List<Long> ids) {
+    public Boolean deleteById(UUID id) {
+        logger.info("Attempting to delete entity with ID: {}", id);
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+            logger.info("Successfully deleted entity with ID: {}", id);
+            return true;
+        } else {
+            logger.warn("Entity not found for deletion with ID: {}", id);
+            throw new ResourceNotFoundException("Entity not found for deletion with ID: " + id);
+        }
+    }
+
+    @Override
+    public int deleteMultiple(List<UUID> ids) {
         logger.info("Attempting to delete multiple entities with IDs: {}", ids);
         if (ids == null || ids.isEmpty()) {
             logger.warn("Empty ID list provided. No entities to delete.");
-            return 0;
+            throw new ResourceNotFoundException("Empty ID list provided. No entities to delete.");
         }
-        try {
-            repository.deleteAllById(ids);
-            logger.info("Successfully deleted {} entities", ids.size());
-            return ids.size();
-        } catch (Exception e) {
-            logger.error("Error deleting multiple entities with IDs: {}", ids, e);
-            return 0;
-        }
+        repository.deleteAllById(ids);
+        logger.info("Successfully deleted {} entities", ids.size());
+        return ids.size();
     }
 
     @Override
@@ -72,16 +77,12 @@ public abstract class GenericServiceImpl<E extends AuditableEntity, DTO extends 
         logger.info("Attempting to save or update dto: {}", dto);
         if (dto == null) {
             logger.warn("Null dto provided. Cannot save.");
-            return null;
+            throw new ResourceNotFoundException("Null dto provided. Cannot save.");
         }
-        try {
-            E savedEntity = repository.save(this.convertToEntity(dto));
-            logger.info("Successfully saved entity.");
-            return this.convertToDto(savedEntity);
-        } catch (Exception e) {
-            logger.error("Error saving or updating dto: {}", dto, e);
-            return null;
-        }
+        E savedEntity = repository.save(this.convertToEntity(dto));
+        logger.info("Successfully saved entity.");
+        return this.convertToDto(savedEntity);
+
     }
 
     @Override
@@ -91,60 +92,27 @@ public abstract class GenericServiceImpl<E extends AuditableEntity, DTO extends 
             return 0;
         }
 
-        try {
-            // Chuyển đổi DTO thành Entity
-            List<E> entities = dtos.stream()
-                    .map(this::convertToEntity)
-                    .collect(Collectors.toList());
+        // Chuyển đổi DTO thành Entity
+        List<E> entities = dtos.stream()
+                .map(this::convertToEntity)
+                .collect(Collectors.toList());
 
-            // Lưu vào database
-            List<E> savedEntities = repository.saveAll(entities);
+        // Lưu vào database
+        List<E> savedEntities = repository.saveAll(entities);
 
-            logger.info("Successfully saved {} records.", savedEntities.size());
-            return savedEntities.size();
-        } catch (Exception e) {
-            logger.error("Error saving/updating list: {}", e.getMessage(), e);
-            throw new RuntimeException("Failed to save/update records.");
-        }
-    }
-
-    @Override
-    public DTO getById(Long id) {
-        logger.info("Fetching entity with ID: {}", id);
-        try {
-            Optional<E> entity = repository.findById(id);
-            if (entity.isPresent()) {
-                logger.info("Successfully fetched entity.");
-                return this.convertToDto(entity.get());
-            } else {
-                logger.warn("Entity not found with ID: {}", id);
-                return null;
-            }
-        } catch (Exception e) {
-            logger.error("Error fetching entity with ID: {}", id, e);
-            return null;
-        }
+        logger.info("Successfully saved {} records.", savedEntities.size());
+        return savedEntities.size();
     }
 
     @Override
     public Page<DTO> paging(int pageIndex, int pageSize) {
         logger.info("Fetching paginated results: page {} - size {}", pageIndex, pageSize);
-        try {
-            Pageable pageable = PageRequest.of(Math.max(pageIndex - 1, 0), pageSize);
-            Page<E> page = repository.findAll(pageable);
+        Pageable pageable = PageRequest.of(Math.max(pageIndex - 1, 0), pageSize);
+        Page<E> page = repository.findAll(pageable);
 
-            List<DTO> dtoList = page.getContent().stream().map(this::convertToDto).collect(Collectors.toList());
+        List<DTO> dtoList = page.getContent().stream().map(this::convertToDto).collect(Collectors.toList());
 
-            logger.info("Successfully retrieved paginated results: {} items", page.getTotalElements());
-            return new PageImpl<>(dtoList, pageable, page.getTotalElements());
-        } catch (Exception e) {
-            logger.error("Error fetching paginated results: page {} - size {}", pageIndex, pageSize, e);
-            return Page.empty();
-        }
-    }
-
-    @Override
-    public Page<DTO> pagingSearch(S dto) {
-        return Page.empty();
+        logger.info("Successfully retrieved paginated results: {} items", page.getTotalElements());
+        return new PageImpl<>(dtoList, pageable, page.getTotalElements());
     }
 }

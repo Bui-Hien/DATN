@@ -9,11 +9,12 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface TokenRepository extends JpaRepository<Token, Long> {
+public interface TokenRepository extends JpaRepository<Token, UUID> {
     @Query("SELECT entity FROM Token entity WHERE entity.user.id = :id AND entity.refreshToken = :refreshToken")
-    Optional<Token> findTokenWithUserIdRefreshToken(@Param("id") long id, @Param("refreshToken") String refreshToken);
+    Optional<Token> findTokenWithUserIdRefreshToken(@Param("id") UUID id, @Param("refreshToken") String refreshToken);
 
     @Transactional
     @Modifying

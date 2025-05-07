@@ -584,4 +584,37 @@ public class DatnConstants {
             return null;
         }
     }
+    public enum ContractType {
+        PROBATION(1, "Thử việc"),
+        OFFICIAL(2, "Chính thức"),
+        SEASONAL(3, "Thời vụ"),
+        FIXED_TERM(4, "Xác định thời hạn"),
+        UNLIMITED_TERM(5, "Không xác định thời hạn");
+
+        private final Integer value;
+        private final String name;
+
+        ContractType(Integer value, String name) {
+            this.value = value;
+            this.name = name;
+        }
+
+        public Integer getValue() {
+            return value;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public static String getNameByValue(Integer value) {
+            if (value == null) return null;
+            for (ContractType type : ContractType.values()) {
+                if (type.getValue().equals(value)) {
+                    return type.getName();
+                }
+            }
+            return null;
+        }
+    }
 }

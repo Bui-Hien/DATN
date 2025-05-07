@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl extends GenericServiceImpl<User, UserDto, SearchDto> implements UserService {
@@ -54,7 +55,7 @@ public class UserServiceImpl extends GenericServiceImpl<User, UserDto, SearchDto
     }
 
     @Override
-    public List<String> getAllRolesByUserId(long userId) {
+    public List<String> getAllRolesByUserId(UUID userId) {
         return userRepository.findAllRolesByUserId(userId);
     }
 

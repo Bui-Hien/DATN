@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface UserService extends GenericService<UserDto, SearchDto> {
     void saveUser(User user);
@@ -16,7 +17,7 @@ public interface UserService extends GenericService<UserDto, SearchDto> {
 
     UserDetailsService userDetailsService();
 
-    List<String> getAllRolesByUserId(long userId);
+    List<String> getAllRolesByUserId(UUID userId);
 
     List<String> getAllRolesByUserUserName(String username);
 

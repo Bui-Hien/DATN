@@ -1,6 +1,7 @@
 package com.buihien.datn.domain;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -9,15 +10,21 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class AuditableEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @JdbcTypeCode(12)
+    @Column(
+            name = "id",
+            unique = true,
+            nullable = false,
+            length = 36
+    )
+    private UUID id;
 
     @Column(name = "voided", nullable = false)
     private Boolean voided = Boolean.FALSE;
@@ -41,6 +48,7 @@ public abstract class AuditableEntity implements Serializable {
     private String updatedBy;
 
     public AuditableEntity() {
+        this.id = UUID.randomUUID();
     }
 
     public AuditableEntity(AuditableEntity entity) {
@@ -54,11 +62,11 @@ public abstract class AuditableEntity implements Serializable {
         }
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

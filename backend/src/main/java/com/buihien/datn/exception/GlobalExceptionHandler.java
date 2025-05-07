@@ -1,6 +1,5 @@
 package com.buihien.datn.exception;
 
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

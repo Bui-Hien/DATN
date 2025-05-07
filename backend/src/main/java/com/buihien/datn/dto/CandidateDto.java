@@ -3,7 +3,6 @@ package com.buihien.datn.dto;
 import com.buihien.datn.DatnConstants;
 import com.buihien.datn.domain.Candidate;
 import com.buihien.datn.domain.CandidateWorkingExperience;
-import com.buihien.datn.domain.Staff;
 import com.buihien.datn.dto.validator.ValidEnumValue;
 import jakarta.validation.Valid;
 
@@ -137,11 +136,11 @@ public class CandidateDto extends PersonDto {
         this.candidateWorkingExperience = candidateWorkingExperience;
     }
 
-    public Staff getStaff() {
+    public StaffDto getStaff() {
         return staff;
     }
 
-    public void setStaff(Staff staff) {
+    public void setStaff(StaffDto staff) {
         this.staff = staff;
     }
 

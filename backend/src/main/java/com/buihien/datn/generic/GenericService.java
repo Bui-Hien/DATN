@@ -5,11 +5,12 @@ import com.buihien.datn.dto.search.SearchDto;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface GenericService<DTO extends AuditableDto, S extends SearchDto> {
-    Boolean deleteById(Long id);
+    Boolean deleteById(UUID id);
 
-    int deleteMultiple(List<Long> ids);
+    int deleteMultiple(List<UUID> ids);
 
     DTO saveOrUpdate(DTO dto);
 
@@ -19,5 +20,5 @@ public interface GenericService<DTO extends AuditableDto, S extends SearchDto> {
 
     Page<DTO> pagingSearch(S search);
 
-    DTO getById(Long id);
+    DTO getById(UUID id);
 }

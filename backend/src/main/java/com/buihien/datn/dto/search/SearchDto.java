@@ -3,9 +3,10 @@ package com.buihien.datn.dto.search;
 import com.buihien.datn.util.DateTimeUtil;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class SearchDto {
-    public Long id;
+    public UUID id;
     public Integer pageIndex;
     public Integer pageSize;
     public String keyword;
@@ -13,14 +14,15 @@ public class SearchDto {
     public LocalDateTime toDate;
     public Boolean voided;
     public Boolean orderBy; //mặc định là DESC của trường createdAt
-    public Long roleId;
+    public UUID roleId;
+    public UUID parentId;
     public Boolean exportExcel;
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -81,11 +83,11 @@ public class SearchDto {
         this.voided = voided;
     }
 
-    public Long getRoleId() {
+    public UUID getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(Long roleId) {
+    public void setRoleId(UUID roleId) {
         this.roleId = roleId;
     }
 
@@ -95,6 +97,14 @@ public class SearchDto {
 
     public void setOrderBy(Boolean orderBy) {
         this.orderBy = orderBy;
+    }
+
+    public UUID getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(UUID parentId) {
+        this.parentId = parentId;
     }
 
     public Boolean getExportExcel() {

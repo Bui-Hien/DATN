@@ -1,7 +1,7 @@
 package com.buihien.datn.dto;
 
 import com.buihien.datn.domain.FileDescription;
-import jakarta.persistence.Column;
+import org.springframework.web.multipart.MultipartFile;
 
 public class FileDescriptionDto extends AuditableDto {
     private String contentType;

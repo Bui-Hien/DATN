@@ -8,15 +8,16 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, UUID> {
 
     @Query("SELECT entity FROM User entity WHERE entity.username= :username")
     Optional<User> findByUsername(@Param("username") String username);
 
     @Query("SELECT entity.role.name FROM UserRole entity WHERE entity.user.id = :userId")
-    List<String> findAllRolesByUserId(@Param("userId") Long userId);
+    List<String> findAllRolesByUserId(@Param("userId") UUID userId);
 
     @Query("SELECT entity.role.name FROM UserRole entity WHERE entity.user.username = :username")
     List<String> findAllRolesByUserName(@Param("username") String username);

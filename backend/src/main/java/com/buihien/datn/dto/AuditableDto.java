@@ -4,10 +4,11 @@ import com.buihien.datn.domain.AuditableEntity;
 import com.buihien.datn.util.anotation.Excel;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Excel
 public abstract class AuditableDto {
-    private Long id;
+    private UUID id;
     private Boolean voided;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -27,11 +28,11 @@ public abstract class AuditableDto {
         this.updatedBy = entity.getUpdatedBy();
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

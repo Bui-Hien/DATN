@@ -68,10 +68,6 @@ public class StaffLabourAgreement extends AuditableEntity {
     @Column(name = "staff_ui_percentage")
     private Double staffUnemploymentInsurancePercentage;
 
-    // Tổng tiền bảo hiểm mà nhân viên đóng
-    @Column(name = "staff_total_insurance")
-    private Double staffTotalInsuranceAmount;
-
     // Tỷ lệ đóng BHXH của công ty
     @Column(name = "org_si_percentage")
     private Double orgSocialInsurancePercentage;
@@ -84,15 +80,8 @@ public class StaffLabourAgreement extends AuditableEntity {
     @Column(name = "org_ui_percentage")
     private Double orgUnemploymentInsurancePercentage;
 
-    // Tổng tiền bảo hiểm mà công ty đóng
-    @Column(name = "org_total_insurance")
-    private Double orgTotalInsuranceAmount;
-
     @Column(name = "paid_status")
     private Integer paidStatus; // Bảo hiểm này của nhan vien da duoc tra (dong) hay chua. Chi tiet: DatnConstants.StaffSocialInsurancePaidStatus
-
-    @Column(name = "total_insurance_amount")
-    private Double totalInsuranceAmount;
 
     @Column(name = "insurance_start_date")
     private Date insuranceStartDate;//Ngày bắt đầu mức đóng
@@ -102,4 +91,207 @@ public class StaffLabourAgreement extends AuditableEntity {
 
     @Column(name = "agreement_status")
     private Integer agreementStatus; // Trạng thái hợp đồng. Chi tiết DatnConstants.StaffLabourAgreementStatus;
+
+    public StaffLabourAgreement() {
+    }
+
+    public Staff getStaff() {
+        return staff;
+    }
+
+    public void setStaff(Staff staff) {
+        this.staff = staff;
+    }
+
+    public Integer getContractType() {
+        return contractType;
+    }
+
+    public void setContractType(Integer contractType) {
+        this.contractType = contractType;
+    }
+
+    public String getLabourAgreementNumber() {
+        return labourAgreementNumber;
+    }
+
+    public void setLabourAgreementNumber(String labourAgreementNumber) {
+        this.labourAgreementNumber = labourAgreementNumber;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public Integer getDurationMonths() {
+        return durationMonths;
+    }
+
+    public void setDurationMonths(Integer durationMonths) {
+        this.durationMonths = durationMonths;
+    }
+
+    public Double getWorkingHour() {
+        return workingHour;
+    }
+
+    public void setWorkingHour(Double workingHour) {
+        this.workingHour = workingHour;
+    }
+
+    public Double getWorkingHourWeekMin() {
+        return workingHourWeekMin;
+    }
+
+    public void setWorkingHourWeekMin(Double workingHourWeekMin) {
+        this.workingHourWeekMin = workingHourWeekMin;
+    }
+
+    public Double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(Double salary) {
+        this.salary = salary;
+    }
+
+    public Date getSignedDate() {
+        return signedDate;
+    }
+
+    public void setSignedDate(Date signedDate) {
+        this.signedDate = signedDate;
+    }
+
+    public SalaryTemplate getSalaryTemplate() {
+        return salaryTemplate;
+    }
+
+    public void setSalaryTemplate(SalaryTemplate salaryTemplate) {
+        this.salaryTemplate = salaryTemplate;
+    }
+
+    public String getSocialInsuranceNumber() {
+        return socialInsuranceNumber;
+    }
+
+    public void setSocialInsuranceNumber(String socialInsuranceNumber) {
+        this.socialInsuranceNumber = socialInsuranceNumber;
+    }
+
+    public Boolean getHasSocialIns() {
+        return hasSocialIns;
+    }
+
+    public void setHasSocialIns(Boolean hasSocialIns) {
+        this.hasSocialIns = hasSocialIns;
+    }
+
+    public Date getStartInsDate() {
+        return startInsDate;
+    }
+
+    public void setStartInsDate(Date startInsDate) {
+        this.startInsDate = startInsDate;
+    }
+
+    public Double getInsuranceSalary() {
+        return insuranceSalary;
+    }
+
+    public void setInsuranceSalary(Double insuranceSalary) {
+        this.insuranceSalary = insuranceSalary;
+    }
+
+    public Double getStaffSocialInsurancePercentage() {
+        return staffSocialInsurancePercentage;
+    }
+
+    public void setStaffSocialInsurancePercentage(Double staffSocialInsurancePercentage) {
+        this.staffSocialInsurancePercentage = staffSocialInsurancePercentage;
+    }
+
+    public Double getStaffHealthInsurancePercentage() {
+        return staffHealthInsurancePercentage;
+    }
+
+    public void setStaffHealthInsurancePercentage(Double staffHealthInsurancePercentage) {
+        this.staffHealthInsurancePercentage = staffHealthInsurancePercentage;
+    }
+
+    public Double getStaffUnemploymentInsurancePercentage() {
+        return staffUnemploymentInsurancePercentage;
+    }
+
+    public void setStaffUnemploymentInsurancePercentage(Double staffUnemploymentInsurancePercentage) {
+        this.staffUnemploymentInsurancePercentage = staffUnemploymentInsurancePercentage;
+    }
+
+    public Double getOrgSocialInsurancePercentage() {
+        return orgSocialInsurancePercentage;
+    }
+
+    public void setOrgSocialInsurancePercentage(Double orgSocialInsurancePercentage) {
+        this.orgSocialInsurancePercentage = orgSocialInsurancePercentage;
+    }
+
+    public Double getOrgHealthInsurancePercentage() {
+        return orgHealthInsurancePercentage;
+    }
+
+    public void setOrgHealthInsurancePercentage(Double orgHealthInsurancePercentage) {
+        this.orgHealthInsurancePercentage = orgHealthInsurancePercentage;
+    }
+
+    public Double getOrgUnemploymentInsurancePercentage() {
+        return orgUnemploymentInsurancePercentage;
+    }
+
+    public void setOrgUnemploymentInsurancePercentage(Double orgUnemploymentInsurancePercentage) {
+        this.orgUnemploymentInsurancePercentage = orgUnemploymentInsurancePercentage;
+    }
+
+    public Integer getPaidStatus() {
+        return paidStatus;
+    }
+
+    public void setPaidStatus(Integer paidStatus) {
+        this.paidStatus = paidStatus;
+    }
+
+    public Date getInsuranceStartDate() {
+        return insuranceStartDate;
+    }
+
+    public void setInsuranceStartDate(Date insuranceStartDate) {
+        this.insuranceStartDate = insuranceStartDate;
+    }
+
+    public Date getInsuranceEndDate() {
+        return insuranceEndDate;
+    }
+
+    public void setInsuranceEndDate(Date insuranceEndDate) {
+        this.insuranceEndDate = insuranceEndDate;
+    }
+
+    public Integer getAgreementStatus() {
+        return agreementStatus;
+    }
+
+    public void setAgreementStatus(Integer agreementStatus) {
+        this.agreementStatus = agreementStatus;
+    }
 }
