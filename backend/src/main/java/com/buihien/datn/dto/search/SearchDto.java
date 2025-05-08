@@ -7,6 +7,7 @@ import java.util.UUID;
 
 public class SearchDto {
     public UUID id;
+    public UUID ownerId;
     public Integer pageIndex;
     public Integer pageSize;
     public String keyword;
@@ -24,6 +25,14 @@ public class SearchDto {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public UUID getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(UUID ownerId) {
+        this.ownerId = ownerId;
     }
 
     public Integer getPageIndex() {

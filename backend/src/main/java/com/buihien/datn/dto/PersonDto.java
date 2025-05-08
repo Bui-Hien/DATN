@@ -16,6 +16,7 @@ public class PersonDto extends AuditableDto {
     protected String displayName;
     protected Date birthDate;
     protected String birthPlace;
+    @ValidEnumValue(enumClass = DatnConstants.Gender.class, message = "Giới tính không hợp lệ")
     protected Integer gender;
     protected String phoneNumber;
     protected String idNumber;

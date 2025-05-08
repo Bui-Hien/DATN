@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 // 1 nhân viên có thể có nhiều vị trí làm việc khác nhau
 @Table(name = "tbl_position")
 @Entity
-public class Position extends BaseObject{
+public class Position extends BaseObject {
 
     @ManyToOne
     private Department department;
@@ -17,10 +17,6 @@ public class Position extends BaseObject{
 
     @Column(name = "is_main")
     private Boolean isMain;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "recruitment_request_id")
-    private RecruitmentRequest recruitmentRequest;
 
     public Position() {
     }
@@ -49,11 +45,4 @@ public class Position extends BaseObject{
         isMain = main;
     }
 
-    public RecruitmentRequest getRecruitmentRequest() {
-        return recruitmentRequest;
-    }
-
-    public void setRecruitmentRequest(RecruitmentRequest recruitmentRequest) {
-        this.recruitmentRequest = recruitmentRequest;
-    }
 }

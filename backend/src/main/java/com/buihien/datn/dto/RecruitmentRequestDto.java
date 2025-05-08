@@ -1,13 +1,14 @@
 package com.buihien.datn.dto;
 
 import com.buihien.datn.DatnConstants;
-import com.buihien.datn.domain.Position;
 import com.buihien.datn.domain.RecruitmentRequest;
+import com.buihien.datn.domain.RecruitmentRequestItem;
 import com.buihien.datn.dto.validator.ValidEnumValue;
 import jakarta.validation.Valid;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 @Valid
 public class RecruitmentRequestDto extends BaseObjectDto {
@@ -17,7 +18,7 @@ public class RecruitmentRequestDto extends BaseObjectDto {
     private Date proposalDate; // Ngày đề xuất
     private StaffDto approver; // Người duyệt
     private Date approvalDate; // Thời gian duyệt
-    private Set<PositionDto> positions; // Các vị trí tuyển dụng
+    private List<RecruitmentRequestItemDto> recruitmentRequestItems; // Các vị trí cần tuyển trong yêu cầu
 
     public RecruitmentRequestDto() {
     }
@@ -31,10 +32,10 @@ public class RecruitmentRequestDto extends BaseObjectDto {
             this.approver = new StaffDto(entity.getApprover(), false);
             this.approvalDate = entity.getApprovalDate();
             if (isGetFull) {
-                if (entity.getPositions() != null && !entity.getPositions().isEmpty()) {
-                    for (Position dto : entity.getPositions()) {
-                        PositionDto positionDto = new PositionDto(dto, false);
-                        this.positions.add(positionDto);
+                if (entity.getRecruitmentRequestItems() != null && !entity.getRecruitmentRequestItems().isEmpty()) {
+                    this.recruitmentRequestItems = new ArrayList<>();
+                    for (RecruitmentRequestItem item : entity.getRecruitmentRequestItems()) {
+                        this.recruitmentRequestItems.add(new RecruitmentRequestItemDto(item, false));
                     }
                 }
             }
@@ -81,11 +82,11 @@ public class RecruitmentRequestDto extends BaseObjectDto {
         this.approvalDate = approvalDate;
     }
 
-    public Set<PositionDto> getPositions() {
-        return positions;
+    public List<RecruitmentRequestItemDto> getRecruitmentRequestItems() {
+        return recruitmentRequestItems;
     }
 
-    public void setPositions(Set<PositionDto> positions) {
-        this.positions = positions;
+    public void setRecruitmentRequestItems(List<RecruitmentRequestItemDto> recruitmentRequestItems) {
+        this.recruitmentRequestItems = recruitmentRequestItems;
     }
 }

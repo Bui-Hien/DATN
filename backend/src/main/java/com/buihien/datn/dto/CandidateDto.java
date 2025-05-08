@@ -25,6 +25,7 @@ public class CandidateDto extends PersonDto {
     private StaffDto staff;
     @ValidEnumValue(enumClass = DatnConstants.CandidateStatus.class, message = "Trạng thái ứng viên không hợp lệ")
     private Integer candidateStatus; //Xem status: DatnConstants.CandidateStatus
+    private FileDescriptionDto curriculumVitae; // cv của ứng viên
 
     public CandidateDto() {
         super();
@@ -44,6 +45,9 @@ public class CandidateDto extends PersonDto {
             this.introducer = new StaffDto(entity.getIntroducer(), false);
             this.staff = new StaffDto(entity.getStaff(), false);
             this.candidateStatus = entity.getCandidateStatus();
+            if (entity.getCurriculumVitae() != null) {
+                this.curriculumVitae = new FileDescriptionDto(entity.getCurriculumVitae());
+            }
             if (isGetFull) {
                 if (entity.getCandidateWorkingExperience() != null && !entity.getCandidateWorkingExperience().isEmpty()) {
                     this.candidateWorkingExperience = new ArrayList<>();
@@ -150,5 +154,13 @@ public class CandidateDto extends PersonDto {
 
     public void setCandidateStatus(Integer candidateStatus) {
         this.candidateStatus = candidateStatus;
+    }
+
+    public FileDescriptionDto getCurriculumVitae() {
+        return curriculumVitae;
+    }
+
+    public void setCurriculumVitae(FileDescriptionDto curriculumVitae) {
+        this.curriculumVitae = curriculumVitae;
     }
 }

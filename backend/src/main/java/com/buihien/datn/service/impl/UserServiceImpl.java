@@ -28,8 +28,6 @@ import java.util.UUID;
 
 @Service
 public class UserServiceImpl extends GenericServiceImpl<User, UserDto, SearchDto> implements UserService {
-    @PersistenceContext
-    public EntityManager manager;
     @Autowired
     private UserRepository userRepository;
     @Autowired

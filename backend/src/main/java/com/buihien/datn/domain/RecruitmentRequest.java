@@ -25,18 +25,10 @@ public class RecruitmentRequest extends BaseObject {
     @Column(name = "approval_date")
     private Date approvalDate; // Thời gian duyệt
 
-    @OneToMany(mappedBy = "recruitmentRequest", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Position> positions; // Các vị trí tuyển dụng
+    @OneToMany(mappedBy = "recruitmentRequest", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<RecruitmentRequestItem> recruitmentRequestItems; // Các vị trí cần tuyển trong yêu cầu
 
     public RecruitmentRequest() {
-    }
-
-    public Set<Position> getPositions() {
-        return positions;
-    }
-
-    public void setPositions(Set<Position> positions) {
-        this.positions = positions;
     }
 
     public Date getApprovalDate() {
@@ -77,5 +69,13 @@ public class RecruitmentRequest extends BaseObject {
 
     public void setRecruitmentRequestStatus(Integer recruitmentRequestStatus) {
         this.recruitmentRequestStatus = recruitmentRequestStatus;
+    }
+
+    public Set<RecruitmentRequestItem> getRecruitmentRequestItems() {
+        return recruitmentRequestItems;
+    }
+
+    public void setRecruitmentRequestItems(Set<RecruitmentRequestItem> recruitmentRequestItems) {
+        this.recruitmentRequestItems = recruitmentRequestItems;
     }
 }

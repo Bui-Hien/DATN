@@ -90,7 +90,19 @@ public class FileDescriptionServiceImpl implements FileDescriptionService {
             return new FileDescriptionDto(entity.get());
         } else {
             logger.warn("Entity not found with ID: {}", id);
-            throw new ResourceNotFoundException("Entity not found with ID: " + id);
+            return null;
         }
     }
+
+    @Override
+    public FileDescription getEntityById(UUID id) {
+        logger.info("Fetching entity with ID: {}", id);
+        Optional<FileDescription> entity = repository.findById(id);
+        if (entity.isPresent()) {
+            logger.info("Successfully fetched entity.");
+            return  entity.get();
+        } else {
+            logger.warn("Entity not found with ID: {}", id);
+            return null;
+        }    }
 }

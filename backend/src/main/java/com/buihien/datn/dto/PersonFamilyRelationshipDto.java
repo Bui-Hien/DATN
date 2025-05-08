@@ -8,7 +8,7 @@ public class PersonFamilyRelationshipDto extends AuditableDto {
     protected PersonDto person;
     protected FamilyRelationshipDto familyRelationship;
     protected String fullName;
-    protected PersonAddressDto personAddress;
+    protected String address;
     protected Date birthDate;
     protected ProfessionDto profession;
 
@@ -22,7 +22,7 @@ public class PersonFamilyRelationshipDto extends AuditableDto {
             this.birthDate = entity.getBirthDate();
             this.person = isGetFull && entity.getPerson() != null ? new PersonDto(entity.getPerson(), false) : null;
             this.familyRelationship = entity.getFamilyRelationship() != null ? new FamilyRelationshipDto(entity.getFamilyRelationship()) : null;
-            this.personAddress = entity.getPersonAddress() != null ? new PersonAddressDto(entity.getPersonAddress(), false) : null;
+            this.address = entity.getAddress();
             this.profession = entity.getProfession() != null ? new ProfessionDto(entity.getProfession()) : null;
         }
     }
@@ -51,12 +51,12 @@ public class PersonFamilyRelationshipDto extends AuditableDto {
         this.fullName = fullName;
     }
 
-    public PersonAddressDto getPersonAddress() {
-        return personAddress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setPersonAddress(PersonAddressDto personAddress) {
-        this.personAddress = personAddress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public Date getBirthDate() {

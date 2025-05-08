@@ -6,7 +6,6 @@ public class PositionDto extends BaseObjectDto {
     private DepartmentDto department;
     private StaffDto staff;
     private Boolean isMain;
-    private RecruitmentRequestDto recruitmentRequest;
 
     public PositionDto() {
     }
@@ -17,7 +16,6 @@ public class PositionDto extends BaseObjectDto {
             this.department = new DepartmentDto(entity.getDepartment(), false, false, false);
             this.staff = new StaffDto(entity.getStaff(), false);
             this.isMain = entity.getMain();
-            this.recruitmentRequest = new RecruitmentRequestDto(entity.getRecruitmentRequest(), false);
             if (isGetFull) {
                 //todo
             }
@@ -48,11 +46,4 @@ public class PositionDto extends BaseObjectDto {
         isMain = main;
     }
 
-    public RecruitmentRequestDto getRecruitmentRequest() {
-        return recruitmentRequest;
-    }
-
-    public void setRecruitmentRequest(RecruitmentRequestDto recruitmentRequest) {
-        this.recruitmentRequest = recruitmentRequest;
-    }
 }

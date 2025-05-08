@@ -4,37 +4,35 @@ import jakarta.persistence.*;
 
 import java.util.Date;
 
-@Table(name = "tbl_person_family_relationship")
+@Table(
+        name = "tbl_person_family_relationship",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"person_id", "family_relationship_id"})
+        }
+)
 @Entity
 public class PersonFamilyRelationship extends AuditableEntity {
 
     @ManyToOne
     @JoinColumn(name = "person_id")
-    private Person person;
-    // Người mà mối quan hệ gia đình này thuộc về (liên kết đến bảng Person)
+    private Person person;// Người mà mối quan hệ gia đình này thuộc về (liên kết đến bảng Person)
 
     @ManyToOne
     @JoinColumn(name = "family_relationship_id")
-    private FamilyRelationship familyRelationship;
-    // Mối quan hệ gia đình (Ví dụ: Cha, Mẹ, Anh, Chị, Em... liên kết đến bảng FamilyRelationship)
+    private FamilyRelationship familyRelationship;// Mối quan hệ gia đình (Ví dụ: Cha, Mẹ, Anh, Chị, Em... liên kết đến bảng FamilyRelationship)
 
     @Column(name = "full_name")
-    private String fullName;
-    // Họ và tên đầy đủ của người thân
+    private String fullName;// Họ và tên đầy đủ của người thân
 
-    @ManyToOne
-    @JoinColumn(name = "person_address_id")
-    private PersonAddress personAddress;
-    // Địa chỉ của người thân (liên kết đến bảng PersonAddress)
+    @Column(name = "address")
+    private String address;// Địa chỉ của người thân
 
     @Column(name = "birth_date")
-    private Date birthDate;
-    // Ngày sinh của người thân
+    private Date birthDate;// Ngày sinh của người thân
 
     @ManyToOne
     @JoinColumn(name = "profession_id")
-    private Profession profession;
-    // Nghề nghiệp của người thân (liên kết đến bảng Profession)
+    private Profession profession;// Nghề nghiệp của người thân (liên kết đến bảng Profession)
 
     public PersonFamilyRelationship() {
     }
@@ -63,12 +61,12 @@ public class PersonFamilyRelationship extends AuditableEntity {
         this.fullName = fullName;
     }
 
-    public PersonAddress getPersonAddress() {
-        return personAddress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setPersonAddress(PersonAddress personAddress) {
-        this.personAddress = personAddress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public Date getBirthDate() {

@@ -16,7 +16,7 @@ public class Candidate extends Person {
 
     @ManyToOne
     @JoinColumn(name = "recruitment_plan_id")
-    private RecruitmentPlan recruitmentPlan;
+    private RecruitmentPlan recruitmentPlan; // kế hoạch tuyển dụng ứng viên
 
     @ManyToOne
     @JoinColumn(name = "position_id")
@@ -48,6 +48,9 @@ public class Candidate extends Person {
 
     @Column(name = "candidate_status")
     private Integer candidateStatus; //Xem status: DatnConstants.CandidateStatus
+
+    @OneToOne
+    private FileDescription curriculumVitae; // cv của ứng viên
 
     public Candidate() {
     }
@@ -146,5 +149,13 @@ public class Candidate extends Person {
 
     public void setCandidateStatus(Integer candidateStatus) {
         this.candidateStatus = candidateStatus;
+    }
+
+    public FileDescription getCurriculumVitae() {
+        return curriculumVitae;
+    }
+
+    public void setCurriculumVitae(FileDescription curriculumVitae) {
+        this.curriculumVitae = curriculumVitae;
     }
 }
