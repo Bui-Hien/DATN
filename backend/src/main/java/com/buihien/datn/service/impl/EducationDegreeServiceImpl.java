@@ -1,10 +1,10 @@
 package com.buihien.datn.service.impl;
 
-import com.buihien.datn.domain.LogMessageQueue;
-import com.buihien.datn.dto.LogMessageQueueDto;
-import com.buihien.datn.dto.search.LogMessageQueueSearchDto;
+import com.buihien.datn.domain.EducationDegree;
+import com.buihien.datn.dto.EducationDegreeDto;
+import com.buihien.datn.dto.search.SearchDto;
 import com.buihien.datn.generic.GenericServiceImpl;
-import com.buihien.datn.service.LogMessageQueueService;
+import com.buihien.datn.service.EducationDegreeService;
 import jakarta.persistence.Query;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -13,33 +13,37 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 @Service
-public class LogMessageQueueServiceImpl extends GenericServiceImpl<LogMessageQueue, LogMessageQueueDto, LogMessageQueueSearchDto> implements LogMessageQueueService {
+public class EducationDegreeServiceImpl extends GenericServiceImpl<EducationDegree, EducationDegreeDto, SearchDto> implements EducationDegreeService {
     @Override
-    protected LogMessageQueueDto convertToDto(LogMessageQueue entity) {
-        return new LogMessageQueueDto(entity);
+    protected EducationDegreeDto convertToDto(EducationDegree entity) {
+        return new EducationDegreeDto(entity);
     }
 
     @Override
-    protected LogMessageQueue convertToEntity(LogMessageQueueDto dto) {
-        if (dto == null) return null;
-        LogMessageQueue entity = new LogMessageQueue();
-        entity.setMessage(dto.getMessage());
-        entity.setAction(dto.getAction());
-        entity.setStatus(dto.getStatus());
-        entity.setType(dto.getType());
+    protected EducationDegree convertToEntity(EducationDegreeDto dto) {
+        EducationDegree entity = null;
+        if (dto.getId() != null) {
+            entity = repository.findById(dto.getId()).orElse(null);
+        }
+        if (entity == null) {
+            entity = new EducationDegree();
+        }
+        entity.setName(dto.getName());
+        entity.setCode(dto.getCode());
+        entity.setLevel(dto.getLevel());
         return entity;
     }
 
     @Override
-    public Page<LogMessageQueueDto> pagingSearch(LogMessageQueueSearchDto dto) {
+    public Page<EducationDegreeDto> pagingSearch(SearchDto dto) {
         int pageIndex = (dto.getPageIndex() == null || dto.getPageIndex() < 1) ? 0 : dto.getPageIndex() - 1;
         int pageSize = (dto.getPageSize() == null || dto.getPageSize() < 10) ? 10 : dto.getPageSize();
 
         boolean isExportExcel = dto.getExportExcel() != null && dto.getExportExcel();
 
 
-        StringBuilder sqlCount = new StringBuilder("SELECT COUNT(entity.id) FROM LogMessageQueue entity WHERE (1=1) ");
-        StringBuilder sql = new StringBuilder("SELECT new com.buihien.datn.dto.LogMessageQueueDto(entity) FROM LogMessageQueue entity WHERE (1=1) ");
+        StringBuilder sqlCount = new StringBuilder("SELECT COUNT(entity.id) FROM EducationDegree entity WHERE (1=1) ");
+        StringBuilder sql = new StringBuilder("SELECT new com.buihien.datn.dto.EducationDegreeDto(entity) FROM EducationDegree entity WHERE (1=1) ");
 
         StringBuilder whereClause = new StringBuilder();
 
@@ -50,21 +54,14 @@ public class LogMessageQueueServiceImpl extends GenericServiceImpl<LogMessageQue
         }
 
         if (dto.getKeyword() != null && StringUtils.hasText(dto.getKeyword())) {
-            whereClause.append(" AND (LOWER(entity.message) LIKE LOWER(:text) OR LOWER(entity.action) LIKE LOWER(:text)) ");
-        }
-
-        if (dto.getStatus() != null) {
-            whereClause.append(" AND entity.status = :status ");
-        }
-        if (dto.getType() != null) {
-            whereClause.append(" AND entity.type = :type ");
+            whereClause.append(" AND (LOWER(entity.name) LIKE LOWER(:text) OR LOWER(entity.code) LIKE LOWER(:text)) ");
         }
 
         if (dto.getFromDate() != null) {
-            whereClause.append(" AND entity.createDate >= :fromDate ");
+            whereClause.append(" AND entity.createdAt >= :fromDate ");
         }
         if (dto.getToDate() != null) {
-            whereClause.append(" AND entity.createDate <= :toDate ");
+            whereClause.append(" AND entity.createdAt <= :toDate ");
         }
 
         sql.append(whereClause);
@@ -72,21 +69,14 @@ public class LogMessageQueueServiceImpl extends GenericServiceImpl<LogMessageQue
 
         sql.append(dto.getOrderBy() != null && dto.getOrderBy() ? " ORDER BY entity.createdAt ASC" : " ORDER BY entity.createdAt DESC");
 
-        Query q = manager.createQuery(sql.toString(), LogMessageQueueDto.class);
+        Query q = manager.createQuery(sql.toString(), EducationDegreeDto.class);
         Query qCount = manager.createQuery(sqlCount.toString());
 
         if (dto.getKeyword() != null && StringUtils.hasText(dto.getKeyword())) {
             q.setParameter("text", '%' + dto.getKeyword() + '%');
             qCount.setParameter("text", '%' + dto.getKeyword() + '%');
         }
-        if (dto.getStatus() != null) {
-            q.setParameter("status", dto.getStatus());
-            qCount.setParameter("status", dto.getStatus());
-        }
-        if (dto.getType() != null) {
-            q.setParameter("type", dto.getType());
-            qCount.setParameter("type", dto.getType());
-        }
+
         if (dto.getFromDate() != null) {
             q.setParameter("fromDate", dto.getFromDate());
             qCount.setParameter("fromDate", dto.getFromDate());

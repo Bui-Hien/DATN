@@ -83,7 +83,6 @@ public class StaffLabourAgreementDto extends AuditableDto {
 
             // Bảo hiểm
             this.socialInsuranceNumber = entity.getSocialInsuranceNumber();
-            this.hasSocialIns = entity.getHasSocialIns();
             this.startInsDate = entity.getStartInsDate();
             this.insuranceSalary = entity.getInsuranceSalary();
 

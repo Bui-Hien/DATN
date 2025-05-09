@@ -46,11 +46,8 @@ public class StaffLabourAgreement extends AuditableEntity {
     @Column(name = "social_insurance_number", nullable = true)
     private String socialInsuranceNumber;// Số sổ bảo hiểm xã hội
 
-    @Column(name = "has_social_ins")
-    private Boolean hasSocialIns; // Có đóng BHXH hay không
-
     @Column(name = "start_ins_date")
-    private Date startInsDate;
+    private Date startInsDate; // Ngày bắt đầu tham gia bảo hiểm xã hội
 
     // Mức lương tham gia bảo hiểm xã hội
     @Column(name = "insurance_salary")
@@ -189,14 +186,6 @@ public class StaffLabourAgreement extends AuditableEntity {
 
     public void setSocialInsuranceNumber(String socialInsuranceNumber) {
         this.socialInsuranceNumber = socialInsuranceNumber;
-    }
-
-    public Boolean getHasSocialIns() {
-        return hasSocialIns;
-    }
-
-    public void setHasSocialIns(Boolean hasSocialIns) {
-        this.hasSocialIns = hasSocialIns;
     }
 
     public Date getStartInsDate() {

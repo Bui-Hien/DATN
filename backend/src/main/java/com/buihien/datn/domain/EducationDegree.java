@@ -7,7 +7,7 @@ import jakarta.persistence.Table;
 @Table(name = "tbl_education_degree")
 @Entity
 public class EducationDegree extends AuditableEntity {
-    @Column(name = "code")
+    @Column(name = "code", unique = true)
     private String code;
     @Column(name = "name")
     private String name;

@@ -1,15 +1,19 @@
 package com.buihien.datn.dto;
 
+import com.buihien.datn.DatnConstants;
 import com.buihien.datn.domain.StaffWorkSchedule;
+import com.buihien.datn.dto.validator.ValidEnumValue;
 
 import java.util.Date;
 
 public class StaffWorkScheduleDto extends AuditableDto {
+    @ValidEnumValue(enumClass = DatnConstants.ShiftWorkType.class, message = "Loại ca làm việc không hợp lệ")
     private Integer shiftWorkType; // Loại ca làm việc. Chi tiết: DatnConstants.ShiftWorkType
     private StaffDto staff; // Nhân viên được phân ca làm việc
     private Date workingDate; //Ngày làm việc
     private Date checkIn; // Thời gian bắt đầu làm việc
     private Date checkOut; // Thời gian kết thúc làm việc
+    @ValidEnumValue(enumClass = DatnConstants.ShiftWorkStatus.class, message = "Trạng thái ca làm việc không hợp lệ")
     private Integer shiftWorkStatus; // Trạng thái ca làm việc. Chi tiết: DatnConstants.ShiftWorkStatus
     private StaffDto coordinator; // Người phân ca làm việc
     private Boolean isLocked;
@@ -31,7 +35,10 @@ public class StaffWorkScheduleDto extends AuditableDto {
             if (entity.getCoordinator() != null) {
                 this.coordinator = new StaffDto(entity.getCoordinator(), false);
             }
-            this.isLocked = entity.getLocked();
+            this.isLocked = entity.getIsLocked();
+            if (isGetFull) {
+                //todo
+            }
         }
     }
 

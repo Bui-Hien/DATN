@@ -8,6 +8,7 @@ import com.buihien.datn.generic.GenericServiceImpl;
 import com.buihien.datn.repository.RecruitmentRequestRepository;
 import com.buihien.datn.service.RecruitmentPlanService;
 import jakarta.persistence.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -16,12 +17,8 @@ import org.springframework.util.StringUtils;
 
 @Service
 public class RecruitmentPlanServiceImpl extends GenericServiceImpl<RecruitmentPlan, RecruitmentPlanDto, SearchDto> implements RecruitmentPlanService {
-    private final RecruitmentRequestRepository recruitmentRequestRepository;
-
-    public RecruitmentPlanServiceImpl(RecruitmentRequestRepository recruitmentRequestRepository) {
-        super();
-        this.recruitmentRequestRepository = recruitmentRequestRepository;
-    }
+    @Autowired
+    private RecruitmentRequestRepository recruitmentRequestRepository;
 
     @Override
     protected RecruitmentPlanDto convertToDto(RecruitmentPlan entity) {

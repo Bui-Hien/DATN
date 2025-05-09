@@ -2,9 +2,11 @@ package com.buihien.datn.dto;
 
 import com.buihien.datn.DatnConstants;
 import com.buihien.datn.domain.Staff;
+import com.buihien.datn.domain.StaffDocumentItem;
 import com.buihien.datn.domain.StaffLabourAgreement;
 import com.buihien.datn.dto.validator.ValidEnumValue;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,6 +14,7 @@ import java.util.List;
 
 @Valid
 public class StaffDto extends PersonDto {
+    @NotBlank(message = "Mã nhân viên không được để trống")
     private String staffCode;// Mã nhân viên
     private Date recruitmentDate; // Ngày tuyển dụng
     private Date startDate; // Ngày bắt đầu công việc
@@ -19,10 +22,13 @@ public class StaffDto extends PersonDto {
     private List<StaffLabourAgreementDto> agreements;// Hợp đồng
     @ValidEnumValue(enumClass = DatnConstants.EmployeeStatus.class, message = "Trạng thái nhân viên không hợp lệ")
     private Integer employeeStatus; //DatnConstants.EmployeeStatus
-    private DocumentTemplateDto documentTemplate;// Hồ sơ nhân sự
+    private DocumentTemplateDto documentTemplate; // mẫu hồ sơ được dùng
+    private List<StaffDocumentItemDto> staffDocumentItems;
+    @ValidEnumValue(enumClass = DatnConstants.StaffPhase.class, message = "Tình trạng nhân viên không hợp lệ")
     private Integer staffPhase; // Tình trạng nhân viên. Chi tiết: DatnConstants.StaffPhase
     private Boolean requireAttendance; //Nhân viên có cần chấm công không không
     private Boolean allowExternalIpTimekeeping; // Cho phép chấm công ngoài
+    private Boolean hasSocialIns; // Có đóng BHXH hay không
 
     public StaffDto() {
     }
@@ -38,6 +44,7 @@ public class StaffDto extends PersonDto {
             this.staffPhase = entity.getStaffPhase();
             this.requireAttendance = entity.getRequireAttendance();
             this.allowExternalIpTimekeeping = entity.getAllowExternalIpTimekeeping();
+            this.hasSocialIns = entity.getHasSocialIns();
             if (entity.getDocumentTemplate() != null) {
                 this.documentTemplate = new DocumentTemplateDto(entity.getDocumentTemplate(), false);
             }
@@ -46,6 +53,12 @@ public class StaffDto extends PersonDto {
                     this.agreements = new ArrayList<>();
                     for (StaffLabourAgreement item : entity.getAgreements()) {
                         this.agreements.add(new StaffLabourAgreementDto(item, false));
+                    }
+                }
+                if (entity.getStaffDocumentItems() != null && !entity.getStaffDocumentItems().isEmpty()) {
+                    this.staffDocumentItems = new ArrayList<>();
+                    for (StaffDocumentItem item : entity.getStaffDocumentItems()) {
+                        this.staffDocumentItems.add(new StaffDocumentItemDto(item, false));
                     }
                 }
             }
@@ -108,6 +121,14 @@ public class StaffDto extends PersonDto {
         this.documentTemplate = documentTemplate;
     }
 
+    public List<StaffDocumentItemDto> getStaffDocumentItems() {
+        return staffDocumentItems;
+    }
+
+    public void setStaffDocumentItems(List<StaffDocumentItemDto> staffDocumentItems) {
+        this.staffDocumentItems = staffDocumentItems;
+    }
+
     public Integer getStaffPhase() {
         return staffPhase;
     }
@@ -130,5 +151,13 @@ public class StaffDto extends PersonDto {
 
     public void setAllowExternalIpTimekeeping(Boolean allowExternalIpTimekeeping) {
         this.allowExternalIpTimekeeping = allowExternalIpTimekeeping;
+    }
+
+    public Boolean getHasSocialIns() {
+        return hasSocialIns;
+    }
+
+    public void setHasSocialIns(Boolean hasSocialIns) {
+        this.hasSocialIns = hasSocialIns;
     }
 }

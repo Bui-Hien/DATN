@@ -2,36 +2,41 @@ package com.buihien.datn.dto;
 
 import com.buihien.datn.domain.StaffDocumentItem;
 
+import java.util.Date;
+
 public class StaffDocumentItemDto extends AuditableDto {
-    private DocumentTemplateDto documentTemplate;
+    private StaffDto staff;
     private DocumentItemDto documentItem;
     private FileDescriptionDto documentFile; // file tài liệu của nhân viên này
+    private Date submitDate; // Ngày nộp tài liệu
+
 
     public StaffDocumentItemDto() {
     }
 
-    public StaffDocumentItemDto(StaffDocumentItem entity, Boolean isGetDocumentTemplate, Boolean isGetDocumentItem) {
+    public StaffDocumentItemDto(StaffDocumentItem entity, Boolean isGetStaff) {
         super(entity);
         if (entity != null) {
-            if (entity.getDocumentTemplate() != null) {
+            if (isGetStaff && entity.getStaff() != null) {
+                this.staff = new StaffDto(entity.getStaff(), false);
+            }
+            if (entity.getDocumentFile() != null) {
                 this.documentFile = new FileDescriptionDto(entity.getDocumentFile());
             }
-            if (entity.getDocumentTemplate() != null && isGetDocumentTemplate) {
-                this.documentTemplate = new DocumentTemplateDto(entity.getDocumentTemplate(), false);
-            }
 
-            if (entity.getDocumentItem() != null && isGetDocumentItem) {
+            if (entity.getDocumentItem() != null) {
                 this.documentItem = new DocumentItemDto(entity.getDocumentItem(), false);
             }
+            this.submitDate = entity.getSubmitDate();
         }
     }
 
-    public DocumentTemplateDto getDocumentTemplate() {
-        return documentTemplate;
+    public StaffDto getStaff() {
+        return staff;
     }
 
-    public void setDocumentTemplate(DocumentTemplateDto documentTemplate) {
-        this.documentTemplate = documentTemplate;
+    public void setStaff(StaffDto staff) {
+        this.staff = staff;
     }
 
     public DocumentItemDto getDocumentItem() {
@@ -48,5 +53,13 @@ public class StaffDocumentItemDto extends AuditableDto {
 
     public void setDocumentFile(FileDescriptionDto documentFile) {
         this.documentFile = documentFile;
+    }
+
+    public Date getSubmitDate() {
+        return submitDate;
+    }
+
+    public void setSubmitDate(Date submitDate) {
+        this.submitDate = submitDate;
     }
 }

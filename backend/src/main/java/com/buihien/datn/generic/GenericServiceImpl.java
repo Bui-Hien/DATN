@@ -36,59 +36,65 @@ public abstract class GenericServiceImpl<E extends AuditableEntity, DTO extends 
 
     @Override
     public DTO getById(UUID id) {
-        logger.info("Fetching entity with ID: {}", id);
+        logger.info("Đang tìm kiếm thực thể với ID: {}", id);
         Optional<E> entity = repository.findById(id);
         if (entity.isPresent()) {
-            logger.info("Successfully fetched entity.");
+            logger.info("Lấy thực thể thành công.");
             return this.convertToDto(entity.get());
         } else {
-            logger.warn("Entity not found with ID: {}", id);
-            throw new ResourceNotFoundException("Entity not found with ID: " + id); // Ném lỗi nếu không tìm thấy entity
+            logger.warn("Không tìm thấy thực thể với ID: {}", id);
+            throw new ResourceNotFoundException("Không tìm thấy dữ liệu với ID: " + id);
         }
     }
 
     @Override
     public Boolean deleteById(UUID id) {
-        logger.info("Attempting to delete entity with ID: {}", id);
+        logger.info("Đang xóa thực thể với ID: {}", id);
         if (repository.existsById(id)) {
             repository.deleteById(id);
-            logger.info("Successfully deleted entity with ID: {}", id);
+            logger.info("Đã xóa thực thể thành công với ID: {}", id);
             return true;
         } else {
-            logger.warn("Entity not found for deletion with ID: {}", id);
-            throw new ResourceNotFoundException("Entity not found for deletion with ID: " + id);
+            logger.warn("Không tìm thấy thực thể để xóa với ID: {}", id);
+            throw new ResourceNotFoundException("Không tìm thấy dữ liệu để xóa với ID: " + id);
         }
     }
 
     @Override
     public int deleteMultiple(List<UUID> ids) {
-        logger.info("Attempting to delete multiple entities with IDs: {}", ids);
+        logger.info("Đang xóa nhiều thực thể với các ID: {}", ids);
         if (ids == null || ids.isEmpty()) {
-            logger.warn("Empty ID list provided. No entities to delete.");
-            throw new ResourceNotFoundException("Empty ID list provided. No entities to delete.");
+            logger.warn("Danh sách ID rỗng. Không có thực thể nào để xóa.");
+            throw new ResourceNotFoundException("Danh sách ID rỗng. Không có thực thể nào để xóa.");
         }
         repository.deleteAllById(ids);
-        logger.info("Successfully deleted {} entities", ids.size());
+        logger.info("Đã xóa thành công {} thực thể.", ids.size());
         return ids.size();
     }
 
     @Override
     public DTO saveOrUpdate(DTO dto) {
-        logger.info("Attempting to save or update dto: {}", dto);
         if (dto == null) {
-            logger.warn("Null dto provided. Cannot save.");
-            throw new ResourceNotFoundException("Null dto provided. Cannot save.");
+            logger.warn("Thông tin đầu vào bị null. Không thể lưu.");
+            throw new ResourceNotFoundException("Thông tin đầu vào bị null. Không thể lưu.");
         }
-        E savedEntity = repository.save(this.convertToEntity(dto));
-        logger.info("Successfully saved entity.");
-        return this.convertToDto(savedEntity);
 
+        E savedEntity = repository.save(this.convertToEntity(dto));
+
+        if (dto.getId() != null) {
+            logger.info("Cập nhật thông tin thành công: {}", savedEntity.getId());
+        } else {
+            logger.info("Lưu thông tin mới thành công: {}", savedEntity.getId());
+        }
+
+        return this.convertToDto(savedEntity);
     }
+
 
     @Override
     public Integer saveOrUpdateList(List<DTO> dtos) {
         if (dtos == null || dtos.isEmpty()) {
-            logger.warn("Save or update list called with empty data.");
+            logger.warn("Danh sách dữ liệu trống. Không thể lưu.");
             return 0;
         }
 
@@ -100,19 +106,23 @@ public abstract class GenericServiceImpl<E extends AuditableEntity, DTO extends 
         // Lưu vào database
         List<E> savedEntities = repository.saveAll(entities);
 
-        logger.info("Successfully saved {} records.", savedEntities.size());
+        logger.info("Đã lưu thành công {} bản ghi.", savedEntities.size());
         return savedEntities.size();
     }
-
     @Override
     public Page<DTO> paging(int pageIndex, int pageSize) {
-        logger.info("Fetching paginated results: page {} - size {}", pageIndex, pageSize);
+        logger.info("Lấy danh sách phân trang: trang {} - kích thước {}", pageIndex, pageSize);
+
         Pageable pageable = PageRequest.of(Math.max(pageIndex - 1, 0), pageSize);
         Page<E> page = repository.findAll(pageable);
 
-        List<DTO> dtoList = page.getContent().stream().map(this::convertToDto).collect(Collectors.toList());
+        List<DTO> dtoList = page.getContent()
+                .stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
 
-        logger.info("Successfully retrieved paginated results: {} items", page.getTotalElements());
+        logger.info("Lấy dữ liệu thành công: tổng cộng {} mục", page.getTotalElements());
+
         return new PageImpl<>(dtoList, pageable, page.getTotalElements());
     }
 }

@@ -1,9 +1,6 @@
 package com.buihien.datn.messageQueue;
 
-import com.buihien.datn.DatnConstants;
 import com.buihien.datn.domain.Token;
-import com.buihien.datn.dto.LogMessageQueueDto;
-import com.buihien.datn.service.LogMessageQueueService;
 import com.buihien.datn.service.MailService;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +11,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class MessageQueueListener {
@@ -34,9 +34,6 @@ public class MessageQueueListener {
 
     @Autowired
     private MailService mailService;
-
-    @Autowired
-    private LogMessageQueueService logMessageQueueService;
 
     private ExecutorService forgotPasswordExecutor;
 
@@ -70,16 +67,9 @@ public class MessageQueueListener {
                     Token message = forgotPasswordQueueService.receiveMessage();
                     if (message != null) {
                         try {
-                            if (message.getUser()!= null) {
+                            if (message.getUser() != null) {
                                 mailService.sendConfirmLink(message.getUser().getEmail(), message.getUser().getUsername(), message.getResetToken());
                             }
-                            // Lưu log vào bảng log_message_queue
-                            LogMessageQueueDto logMessageQueueDto = new LogMessageQueueDto();
-                            logMessageQueueDto.setMessage("Gửi mail quên mật khẩu: " + message.getUser().getUsername());
-                            logMessageQueueDto.setAction("Gửi mail quên mật khẩu");
-                            logMessageQueueDto.setStatus(DatnConstants.LogMessageQueueStatus.SUCCESS.getValue());
-                            logMessageQueueDto.setType(DatnConstants.LogMessageQueueTypes.FORGOT_PASSWORD.getValue());
-                            logMessageQueueService.saveOrUpdate(logMessageQueueDto);
                             // Thành công: Xóa khỏi hàng đợi
                             forgotPasswordQueueService.removeMessage(message);
                         } catch (Exception e) {
@@ -87,13 +77,6 @@ public class MessageQueueListener {
                             RetryableMessage<Token> retryableMessage = new RetryableMessage<>(message);
                             retryableMessage.incrementRetryCount();
                             if (retryableMessage.getRetryCount() >= maxRetry) {
-                                // Lưu log vào bảng log_message_queue
-                                LogMessageQueueDto logMessageQueueDto = new LogMessageQueueDto();
-                                logMessageQueueDto.setMessage("Gửi mail quên mật khẩu: " + message.getUser().getUsername());
-                                logMessageQueueDto.setAction("Gửi mail quên mật khẩu");
-                                logMessageQueueDto.setStatus(DatnConstants.LogMessageQueueStatus.FAILED.getValue());
-                                logMessageQueueDto.setType(DatnConstants.LogMessageQueueTypes.FORGOT_PASSWORD.getValue());
-                                logMessageQueueService.saveOrUpdate(logMessageQueueDto);
                                 forgotPasswordQueueService.removeMessage(message);
                             } else {
                                 failed.add(retryableMessage);

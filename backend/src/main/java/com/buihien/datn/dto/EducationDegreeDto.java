@@ -1,11 +1,16 @@
 package com.buihien.datn.dto;
 
+import com.buihien.datn.DatnConstants;
 import com.buihien.datn.domain.EducationDegree;
+import com.buihien.datn.dto.validator.ValidEnumValue;
+import jakarta.validation.Valid;
 
+@Valid
 public class EducationDegreeDto extends AuditableDto {
     private String code;
     private String name;
-    private Integer level;
+    @ValidEnumValue(enumClass = DatnConstants.EducationLevel.class, message = "Trình độ học vấn không hợp lệ")
+    private Integer level; //DatnConstants.EducationLevel // Trình độ học vấn (tiến sĩ, thạc sĩ, cử nhân, kỹ sư, trung cấp, cao đẳng, ...)
 
     public EducationDegreeDto() {
     }

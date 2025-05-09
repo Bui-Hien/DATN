@@ -1,7 +1,10 @@
 package com.buihien.datn.service.impl;
 
+import com.buihien.datn.domain.Staff;
 import com.buihien.datn.domain.User;
+import com.buihien.datn.dto.StaffDto;
 import com.buihien.datn.dto.UserDto;
+import com.buihien.datn.repository.StaffRepository;
 import com.buihien.datn.service.ExtractCurrentUserService;
 import com.buihien.datn.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,8 @@ import java.util.List;
 public class ExtractCurrentUserServiceImpl implements ExtractCurrentUserService {
     @Autowired
     private UserService userService;
+    @Autowired
+    private StaffRepository staffRepository;
 
     @Override
     public User extractCurrentUser() {
@@ -25,6 +30,27 @@ public class ExtractCurrentUserServiceImpl implements ExtractCurrentUserService 
     public UserDto extractCurrentUserDto() {
         User user = this.getCurrentUser();
         return new UserDto(user);
+    }
+
+    @Override
+    public Staff extractCurrentStaff() {
+        User currentUser = this.getCurrentUser(); // Lấy user hiện tại
+        if (currentUser != null && currentUser.getId() != null) {
+            // Giả sử bạn có một phương thức để tìm staff dựa trên userId
+            return staffRepository.findByUserId(currentUser.getId());
+        }
+        return null;
+    }
+
+    @Override
+    public StaffDto extractCurrentStaffDto() {
+        User currentUser = this.getCurrentUser(); // Lấy user hiện tại
+        if (currentUser != null && currentUser.getId() != null) {
+            // Giả sử bạn có một phương thức để tìm staff dựa trên userId
+            Staff staff = staffRepository.findByUserId(currentUser.getId());
+            return new StaffDto(staff, false);
+        }
+        return null;
     }
 
     @Override

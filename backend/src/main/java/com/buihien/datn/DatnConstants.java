@@ -358,6 +358,16 @@ public class DatnConstants {
             }
             return null;
         }
+
+        public static ShiftWorkType getShiftWorkType(Integer typeValue) {
+            for (ShiftWorkType type : ShiftWorkType.values()) {
+                if (type.getValue().equals(typeValue)) {
+                    return type;
+                }
+            }
+            throw null;
+        }
+
     }
 
     public enum RecruitmentRequestStatus {
@@ -459,6 +469,7 @@ public class DatnConstants {
             }
             return null;
         }
+
     }
 
     public enum TokenType {
@@ -584,6 +595,7 @@ public class DatnConstants {
             return null;
         }
     }
+
     public enum ContractType {
         PROBATION(1, "Thử việc"),
         OFFICIAL(2, "Chính thức"),

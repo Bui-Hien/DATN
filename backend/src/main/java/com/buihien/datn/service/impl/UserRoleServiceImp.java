@@ -6,6 +6,7 @@ import com.buihien.datn.domain.UserRole;
 import com.buihien.datn.dto.RoleDto;
 import com.buihien.datn.dto.UserDto;
 import com.buihien.datn.dto.UserRoleDto;
+import com.buihien.datn.exception.InvalidDataException;
 import com.buihien.datn.repository.RoleRepository;
 import com.buihien.datn.repository.UserRoleRepository;
 import com.buihien.datn.service.UserRoleService;
@@ -34,7 +35,10 @@ public class UserRoleServiceImp implements UserRoleService {
                 if (item.getRole().getId() != null) {
                     role = roleRepository.findById(item.getRole().getId()).orElse(null);
                 }
-                if (role == null) continue;
+                if (role == null) {
+                    throw new InvalidDataException("Quyền không tồn tại");
+                }
+                ;
                 UserRole userRole = null;
                 if (entity.getId() != null) {
                     userRole = userRoleRepository.getUserRoleByUserIdAndRoleId(entity.getId(), role.getId());

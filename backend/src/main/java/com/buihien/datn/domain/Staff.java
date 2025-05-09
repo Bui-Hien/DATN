@@ -23,13 +23,17 @@ public class Staff extends Person {
     private Integer employeeStatus; //DatnConstants.EmployeeStatus
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "document_template_id")
-    private DocumentTemplate documentTemplate;// Hồ sơ nhân sự
+    private DocumentTemplate documentTemplate; // mẫu hồ sơ được dùng
+    @OneToMany(mappedBy = "staff", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<StaffDocumentItem> staffDocumentItems;
     @Column(name = "staff_phase")
     private Integer staffPhase; // Tình trạng nhân viên. Chi tiết: DatnConstants.StaffPhase
     @Column(name = "require_attendance")
     private Boolean requireAttendance; //Nhân viên có cần chấm công không không
     @Column(name = "allow_external_ip_timekeeping")
     private Boolean allowExternalIpTimekeeping; // Cho phép chấm công ngoài
+    @Column(name = "has_social_ins")
+    private Boolean hasSocialIns; // Có đóng BHXH hay không
 
     public Staff() {
     }
@@ -90,6 +94,14 @@ public class Staff extends Person {
         this.documentTemplate = documentTemplate;
     }
 
+    public Set<StaffDocumentItem> getStaffDocumentItems() {
+        return staffDocumentItems;
+    }
+
+    public void setStaffDocumentItems(Set<StaffDocumentItem> staffDocumentItems) {
+        this.staffDocumentItems = staffDocumentItems;
+    }
+
     public Integer getStaffPhase() {
         return staffPhase;
     }
@@ -112,5 +124,13 @@ public class Staff extends Person {
 
     public void setAllowExternalIpTimekeeping(Boolean allowExternalIpTimekeeping) {
         this.allowExternalIpTimekeeping = allowExternalIpTimekeeping;
+    }
+
+    public Boolean getHasSocialIns() {
+        return hasSocialIns;
+    }
+
+    public void setHasSocialIns(Boolean hasSocialIns) {
+        this.hasSocialIns = hasSocialIns;
     }
 }

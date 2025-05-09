@@ -96,11 +96,11 @@ public class StaffWorkSchedule extends AuditableEntity {
         this.coordinator = coordinator;
     }
 
-    public Boolean getLocked() {
+    public Boolean getIsLocked() {
         return isLocked;
     }
 
-    public void setLocked(Boolean locked) {
+    public void setIsLocked(Boolean locked) {
         isLocked = locked;
     }
 }

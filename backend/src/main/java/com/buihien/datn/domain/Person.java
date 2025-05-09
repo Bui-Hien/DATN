@@ -60,8 +60,7 @@ public class Person extends AuditableEntity {
     @Column(name = "tax_code")
     private String taxCode; // Mã số thuế
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @OneToOne(fetch = FetchType.EAGER)
     protected User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
