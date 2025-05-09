@@ -1,5 +1,6 @@
 package com.buihien.datn.service.impl;
 
+import com.buihien.datn.DatnConstants;
 import com.buihien.datn.domain.*;
 import com.buihien.datn.dto.StaffDto;
 import com.buihien.datn.dto.search.StaffSearchDto;
@@ -14,6 +15,12 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class StaffServiceImpl extends GenericServiceImpl<Staff, StaffDto, StaffSearchDto> implements StaffService {
@@ -31,6 +38,10 @@ public class StaffServiceImpl extends GenericServiceImpl<Staff, StaffDto, StaffS
     private DocumentTemplateRepository documentTemplateRepository;
     @Autowired
     private StaffDocumentItemService staffDocumentItemService;
+    @Autowired
+    private StaffRepository staffRepository;
+    @Autowired
+    private CandidateRepository candidateRepository;
 
     @Override
     protected StaffDto convertToDto(Staff entity) {
@@ -45,6 +56,7 @@ public class StaffServiceImpl extends GenericServiceImpl<Staff, StaffDto, StaffS
         }
         if (entity == null) {
             entity = new Staff();
+            entity.setStaffCode(this.generateStaffCode());
         }
         // ----- Thông tin kế thừa từ Person -----
         entity.setFirstName(dto.getFirstName());
@@ -94,7 +106,6 @@ public class StaffServiceImpl extends GenericServiceImpl<Staff, StaffDto, StaffS
         entity.setWeight(dto.getWeight());
 
         // ----- Thông tin riêng của Nhân viên -----
-        entity.setStaffCode(dto.getStaffCode());
         entity.setRecruitmentDate(dto.getRecruitmentDate());
         entity.setStartDate(dto.getStartDate());
         entity.setApprenticeDays(dto.getApprenticeDays());
@@ -175,5 +186,97 @@ public class StaffServiceImpl extends GenericServiceImpl<Staff, StaffDto, StaffS
             return new PageImpl<>(q.getResultList(), PageRequest.of(pageIndex, pageSize), (long) qCount.getSingleResult());
         }
         return new PageImpl<>(q.getResultList());
+    }
+
+    private String generateStaffCode() {
+        LocalDate now = LocalDate.now();
+        String year = String.format("%02d", now.getYear() % 100);
+        String month = String.format("%02d", now.getMonthValue());
+
+        String prefix = "NV" + year + month;
+
+        // Lấy tất cả mã nhân viên bắt đầu với prefix
+        List<String> existingCodes = staffRepository.findStaffCodesStartingWith(prefix);
+
+        Set<Integer> existingNumbers = existingCodes.stream()
+                .map(code -> code.substring(prefix.length()))
+                .filter(suffix -> suffix.matches("\\d+"))
+                .map(Integer::parseInt)
+                .collect(Collectors.toSet());
+
+        int max = existingNumbers.stream().max(Integer::compareTo).orElse(0);
+        int nextNumber = max + 1;
+
+        while (existingNumbers.contains(nextNumber)) {
+            nextNumber++;
+        }
+
+        String sequence = String.format("%04d", nextNumber);
+        return prefix + sequence;
+    }
+
+    @Override
+    public StaffDto convertCandidateToStaff(Candidate candidate) {
+
+        Staff entity = new Staff();
+        entity.setStaffCode(this.generateStaffCode());
+
+        // ----- Thông tin kế thừa từ Person -----
+        entity.setFirstName(candidate.getFirstName());
+        entity.setLastName(candidate.getLastName());
+        entity.setDisplayName(candidate.getDisplayName());
+        entity.setBirthDate(candidate.getBirthDate());
+        entity.setBirthPlace(candidate.getBirthPlace());
+        entity.setGender(candidate.getGender());
+        entity.setPhoneNumber(candidate.getPhoneNumber());
+        entity.setIdNumber(candidate.getIdNumber());
+        entity.setIdNumberIssueBy(candidate.getIdNumberIssueBy());
+        entity.setIdNumberIssueDate(candidate.getIdNumberIssueDate());
+        entity.setEmail(candidate.getEmail());
+
+        Country nationality = null;
+        if (candidate.getNationality() != null && candidate.getNationality().getId() != null) {
+            nationality = countryRepository.findById(candidate.getNationality().getId()).orElse(null);
+        }
+        entity.setNationality(nationality);
+
+        Ethnics ethnics = null;
+        if (candidate.getEthnics() != null && candidate.getEthnics().getId() != null) {
+            ethnics = ethnicsRepository.findById(candidate.getEthnics().getId()).orElse(null);
+        }
+        entity.setEthnics(ethnics);
+
+        Religion religion = null;
+        if (candidate.getReligion() != null && candidate.getReligion().getId() != null) {
+            religion = religionRepository.findById(candidate.getReligion().getId()).orElse(null);
+        }
+        entity.setReligion(religion);
+        entity.setMaritalStatus(candidate.getMaritalStatus());
+        entity.setTaxCode(candidate.getTaxCode());
+
+        User user = null;
+        if (candidate.getUser() != null && candidate.getUser().getId() != null) {
+            user = userRepository.findById(candidate.getUser().getId()).orElse(null);
+        }
+        entity.setUser(user);
+
+        EducationDegree educationDegree = null;
+        if (candidate.getEducationDegree() != null && candidate.getEducationDegree().getId() != null) {
+            educationDegree = educationDegreeRepository.findById(candidate.getEducationDegree().getId()).orElse(null);
+        }
+        entity.setEducationDegree(educationDegree);
+        entity.setHeight(candidate.getHeight());
+        entity.setWeight(candidate.getWeight());
+
+        // ----- Thông tin riêng của Nhân viên -----
+        entity.setRecruitmentDate(new Date());
+        entity = repository.saveAndFlush(entity);
+        //map ứng viên với nhân viên
+        candidate.setStaff(entity);
+        candidate.setCandidateStatus(DatnConstants.CandidateStatus.HIRED.getValue());
+        candidateRepository.save(candidate);
+
+        //trả về thông tin nhân viêns
+        return new StaffDto(entity, false);
     }
 }

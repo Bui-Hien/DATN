@@ -1,8 +1,8 @@
 package com.buihien.datn.service.impl;
 
+import com.buihien.datn.DatnConstants;
 import com.buihien.datn.domain.*;
 import com.buihien.datn.dto.CandidateDto;
-import com.buihien.datn.dto.search.CandidateSearchDto;
 import com.buihien.datn.dto.search.CandidateSearchDto;
 import com.buihien.datn.exception.ResourceNotFoundException;
 import com.buihien.datn.generic.GenericServiceImpl;
@@ -19,8 +19,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class CandidateServiceImpl extends GenericServiceImpl<Candidate, CandidateDto, CandidateSearchDto> implements CandidateService {
@@ -43,6 +46,8 @@ public class CandidateServiceImpl extends GenericServiceImpl<Candidate, Candidat
     private StaffRepository staffRepository;
     @Autowired
     private FileDescriptionService fileDescriptionService;
+    @Autowired
+    private CandidateRepository candidateRepository;
 
     @Override
     protected CandidateDto convertToDto(Candidate entity) {
@@ -57,6 +62,8 @@ public class CandidateServiceImpl extends GenericServiceImpl<Candidate, Candidat
         }
         if (entity == null) {
             entity = new Candidate();
+            entity.setCandidateCode(this.generateCandidateCode());
+            entity.setCandidateStatus(DatnConstants.CandidateStatus.CREATED.getValue());
         }
 // ----- Thông tin kế thừa từ Person -----
         entity.setFirstName(dto.getFirstName());
@@ -153,7 +160,6 @@ public class CandidateServiceImpl extends GenericServiceImpl<Candidate, Candidat
             staff = staffRepository.findById(dto.getStaff().getId()).orElse(null);
         }
         entity.setStaff(staff);
-        entity.setCandidateStatus(dto.getCandidateStatus());
 
         FileDescription newFile = null;
         if (dto.getCurriculumVitae() != null && dto.getCurriculumVitae().getId() != null) {
@@ -277,5 +283,33 @@ public class CandidateServiceImpl extends GenericServiceImpl<Candidate, Candidat
             return new PageImpl<>(q.getResultList(), PageRequest.of(pageIndex, pageSize), (long) qCount.getSingleResult());
         }
         return new PageImpl<>(q.getResultList());
+    }
+
+    private String generateCandidateCode() {
+        LocalDate now = LocalDate.now();
+        String year = String.format("%02d", now.getYear() % 100);
+        String month = String.format("%02d", now.getMonthValue());
+
+        String prefix = "UV" + year + month;
+
+        // Lấy tất cả mã ứng viên bắt đầu với prefix
+        List<String> existingCodes = candidateRepository.findCandidateCodesStartingWith(prefix);
+
+        Set<Integer> existingNumbers = existingCodes.stream()
+                .map(code -> code.substring(prefix.length()))
+                .filter(suffix -> suffix.matches("\\d+"))
+                .map(Integer::parseInt)
+                .collect(Collectors.toSet());
+
+        int max = existingNumbers.stream().max(Integer::compareTo).orElse(0);
+        int nextNumber = max + 1;
+
+        while (existingNumbers.contains(nextNumber)) {
+            nextNumber++;
+        }
+
+        // Dùng 4 chữ số cho phần số
+        String sequence = String.format("%04d", nextNumber);
+        return prefix + sequence;
     }
 }

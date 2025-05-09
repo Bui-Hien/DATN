@@ -12,8 +12,11 @@ public class SalaryTemplateItem extends BaseObject {
     @JoinColumn(name = "salary_template_id")
     private SalaryTemplate salaryTemplate; // thuộc mẫu bang luong nao
 
-    @Column(name = "value")
-    private Double value;
+    @Column(name = "salary_item_type")
+    private Integer salaryItemType; // DatnConstants.SalaryItemType
+
+    @Column(name = "default_amount")
+    private Double defaultAmount;
 
     @Column(name = "formula", columnDefinition = "TEXT")
     private String formula; // nếu type là USING_FORMULA thì lưu công thức
@@ -37,12 +40,20 @@ public class SalaryTemplateItem extends BaseObject {
         this.salaryTemplate = salaryTemplate;
     }
 
-    public Double getValue() {
-        return value;
+    public Integer getSalaryItemType() {
+        return salaryItemType;
     }
 
-    public void setValue(Double value) {
-        this.value = value;
+    public void setSalaryItemType(Integer salaryItemType) {
+        this.salaryItemType = salaryItemType;
+    }
+
+    public Double getDefaultAmount() {
+        return defaultAmount;
+    }
+
+    public void setDefaultAmount(Double defaultAmount) {
+        this.defaultAmount = defaultAmount;
     }
 
     public String getFormula() {

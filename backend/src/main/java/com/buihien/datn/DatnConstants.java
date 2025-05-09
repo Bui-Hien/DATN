@@ -629,4 +629,67 @@ public class DatnConstants {
             return null;
         }
     }
+
+    public enum SalaryItemType {
+        VALUE(1, "Giá trị"),
+        FORMULA(2, "Công thức");
+
+        private final Integer value;
+        private final String name;
+
+        SalaryItemType(Integer value, String name) {
+            this.value = value;
+            this.name = name;
+        }
+
+        public Integer getValue() {
+            return value;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public static String getNameByValue(Integer value) {
+            if (value == null) return null;
+            for (SalaryItemType type : SalaryItemType.values()) {
+                if (type.getValue().equals(value)) {
+                    return type.getName();
+                }
+            }
+            return null;
+        }
+    }
+
+    public enum SalaryPeriodStatus {
+        DRAFT(1, "Nháp"),
+        APPROVED(2, "Đã duyệt"),
+        FINALIZED(3, "Đã chốt");
+
+        private final Integer value;
+        private final String name;
+
+        SalaryPeriodStatus(Integer value, String name) {
+            this.value = value;
+            this.name = name;
+        }
+
+        public Integer getValue() {
+            return value;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public static String getNameByValue(Integer value) {
+            if (value == null) return null;
+            for (SalaryPeriodStatus type : SalaryPeriodStatus.values()) {
+                if (type.getValue().equals(value)) {
+                    return type.getName();
+                }
+            }
+            return null;
+        }
+    }
 }

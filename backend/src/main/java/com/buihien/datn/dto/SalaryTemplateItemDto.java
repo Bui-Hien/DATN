@@ -1,11 +1,21 @@
 package com.buihien.datn.dto;
 
+import com.buihien.datn.DatnConstants;
 import com.buihien.datn.domain.SalaryTemplateItem;
+import com.buihien.datn.dto.validator.ValidEnumValue;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
+@Valid
 public class SalaryTemplateItemDto extends BaseObjectDto {
+    @NotNull(message = "Thứ tự hiển thị không được để trống")
+    @Min(value = 1, message = "Thứ tự hiển thị phải lớn hơn 0")
     private Integer displayOrder; // Thứ tự hiển thị
     private SalaryTemplateDto salaryTemplate; // thuộc mẫu bang luong nao
-    private Double value;
+    @ValidEnumValue(enumClass = DatnConstants.SalaryItemType.class, message = "Loại thành phần lương không hợp lệ")
+    private Integer salaryItemType; // DatnConstants.SalaryItemType
+    private Double defaultAmount;
     private String formula; // nếu type là USING_FORMULA thì lưu công thức
 
     public SalaryTemplateItemDto() {
@@ -15,7 +25,8 @@ public class SalaryTemplateItemDto extends BaseObjectDto {
         super(entity);
         if (entity != null) {
             this.displayOrder = entity.getDisplayOrder();
-            this.value = entity.getValue();
+            this.defaultAmount = entity.getDefaultAmount();
+            this.salaryItemType = entity.getSalaryItemType();
             this.formula = entity.getFormula();
 
             if (isGetSalaryTemplate) {
@@ -43,12 +54,20 @@ public class SalaryTemplateItemDto extends BaseObjectDto {
         this.salaryTemplate = salaryTemplate;
     }
 
-    public Double getValue() {
-        return value;
+    public Integer getSalaryItemType() {
+        return salaryItemType;
     }
 
-    public void setValue(Double value) {
-        this.value = value;
+    public void setSalaryItemType(Integer salaryItemType) {
+        this.salaryItemType = salaryItemType;
+    }
+
+    public Double getDefaultAmount() {
+        return defaultAmount;
+    }
+
+    public void setDefaultAmount(Double defaultAmount) {
+        this.defaultAmount = defaultAmount;
     }
 
     public String getFormula() {

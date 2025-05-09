@@ -2,7 +2,7 @@ package com.buihien.datn.domain;
 
 import jakarta.persistence.*;
 
-import java.util.Set;
+import java.util.Date;
 
 @Table(
         name = "tbl_staff_salary_template",
@@ -11,7 +11,7 @@ import java.util.Set;
         }
 )
 @Entity
-public class StaffSalaryTemplate extends AuditableEntity{
+public class StaffSalaryTemplateHistory extends AuditableEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "staff_id")
     private Staff staff; // nhân viên dùng mẫu bảng lương
@@ -20,10 +20,16 @@ public class StaffSalaryTemplate extends AuditableEntity{
     @JoinColumn(name = "salary_template_id")
     private SalaryTemplate salaryTemplate; // Mẫu bảng lương được dùng
 
-    @OneToMany(mappedBy = "staffSalaryTemplate", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<StaffSalaryItem> staffSalaryItems;
+    @Column(name = "start_date", nullable = false)
+    private Date startDate;
 
-    public StaffSalaryTemplate() {
+    @Column(name = "end_date")
+    private Date endDate;
+
+    @Column(name = "is_current", nullable = false)
+    private Boolean isCurrent = false;
+
+    public StaffSalaryTemplateHistory() {
     }
 
     public Staff getStaff() {
@@ -42,11 +48,27 @@ public class StaffSalaryTemplate extends AuditableEntity{
         this.salaryTemplate = salaryTemplate;
     }
 
-    public Set<StaffSalaryItem> getStaffSalaryItems() {
-        return staffSalaryItems;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setStaffSalaryItems(Set<StaffSalaryItem> staffSalaryItems) {
-        this.staffSalaryItems = staffSalaryItems;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public Boolean getIsCurrent() {
+        return isCurrent;
+    }
+
+    public void setIsCurrent(Boolean current) {
+        isCurrent = current;
     }
 }

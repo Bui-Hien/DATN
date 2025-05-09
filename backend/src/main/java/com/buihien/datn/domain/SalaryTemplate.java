@@ -11,9 +11,6 @@ public class SalaryTemplate extends BaseObject{
     @OrderBy("displayOrder")
     private Set<SalaryTemplateItem> templateItems; // thành phần lương chính là các cột trong mẫu bảng lương
 
-    @OneToMany(mappedBy = "salaryTemplate", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<StaffSalaryTemplate> staffSalaryTemplates; // các nhân viên sử dụng mẫu bảng lương
-
     public SalaryTemplate() {
     }
 
@@ -23,13 +20,5 @@ public class SalaryTemplate extends BaseObject{
 
     public void setTemplateItems(Set<SalaryTemplateItem> templateItems) {
         this.templateItems = templateItems;
-    }
-
-    public Set<StaffSalaryTemplate> getStaffSalaryTemplates() {
-        return staffSalaryTemplates;
-    }
-
-    public void setStaffSalaryTemplates(Set<StaffSalaryTemplate> staffSalaryTemplates) {
-        this.staffSalaryTemplates = staffSalaryTemplates;
     }
 }

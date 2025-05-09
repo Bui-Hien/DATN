@@ -1,16 +1,14 @@
 package com.buihien.datn.service.impl;
 
-import com.buihien.datn.domain.DocumentItem;
-import com.buihien.datn.domain.DocumentTemplate;
-import com.buihien.datn.dto.DocumentItemDto;
-import com.buihien.datn.dto.DocumentTemplateDto;
+import com.buihien.datn.domain.SalaryTemplate;
+import com.buihien.datn.domain.SalaryTemplateItem;
+import com.buihien.datn.dto.SalaryTemplateDto;
+import com.buihien.datn.dto.SalaryTemplateItemDto;
 import com.buihien.datn.dto.search.SearchDto;
-import com.buihien.datn.exception.InvalidDataException;
 import com.buihien.datn.generic.GenericServiceImpl;
-import com.buihien.datn.repository.DocumentItemRepository;
-import com.buihien.datn.service.DocumentTemplateService;
+import com.buihien.datn.repository.SalaryTemplateItemRepository;
+import com.buihien.datn.service.SalaryTemplateService;
 import jakarta.persistence.Query;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -18,74 +16,67 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.HashSet;
-import java.util.Set;
 
 @Service
-public class DocumentTemplateServiceImpl extends GenericServiceImpl<DocumentTemplate, DocumentTemplateDto, SearchDto> implements DocumentTemplateService {
-    @Autowired
-    private DocumentItemRepository documentItemRepository;
+public class SalaryTemplateServiceImpl extends GenericServiceImpl<SalaryTemplate, SalaryTemplateDto, SearchDto> implements SalaryTemplateService {
+    private final SalaryTemplateItemRepository salaryTemplateItemRepository;
 
-    @Override
-    protected DocumentTemplateDto convertToDto(DocumentTemplate entity) {
-        return new DocumentTemplateDto(entity, true);
+    public SalaryTemplateServiceImpl(SalaryTemplateItemRepository salaryTemplateItemRepository) {
+        super();
+        this.salaryTemplateItemRepository = salaryTemplateItemRepository;
     }
 
     @Override
-    protected DocumentTemplate convertToEntity(DocumentTemplateDto dto) {
-        DocumentTemplate entity = null;
+    protected SalaryTemplateDto convertToDto(SalaryTemplate entity) {
+        return new SalaryTemplateDto(entity, false);
+    }
+
+    @Override
+    protected SalaryTemplate convertToEntity(SalaryTemplateDto dto) {
+        SalaryTemplate entity = null;
         if (dto.getId() != null) {
             entity = repository.findById(dto.getId()).orElse(null);
         }
         if (entity == null) {
-            entity = new DocumentTemplate();
+            entity = new SalaryTemplate();
         }
         entity.setName(dto.getName());
         entity.setCode(dto.getCode());
         entity.setDescription(dto.getDescription());
 
-        // Set các tài liệu trong bộ hồ sơ/tài liệu
-        if (entity.getDocumentItems() == null) {
-            entity.setDocumentItems(new HashSet<>());
+        if (entity.getTemplateItems() == null) {
+            entity.setTemplateItems(new HashSet<>());
         }
-        entity.getDocumentItems().clear();
-        if (dto.getDocumentItems() != null && !dto.getDocumentItems().isEmpty()) {
-            Set<Integer> displayOrders = new HashSet<>();
-            for (DocumentItemDto item : dto.getDocumentItems()) {
-                if (item.getDisplayOrder() != null) {
-                    if (!displayOrders.add(item.getDisplayOrder())) {
-                        throw new InvalidDataException("Thứ tự hiển thị không được trùng nhau");
-                    }
-                }
-            }
-            for (DocumentItemDto item : dto.getDocumentItems()) {
-                DocumentItem documentItem = null;
+        entity.getTemplateItems().clear();
+        if (dto.getTemplateItems() != null && !dto.getTemplateItems().isEmpty()) {
+            for (SalaryTemplateItemDto item : dto.getTemplateItems()) {
+                SalaryTemplateItem salaryTemplateItem = null;
                 if (item.getId() != null) {
-                    documentItem = documentItemRepository.findById(item.getId()).orElse(null);
+                    salaryTemplateItem = salaryTemplateItemRepository.findById(item.getId()).orElse(null);
                 }
-                if (documentItem == null) {
-                    documentItem = new DocumentItem();
+                if (salaryTemplateItem == null) {
+                    salaryTemplateItem = new SalaryTemplateItem();
                 }
-                documentItem.setName(item.getName());
-                documentItem.setDescription(item.getDescription());
-                documentItem.setDisplayOrder(item.getDisplayOrder());
-                documentItem.setIsRequired(item.getIsRequired());
-                documentItem.setDocumentTemplate(entity);
-                entity.getDocumentItems().add(documentItem);
+                salaryTemplateItem.setDisplayOrder(item.getDisplayOrder());
+                salaryTemplateItem.setSalaryTemplate(entity);
+                salaryTemplateItem.setSalaryItemType(item.getSalaryItemType());
+                salaryTemplateItem.setDefaultAmount(item.getDefaultAmount());
+                salaryTemplateItem.setFormula(item.getFormula());
             }
         }
         return entity;
     }
 
     @Override
-    public Page<DocumentTemplateDto> pagingSearch(SearchDto dto) {
+    public Page<SalaryTemplateDto> pagingSearch(SearchDto dto) {
         int pageIndex = (dto.getPageIndex() == null || dto.getPageIndex() < 1) ? 0 : dto.getPageIndex() - 1;
         int pageSize = (dto.getPageSize() == null || dto.getPageSize() < 10) ? 10 : dto.getPageSize();
 
         boolean isExportExcel = dto.getExportExcel() != null && dto.getExportExcel();
 
 
-        StringBuilder sqlCount = new StringBuilder("SELECT COUNT(entity.id) FROM DocumentTemplate entity WHERE (1=1) ");
-        StringBuilder sql = new StringBuilder("SELECT new com.buihien.datn.dto.DocumentTemplateDto(entity, false) FROM DocumentTemplate entity WHERE (1=1) ");
+        StringBuilder sqlCount = new StringBuilder("SELECT COUNT(entity.id) FROM SalaryTemplate entity WHERE (1=1) ");
+        StringBuilder sql = new StringBuilder("SELECT new com.buihien.datn.dto.SalaryTemplateDto(entity, false) FROM SalaryTemplate entity WHERE (1=1) ");
 
         StringBuilder whereClause = new StringBuilder();
 
@@ -111,7 +102,7 @@ public class DocumentTemplateServiceImpl extends GenericServiceImpl<DocumentTemp
 
         sql.append(dto.getOrderBy() != null && dto.getOrderBy() ? " ORDER BY entity.createdAt ASC" : " ORDER BY entity.createdAt DESC");
 
-        Query q = manager.createQuery(sql.toString(), DocumentTemplateDto.class);
+        Query q = manager.createQuery(sql.toString(), SalaryTemplateDto.class);
         Query qCount = manager.createQuery(sqlCount.toString());
 
         if (dto.getKeyword() != null && StringUtils.hasText(dto.getKeyword())) {
