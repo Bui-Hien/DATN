@@ -1,3 +1,3 @@
 module.exports = Object.freeze({
-    API_ENPOINT: window.Configs.API_ENPOINT
+    API_ENDPOINT: "http://localhost:8071"
 });

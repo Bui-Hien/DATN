@@ -1,3 +1,3 @@
-const Configs = {
-    API_ENPOINT: "http://localhost:8071",
+export const Configs = {
+    API_ENDPOINT: "http://localhost:8071",
 }

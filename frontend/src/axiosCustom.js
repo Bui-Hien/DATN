@@ -1,6 +1,6 @@
 import axios from 'axios';
-import {refreshToken} from "@/auth/authService";
-import {API_ENPOINT} from "@/app/appConfig";
+import {API_ENPOINT} from "./appConfig";
+import {refreshToken} from "./auth/authService";
 
 const getAccessToken = () => localStorage.getItem("access_token");
 const getRefreshToken = () => localStorage.getItem("refresh_token");

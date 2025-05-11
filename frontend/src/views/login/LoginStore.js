@@ -1,7 +1,7 @@
 import {makeAutoObservable} from "mobx";
 import {toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {accessToken} from "@/auth/authService";
+import {accessToken} from "../../auth/authService";
 
 export default class LoginStore {
     intactLoginObject = {

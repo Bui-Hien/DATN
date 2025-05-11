@@ -2,9 +2,9 @@ import { observer } from "mobx-react";
 import * as Yup from "yup";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/navigation";
-import { Validation } from "@/app/LocalConstants";
-import { useStore } from "@/app/stores";
 import { TextField, Button, Card, CardContent, Typography } from "@mui/material";
+import {Validation} from "src/LocalConstants";
+import {useStore} from "src/stores";
 
 export default observer(function Login() {
     const router = useRouter();

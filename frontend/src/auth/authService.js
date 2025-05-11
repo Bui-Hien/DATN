@@ -1,4 +1,4 @@
-import api from "@/app/axiosCustom";
+import api from "../axiosCustom";
 
 const API_PATH = "/api/auth";
 
