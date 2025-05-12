@@ -20,6 +20,7 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import ChevronRight from "@mui/icons-material/ChevronRight";
 import TreeIcon from "@mui/icons-material/Schema";
 import {useEffect} from "react";
+import {Tooltip} from "@mui/material";
 
 const drawerWidth = 240;
 const AUTH_ROLES = ["admin"];
@@ -217,7 +218,7 @@ export default function MiniDrawer() {
         }));
     };
     useEffect(() => {
-        if (!open){
+        if (!open) {
             setExpandedItems({})
         }
     }, [open]);
@@ -258,35 +259,38 @@ export default function MiniDrawer() {
 
                     return (
                         <Box key={`${item.name}-${level}`}>
-                            <ListItemButton
-                                sx={{
-                                    paddingLeft: open ? `${5 + (level * 5)}px` : '5px',
-                                    backgroundColor: bgColor,
-                                    color: textColor,
-                                    '&:hover': {
-                                        backgroundColor: bgColor !== 'transparent' ? bgColor : undefined,
-                                    }
-                                }}
-                                className={"flex justify-center h-10"}
-                                onClick={() => {
-                                    toggleExpand(itemPath);
-                                    if (item.path) {
-                                        navigate(visibleChildren[0]?.path || '#');
-                                    }
-                                    setOpen(true);
-                                }}
-                            >
-                                <ListItemIcon sx={{color: textColor}} className={"px-2 !min-w-0"}>
-                                    {item.icon}
-                                </ListItemIcon>
-                                <ListItemText
-                                    primary={item.name}
-                                    sx={{opacity: open ? 1 : 0}}
-                                />
-                                {open && (
-                                    isExpanded ? <ExpandMore/> : <ChevronRight/>
-                                )}
-                            </ListItemButton>
+                            <Tooltip title={!open &&item.name}>
+                                <ListItemButton
+                                    sx={{
+                                        paddingLeft: open ? `${5 + (level * 5)}px` : '5px',
+                                        backgroundColor: bgColor,
+                                        color: textColor,
+                                        '&:hover': {
+                                            backgroundColor: bgColor !== 'transparent' ? bgColor : undefined,
+                                        }
+                                    }}
+                                    className={`flex !justify-center h-10 ${!open && '!p-0'}`}
+                                    onClick={() => {
+                                        toggleExpand(itemPath);
+                                        if (item.path) {
+                                            navigate(visibleChildren[0]?.path || '#');
+                                        }
+                                        setOpen(true);
+                                    }}
+                                >
+                                    <ListItemIcon sx={{color: textColor}} className={"px-2 !min-w-0"}>
+                                        {item.icon}
+                                    </ListItemIcon>
+                                    <ListItemText
+                                        primary={item.name}
+                                        sx={{opacity: open ? 1 : 0}}
+                                        className={`${!open && 'hidden'}`}
+                                    />
+                                    {open && (
+                                        isExpanded ? <ExpandMore/> : <ChevronRight/>
+                                    )}
+                                </ListItemButton>
+                            </Tooltip>
                             {isExpanded && renderNavItems(visibleChildren, level + 1, itemPath)}
                         </Box>
                     );
@@ -298,25 +302,28 @@ export default function MiniDrawer() {
                         disablePadding
                         sx={{backgroundColor: isActive ? COLORS.itemActiveBg : 'transparent'}}
                     >
-                        <ListItemButton
-                            sx={{
-                                paddingLeft: open ? `${5 + (level * 5)}px` : '5px',
-                                color: isActive ? 'inherit' : textColor,
-                            }}
-                            onClick={() => {
-                                navigate(item.path)
-                                setOpen(true);
-                            }}
-                            className={"flex justify-center h-10"}
-                        >
-                            <ListItemIcon sx={{color: isActive ? 'inherit' : textColor}} className={"px-2 !min-w-0"}>
-                                {item.icon}
-                            </ListItemIcon>
-                            <ListItemText
-                                primary={item.name}
-                                sx={{opacity: open ? 1 : 0}}
-                            />
-                        </ListItemButton>
+                        <Tooltip title={!open &&item.name}>
+                            <ListItemButton
+                                sx={{
+                                    paddingLeft: open ? `${5 + (level * 5)}px` : '5px',
+                                    color: isActive ? 'inherit' : textColor,
+                                }}
+                                onClick={() => {
+                                    navigate(item.path)
+                                    setOpen(true);
+                                }}
+                                className={"flex justify-center h-10"}
+                            >
+                                <ListItemIcon sx={{color: isActive ? 'inherit' : textColor}}
+                                              className={"px-2 !min-w-0"}>
+                                    {item.icon}
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary={item.name}
+                                    sx={{opacity: open ? 1 : 0}}
+                                />
+                            </ListItemButton>
+                        </Tooltip>
                     </ListItem>
                 );
             });
@@ -371,7 +378,7 @@ export default function MiniDrawer() {
             </Drawer>
             <Box component="main" sx={{flexGrow: 1}}>
                 <DrawerHeader/>
-                <Box  className={"px-6"}>
+                <Box className={"px-6"}>
                     <Routes>
                         {generateRoutes(NAV_ITEMS)}
                         <Route path="*" element={<Page title="404 - Not Found"/>}/>
