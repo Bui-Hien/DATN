@@ -1,12 +1,15 @@
-import AppBar from "./views/Layout/AppBar";
 import "./i18n";
 import React from "react";
+import {BrowserRouter} from 'react-router-dom';
+import MiniDrawer from "./views/Layout/AppBar";
 
 function App() {
 
     return (
         <React.StrictMode>
-            <AppBar/>
+            <BrowserRouter>
+            <MiniDrawer/>
+            </BrowserRouter>
         </React.StrictMode>
     );
 }
