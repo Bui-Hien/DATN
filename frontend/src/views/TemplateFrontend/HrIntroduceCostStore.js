@@ -5,7 +5,7 @@ import {
   saveHrIntroduceCost,
   deleteHrIntroduceCost,
   getListHrIntroduceCostByStaffId
-} from "./Service";
+} from "./HrIntroduceCostService";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 import i18n from "i18n";
@@ -19,7 +19,7 @@ toast.configure ({
   limit:3,
 });
 
-export default class Store {
+export default class HrIntroduceCostStore {
 
   intactSearchObject = {
     ... new SearchHrIntroduceCost ()

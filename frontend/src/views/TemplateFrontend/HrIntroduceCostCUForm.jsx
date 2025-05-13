@@ -6,10 +6,10 @@ import { useStore } from "../../stores";
 import * as Yup from "yup";
 import { observer } from "mobx-react";
 import GlobitsTextField from "../../common/form/GlobitsTextField";
+import GlobitsPopupV2 from "app/common/GlobitsPopupV2";
 import GlobitsDateTimePicker from "app/common/form/GlobitsDateTimePicker";
 import ChooseUsingStaffSection from "../User/UsingAccountStaff/ChooseUsingStaffSection";
 import GlobitsVNDCurrencyInput from "app/common/form/GlobitsVNDCurrencyInput";
-import GlobitsPopupV2 from "../../common/GlobitsPopupV2";
 
 function HrIntroduceCostFilterCUForm (props) {
   const {staffId = null, onSaved} = props;

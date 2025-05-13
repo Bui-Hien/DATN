@@ -194,16 +194,8 @@ const DrawerHeader = styled('div')(({theme}) => ({
     alignItems: 'center',
     justifyContent: 'flex-end',
     padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
     ...theme.mixins.toolbar,
 }));
-// Page Component
-const Page = ({title}) => (
-    <Typography variant="h4" sx={{mt: 2}}>
-        {title}
-    </Typography>
-);
-
 export default function MiniDrawer() {
     const navigate = useNavigate();
     const location = useLocation();
@@ -217,11 +209,6 @@ export default function MiniDrawer() {
             [itemPath]: !prev[itemPath]
         }));
     };
-    useEffect(() => {
-        if (!open) {
-            setExpandedItems({})
-        }
-    }, [open]);
     // Hàm kiểm tra xem item có con đang được chọn không
     const hasActiveChild = (item, currentPath) => {
         if (!item.children) return false;
@@ -328,25 +315,6 @@ export default function MiniDrawer() {
                 );
             });
     };
-    // Generate routes từ NAV_ITEMS
-    const generateRoutes = (items) => {
-        return items.flatMap(item => {
-            const routes = [];
-            if (item.path) {
-                routes.push(
-                    <Route
-                        key={item.path}
-                        path={item.path}
-                        element={<Page title={item.name}/>}
-                    />
-                );
-            }
-            if (item.children?.length) {
-                routes.push(...generateRoutes(item.children));
-            }
-            return routes;
-        });
-    };
     return (
         <Box sx={{display: 'flex'}}>
             <CssBaseline/>
@@ -357,11 +325,7 @@ export default function MiniDrawer() {
                         aria-label="open drawer"
                         onClick={() => setOpen(!open)}
                         edge="start"
-                        sx={[
-                            {
-                                marginRight: 5,
-                            },
-                        ]}
+                        className={""}
                     >
                         <MenuIcon/>
                     </IconButton>
@@ -380,8 +344,7 @@ export default function MiniDrawer() {
                 <DrawerHeader/>
                 <Box className={"px-6"}>
                     <Routes>
-                        {generateRoutes(NAV_ITEMS)}
-                        <Route path="*" element={<Page title="404 - Not Found"/>}/>
+                        <Route path="*" element={<div>404 - Not Found</div>}/>
                     </Routes>
                 </Box>
             </Box>

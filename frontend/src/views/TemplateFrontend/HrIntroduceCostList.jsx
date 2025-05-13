@@ -6,7 +6,7 @@ import { IconButton, Icon, Tooltip } from "@material-ui/core";
 import { observer } from "mobx-react";
 import { formatDate, formatVNDMoney, getDate, getMonth } from "app/LocalFunction";
 
-function List () {
+function HrIntroduceCostList () {
   const {hrIntroduceCostStore} = useStore ();
   const {t} = useTranslation ();
 
@@ -128,9 +128,9 @@ function List () {
     },
     {
       title:t ("Tổng thưởng theo cấp bậc"),
-      field:"cost",
+      field:"referralFeeLevel",
       minWidth:"150px",
-      render:(row) => <span>{row?.referralFeeLevel ?? ""}</span>,
+      render:(row) => <span>{formatVNDMoney (row?.referralFeeLevel)}</span>,
       align:"left",
     },
     {
@@ -215,4 +215,4 @@ function List () {
   );
 }
 
-export default memo (observer (List));
+export default memo (observer (HrIntroduceCostList));
