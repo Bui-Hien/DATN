@@ -4,7 +4,7 @@ import { useStore } from "app/stores";
 import { observer } from "mobx-react";
 import { useTranslation } from "react-i18next";
 import { useFormikContext } from "formik";
-import GlobitsTable from "app/common/GlobitsTable";
+import GlobitsTable from "app/common/CommonTable";
 import { formatDate } from "app/LocalFunction";
 import GlobitsPopupV2 from "app/common/GlobitsPopupV2";
 import {

@@ -10,13 +10,13 @@ import { useFormikContext } from "formik";
 import React, { useEffect, useState } from "react";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import { useTranslation } from "react-i18next";
-import GlobitsPagingAutocompleteV2 from "../../form/GlobitsPagingAutocompleteV2";
+import GlobitsPagingAutocompleteV2 from "../../form/CommonPagingAutocompleteV2";
 import { pagingAllOrg } from "../../../views/Organization/OrganizationService";
 import { pagingHasPermissionDepartments, pagingStaff } from "../../../views/HumanResourcesInformation/StaffService";
 import { pagingPositionTitle } from "../../../views/PositionTitle/PositionTitleService";
 import RotateLeftIcon from "@material-ui/icons/RotateLeft";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
-import GlobitsTextField from "../../form/GlobitsTextField";
+import GlobitsTextField from "../../form/CommonTextField";
 
 function StaffWorkScheduleSelectionForm(props) {
     const {

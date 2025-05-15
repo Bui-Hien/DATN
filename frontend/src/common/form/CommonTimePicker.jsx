@@ -1,73 +1,65 @@
 import React from "react";
-import { useField } from "formik";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-} from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
-import { useFormikContext } from "formik";
+import {useField, useFormikContext} from "formik";
+import {LocalizationProvider, TimePicker} from "@mui/x-date-pickers";
+import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
 
-const GlobitsTimePicker = ({
-  disablePast,
-  disableFuture,
-  name,
-  size,
-  format,
-  inputVariant,
-  defaultValue,
-  isTimePicker,
-  label,
-  required,
-  readOnly = false,  // Thêm prop readOnly
-  ...otherProps
-}) => {
-  const { setFieldValue } = useFormikContext();
-  const [field, meta] = useField(name);
+const CommonTimePicker = ({
+                               disablePast,
+                               disableFuture,
+                               name,
+                               size = "small",
+                               format = "HH:mm",
+                               label,
+                               required,
+                               readOnly = false,
+                               isTimePicker,
+                               ...otherProps
+                           }) => {
+    const {setFieldValue} = useFormikContext();
+    const [field, meta] = useField(name);
 
-  const onChange = (value) => {
-    if (readOnly) return;  // Nếu readOnly, không thay đổi giá trị
-    setFieldValue(name, value);
-  };
+    const onChange = (value) => {
+        if (!readOnly) {
+            setFieldValue(name, value);
+        }
+    };
 
-  const configTimePicker = {
-    ...field,
-    ...otherProps,
-    disablePast: disablePast ? disablePast : false,
-    disableFuture: disableFuture ? disableFuture : false,
-    inputVariant: inputVariant ? inputVariant : "outlined",
-    size: size ? size : "small",
-    format: format ? format : "HH:mm",
-    fullWidth: true,
-    value: field?.value ? field.value : otherProps?.value || null,
-    onChange: otherProps?.onChange ? otherProps.onChange : onChange,
-    InputLabelProps: {
-      htmlFor: name,
-      shrink: true,
-    },
-    invalidDateMessage: "Thời gian không hợp lệ",
-    className: `${readOnly ? 'read-only' : ''}`,  // Thêm class read-only khi readOnly là true
-  };
+    const showError = Boolean(meta.touched && meta.error);
 
-  if (meta && meta.error && meta.initialValue) {
-    configTimePicker.error = true;
-    configTimePicker.helperText = meta.error;
-  }
+    return (
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+            {label && (
+                <label htmlFor={name} style={{fontSize: "1rem"}}>
+                    {label} {required && <span style={{color: "red"}}> * </span>}
+                </label>
+            )}
 
-  return (
-    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      {label && (
-        <label htmlFor={name} style={{ fontSize: "1rem" }}>
-          {label} {required && <span style={{ color: "red" }}> * </span>}
-        </label>
-      )}
-
-      {isTimePicker ? (
-        <KeyboardTimePicker {...configTimePicker} />
-      ) : (
-        <KeyboardTimePicker {...configTimePicker} />
-      )}
-    </MuiPickersUtilsProvider>
-  );
+            <TimePicker
+                {...otherProps}
+                value={field.value || otherProps.value || null}
+                onChange={otherProps.onChange || onChange}
+                disabled={readOnly}
+                ampm={false}
+                disablePast={disablePast}
+                disableFuture={disableFuture}
+                slotProps={{
+                    textField: {
+                        fullWidth: true,
+                        size,
+                        id: name,
+                        error: showError,
+                        helperText: showError ? meta.error : "",
+                        InputLabelProps: {
+                            shrink: true,
+                        },
+                        inputProps: {
+                            readOnly,
+                        },
+                    },
+                }}
+            />
+        </LocalizationProvider>
+    );
 };
 
-export default GlobitsTimePicker;
+export default CommonTimePicker;

@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import { useFormikContext } from "formik";
 import { useTranslation } from "react-i18next";
-import GlobitsTable from "app/common/GlobitsTable";
+import GlobitsTable from "app/common/CommonTable";
 import GlobitsConfirmationDialog from "app/common/GlobitsConfirmationDialog";
 import { PositionRelationshipType } from "app/LocalConstants";
 import { formatDate } from "app/LocalFunction";

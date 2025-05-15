@@ -1,8 +1,6 @@
-import LocalConstants from "app/LocalConstants";
-import localStorageService from "app/services/localStorageService";
 import moment from "moment";
-import i18n from "i18n";
 import React from "react";
+import * as i18n from "i18next";
 
 export const t = (...args) => {
   return i18n.t(...args);
@@ -56,115 +54,6 @@ export function dateYupTypeValidation(schema, field, fieldName) {
       }
       return true;
     });
-}
-
-//hàm để lấy các trường mặc định nếu đăng nhập tài khoản đơn vị
-export const getDefaultOrg = () => {
-  let region = null
-  let province = null
-  let org = null
-  let department = null
-  let district = null;
-  let ward = null;
-  if (localStorageService.isOrg() || localStorageService.isDepartment()) {
-    // district = localStorageService.getCurrentOrg()?.districtUnit || null
-    province = localStorageService.getCurrentOrg()?.provinceUnit || null
-    region = province?.parent || null
-    org = localStorageService.getCurrentOrg() || null
-    if (localStorageService.isDepartment()) {
-      department = localStorageService.getCurrentOrg()?.department || null
-    }
-  } else if (localStorageService.isRegion()) {
-    region = localStorageService.getAdminUnit() || null
-  } else if (localStorageService.isProvince()) {
-    province = localStorageService.getAdminUnit() || null
-    region = province?.parent || null
-  } else if (localStorageService.isDistrict()) {
-    district = localStorageService.getAdminUnit() || null
-    province = district?.parent || null;
-    region = province?.parent || null;
-  } else if (localStorageService.isWard()) {
-    ward = localStorageService.getAdminUnit() || null
-    district = ward?.parent || null
-    province = district?.parent || null;
-    region = province?.parent || null;
-  }
-  return { region, province, org, department, district, ward }
-};
-
-//hàm để check xn M2 có nhập kết quả chưa
-export const isM2HasResult = (diagnosticReport) => {
-  if (diagnosticReport?.mtb) {
-    return true;
-  }
-  if (diagnosticReport?.itemObss?.length > 0) {
-    return diagnosticReport.itemObss.some((itemObs) => {
-      switch (itemObs?.item?.datatype) {
-        case LocalConstants.DATATYPE_NUMERIC: {
-          if (!Number.isNaN(Number.parseFloat(itemObs?.valueNumeric))) {
-            return true;
-          }
-          break;
-        }
-        case LocalConstants.DATATYPE_DATE: {
-          if (itemObs?.valueDate) {
-            return true;
-          }
-          break;
-        }
-        case LocalConstants.DATATYPE_BOOLEAN: {
-          if (this.isBoolean(itemObs?.valueBoolean)) {
-            return true;
-          }
-          break;
-        }
-        case LocalConstants.DATATYPE_CODED: {
-          if (itemObs?.valueCoded) {
-            if (
-              itemObs.valueCoded?.name === "Chờ kết quả" ||
-              itemObs.valueCoded?.code === "H.1"
-            ) {
-              return false;
-            }
-            return true;
-          }
-          break;
-        }
-        default: {
-          return false;
-        }
-      }
-      return false;
-    });
-  }
-  return false;
-};
-
-//dùng cho các trường textbox trong formik để kiểm tra ký tự đặc biệt
-export function textYupFormatValidation(schema, field, fieldName) {
-  const typeErrorText = fieldName
-    ? `${fieldName} - ${t("validation.specialChar")}`
-    : t("validation.specialChar");
-  return (
-    schema
-      .typeError(typeErrorText)
-      // .matches(LocalConstants.REGEX_SPECIAL_CHARACTERS, fieldName ? `${fieldName} chứa ký tự không hợp lệ` : "Chứa ký tự không hợp lệ")
-      .test("special-char", typeErrorText, (value) => {
-        let newValue = value
-          ?.normalize("NFD")
-          ?.replace(/[\u0300-\u036f]/g, "")
-          ?.replace(/đ/g, "d")
-          ?.replace(/Đ/g, "D");
-        if (
-          value &&
-          newValue &&
-          newValue.match(/^[.,;?/:'"@&%()/|=!#-\w\s\d\n\*\+]*$/) === null
-        ) {
-          return false;
-        }
-        return true;
-      })
-  );
 }
 
 //find the first selected (pathName and value) M2 test

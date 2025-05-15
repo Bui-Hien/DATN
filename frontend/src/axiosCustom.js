@@ -1,12 +1,12 @@
 import axios from 'axios';
-import {API_ENPOINT} from "./appConfig";
 import {refreshToken} from "./auth/authService";
+import {API_ENDPOINT} from "./appConfig";
 
 const getAccessToken = () => localStorage.getItem("access_token");
 const getRefreshToken = () => localStorage.getItem("refresh_token");
 
 const api = axios.create({
-    baseURL: API_ENPOINT,
+    baseURL: API_ENDPOINT,
     timeout: 10000,
     headers: {'Content-Type': 'application/json'}
 });

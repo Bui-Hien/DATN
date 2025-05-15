@@ -1,13 +1,14 @@
 import React from 'react';
-import styles from "./styles.module.css";
-import {Icon, Tooltip} from "@mui/material";
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import Tooltip from '@mui/material/Tooltip';
+import styles from './styles.module.scss';
 
-const ErrorIcon = ({helperText}) => {
+const ErrorIcon = ({ helperText }) => {
     return (
         <Tooltip arrow title={helperText}>
-            <Icon color="error" className={styles.icon}/>
+            <ErrorOutlineIcon color="error" className={styles.icon} />
         </Tooltip>
-    )
-}
+    );
+};
 
 export default React.memo(ErrorIcon);

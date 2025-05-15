@@ -1,222 +1,229 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { FastField, getIn } from "formik";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-  KeyboardDateTimePicker,
-  KeyboardTimePicker,
-} from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
+import React, {useEffect, useState} from "react";
+import {FastField, getIn} from "formik";
+import {DatePicker, DateTimePicker, LocalizationProvider, TimePicker,} from "@mui/x-date-pickers";
+import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
 import viLocale from "date-fns/locale/vi";
 import moment from "moment";
 
 const configDefaultForm = {
-  size: null,
-  variant: undefined,
-  fullWidth: true,
-  debounceTime: 200,
-  notDefaultNumber: true,
-  datePicker: {
+    size: "medium",
+    variant: "outlined",
+    fullWidth: true,
+    debounceTime: 200,
     notValueMillisecond: false,
-  },
 };
 
-const GlobitsDateTimePicker = (props) => (
-  <FastField
-    {...props}
-    name={props.name}
-    shouldUpdate={shouldComponentUpdate}
-  >
-    {({ field, meta, form }) => {
-      return (
-        <Component
-          {...props}
-          field={field}
-          meta={meta}
-          setFieldValue={form.setFieldValue}
-        />
-      );
-    }}
-  </FastField>
+const CommonDateTimePicker = (props) => (
+    <FastField
+        {...props}
+        name={props.name}
+        shouldUpdate={shouldComponentUpdate}
+    >
+        {({field, meta, form}) => {
+            return (
+                <Component
+                    {...props}
+                    field={field}
+                    meta={meta}
+                    setFieldValue={form.setFieldValue}
+                    formik={form}
+                />
+            );
+        }}
+    </FastField>
 );
 
 const Component = ({
-  disabled,
-  fullWidth = configDefaultForm.fullWidth,
-  label,
-  name,
-  size = configDefaultForm.size,
-  inputVariant,
-  className = "",
-  debounceTime = configDefaultForm.debounceTime,
-  notDelay,
-  field,
-  meta,
-  requiredLabel,
-  required,
-  onChange,
-  readOnly = false, // Thêm prop readOnly với giá trị mặc định là false
-  InputProps,
-  InputLabelProps,
-  disablePast = false,
-  disableFuture = false,
-  isDateTimePicker,
-  isDateTimeSecondsPicker,
-  isTimePicker,
-  format = isTimePicker
-    ? "HH:mm"
-    : "dd/MM/yyyy" +
-      (isDateTimeSecondsPicker ? " HH:mm:ss" : isDateTimePicker ? " HH:mm" : ""),
-  minDate,
-  maxDate,
-  minDateMessage = "Ngày không hợp lệ",
-  maxDateMessage = "Ngày không hợp lệ",
-  okLabel = "CHỌN",
-  cancelLabel = "HUỶ",
-  setFieldValue,
-  multiple,
-  notValueMillisecond = configDefaultForm.datePicker.notValueMillisecond,
-  tabIndex,
-  ...otherProps
-}) => {
-  const [value, setValue] = useState(field.value);
-  const [t, setT] = useState(undefined);
+                       disabled,
+                       fullWidth = configDefaultForm.fullWidth,
+                       label,
+                       name,
+                       size = configDefaultForm.size,
+                       variant = configDefaultForm.variant,
+                       className = "",
+                       debounceTime = configDefaultForm.debounceTime,
+                       notDelay,
+                       field,
+                       meta,
+                       requiredLabel,
+                       required,
+                       onChange,
+                       readOnly = false,
+                       InputProps,
+                       InputLabelProps,
+                       disablePast = false,
+                       disableFuture = false,
+                       isDateTimePicker,
+                       isDateTimeSecondsPicker, // Note: MUI v5 mặc định không hỗ trợ seconds, cần custom nếu muốn
+                       isTimePicker,
+                       format = isTimePicker
+                           ? "HH:mm"
+                           : "dd/MM/yyyy" + (isDateTimeSecondsPicker ? " HH:mm:ss" : isDateTimePicker ? " HH:mm" : ""),
+                       minDate,
+                       maxDate,
+                       minDateMessage = "Ngày không hợp lệ",
+                       maxDateMessage = "Ngày không hợp lệ",
+                       okLabel = "CHỌN",
+                       cancelLabel = "HUỶ",
+                       setFieldValue,
+                       tabIndex,
+                       formik,
+                       ...otherProps
+                   }) => {
+    // Chuyển value từ formik thành Date hoặc null
+    // Nếu field.value là số (timestamp) hoặc string hợp lệ, convert sang Date
+    const parseToDate = (val) => {
+        if (!val) return null;
+        if (val instanceof Date) return val;
+        if (typeof val === "number") return new Date(val);
+        if (typeof val === "string") {
+            const m = moment(val, ["DD/MM/YYYY", moment.ISO_8601], true);
+            if (m.isValid()) return m.toDate();
+            return new Date(val);
+        }
+        return null;
+    };
 
-  useEffect(() => {
-    setValue(field.value ?? null);
-  }, [field.value]);
+    const [value, setValue] = useState(parseToDate(field.value));
+    const [debounceTimer, setDebounceTimer] = useState(null);
 
-  const handleChange = (value) => {
-    if (readOnly) return; // Ngăn thay đổi giá trị nếu readOnly
-    setValue(value);
-    let newDate = value;
-    if (!notValueMillisecond && moment(newDate, "DD/MM/YYYY", true).isValid()) {
-      newDate = new Date(newDate).getTime();
-    }
+    useEffect(() => {
+        setValue(parseToDate(field.value));
+    }, [field.value]);
 
-    if (!notDelay) {
-      if (t) {
-        clearTimeout(t);
-      }
+    const handleChange = (newValue) => {
+        if (readOnly || disabled) return;
 
-      setT(
-        setTimeout(() => {
-          if (onChange) {
-            onChange(newDate);
-          } else {
-            setFieldValue(name, newDate);
-          }
-        }, debounceTime)
-      );
-    } else {
-      if (onChange) {
-        onChange(newDate);
-      } else {
-        setFieldValue(name, newDate);
-      }
-    }
-  };
+        setValue(newValue);
 
-  const isError = meta?.touched && meta?.error;
+        // Chuẩn hóa value trả về (timestamp hoặc null)
+        let newDate = newValue;
+        if (newDate instanceof Date && !isNaN(newDate)) {
+            if (!configDefaultForm.notValueMillisecond) {
+                newDate = newDate.getTime();
+            }
+        } else {
+            newDate = null;
+        }
 
-  const configDate = {
-    ...otherProps,
-    ...field,
-    name: name,
-    id: name,
-    disabled: disabled, // Vô hiệu hóa hoàn toàn nếu readOnly
-    fullWidth: fullWidth,
-    size: size,
-    inputVariant: inputVariant ? inputVariant : "outlined",
-    value: value || null,
-    onChange: handleChange,
-    minDate,
-    maxDate,
-    format: format,
-    error: isError,
-    helperText: fullWidth && isError ? meta.error : "",
-    InputProps: {
-      ...InputProps,
-      readOnly: readOnly, // Đặt TextField thành readOnly
-      style: readOnly
-        ? {
-            color: "rgba(0, 0, 0, 0.87)", // Màu chữ tối
-            backgroundColor: "rgba(0, 0, 0, 0.02)", // Nền nhạt để biểu thị readOnly
-            opacity: 1, // Độ trong suốt đầy đủ
-          }
-        : undefined,
-    },
-    inputProps: {
-      readOnly: readOnly, // Đảm bảo input cũng là readOnly
-      tabIndex: tabIndex,
-      style: readOnly
-        ? {
-            color: "rgba(0, 0, 0, 0.87)", // Màu chữ tối
-            cursor: "not-allowed", // Con trỏ biểu thị không thể tương tác
-            opacity: 1, // Độ trong suốt đầy đủ
-          }
-        : undefined,
-    },
-    KeyboardButtonProps: {
-      tabIndex: tabIndex || 0,
-      style: readOnly ? { display: "none" } : undefined, // Ẩn nút lịch khi readOnly
-    },
-    InputLabelProps: {
-      htmlFor: name,
-      shrink: false,
-      ...InputLabelProps,
-    },
-    className: `input-container ${className} ${readOnly ? "read-only" : ""}`,
-    disablePast: disablePast,
-    disableFuture: disableFuture,
-    invalidDateMessage: "Ngày không hợp lệ",
-    minDateMessage: minDateMessage,
-    maxDateMessage: maxDateMessage,
-    okLabel: okLabel,
-    cancelLabel: cancelLabel,
-  };
+        if (!notDelay) {
+            if (debounceTimer) clearTimeout(debounceTimer);
 
-  return (
-    <div className="h-100 flex justify-right align-start flex-column">
-      <MuiPickersUtilsProvider utils={DateFnsUtils} locale={viLocale}>
-        {label && (
-          <label htmlFor={name} className={`label-container`}>
-            {label} {required ? <span style={{ color: "red" }}> * </span> : <></>}
-          </label>
-        )}
+            setDebounceTimer(
+                setTimeout(() => {
+                    if (onChange) {
+                        onChange(newDate);
+                    } else {
+                        setFieldValue(name, newDate);
+                    }
+                }, debounceTime)
+            );
+        } else {
+            if (onChange) {
+                onChange(newDate);
+            } else {
+                setFieldValue(name, newDate);
+            }
+        }
+    };
 
-        {isDateTimePicker ? (
-          <KeyboardDateTimePicker {...configDate} />
-        ) : isTimePicker ? (
-          <KeyboardTimePicker {...configDate} />
-        ) : (
-          <KeyboardDatePicker {...configDate} />
-        )}
-      </MuiPickersUtilsProvider>
-    </div>
-  );
+    const isError = meta?.touched && Boolean(meta?.error);
+
+    // Cấu hình props cho picker
+    const pickerProps = {
+        ...otherProps,
+        value,
+        onChange: handleChange,
+        disabled: disabled || readOnly,
+        inputFormat: format, // inputFormat thay cho format ở MUI v5
+        minDate,
+        maxDate,
+        minDateMessage,
+        maxDateMessage,
+        showToolbar: true,
+        disablePast,
+        disableFuture,
+        className: `input-container ${className} ${readOnly ? "read-only" : ""}`,
+        slotProps: {
+            textField: {
+                variant,
+                size,
+                fullWidth,
+                error: isError,
+                helperText: fullWidth && isError ? meta.error : "",
+                InputProps: {
+                    ...InputProps,
+                    readOnly: readOnly,
+                    style: readOnly
+                        ? {
+                            color: "rgba(0, 0, 0, 0.87)",
+                            backgroundColor: "rgba(0, 0, 0, 0.02)",
+                            opacity: 1,
+                        }
+                        : undefined,
+                },
+                inputProps: {
+                    tabIndex,
+                    readOnly: readOnly,
+                    style: readOnly
+                        ? {
+                            color: "rgba(0, 0, 0, 0.87)",
+                            cursor: "not-allowed",
+                            opacity: 1,
+                        }
+                        : undefined,
+                },
+                InputLabelProps: {
+                    shrink: true,
+                    ...InputLabelProps,
+                    htmlFor: name,
+                },
+            },
+        },
+    };
+
+    return (
+        <div className="h-100 flex justify-right align-start flex-column">
+            <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={viLocale}>
+                {label && (
+                    <label htmlFor={name} className="label-container">
+                        {label} {required ? <span style={{color: "red"}}> * </span> : null}
+                    </label>
+                )}
+
+                {isDateTimePicker ? (
+                    <DateTimePicker {...pickerProps} />
+                ) : isTimePicker ? (
+                    <TimePicker {...pickerProps} />
+                ) : (
+                    <DatePicker {...pickerProps} />
+                )}
+            </LocalizationProvider>
+        </div>
+    );
 };
 
+// Hàm so sánh để FastField chỉ rerender khi cần thiết
 const shouldComponentUpdate = (nextProps, currentProps) => {
-  return (
-    nextProps.name !== currentProps.name ||
-    nextProps.value !== currentProps.value ||
-    nextProps.onChange !== currentProps.onChange ||
-    nextProps.disablePast !== currentProps.disablePast ||
-    nextProps.disableFuture !== currentProps.disableFuture ||
-    nextProps.label !== currentProps.label ||
-    nextProps.required !== currentProps.required ||
-    nextProps.disabled !== currentProps.disabled ||
-    nextProps.readOnly !== currentProps.readOnly ||
-    nextProps.formik.isSubmitting !== currentProps.formik.isSubmitting ||
-    Object.keys(nextProps).length !== Object.keys(currentProps).length ||
-    getIn(nextProps.formik.values, currentProps.name) !==
-      getIn(currentProps.formik.values, currentProps.name) ||
-    getIn(nextProps.formik.errors, currentProps.name) !==
-      getIn(currentProps.formik.errors, currentProps.name) ||
-    getIn(nextProps.formik.touched, currentProps.name) !==
-      getIn(currentProps.formik.touched, currentProps.name)
-  );
+    return (
+        nextProps.name !== currentProps.name ||
+        nextProps.value !== currentProps.value ||
+        nextProps.onChange !== currentProps.onChange ||
+        nextProps.disablePast !== currentProps.disablePast ||
+        nextProps.disableFuture !== currentProps.disableFuture ||
+        nextProps.label !== currentProps.label ||
+        nextProps.required !== currentProps.required ||
+        nextProps.disabled !== currentProps.disabled ||
+        nextProps.readOnly !== currentProps.readOnly ||
+        nextProps.formik.isSubmitting !== currentProps.formik.isSubmitting ||
+        Object.keys(nextProps).length !== Object.keys(currentProps).length ||
+        getIn(nextProps.formik.values, currentProps.name) !==
+        getIn(currentProps.formik.values, currentProps.name) ||
+        getIn(nextProps.formik.errors, currentProps.name) !==
+        getIn(currentProps.formik.errors, currentProps.name) ||
+        getIn(nextProps.formik.touched, currentProps.name) !==
+        getIn(currentProps.formik.touched, currentProps.name)
+    );
 };
 
-export default React.memo(GlobitsDateTimePicker);
+export default React.memo(CommonDateTimePicker);

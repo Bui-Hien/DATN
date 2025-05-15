@@ -1,16 +1,7 @@
-import React, { useEffect, useState } from "react";
-import {
-  TextField,
-  MenuItem,
-  Grid,
-  makeStyles,
-  Button,
-} from "@material-ui/core";
-import AddIcon from "@material-ui/icons/Add";
-import Pagination from "@material-ui/lab/Pagination";
-import { useTranslation } from "react-i18next";
-import { useTheme } from "@material-ui/core/styles";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
+import React, {useEffect, useState} from "react";
+import {Button, Grid, makeStyles, MenuItem, Pagination, TextField, useMediaQuery, useTheme,} from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import {useTranslation} from "react-i18next";
 import PaginationOptionPopup from "./PaginationOptionPopup";
 import PropTypes from "prop-types";
 
@@ -28,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "#2a80c8",
       borderColor: "#2a80c8",
     },
-    "& > .Mui-selected::hover": {
+    "& > .Mui-selected:hover": {
       color: "#fff",
       backgroundColor: "#1f5f94",
       borderColor: "#1f5f94",
@@ -36,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
   },
   rowTool: {
     display: "flex",
-    // width: "100%",
     "& > p": {
       margin: "5px 0px",
     },
@@ -94,10 +84,6 @@ const useStyles = makeStyles((theme) => ({
       margin: 0,
       paddingTop: "3px",
     },
-
-    // "& .MuiSelect-icon": {
-    //   right: "-50%",
-    // },
   },
   pageSelector: {
     "& .MuiPagination-ul": {
@@ -114,14 +100,13 @@ const useStyles = makeStyles((theme) => ({
     "& > ul": {
       justifyContent: "space-evenly",
     },
-
     "& .MuiButtonBase-root": {
       backgroundColor: "#5899ca !important",
     },
   },
 }));
 
-function GlobitsPagination(props) {
+function CommonPagination(props) {
   const { t } = useTranslation();
   const classes = useStyles();
   let {
@@ -132,8 +117,8 @@ function GlobitsPagination(props) {
     totalElements,
     page,
   } = props;
-  
-  const [pageSize, setPageSize] = React.useState(props.pageSize);
+
+  const [pageSize, setPageSize] = useState(props.pageSize);
   const handleChange = (event) => {
     setRowsPerPage(event);
     setPageSize(event.target.value);
@@ -145,137 +130,120 @@ function GlobitsPagination(props) {
   const [openPopup, setOpenPopup] = useState(false);
 
   useEffect(() => {
-    setPageSize(props.pageSize)
+    setPageSize(props.pageSize);
   }, [props.pageSize]);
 
   return (
-    <div className={classes.paginationBar}>
-      <Grid container spacing={2}>
-        {!isMobile && (
-          <Grid className={classes.rowTool} item>
-            <div className={classes.totalRows}>
-              <p>
-                {t("general.totalRows")}
-                <span className={classes.totalRowsNum}>{totalElements}</span>
-              </p>
-            </div>
-            <div className={classes.rowsPerPage}>
-              <p>{t("general.rowsPerPage")}</p>
-              <TextField
-                select
-                value={pageSize}
-                className={classes.rowOptions}
-                onChange={handleChange}
-              >
-                {pageSizeOption.map((option, index) => {
-                  return (
-                    <MenuItem key={index} value={option}>
-                      {option}
-                    </MenuItem>
-                  );
-                })}
-              </TextField>
-            </div>
-            {/* <div className={classes.pageGoto}>
+      <div className={classes.paginationBar}>
+        <Grid container spacing={2}>
+          {!isMobile && (
+              <Grid className={classes.rowTool} item>
+                <div className={classes.totalRows}>
+                  <p>
+                    {t("general.totalRows")}
+                    <span className={classes.totalRowsNum}>{totalElements}</span>
+                  </p>
+                </div>
+                <div className={classes.rowsPerPage}>
+                  <p>{t("general.rowsPerPage")}</p>
+                  <TextField
+                      select
+                      value={pageSize}
+                      className={classes.rowOptions}
+                      onChange={handleChange}
+                  >
+                    {pageSizeOption.map((option, index) => (
+                        <MenuItem key={index} value={option}>
+                          {option}
+                        </MenuItem>
+                    ))}
+                  </TextField>
+                </div>
+              </Grid>
+          )}
 
-              <p>
-                <span></span>
-                {t("general.goto_page")}
-              </p>
-              <TextField
-                className={classes.gotoInput}
-                type="number"
-                name="pageIndex"
-                value={pageIndex}
-                onChange={(e) => setPageIndex(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    handleGo(e);
-                  }
-                }}
-              />
-            </div> */}
-          </Grid>
-        )}
+          {isMobile && (
+              <>
+                <Grid className={classes.rowTool} item xs={12}>
+                  <div className={classes.totalRows}>
+                    <p>
+                      {t("general.totalRows")}
+                      <span className={classes.totalRowsNum}>{totalElements}</span>
+                    </p>
+                  </div>
+                  <Button
+                      className="btn btn-primary d-inline-flex"
+                      startIcon={<AddIcon />}
+                      variant="contained"
+                      onClick={() => setOpenPopup(true)}
+                  />
+                </Grid>
 
-        {isMobile && (
-          <>
-            <Grid className={classes.rowTool} item xs={12}>
-              <div className={classes.totalRows}>
-                <p>
-                  {t("general.totalRows")}
-                  <span className={classes.totalRowsNum}>{totalElements}</span>
-                </p>
-              </div>
-              <Button
-                className="btn btn-primary d-inline-flex"
-                startIcon={<AddIcon />}
-                variant="contained"
-                onClick={() => setOpenPopup(true)}
-              />
-            </Grid>
+                <PaginationOptionPopup
+                    open={openPopup}
+                    handleClose={() => setOpenPopup(false)}
+                    totalElements={totalElements}
+                    setRowsPerPage={setRowsPerPage}
+                    pageSizeOption={pageSizeOption}
+                    totalPages={totalPages}
+                    handleChangePage={handleChangePage}
+                    page={page}
+                    pageSize={pageSize}
+                />
+              </>
+          )}
 
-            <PaginationOptionPopup
-              open={openPopup}
-              handleClose={() => setOpenPopup(false)}
-              totalElements={totalElements}
-              setRowsPerPage={setRowsPerPage}
-              pageSizeOption={pageSizeOption}
-              totalPages={totalPages}
-              handleChangePage={handleChangePage}
-              page={page}
-              pageSize={pageSize}
-            />
-          </>
-        )}
+          {isMobile && (
+              <Grid className={classes.pageSelector} item xs={12}>
+                <Pagination
+                    className={classes.pagingElement}
+                    count={totalPages}
+                    shape="rounded"
+                    page={page}
+                    color="primary"
+                    onChange={handleChangePage}
+                    boundaryCount={1}
+                    siblingCount={1}
+                    showFirstButton
+                    showLastButton
+                />
+              </Grid>
+          )}
 
-        {isMobile && (
-          <Grid className={classes.pageSelector} item xs={12}>
-            <Pagination
-              className={classes.pagingElement}
-              count={totalPages}
-              shape="rounded"
-              page={page}
-              color="primary"
-              onChange={handleChangePage}
-              boundaryCount={1}
-              siblingCount={1}
-              showFirstButton
-              showLastButton
-            />
-          </Grid>
-        )}
-
-        {!isMobile && (
-          <Grid className={classes.pageSelector} item>
-            <Pagination
-              count={totalPages}
-              shape="rounded"
-              page={page}
-              color="primary"
-              onChange={handleChangePage}
-              boundaryCount={1}
-              siblingCount={1}
-              showFirstButton
-              showLastButton
-            />
-          </Grid>
-        )}
-      </Grid>
-    </div>
+          {!isMobile && (
+              <Grid className={classes.pageSelector} item>
+                <Pagination
+                    count={totalPages}
+                    shape="rounded"
+                    page={page}
+                    color="primary"
+                    onChange={handleChangePage}
+                    boundaryCount={1}
+                    siblingCount={1}
+                    showFirstButton
+                    showLastButton
+                />
+              </Grid>
+          )}
+        </Grid>
+      </div>
   );
 }
 
-GlobitsPagination.propTypes = {
+CommonPagination.propTypes = {
   totalElements: PropTypes.number,
   totalPages: PropTypes.number,
   pageSizeOption: PropTypes.arrayOf(PropTypes.number),
   setRowsPerPage: PropTypes.func,
   handleChangePage: PropTypes.func,
-}
+  pageSize: PropTypes.number,
+  page: PropTypes.number,
+};
 
-GlobitsPagination.defaultProps = {
+CommonPagination.defaultProps = {
   pageSizeOption: [5, 10, 25, 50],
-}
+  pageSize: 10,
+  page: 1,
+};
 
-export default GlobitsPagination
+export default CommonPagination;

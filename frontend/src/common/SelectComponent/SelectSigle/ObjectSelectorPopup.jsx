@@ -2,7 +2,7 @@ import { Grid, IconButton, Radio, Tooltip } from "@material-ui/core";
 import Search from "@material-ui/icons/Search";
 import GlobitsTextField from "app/common/form/GlobitsTextField";
 import GlobitsPopupV2 from "app/common/GlobitsPopupV2";
-import GlobitsTable from "app/common/GlobitsTable";
+import GlobitsTable from "app/common/CommonTable";
 import { Form, Formik, useFormikContext } from "formik";
 import { observer } from "mobx-react";
 import { memo, useEffect, useState } from "react";

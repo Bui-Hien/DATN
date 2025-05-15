@@ -1,57 +1,55 @@
 import React from "react";
-import { Checkbox, FormControlLabel, FormGroup, makeStyles } from "@material-ui/core";
+import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 import { useField } from "formik";
+import { styled } from "@mui/material/styles";
 
-const useStyles = makeStyles((theme) => ({
-    checkBoxLabel: {
-        margin: "0px !important",
-        "& .MuiIconButton-root": {
-            padding: "8px !important",
-        },
+const CheckBoxLabel = styled(FormControlLabel)(({ theme }) => ({
+    margin: 0,
+    "& .MuiIconButton-root": {
+        padding: 8,
     },
-    alignCenter: {
-        display: "flex",
-        alignItems: "flex-start",
-        justifyContent: "center",
-        height: "100%",
+    "&.read-only": {
+        // Nếu cần style khi readonly thì thêm vào đây
+        // Ví dụ: opacity: 0.6, pointerEvents: 'none',
     },
 }));
 
-const GlobitsCheckBox = ({
-    name,
-    label,
-    style,
-    alignCenter = true,
-    readOnly = false, // Thêm prop readOnly với giá trị mặc định là false
-    handleChange: externalHandleChange,
-    ...otherProps
-}) => {
-    const classes = useStyles();
+const AlignCenterWrapper = styled(FormGroup)({
+    display: "flex",
+    alignItems: "flex-start",
+    justifyContent: "center",
+    height: "100%",
+});
+
+const CommonCheckBox = ({
+                             name,
+                             label,
+                             style,
+                             alignCenter = true,
+                             readOnly = false,
+                             handleChange: externalHandleChange,
+                             ...otherProps
+                         }) => {
     const [field, meta] = useField(name);
-    // Tạo wrapper cho handleChange từ bên ngoài
+
     const handleExternalChange = (evt) => {
-        if (readOnly) return; // Không thực hiện khi readOnly
+        if (readOnly) return;
         if (externalHandleChange) {
-            externalHandleChange(evt, evt.target.checked); // Truyền thêm giá trị checked
+            externalHandleChange(evt, evt.target.checked);
         }
     };
 
-    // Default handleChange
     const handleInternalChange = (evt) => {
-        if (readOnly) return; // Ngăn thay đổi giá trị nếu readOnly
-        field.onChange(evt); // Gọi hàm onChange mặc định của Formik
+        if (readOnly) return;
+        field.onChange(evt);
     };
-    // const handleChange = (event) => {
-    //     if (readOnly) return; // Ngăn thay đổi giá trị nếu readOnly
-    //     field.onChange(event); // Gọi hàm onChange mặc định của Formik
-    // };
 
     const configCheckBox = {
         ...field,
         ...otherProps,
-        checked: field.value || false, // Đảm bảo giá trị mặc định là false nếu không có giá trị
+        checked: Boolean(field.value),
         onChange: externalHandleChange ? handleExternalChange : handleInternalChange,
-        className: readOnly ? "read-only" : "", // Thêm class read-only khi readOnly là true
+        className: readOnly ? "read-only" : "",
     };
 
     if (meta && meta.touched && meta.error) {
@@ -59,10 +57,19 @@ const GlobitsCheckBox = ({
         configCheckBox.helperText = meta.error;
     }
 
-    return (
-        <FormGroup className={alignCenter ? classes.alignCenter : ""}>
-            <FormControlLabel
-                className={`${classes.checkBoxLabel} ${readOnly ? "read-only" : ""}`} // Thêm class read-only cho FormControlLabel
+    return alignCenter ? (
+        <AlignCenterWrapper>
+            <CheckBoxLabel
+                className={readOnly ? "read-only" : ""}
+                style={style}
+                control={<Checkbox {...configCheckBox} />}
+                label={label}
+            />
+        </AlignCenterWrapper>
+    ) : (
+        <FormGroup>
+            <CheckBoxLabel
+                className={readOnly ? "read-only" : ""}
                 style={style}
                 control={<Checkbox {...configCheckBox} />}
                 label={label}
@@ -71,4 +78,4 @@ const GlobitsCheckBox = ({
     );
 };
 
-export default GlobitsCheckBox;
+export default CommonCheckBox;

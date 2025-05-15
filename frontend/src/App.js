@@ -1,16 +1,11 @@
-import "./i18n";
-import React from "react";
-import {BrowserRouter} from 'react-router-dom';
-import MiniDrawer from "./views/Layout/AppBar";
+import "../src/styles/_app.scss";
+import {BrowserRouter} from "react-router-dom";
 
 function App() {
-
     return (
-        <React.StrictMode>
-            <BrowserRouter>
+        <BrowserRouter>
             <MiniDrawer/>
-            </BrowserRouter>
-        </React.StrictMode>
+        </BrowserRouter>
     );
 }
 

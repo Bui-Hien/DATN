@@ -4,7 +4,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { uploadImage } from "app/views/profile/ProfileService";
 
-function GlobitsEditor(props) {
+function CommonEditor(props) {
     const { label, oldStyle } = props;
 
     return (
@@ -12,8 +12,11 @@ function GlobitsEditor(props) {
             {({ field, form }) => (
                 <>
                     {label && (
-                        <label htmlFor={props?.name} className={`${oldStyle ? "old-label" : "label-container"}`}>
-                            {label} {props?.validate ? <span style={{ color: "red" }}> * </span> : <></>}
+                        <label
+                            htmlFor={props?.name}
+                            className={oldStyle ? "old-label" : "label-container"}
+                        >
+                            {label} {props?.validate ? <span style={{ color: "red" }}> * </span> : null}
                         </label>
                     )}
                     <MyComponent {...props} field={field} setFieldValue={form.setFieldValue} />
@@ -25,20 +28,19 @@ function GlobitsEditor(props) {
 
 function MyComponent({ disabled, field, name, setFieldValue, placeholder, readOnly, oldStyle = false }) {
     const quillRef = useRef();
-    const [data, setData] = useState(field.value);
-
-    function handleChange(value) {
-        setData(value);
-        setFieldValue(name, value);
-    }
+    const [data, setData] = useState(field.value || "");
 
     useEffect(() => {
-        setData(field?.value ?? null);
-    }, [field?.value]);
+        setData(field.value || "");
+    }, [field.value]);
 
-    const imageHandler = (e) => {
+    const handleChange = (value) => {
+        setData(value);
+        setFieldValue(name, value);
+    };
+
+    const imageHandler = () => {
         const editor = quillRef.current.getEditor();
-        // console.log(editor);
         const input = document.createElement("input");
         input.setAttribute("type", "file");
         input.setAttribute("accept", "image/*");
@@ -47,26 +49,32 @@ function MyComponent({ disabled, field, name, setFieldValue, placeholder, readOn
         input.onchange = async () => {
             const file = input.files[0];
             if (/^image\//.test(file.type)) {
-                console.log(file);
-                const formData = new FormData();
-                formData.append("image", file);
-                const res = await uploadImage(formData); // upload data into server or aws or cloudinary
-                const url = res?.data?.url;
-                editor.insertEmbed(editor.getSelection(), "image", url);
+                try {
+                    const formData = new FormData();
+                    formData.append("image", file);
+                    const res = await uploadImage(formData);
+                    const url = res?.data?.url;
+                    const range = editor.getSelection(true);
+                    editor.insertEmbed(range.index, "image", url);
+                    editor.setSelection(range.index + 1);
+                } catch (error) {
+                    console.error("Upload image failed", error);
+                }
             } else {
-                // ErrorToast("You could only upload images.");
-                console.log("You could only upload images.");
+                console.warn("You could only upload images.");
             }
         };
     };
 
     const modules = useMemo(() => {
-        if(readOnly) {
+        if (readOnly || disabled) {
             return {
                 toolbar: false,
+                clipboard: {
+                    matchVisual: false,
+                },
             };
         }
-
         return {
             clipboard: {
                 matchVisual: false,
@@ -124,23 +132,25 @@ function MyComponent({ disabled, field, name, setFieldValue, placeholder, readOn
                 },
             },
         };
-    }, []);
+    }, [readOnly, disabled]);
 
     return (
         <ReactQuill
             ref={quillRef}
-            theme='snow'
+            theme="snow"
             value={data}
             onChange={handleChange}
             placeholder={placeholder}
-            readOnly={readOnly}
+            readOnly={readOnly || disabled}
             modules={modules}
-            className={`bg-white ${oldStyle ? "" : "editor-container"} ${readOnly ? "read-only" : ""}`} // Thêm class read-only
+            className={`bg-white ${oldStyle ? "" : "editor-container"} ${
+                readOnly || disabled ? "read-only" : ""
+            }`}
         />
     );
 }
 
-export default memo(GlobitsEditor);
+export default memo(CommonEditor);
 
 const shouldComponentUpdate = (nextProps, currentProps) => {
     return (

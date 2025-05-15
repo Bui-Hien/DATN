@@ -1,12 +1,13 @@
-import { TextField, makeStyles } from "@material-ui/core";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
 import { FastField, getIn } from "formik";
 import { isEqual } from "lodash";
 import React, { useEffect, useState } from "react";
+import {makeStyles} from "@mui/material";
 
 const PAGE_SIZE = 20;
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     container: {
         "& .MuiAutocomplete-inputRoot": {
             paddingTop: "0px !important",
@@ -20,42 +21,42 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const GlobitsPagingAutocompleteV2 = (props) => {
+const CommonPagingAutocompleteV2 = (props) => {
     return (
         <FastField {...props} name={props.name} shouldUpdate={shouldComponentUpdate}>
-            {({ field, meta, form }) => {
-                return <MyPagingAutocomplete {...props} field={field} meta={meta} setFieldValue={form.setFieldValue} />;
-            }}
+            {({ field, meta, form }) => (
+                <MyPagingAutocomplete {...props} field={field} meta={meta} setFieldValue={form.setFieldValue} />
+            )}
         </FastField>
     );
 };
 
 function MyPagingAutocomplete({
-    api,
-    name,
-    searchObject,
-    allowLoadOptions = true,
-    clearOptionOnClose,
-    handleChange,
-    field,
-    meta,
-    setFieldValue,
-    label,
-    oldStyle = false,
-    required,
-    getOptionDisabled,
-    readOnly = false, // Add readOnly prop with default value false
-    ...otherProps
-}) {
+                                  api,
+                                  name,
+                                  searchObject,
+                                  allowLoadOptions = true,
+                                  clearOptionOnClose,
+                                  handleChange,
+                                  field,
+                                  meta,
+                                  setFieldValue,
+                                  label,
+                                  oldStyle = false,
+                                  required,
+                                  getOptionDisabled,
+                                  readOnly = false,
+                                  ...otherProps
+                              }) {
     const [page, setPage] = useState(1);
     const [options, setOptions] = useState([]);
-    const [loading, setLoading] = React.useState(false);
+    const [loading, setLoading] = useState(false);
     const [keyword, setKeyword] = useState("");
-    const [firstLoading, setFirstLoading] = React.useState(true);
-    const [totalPage, setTotalPage] = React.useState(1);
-    const [open, setOpen] = React.useState(false);
-    const [t, setT] = React.useState();
-    const [typing, setTyping] = React.useState(false);
+    const [firstLoading, setFirstLoading] = useState(true);
+    const [totalPage, setTotalPage] = useState(1);
+    const [open, setOpen] = useState(false);
+    const [t, setT] = useState();
+    const [typing, setTyping] = useState(false);
 
     const classes = useStyles();
 
@@ -91,7 +92,6 @@ function MyPagingAutocomplete({
 
     const loadMoreResults = () => {
         const nextPage = page + 1;
-
         setPage(nextPage);
         api({
             ...searchObject,
@@ -100,7 +100,7 @@ function MyPagingAutocomplete({
             keyword,
         }).then(({ data }) => {
             if (data && data.content) {
-                setOptions([...options, ...data.content]);
+                setOptions((prev) => [...prev, ...data.content]);
                 setTotalPage(data.totalPages);
             }
         });
@@ -108,7 +108,6 @@ function MyPagingAutocomplete({
 
     const handleScroll = (event) => {
         const listboxNode = event.currentTarget;
-
         const position = listboxNode.scrollTop + listboxNode.clientHeight;
         if (listboxNode.scrollHeight - position <= 8 && page < totalPage) {
             loadMoreResults();
@@ -116,8 +115,7 @@ function MyPagingAutocomplete({
     };
 
     const onOpen = () => {
-        if (readOnly) return; // Prevent opening if readOnly
-
+        if (readOnly) return;
         setOpen(true);
         if (firstLoading && allowLoadOptions) {
             getData();
@@ -135,11 +133,9 @@ function MyPagingAutocomplete({
     };
 
     const handleChangeText = (value) => {
-        if (readOnly) return; // Prevent text change if readOnly
-
+        if (readOnly) return;
         setTyping(true);
         if (t) clearTimeout(t);
-        //@ts-ignore
         setT(
             setTimeout(() => {
                 setKeyword(value || null);
@@ -149,12 +145,12 @@ function MyPagingAutocomplete({
     };
 
     const defaultHandleChange = (_, value) => {
-        if (readOnly) return; // Prevent value change if readOnly
-
+        if (readOnly) return;
         setFieldValue(name, value ? value : null);
     };
 
-    const defaultGetOptionLabel = (option) => option[otherProps?.displayName ? otherProps?.displayName : "name"] || "";
+    const defaultGetOptionLabel = (option) =>
+        option[otherProps?.displayName || "name"] || "";
 
     return (
         <Autocomplete
@@ -164,20 +160,19 @@ function MyPagingAutocomplete({
             options={options}
             loading={loading && !readOnly}
             onOpen={onOpen}
-            open={readOnly ? false : open} // Prevent opening dropdown if readOnly
+            open={readOnly ? false : open}
             onClose={onClose}
             className={`${oldStyle ? "" : "input-container"} ${classes.container} ${readOnly ? "read-only" : ""}`}
             onChange={handleChange || defaultHandleChange}
+            getOptionLabel={otherProps?.getOptionLabel || defaultGetOptionLabel}
             getOptionSelected={(option, value) => option?.id === value?.id}
-            getOptionLabel={otherProps?.getOptionLabel ? otherProps.getOptionLabel : defaultGetOptionLabel}
-            getOptionDisabled={readOnly ? () => true : getOptionDisabled} // Disable all options when readOnly
+            getOptionDisabled={readOnly ? () => true : getOptionDisabled}
             noOptionsText="Không có dữ liệu"
             onKeyDown={(event) => {
                 if (event.key === "Enter") {
                     event.stopPropagation();
                     event.preventDefault();
                 }
-                return true;
             }}
             onInputChange={(event) => {
                 if (!readOnly) {
@@ -188,23 +183,23 @@ function MyPagingAutocomplete({
                 <>
                     {label && (
                         <label htmlFor={name} className={`${oldStyle ? "old-label" : "label-container"}`}>
-                            {label} {required ? <span style={{ color: "red" }}> * </span> : <></>}
+                            {label}
+                            {required && <span style={{ color: "red" }}> * </span>}
                         </label>
                     )}
-
                     <TextField
                         {...params}
                         variant={otherProps?.variant || "outlined"}
                         inputProps={{
                             ...params.inputProps,
-                            autoComplete: "off", // disable autocomplete and autofill
-                            readOnly: readOnly, // Make input readOnly
+                            autoComplete: "off",
+                            readOnly: readOnly,
                             style: readOnly
                                 ? {
                                     ...params.inputProps.style,
-                                    color: "rgba(0, 0, 0, 0.87)", // Ensure text is dark black
-                                    cursor: "text", // Keep cursor as text
-                                    opacity: 1, // Ensure full opacity
+                                    color: "rgba(0, 0, 0, 0.87)",
+                                    cursor: "text",
+                                    opacity: 1,
                                 }
                                 : params.inputProps.style,
                         }}
@@ -215,7 +210,7 @@ function MyPagingAutocomplete({
                                 ? {
                                     ...params.InputProps.style,
                                     color: "rgba(0, 0, 0, 0.87)",
-                                    backgroundColor: "rgba(0, 0, 0, 0.02)", // Very light background to indicate readOnly
+                                    backgroundColor: "rgba(0, 0, 0, 0.02)",
                                     opacity: 1,
                                 }
                                 : params.InputProps.style,
@@ -223,7 +218,7 @@ function MyPagingAutocomplete({
                         className={`${classes.autoHeight} ${readOnly ? "read-only" : ""}`}
                         error={meta && meta.touched && meta.error}
                         helperText={meta && meta.touched && meta.error ? meta.error : ""}
-                        required={required} // Add this line
+                        required={required}
                     />
                 </>
             )}
@@ -254,4 +249,4 @@ const shouldComponentUpdate = (nextProps, currentProps) => {
     );
 };
 
-export default React.memo(GlobitsPagingAutocompleteV2);
+export default React.memo(CommonPagingAutocompleteV2);

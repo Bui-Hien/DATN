@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { TextField, useMediaQuery } from "@material-ui/core";
-import { FastField, getIn } from "formik";
-import { useTheme } from "@material-ui/core/styles";
+import React, {useEffect, useState} from "react";
+import {FastField, getIn} from "formik";
 import clsx from "clsx";
-import { containsOnlyNumbers, RequiredLabel } from "app/LocalFunction";
+import {TextField, useMediaQuery, useTheme} from "@mui/material";
+import {containsOnlyNumbers} from "../CommonFunctions";
 
-const GlobitsNumberInput = (props) => {
+const CommonNumberInput = (props) => {
     return (
         <FastField {...props} name={props.name} shouldUpdate={shouldComponentUpdate}>
             {({ field, meta ,form}) => {
@@ -180,15 +179,6 @@ const MyNumberInput = ({
         }
     };
 
-    const displayLabel = label ? (
-        <>
-            {label}
-            {requiredLabel && <RequiredLabel />}
-        </>
-    ) : (
-        ""
-    );
-
     const configTextfield = {
         ...field,
         ...otherProps,
@@ -221,8 +211,13 @@ const MyNumberInput = ({
     return (
         <>
             {label && (
-                <label className={`${oldStyle ? "old-label" : "label-container"}`}>
-                    {displayLabel} {validate || required ? <span style={{ color: "red" }}> * </span> : <></>}
+                <label
+                    htmlFor={name}
+                    className={`${oldStyle ? "old-label" : "label-container"}`}
+                    id={`label-for-${name}`} // Thêm ID để có thể focus vào label khi có lỗi
+                >
+                    {label}
+                    {required && <span style={{ color: "red" }}> * </span>}
                 </label>
             )}
             <TextField {...configTextfield} />
@@ -250,4 +245,4 @@ const shouldComponentUpdate = (nextProps, currentProps) => {
     );
 };
 
-export default React.memo(GlobitsNumberInput);
+export default React.memo(CommonNumberInput);

@@ -1,20 +1,22 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect, memo } from "react";
-import { TextField } from "@material-ui/core";
-import { FastField, getIn } from "formik";
-import NumberFormat from 'react-number-format';
-import PropTypes from 'prop-types';
+import React, {memo, useEffect, useRef, useState} from "react";
+import {TextField} from "@mui/material";
+import {FastField, getIn} from "formik";
+import NumberFormat from "react-number-format";
+import PropTypes from "prop-types";
 
-const GlobitsVNDCurrencyInput = (props) => (
-    <FastField {...props} name={props.name} shouldUpdate={shouldComponentUpdate}>
-        {({ field, meta, form }) => <Component {...props} field={field} meta={meta} setFieldValue={form.setFieldValue} />}
+const CommonVNDCurrencyInput = (props) => (
+    <FastField {...props} name={props.name} shouldUpdate={areEqual}>
+        {({ field, meta, form }) => (
+            <Component {...props} field={field} meta={meta} setFieldValue={form.setFieldValue} formik={form} />
+        )}
     </FastField>
 );
 
-const NumericFormatCustom = React.forwardRef(({ onChange, ...other }, ref) => (
+const NumericFormatCustom = React.forwardRef(({ onChange, value, ...other }, ref) => (
     <NumberFormat
         {...other}
         getInputRef={ref}
+        value={value}
         onValueChange={(values) => {
             onChange({
                 target: {
@@ -31,54 +33,59 @@ const NumericFormatCustom = React.forwardRef(({ onChange, ...other }, ref) => (
 NumericFormatCustom.propTypes = {
     name: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 const Component = ({
-    name,
-    label,
-    type = "text",
-    debounceTime = 400, //default 0ms
-    notDelay,
-    field,
-    meta,
-    disabled,
-    placeholder,
-    minRowArea,
-    required,
-    className = '',
-    onChange,
-    setFieldValue,
-    oldStyle,
-    readOnly,
-    variant,
-    suffix = "",
-    textAlignRight, // Add this prop
-}) => {
-    const [value, setValue] = useState(field.value);
-    const [t, setT] = useState(undefined);
+                       name,
+                       label,
+                       type = "text",
+                       debounceTime = 400,
+                       notDelay,
+                       field,
+                       meta,
+                       disabled,
+                       placeholder,
+                       minRowArea,
+                       required,
+                       className = "",
+                       onChange,
+                       setFieldValue,
+                       oldStyle,
+                       readOnly,
+                       variant,
+                       suffix = "",
+                       textAlignRight,
+                       formik,
+                   }) => {
+    const [value, setValue] = useState(field.value ?? "");
+    const timer = useRef();
 
     useEffect(() => {
         if (field.value !== value) setValue(field.value ?? "");
     }, [field.value]);
 
-    const handleChange = (e) => {
-        let value = e.target.value;
+    useEffect(() => {
+        return () => {
+            if (timer.current) clearTimeout(timer.current);
+        };
+    }, []);
 
-        setValue(value);
+    const handleChange = (e) => {
+        const val = e.target.value;
+        setValue(val);
         if (!notDelay) {
-            if (t) {
-                clearTimeout(t);
-            }
+            if (timer.current) clearTimeout(timer.current);
             if (onChange) {
-                setT(setTimeout(() => onChange(e), debounceTime));
+                timer.current = setTimeout(() => onChange(e), debounceTime);
             } else {
-                setT(setTimeout(() => setFieldValue(name, e.target.value ? e.target.value : null), debounceTime));
+                timer.current = setTimeout(() => setFieldValue(name, val ? val : null), debounceTime);
             }
         } else {
             if (onChange) {
                 onChange(e);
             } else {
-                setFieldValue(name, e.target.value ? e.target.value : null);
+                setFieldValue(name, val ? val : null);
             }
         }
     };
@@ -86,53 +93,49 @@ const Component = ({
     return (
         <>
             {label && (
-                <label htmlFor={name} className={`${oldStyle ? 'old-label' : 'label-container'}`}>
-                    {label} {required ? <span style={{ color: "red" }}> * </span> : <></>}
+                <label htmlFor={name} className={`${oldStyle ? "old-label" : "label-container"}`}>
+                    {label} {required && <span style={{ color: "red" }}> * </span>}
                 </label>
             )}
 
             <TextField
-                variant={variant ? variant : "outlined"}
+                variant={variant || "outlined"}
                 id={name}
                 name={name}
                 value={value}
                 fullWidth
-                onChange={readOnly ? null : handleChange}  // Ngừng xử lý onChange khi readOnly
+                onChange={readOnly ? undefined : handleChange}
                 placeholder={placeholder}
-                disabled={disabled || readOnly}  // Vô hiệu hóa khi readOnly
+                disabled={disabled || readOnly}
                 type={type}
-                error={Boolean(meta && meta.touched && meta.error)}
-                helperText={meta && meta.touched && meta.error ? meta.error : ""}
+                error={Boolean(meta?.touched && meta?.error)}
+                helperText={meta?.touched && meta?.error ? meta.error : ""}
                 InputProps={{
-                    readOnly: readOnly,
+                    readOnly,
                     inputComponent: NumericFormatCustom,
                     style: textAlignRight ? { textAlign: "right" } : {},
-                    endAdornment: suffix && (
-                        <span style={{ marginRight: '8px', color: '#757575' }}>{suffix}</span>
-                    ),
+                    endAdornment: suffix && <span style={{ marginRight: "8px", color: "#757575" }}>{suffix}</span>,
                 }}
                 InputLabelProps={{
                     htmlFor: name,
                     shrink: true,
                 }}
-
                 minRows={minRowArea}
-                className={`${oldStyle ? '' : 'input-container'} ${readOnly ? 'read-only' : ''}`}  // Thêm class read-only khi readOnly là true
+                className={`${oldStyle ? "" : "input-container"} ${readOnly ? "read-only" : ""} ${className}`}
             />
         </>
     );
 };
 
-const shouldComponentUpdate = (nextProps, currentProps) => (
-    nextProps?.readOnly !== currentProps?.readOnly ||
-    nextProps?.value !== currentProps?.value ||
-    nextProps?.onChange !== currentProps?.onChange ||
-    nextProps?.disabled !== currentProps?.disabled ||
-    nextProps?.name !== currentProps?.name ||
-    Object.assign(nextProps).length !== Object.assign(currentProps).length ||
-    getIn(nextProps.formik.values, currentProps.name) !== getIn(currentProps.formik.values, currentProps.name) ||
-    getIn(nextProps.formik.errors, currentProps.name) !== getIn(currentProps.formik.errors, currentProps.name) ||
-    getIn(nextProps.formik.touched, currentProps.name) !== getIn(currentProps.formik.touched, currentProps.name)
-);
+const areEqual = (prevProps, nextProps) =>
+    prevProps.readOnly !== nextProps.readOnly ||
+    prevProps.value !== nextProps.value ||
+    prevProps.onChange !== nextProps.onChange ||
+    prevProps.disabled !== nextProps.disabled ||
+    prevProps.name !== nextProps.name ||
+    Object.keys(prevProps).length !== Object.keys(nextProps).length ||
+    getIn(prevProps.formik?.values, prevProps.name) !== getIn(nextProps.formik?.values, prevProps.name) ||
+    getIn(prevProps.formik?.errors, prevProps.name) !== getIn(nextProps.formik?.errors, prevProps.name) ||
+    getIn(prevProps.formik?.touched, prevProps.name) !== getIn(nextProps.formik?.touched, prevProps.name);
 
-export default memo(GlobitsVNDCurrencyInput);
+export default memo(CommonVNDCurrencyInput, areEqual);

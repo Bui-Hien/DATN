@@ -1,11 +1,8 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
-import { DialogContent } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { Dialog, DialogTitle, Icon, IconButton, DialogActions } from "@material-ui/core";
+import React, {memo} from "react";
+import {useTranslation} from "react-i18next";
+import {Dialog, DialogActions, DialogContent, DialogTitle, IconButton, makeStyles, Paper,} from "@mui/material";
 import Draggable from "react-draggable";
-import Paper from "@material-ui/core/Paper";
-import { memo } from "react";
+import CloseIcon from "@mui/icons-material/Close";
 import PropTypes from "prop-types";
 
 const useStyles = makeStyles({
@@ -16,31 +13,28 @@ const useStyles = makeStyles({
     },
 });
 
-
-
-function GlobitsPopup({
-    open,
-    onClosePopup,
-    title,
-    size,
-    children,
-    styleTitle,
-    noHeader,
-    styleContent,
-    action,
-    noDialogContent,
-    popupId,
-    scroll
-}) {
+function CommonPopup({
+                          open,
+                          onClosePopup,
+                          title,
+                          size,
+                          children,
+                          styleTitle = {},
+                          noHeader,
+                          styleContent,
+                          action,
+                          noDialogContent,
+                          popupId,
+                          scroll,
+                      }) {
     const { t } = useTranslation();
     const classes = useStyles();
 
     function PaperComponent(props) {
-
         return (
             <Draggable
-                handle={popupId ? "#" + popupId : "#globits-draggable-dialog-title"}
-                cancel={'[class*="MuiDialogContent-root"]'}
+                handle={popupId ? `#${popupId}` : "#globits-draggable-dialog-title"}
+                cancel='[class*="MuiDialogContent-root"]'
             >
                 <Paper {...props} />
             </Draggable>
@@ -55,50 +49,52 @@ function GlobitsPopup({
             fullWidth
             scroll={scroll || "paper"}
             maxWidth={size}
+            aria-labelledby={popupId || "globits-draggable-dialog-title"}
+            onClose={onClosePopup} // Allow closing on ESC and backdrop click
         >
-            {!noHeader ? (
+            {!noHeader && (
                 <>
                     <DialogTitle
-                        className="dialog-header"
-                        style={{ cursor: "move", ...styleTitle }}
                         id={popupId || "globits-draggable-dialog-title"}
+                        style={{ cursor: "move", ...styleTitle }}
+                        className="dialog-header"
                     >
                         <span className="text-white">{title}</span>
                     </DialogTitle>
-
                     <IconButton
-                        className="p-12 text-white"
-                        style={{ position: "absolute", right: "0px", top: "0px", }}
-                        onClick={() => onClosePopup()}
+                        onClick={onClosePopup}
+                        aria-label={t("general.close")}
+                        sx={{
+                            position: "absolute",
+                            right: 0,
+                            top: 0,
+                            color: "white",
+                            padding: "12px",
+                        }}
                     >
-                        <Icon title={t("general.close")}>
-                            close
-                        </Icon>
+                        <CloseIcon />
                     </IconButton>
                 </>
-            ) : (
-                <></>
             )}
+
             {!noDialogContent ? (
-                <DialogContent style={{ overflowY: "auto", maxHeight: "75vh", ...styleContent }}>
+                <DialogContent
+                    style={{ overflowY: "auto", maxHeight: "75vh", ...styleContent }}
+                >
                     {children}
                 </DialogContent>
             ) : (
-                <>{children}</>
+                children
             )}
-            {
-                action ? (
-                    <DialogActions className="dialog-footer p-0 mt-20">
-                        {action}
-                    </DialogActions>
-                ) : <></>
-            }
 
+            {action && (
+                <DialogActions className="dialog-footer p-0 mt-20">{action}</DialogActions>
+            )}
         </Dialog>
     );
-};
+}
 
-GlobitsPopup.propTypes = {
+CommonPopup.propTypes = {
     size: PropTypes.oneOf([false, "xs", "sm", "md", "lg", "xl"]),
     open: PropTypes.bool.isRequired,
     onClosePopup: PropTypes.func.isRequired,
@@ -107,11 +103,13 @@ GlobitsPopup.propTypes = {
     noHeader: PropTypes.bool,
     noDialogContent: PropTypes.bool,
     action: PropTypes.node,
-    styleTitle: PropTypes.object
-}
+    styleTitle: PropTypes.object,
+    popupId: PropTypes.string,
+    scroll: PropTypes.oneOf(["paper", "body"]),
+};
 
-GlobitsPopup.defaultProps = {
-    size: "lg"
-}
+CommonPopup.defaultProps = {
+    size: "lg",
+};
 
-export default memo(GlobitsPopup);
+export default memo(CommonPopup);

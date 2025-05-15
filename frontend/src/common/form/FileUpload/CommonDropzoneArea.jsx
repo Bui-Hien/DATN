@@ -1,8 +1,8 @@
-import React, { memo, useEffect, useMemo, useRef, useState } from "react";
-import { FastField, getIn } from "formik";
-import { DropzoneArea } from "material-ui-dropzone";
+import React, {memo, useEffect, useRef, useState} from "react";
+import {FastField, getIn} from "formik";
+import {DropzoneArea} from "material-ui-dropzone";
 
-function GlobitsDropzoneArea(props) {
+function CommonDropzoneArea(props) {
     const { label } = props;
 
     return (
@@ -57,7 +57,7 @@ function MyComponent({
     );
 }
 
-export default memo(GlobitsDropzoneArea);
+export default memo(CommonDropzoneArea);
 
 const shouldComponentUpdate = (nextProps, currentProps) =>
     nextProps?.value !== currentProps?.value ||

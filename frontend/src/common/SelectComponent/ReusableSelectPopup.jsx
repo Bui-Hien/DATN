@@ -17,8 +17,8 @@ import { Form, Formik } from "formik";
 import { observer } from "mobx-react";
 import React, { memo, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import GlobitsTextField from "../form/GlobitsTextField";
-import GlobitsTable from "../GlobitsTable";
+import GlobitsTextField from "../form/CommonTextField";
+import CommonTable from "../CommonTable";
 
 import CloseIcon from "@material-ui/icons/Close";
 import FilterListIcon from "@material-ui/icons/FilterList";
@@ -321,7 +321,7 @@ const ReusableSelectList = (props) => {
     const tableColumns = showCheckboxColumn ? [selectionColumn, ...columns] : columns;
 
     return (
-        <GlobitsTable
+        <CommonTable
             data={data}
             columns={tableColumns}
             totalPages={totalPages}

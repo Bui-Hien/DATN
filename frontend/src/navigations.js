@@ -1,15 +1,8 @@
 import TreeIcon from "@mui/icons-material/Schema";
 import * as React from "react";
 
-export const DRAWER_WIDTH = 240;
 export const AUTH_ROLES = ["admin"];
 
-export const COLORS = {
-    rootActiveBg: '#ef4444',
-    parentActiveBg: '#3b82f6',
-    itemActiveBg: '#fef3c7',
-    activeText: 'white',
-};
 
 export const NAV_ITEMS = [
     {

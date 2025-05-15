@@ -11,7 +11,7 @@ import { observer } from "mobx-react";
 import { memo , useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import GlobitsNumberInput from "app/common/form/GlobitsNumberInput";
-import GlobitsCheckBox from "app/common/form/GlobitsCheckBox";
+import GlobitsCheckBox from "app/common/form/CommonCheckBox";
 import { pagingPositionTitle } from "app/views/PositionTitle/PositionTitleService";
 
 

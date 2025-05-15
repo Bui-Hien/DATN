@@ -1,53 +1,76 @@
-import React, { useState } from "react";
+import React, {useRef, useState} from "react";
 import PropTypes from "prop-types";
-import { Button, Input, Typography } from "@material-ui/core";
+import {Box, Button, List, ListItem, ListItemText, Typography,} from "@mui/material";
 
-const GlobitsFileUpload = ({ onFileChange, multiple = false, label = "Upload File" ,name}) => {
+const CommonFileUpload = ({
+                             onFileChange,
+                             multiple = false,
+                             label = "Upload File",
+                             name,
+                             disabled = false,
+                           }) => {
+  const inputRef = useRef();
   const [selectedFiles, setSelectedFiles] = useState([]);
 
-  // Hàm xử lý khi chọn file
   const handleChange = (event) => {
-    const files = Array.from(event.target.files); // Chuyển FileList thành mảng
-
-    setSelectedFiles(files); // Lưu danh sách file đã chọn vào state
-
+    const files = Array.from(event.target.files);
+    setSelectedFiles(files);
     if (onFileChange) {
-      onFileChange(files); // Gọi hàm onFileChange truyền vào với danh sách file
+      onFileChange(files);
+    }
+  };
+
+  const handleButtonClick = () => {
+    if (!disabled && inputRef.current) {
+      inputRef.current.click();
     }
   };
 
   return (
-    <div>
-      <Typography variant="h6">{label}</Typography>
-      {/* Input để chọn file */}
-      <Input
-        type="file"
-        name={name}
-        inputProps={{ multiple: multiple }} // Cho phép chọn nhiều file nếu multiple = true
-        onChange={handleChange}
-      />
+      <Box>
+        <Typography variant="subtitle1" sx={{ mb: 1 }}>
+          {label}
+        </Typography>
+        <input
+            ref={inputRef}
+            type="file"
+            name={name}
+            hidden
+            multiple={multiple}
+            onChange={handleChange}
+            disabled={disabled}
+        />
+        <Button
+            variant="contained"
+            color="primary"
+            onClick={handleButtonClick}
+            disabled={disabled}
+        >
+          {multiple ? "Select Files" : "Select File"}
+        </Button>
 
-      {/* Hiển thị tên các file đã chọn */}
-      {selectedFiles.length > 0 && (
-        <div style={{ marginTop: "10px" }}>
-          <Typography variant="body1">Selected Files:</Typography>
-          <ul>
-            {selectedFiles.map((file, index) => (
-              <li key={index}>{file.name}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
+        {selectedFiles.length > 0 && (
+            <Box mt={2}>
+              <Typography variant="body2">Selected Files:</Typography>
+              <List dense>
+                {selectedFiles.map((file, index) => (
+                    <ListItem key={index}>
+                      <ListItemText primary={file.name} />
+                    </ListItem>
+                ))}
+              </List>
+            </Box>
+        )}
+      </Box>
   );
 };
 
-// Định nghĩa kiểu dữ liệu cho prop
-GlobitsFileUpload.propTypes = {
-  onFileChange: PropTypes.func.isRequired, // Hàm xử lý file được chọn
-  multiple: PropTypes.bool, // Chọn upload nhiều file hay không
-  label: PropTypes.string, // Nhãn hiển thị
-  name: PropTypes.string, // Nhãn hiển thị
+CommonFileUpload.propTypes = {
+  onFileChange: PropTypes.func.isRequired,
+  multiple: PropTypes.bool,
+  label: PropTypes.string,
+  name: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
-export default GlobitsFileUpload;
+export default CommonFileUpload;

@@ -1,6 +1,6 @@
 // ReusableSelectList.js
 import React, { memo } from "react";
-import GlobitsTable from "app/common/GlobitsTable";
+import GlobitsTable from "app/common/CommonTable";
 import { useTranslation } from "react-i18next";
 import { observer } from "mobx-react";
 import { Checkbox, Radio, Tooltip } from "@material-ui/core";
