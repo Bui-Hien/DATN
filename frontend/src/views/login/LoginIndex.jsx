@@ -1,26 +1,28 @@
-import { observer } from "mobx-react";
 import * as Yup from "yup";
-import { Form, Formik } from "formik";
-import { useRouter } from "next/navigation";
-import { TextField, Button, Card, CardContent, Typography } from "@mui/material";
-import {Validation} from "src/LocalConstants";
-import {useStore} from "src/stores";
+import {Form, Formik} from "formik";
+import {Button, Card, CardContent, Grid, Typography} from "@mui/material";
+import {useStore} from "../../stores";
+import {HOME_PAGE} from "../../appConfig";
+import {useNavigate} from "react-router-dom";
+import CommonTextField from "../../common/form/CommonTextField";
+import i18next from "i18next";
+import React from "react";
+import {observer} from "mobx-react-lite";
 
-export default observer(function Login() {
-    const router = useRouter();
-    const { loginStore } = useStore();
-    const { intactLoginObject, handleLogin, handleSetLoginObject } = loginStore;
+export default observer(function LoginIndex() {
+    const {loginStore} = useStore();
+    const {intactLoginObject, handleLogin} = loginStore;
+    const navigate = useNavigate();
 
     const validationSchema = Yup.object({
-        username: Yup.string().required(Validation.REQUIRED).nullable(),
-        password: Yup.string().required(Validation.REQUIRED).nullable(),
+        username: Yup.string().required(i18next.t("validate.required")).nullable(),
+        password: Yup.string().required(i18next.t("validate.required")).nullable(),
     });
 
     const handleSubmitForm = async (values) => {
-        handleSetLoginObject(values);
-        const success = await handleLogin();
+        const success = await handleLogin(values);
         if (success) {
-            router.push("/");
+            navigate(HOME_PAGE)
         }
     };
 
@@ -32,40 +34,39 @@ export default observer(function Login() {
                 initialValues={intactLoginObject}
                 onSubmit={handleSubmitForm}
             >
-                {({ isSubmitting, setFieldValue, errors, touched }) => (
+                {({isSubmitting, setFieldValue, errors, touched}) => (
                     <Form autoComplete="off">
                         <Card className="w-96 shadow-lg">
                             <CardContent>
                                 <Typography variant="h5" className="text-center mb-4 font-bold">
-                                    Đăng Nhập
+                                    {i18next.t("login.title")}
                                 </Typography>
-
-                                <TextField
-                                    label="Username"
-                                    fullWidth
-                                    name="username"
-                                    variant="outlined"
-                                    margin="normal"
-                                    onChange={(e) => setFieldValue("username", e.target.value)}
-                                    error={touched.username && Boolean(errors.username)}
-                                    helperText={touched.username && errors.username}
-                                />
-
-                                <TextField
-                                    label="Mật khẩu"
-                                    type="password"
-                                    fullWidth
-                                    name="password"
-                                    variant="outlined"
-                                    margin="normal"
-                                    onChange={(e) => setFieldValue("password", e.target.value)}
-                                    error={touched.password && Boolean(errors.password)}
-                                    helperText={touched.password && errors.password}
-                                />
-
-                                <Button type="submit" variant="contained" color="primary" fullWidth disabled={isSubmitting}>
-                                    Đăng nhập
-                                </Button>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12}>
+                                        <CommonTextField
+                                            label={i18next.t("login.userName")}
+                                            fullWidth
+                                            name="username"
+                                            required
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <CommonTextField
+                                            label={i18next.t("login.password")}
+                                            type="password"
+                                            fullWidth
+                                            name="password"
+                                            required
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Button type="submit" variant="contained" color="primary" fullWidth
+                                                disabled={isSubmitting}
+                                        >
+                                            {i18next.t("login.submit")}
+                                        </Button>
+                                    </Grid>
+                                </Grid>
                             </CardContent>
                         </Card>
                     </Form>

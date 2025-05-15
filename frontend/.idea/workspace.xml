@@ -5,292 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e47dca97-3d3a-416a-b068-5f4a89d0539a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/config-overrides.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/LocalConstants.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/LocalFunction.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/RootRoutes.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/_index.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/appConfig.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/auth/AuthStore.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/auth/authService.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/axiosCustom.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Accordion/TabAccordion.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Calendar/CalendarMonth.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/CommonActionButton.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/CommonAvatar.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/CommonBreadcrumb.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/CommonColorfulThemePopup.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/CommonConfigConst.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/CommonConfirmationDialog.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/CommonFunctions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/CommonPagination.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/CommonPopup.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/CommonPopupV2.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/CommonQrLink.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/CommonSearchInput.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/CommonTable.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/CommonTableNoHeader.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/CommonTableNotPagination.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Component/Print.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/DraggablePopup/PaperComponent.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/DraggablePopup/Popup.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/ErrorIcon/ErrorIcon.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/ErrorIcon/styles.module.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/FormikFocusError.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/GlobitsTreeSelect/CommonTreeSelect.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/GlobitsTreeSelect/CommonTreeSelect.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/GlobitsTreeSelect/data.adapter.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Assets.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Candidate/Candidate.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Candidate/CandidateAttachment.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Candidate/CandidateEducationHistory.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Candidate/CandidateRecruitmentRound.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Candidate/CandidateWorkingExperience.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/EducationalHistory.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/HumanResource/HrDepartment.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/HumanResource/HrDiscipline.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/HumanResource/HrDocumentItem.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/HumanResource/HrIntroduceCost.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/HumanResource/HrOrganization.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/HumanResource/HrResourcePlan.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/HumanResource/HrResourcePlanItem.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/HumanResource/LeaveType.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/HumanResource/OvertimeRequest.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/HumanResource/PersonBankAccount.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/HumanResource/Position.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/HumanResource/PositionRelationship.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/HumanResource/PositionTitle.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/HumanResource/PublicHolidayDate.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/HumanResource/RankTitle.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/HumanResource/StaffDisciplineHistory.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/HumanResource/StaffDocumentItem.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/HumanResource/StaffFamilyRelationship.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/HumanResource/StaffInsuranceHistory.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/HumanResource/StaffInsurancePackage.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/HumanResource/StaffLeave.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/HumanResource/StaffMaternityHistory.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/HumanResource/StaffWorkingLocation.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/HumanResource/SystemConfig.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Recruitment/CandidateRecruitmentRoundDocument.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Recruitment/Recruitment.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Recruitment/RecruitmentExamType.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Recruitment/RecruitmentPlan.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Recruitment/RecruitmentRequest.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Recruitment/RecruitmentRound.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Salary/SalaryItem.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Salary/SalaryItemThreshold.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Salary/SalaryPeriod.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Salary/SalaryResult.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Salary/SalaryResultItem.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Salary/SalaryResultItemGroup.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Salary/SalaryResultStaff.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Salary/SalaryStaffPayslip.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Salary/SalaryTemplate.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Salary/SalaryTemplateItem.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Salary/SalaryTemplateItemConfig.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Salary/SalaryTemplateItemGroup.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Salary/StaffSalaryTemplate.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/SearchObject/SearchCandidateRecruitmentRound.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/SearchObject/SearchHrIntroduceCost.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/SearchObject/SearchObject.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/SearchObject/SearchObjectCandidate.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/SearchObject/SearchObjectPosition.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/SearchObject/SearchObjectStaff.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/SearchObject/SearchObjectWorkScheduleCalendar.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/SearchObject/SearchPersonBankAccount.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/SearchObject/SearchRecruitment.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/SearchObject/SearchSalaryOutcome.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/SearchObject/SearchSalaryResultStaff.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/SearchObject/SearchStaffAdvancedPayment.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/SearchObject/SearchStaffDisciplineHistory.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/SearchObject/SearchStaffHasSocialInsurance.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/SearchObject/SearchStaffInsurancePackage.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/SearchObject/SearchStaffSalaryTemplate.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/SearchObject/SearchStaffSocialInsurance.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/SearchObject/SearchStaffWorkSchedule.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/SearchObject/SearchTimesheet.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Shared.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/ShiftRegistration/ShiftRegistration.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Staff.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/StaffAdvancePayment.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/StaffInterviewSchedule.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/StaffSocialInsurance.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Timekeeping/CreateStaffWorkScheduleList.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Timekeeping/ScheduledStaffCalendar.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Timekeeping/ShiftWork.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Timekeeping/ShiftWorkTimePeriod.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Timekeeping/StaffWorkSchedule.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Timekeeping/TimesheetDetail.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Model/Timekeeping/TimesheetStaff.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/PaginationOptionPopup.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Print/PrintCommon.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/SearchBox.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/SelectComponent/PositionSelectExample.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/SelectComponent/ReusableSelectList.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/SelectComponent/ReusableSelectPopup.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/SelectComponent/ReusableSelectToolbar.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/SelectComponent/SelectDepartment/SelectDepartmentComponent.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/SelectComponent/SelectDepartment/SelectDepartmentPopupV2.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/SelectComponent/SelectDepartmentTreeView/TreeAutocompleteExample.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/SelectComponent/SelectDepartmentTreeView/TreeAutocompleteSelector.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/SelectComponent/SelectMultipleStaffs/ChooseMultipleStaffsPopup.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/SelectComponent/SelectMultipleStaffs/ChooseStaffsPopupFilter.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/SelectComponent/SelectMultipleStaffs/ChooseStaffsPopupToolbar.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/SelectComponent/SelectMultipleStaffs/ChosenStaffDraggableTable.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/SelectComponent/SelectMultipleStaffs/ChosenStaffList.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/SelectComponent/SelectMultipleStaffs/ChosenStaffRegularTable.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/SelectComponent/SelectMultipleStaffs/SelectMultipleStaffsComponent.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/SelectComponent/SelectPositionTreeView/MyTreeAutocomplete.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/SelectComponent/SelectPositionTreeView/StyledTreeItem.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/SelectComponent/SelectPositionTreeView/TreeAutocompletePositionSelector.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/SelectComponent/SelectPositionTreeView/v1Position.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/SelectComponent/SelectSigle/ObjectSelectorPopup.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/SelectComponent/SelectSigle/ObjectSelectorSection.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/SelectComponent/SelectSigle/StaffSelectionForm.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/SelectComponent/SelectSigle/StaffWorkScheduleSelectionForm.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/SelectObject/SelectDepartment/SelectDepartmentComponent.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/SelectObject/SelectDepartment/SelectDepartmentPopupV2.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Skeleton/SkeletonTab.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Skeleton/SkeletonTable.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/Tab/TabComponent.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/TableComponent.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/form/CommonAsyncAutocomplete.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/form/CommonAutocomplete.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/form/CommonCheckBox.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/form/CommonDateTime.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/form/CommonDateTimePicker.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/form/CommonEditor.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/form/CommonInputSearch.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/form/CommonNumberInput.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/form/CommonPagingAutocomplete.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/form/CommonPagingAutocompleteV2.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/form/CommonRadioGroup.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/form/CommonSelectInput.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/form/CommonSelectInputV2.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/form/CommonTextField.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/form/CommonTimePicker.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/form/CommonTimezoneSelectInput.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/form/CommonVNDCurrencyInput.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/form/FileUpload/CommonDropzoneArea.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/form/FileUpload/CommonFileUpload.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/form/FileUpload/CommonImageUpload.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/form/FileUpload/CustomImageInputStyle.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/form/NewAsyncAutocomplete.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/i18n.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/locales/en.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/locales/vi.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/navigations.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/stores.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/_app.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/_mixins.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/_reboot.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/_variables.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/components/_avatar.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/components/_calendar-month.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/components/_customizer.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/components/_egret-search-box.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/components/_egret-sidenav.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/components/_egret-tootbar-menu.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/components/_form.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/components/_index.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/components/_list.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/components/_loader.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/components/_notification.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/components/_shopping-cart.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/components/_table.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/custom.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/globitsStyles.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/layouts/_index.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/layouts/layout1/_index.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/layouts/layout1/_layout1.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/layouts/layout2/_index.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/layouts/layout2/_layout2.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/layouts/layout2/_navbar.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/layouts/layout2/_topbar.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/layouts/layout2/_variables.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/layouts/shared/_footer.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/layouts/shared/_index.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/layouts/shared/_layout.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/layouts/shared/_sidenav.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/nprogress.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/tinymce/5.3.2-85/tinymce.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/utilities/_animations.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/utilities/_border.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/utilities/_carousel.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/utilities/_color.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/utilities/_common.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/utilities/_flex-box-and-grid.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/utilities/_functions.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/utilities/_layout.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/utilities/_positionings.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/utilities/_shadow.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/utilities/_sizing.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/utilities/_spacing.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/utilities/_typography.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/utilities/_utilities.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/views/_index.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/views/_list.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/views/_page-layouts.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/views/_sessions.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/views/_topbar.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/Layout/AppLayout.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/Layout/styledComponents.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/TemplateFrontend/HrIntroduceCostCUForm.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/TemplateFrontend/HrIntroduceCostFilter.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/TemplateFrontend/HrIntroduceCostIndex.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/TemplateFrontend/HrIntroduceCostList.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/TemplateFrontend/HrIntroduceCostRoutes.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/TemplateFrontend/HrIntroduceCostService.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/TemplateFrontend/HrIntroduceCostStore.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/TemplateFrontend/HrIntroduceCostToolbar.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/login/LoginIndex.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/login/LoginStore.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/DATN.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/DATN.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/CommonActionButton.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/CommonAvatar.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/CommonBreadcrumb.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/CommonColorfulThemePopup.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/CommonConfigConst.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/CommonConfirmationDialog.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/CommonPagination.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/CommonPopup.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/CommonPopupV2.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/CommonTable.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/CommonTableNoHeader.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/CommonTableNotPagination.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/CommonTreeSelect/CommonTreeSelect.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/CommonTreeSelect/CommonTreeSelect.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/CommonTreeSelect/data.adapter.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/Component/NotFound.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/EgretLoadable/EgretLoadable.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/EgretLoadable/Loading.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/ErrorIcon/ErrorIcon.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/common/ErrorIcon/ErrorIcon.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/ErrorIcon/styles.module.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/FormikFocusError.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/common/FormikFocusError.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/Model/SearchObject/SearchObject.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/common/Model/SearchObject/SearchObject.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/Tab/TabComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/common/Tab/TabComponent.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/TableComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/common/TableComponent.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/form/CommonAsyncAutocomplete.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/form/CommonAutocomplete.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/form/CommonCheckBox.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/form/CommonDateTime.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/form/CommonDateTimePicker.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/form/CommonEditor.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/form/CommonInputSearch.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/form/CommonNumberInput.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/form/CommonPagingAutocomplete.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/form/CommonPagingAutocompleteV2.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/form/CommonRadioGroup.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/form/CommonSelectInput.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/form/CommonTextField.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/form/CommonTimePicker.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/form/CommonTimezoneSelectInput.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/form/CommonVNDCurrencyInput.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/form/FileUpload/CommonDropzoneArea.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/form/FileUpload/CommonFileUpload.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/common/form/FileUpload/CommonImageUpload.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/postcss.config.mjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config-overrides.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/_index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/_index.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/auth/AuthStore.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/auth/AuthStore.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/auth/authService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/auth/authService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/navigations.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/navigations.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/Layout/AppLayout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Layout/AppLayout.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/Layout/styledComponents.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Layout/styledComponents.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/login/LoginIndex.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/login/LoginIndex.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -300,10 +27,10 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 5
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 5
+}</component>
   <component name="ProjectId" id="2x8MJJ7jNbIEz3pFDBx25RNcMFr" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -312,23 +39,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/workspace/DATN/my-app/src",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "yarn",
-    "npm.start.executor": "Run",
-    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2024.3.1.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/workspace/DATN/frontend&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
+    &quot;npm.start.executor&quot;: &quot;Run&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\WebStorm 2024.3.1.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\workspace\DATN\frontend" />
       <recent name="C:\workspace\DATN\my-app\src" />
     </key>
   </component>
@@ -365,6 +94,8 @@
       <option name="presentableId" value="Default" />
       <updated>1747315175200</updated>
       <workItem from="1747315180105" duration="11040000" />
+      <workItem from="1747336226245" duration="448000" />
+      <workItem from="1747336849014" duration="5181000" />
     </task>
     <servers />
   </component>

@@ -1,14 +1,16 @@
 import api from "../axiosCustom";
+import ConstantList from "../appConfig";
 
-const API_PATH = "/api/auth";
+const API_PATH = ConstantList.API_ENDPOINT + "/api/auth";
+const API_PATH_USER = ConstantList.API_ENDPOINT + "/api/v1/user";
 
 export const accessToken = (obj) => {
-    var url = API_PATH + "/access-token";
+    const url = API_PATH + "/access-token";
     return api.post(url, obj);
 };
 
 export const refreshToken = (refreshToken) => {
-    var url = API_PATH + "/refresh-token";
+    const url = API_PATH + "/refresh-token";
 
     return api.post(url, null, {
         headers: {
@@ -17,24 +19,27 @@ export const refreshToken = (refreshToken) => {
     });
 };
 
-
-
 export const removeToken = (obj) => {
-    var url = API_PATH + "/remove-token";
+    const url = API_PATH + "/remove-token";
     return api.post(url, obj);
 };
 
 export const forgotPassword = (obj) => {
-    var url = API_PATH + "/forgot-password";
+    const url = API_PATH + "/forgot-password";
     return api.post(url, obj);
 };
 
 export const resetPassword = (obj) => {
-    var url = API_PATH + "/reset-password";
+    const url = API_PATH + "/reset-password";
     return api.post(url, obj);
 };
 
 export const changePassword = (obj) => {
-    var url = API_PATH + "/change-password";
+    const url = API_PATH + "/change-password";
     return api.post(url, obj);
+};
+
+export const getCurrentUser = () => {
+    const url = API_PATH_USER + "/get-current-user";
+    return api.get(url);
 };

@@ -1,8 +1,6 @@
 import * as React from 'react';
-import {styled} from '@mui/material/styles';
+import {memo} from 'react';
 import Box from '@mui/material/Box';
-import MuiDrawer from '@mui/material/Drawer';
-import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -16,188 +14,30 @@ import ListItemText from '@mui/material/ListItemText';
 import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import ChevronRight from "@mui/icons-material/ChevronRight";
-import TreeIcon from "@mui/icons-material/Schema";
 import {Tooltip} from "@mui/material";
+import {AppBar, Drawer, DrawerHeader} from "./styledComponents";
+import {useStore} from "../../stores";
+import PropTypes from "prop-types";
+import {observer} from "mobx-react-lite";
+import {navigations} from "../../navigations";
 
-const drawerWidth = 240;
-const AUTH_ROLES = ["admin"];
 
-// Màu sắc theo yêu cầu
 const COLORS = {
-    rootActiveBg: '#ef4444',    // Đỏ - cho cha cấp 1
-    parentActiveBg: '#3b82f6', // Xanh - cho cha từ cấp 2
-    itemActiveBg: '#fef3c7',   // Vàng - cho item được chọn
+    rootActiveBg: '#ef4444',    // Cho cha cấp 1
+    parentActiveBg: '#3b82f6', // Cho cha từ cấp 2
+    itemActiveBg: '#fef3c7',   // Cho item được chọn
     activeText: 'white',       // Chữ trắng cho cha được active
 };
 
-// Navigation data
-const NAV_ITEMS = [
-    {
-        name: "Tổ chức",
-        icon: <TreeIcon/>,
-        isVisible: true,
-        auth: AUTH_ROLES,
-        children: [
-            {
-                name: "Cây tổ chức",
-                path: "/organization/tree",
-                isVisible: true,
-                auth: AUTH_ROLES
-            },
-            {
-                name: "Yêu cầu định biên",
-                path: "/organization/hr-resource-plan",
-                isVisible: true,
-                auth: AUTH_ROLES,
-                children: [
-                    {
-                        name: "Cây tổ chức cấp 2",
-                        path: "/organization/hr-resource-plan/tree",
-                        isVisible: true,
-                        auth: AUTH_ROLES
-                    },
-                    {
-                        name: "Yêu cầu định biên cấp 2",
-                        path: "/organization/hr-resource-plan/plan",
-                        isVisible: true,
-                        auth: AUTH_ROLES,
-                        children: [
-                            {
-                                name: "Cây tổ chức cấp 3",
-                                isVisible: true,
-                                auth: AUTH_ROLES,
-                                children: [
-                                    {
-                                        name: "Cây tổ chức cấp 3",
-                                        path: "/organization/hr-resource-plan/plan/tree",
-                                        isVisible: true,
-                                        auth: AUTH_ROLES
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            }
-        ],
-    },
-    {
-        name: "Yêu cầu định biên",
-        isVisible: true,
-        auth: AUTH_ROLES,
-        icon: <TreeIcon/>,
-
-        children: [
-            {
-                name: "Cây tổ chức cấp 2",
-                path: "/organization/hr-resource-plan/tree",
-                isVisible: true,
-                auth: AUTH_ROLES
-            },
-            {
-                name: "Yêu cầu định biên cấp 2",
-                path: "/organization/hr-resource-plan/plan",
-                isVisible: true,
-                auth: AUTH_ROLES,
-                children: [
-                    {
-                        name: "Cây tổ chức cấp 3",
-                        isVisible: true,
-                        auth: AUTH_ROLES,
-                        children: [
-                            {
-                                name: "Cây tổ chức cấp 3",
-                                path: "/organization/hr-resource-plan/plan/tree",
-                                isVisible: true,
-                                auth: AUTH_ROLES
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
-    }
-];
-const openedMixin = (theme) => ({
-    width: drawerWidth,
-    transition: theme.transitions.create('width', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-    }),
-    overflowX: 'hidden',
-});
-
-const closedMixin = (theme) => ({
-    transition: theme.transitions.create('width', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-    }),
-    overflowX: 'hidden',
-    width: `calc(${theme.spacing(7)} + 1px)`,
-    [theme.breakpoints.up('sm')]: {
-        width: `calc(${theme.spacing(8)} + 1px)`,
-    },
-});
-
-const AppBar = styled(MuiAppBar, {
-    shouldForwardProp: (prop) => prop !== 'open',
-})(({theme}) => ({
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-    }),
-    variants: [
-        {
-            props: ({open}) => open,
-            style: {
-                marginLeft: drawerWidth,
-                width: `calc(100% - ${drawerWidth}px)`,
-                transition: theme.transitions.create(['width', 'margin'], {
-                    easing: theme.transitions.easing.sharp,
-                    duration: theme.transitions.duration.enteringScreen,
-                }),
-            },
-        },
-    ],
-}));
-
-const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})(
-    ({theme}) => ({
-        width: drawerWidth,
-        flexShrink: 0,
-        whiteSpace: 'nowrap',
-        boxSizing: 'border-box',
-        variants: [
-            {
-                props: ({open}) => open,
-                style: {
-                    ...openedMixin(theme),
-                    '& .MuiDrawer-paper': openedMixin(theme),
-                },
-            },
-            {
-                props: ({open}) => !open,
-                style: {
-                    ...closedMixin(theme),
-                    '& .MuiDrawer-paper': closedMixin(theme),
-                },
-            },
-        ],
-    }),
-);
-const DrawerHeader = styled('div')(({theme}) => ({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: theme.spacing(0, 1),
-    ...theme.mixins.toolbar,
-}));
-export default function MiniDrawer() {
+function AppLayout({routes}) {
     const navigate = useNavigate();
     const location = useLocation();
     const [open, setOpen] = React.useState(true);
     const [expandedItems, setExpandedItems] = React.useState({});
+    const {authStore} = useStore();
+    const {
+        roles,
+    } = authStore;
 
     // Hàm xử lý đóng/mở menu con
     const toggleExpand = (itemPath) => {
@@ -206,6 +46,7 @@ export default function MiniDrawer() {
             [itemPath]: !prev[itemPath]
         }));
     };
+    console.log(roles)
     // Hàm kiểm tra xem item có con đang được chọn không
     const hasActiveChild = (item, currentPath) => {
         if (!item.children) return false;
@@ -217,8 +58,9 @@ export default function MiniDrawer() {
     // Render navigation items
     const renderNavItems = (items, level = 0, parentPath = '') => {
         return items
-            .filter(item => item.isVisible && item.auth?.some(role => AUTH_ROLES.includes(role)))
-            .map((item) => {
+            .filter(item => item.isVisible && ((!item.auth || item.auth.some(role => roles?.includes(role)))
+            ))
+            ?.map((item) => {
                 const itemPath = parentPath ? `${parentPath}/${item.name}` : item.name;
                 const isActive = location.pathname === item.path;
                 const hasActiveChildren = hasActiveChild(item, location.pathname);
@@ -236,14 +78,15 @@ export default function MiniDrawer() {
 
                 if (item.children?.length) {
                     const visibleChildren = item.children.filter(
-                        child => child.isVisible && child.auth?.some(role => AUTH_ROLES.includes(role))
+                        child => child.isVisible && (!child.auth || child.auth.some(role => roles?.includes(role)))
                     );
 
                     if (visibleChildren.length === 0) return null;
+                    const shouldRenderChildren = open && isExpanded;
 
                     return (
                         <Box key={`${item.name}-${level}`}>
-                            <Tooltip title={!open &&item.name}>
+                            <Tooltip title={!open && item.name}>
                                 <ListItemButton
                                     sx={{
                                         paddingLeft: open ? `${5 + (level * 5)}px` : '5px',
@@ -275,7 +118,7 @@ export default function MiniDrawer() {
                                     )}
                                 </ListItemButton>
                             </Tooltip>
-                            {isExpanded && renderNavItems(visibleChildren, level + 1, itemPath)}
+                            {shouldRenderChildren && renderNavItems(visibleChildren, level + 1, itemPath)}
                         </Box>
                     );
                 }
@@ -286,7 +129,7 @@ export default function MiniDrawer() {
                         disablePadding
                         sx={{backgroundColor: isActive ? COLORS.itemActiveBg : 'transparent'}}
                     >
-                        <Tooltip title={!open &&item.name}>
+                        <Tooltip title={!open && item.name}>
                             <ListItemButton
                                 sx={{
                                     paddingLeft: open ? `${5 + (level * 5)}px` : '5px',
@@ -334,17 +177,44 @@ export default function MiniDrawer() {
             <Drawer variant="permanent" open={open}>
                 <DrawerHeader/>
                 <List className={"!py-0"}>
-                    {renderNavItems(NAV_ITEMS)}
+                    {renderNavItems(navigations)}
                 </List>
             </Drawer>
             <Box component="main" sx={{flexGrow: 1}}>
                 <DrawerHeader/>
-                <Box className={"px-6"}>
+                <Box className={""}>
                     <Routes>
-                        <Route path="*" element={<div>404 - Not Found</div>}/>
+                        {routes?.map((item, index) => {
+                            const hasAccess = !item.auth || item.auth.some(role => roles.includes(role));
+                            if (hasAccess) {
+                                return (
+                                    <Route
+                                        key={index}
+                                        path={item.path}
+                                        element={<item.component/>}
+                                    />
+                                );
+                            }
+                            return null;
+                        })}
+                        {/*<Route path="*" element={<NotFound/>}/>*/}
                     </Routes>
                 </Box>
             </Box>
         </Box>
     );
 }
+
+export default memo(observer(AppLayout));
+
+
+AppLayout.propTypes = {
+    routes: PropTypes.arrayOf(
+        PropTypes.shape({
+            path: PropTypes.string.isRequired,
+            exact: PropTypes.bool,
+            component: PropTypes.elementType.isRequired,
+            auth: PropTypes.arrayOf(PropTypes.string),
+        })
+    ).isRequired,
+};

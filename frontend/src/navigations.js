@@ -4,7 +4,7 @@ import * as React from "react";
 export const AUTH_ROLES = ["admin"];
 
 
-export const NAV_ITEMS = [
+export const navigations = [
     {
         name: "Tổ chức",
         icon: <TreeIcon />,
