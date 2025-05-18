@@ -1,54 +1,19 @@
-import TreeIcon from "@mui/icons-material/Schema";
 import * as React from "react";
-
-export const AUTH_ROLES = ["admin"];
-
+import {SystemRole} from "./LocalConstants";
+import i18next from "i18next";
+import {ListAltOutlined} from "@material-ui/icons";
 
 export const navigations = [
     {
-        name: "Tổ chức",
-        icon: <TreeIcon />,
+        name: i18next.t("administration.title"),
+        icon: <ListAltOutlined/>,
         isVisible: true,
-        auth: AUTH_ROLES,
+        auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER],
         children: [
             {
-                name: "Cây tổ chức",
-                path: "/organization/tree",
+                name: i18next.t("country.title"),
+                path: "/administration/country",
                 isVisible: true,
-                icon: <TreeIcon />,
-                auth: AUTH_ROLES
-            },
-            {
-                name: "Yêu cầu định biên",
-                path: "/organization/hr-resource-plan",
-                isVisible: true,
-                icon: <TreeIcon />,
-                auth: AUTH_ROLES,
-                children: [
-                    {
-                        name: "Cây tổ chức cấp 2",
-                        path: "/organization/hr-resource-plan/tree",
-                        isVisible: true,
-                        icon: <TreeIcon />,
-                        auth: AUTH_ROLES
-                    },
-                    {
-                        name: "Yêu cầu định biên cấp 2",
-                        path: "/organization/hr-resource-plan/plan",
-                        isVisible: true,
-                        icon: <TreeIcon />,
-                        auth: AUTH_ROLES,
-                        children: [
-                            {
-                                name: "Cây tổ chức cấp 3",
-                                path: "/organization/hr-resource-plan/plan/tree",
-                                isVisible: true,
-                                icon: <TreeIcon />,
-                                auth: AUTH_ROLES
-                            }
-                        ]
-                    }
-                ]
             }
         ]
     }

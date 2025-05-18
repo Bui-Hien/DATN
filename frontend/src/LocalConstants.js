@@ -1,69 +1,8 @@
-const { values } = require("lodash");
-
 const SYSTEM_ROLE = {
-    ROLE_ADMIN: {
-        value: "ROLE_ADMIN",
-        name: "The general administrative role with high-level system access and management capabilities.",
-    },
-    HR_MANAGER: {
-        value: "HR_MANAGER",
-        name: "The role responsible for overseeing all HR functions, including employee management and HR policies.",
-    },
-    HR_USER: {
-        value: "HR_USER",
-        name: "A general HR role with access to employee records and HR-related functionalities.",
-    },
-    HR_ASSIGNMENT_ROLE: {
-        value: "HR_ASSIGNMENT_ROLE",
-        name: "The role responsible for assigning employees to specific projects or departments.",
-    },
-    HR_STAFF_VIEW: {
-        value: "HR_STAFF_VIEW",
-        name: "The role with read-only access to employee records and HR-related information.",
-    },
-    HR_RECRUITMENT: {
-        value: "HR_RECRUITMENT",
-        name: "The role with read-only access to employee records and HR-related information.",
-    },
-    HR_APPROVAL_RECRUITMENT_REQUEST: {
-        value: "HR_APPROVAL_RECRUITMENT_REQUEST",
-        name: "The role with read-only access to employee records and HR-related information.",
-    },
-    HR_CREATE_RECRUITMENT_REQUEST: {
-        value: "HR_CREATE_RECRUITMENT_REQUEST",
-        name: "The role with read-only access to employee records and HR-related information.",
-    },
-    HR_COMPENSATION_BENEFIT: {
-        value: "HR_COMPENSATION_BENEFIT",
-        name: "The role with read-only access to employee records and HR-related information.",
-    },
-    HR_VIEW_RECRUITMENT_REQUEST: {
-        value: "HR_VIEW_RECRUITMENT_REQUEST",
-        name: "The role with read-only access to employee records and HR-related information.",
-    },
-    HR_LEGISLATION: {
-        value: "HR_LEGISLATION",
-        name: "The role with read-only access to employee records and HR-related information.",
-    },
-
-    IS_POSITION_MANAGER: {
-        value: "IS_POSITION_MANAGER",
-        name: "Head of Department",
-    },
-
-    IS_GENERAL_DIRECTOR: {
-        value: "IS_POSITION_MANAGER",
-        name: "General director",
-    },
-
-    IS_DEPUTY_GENERAL_DIRECTOR: {
-        value: "IS_DEPUTY_GENERAL_DIRECTOR",
-        name: "Deputy general director",
-    },
-
-    getListData: function () {
-        return Object.values(this).filter((role) => typeof role === "object");
-    },
+    ROLE_ADMIN: "ROLE_ADMIN",
+    ROLE_USER: "ROLE_USER",
+    ROLE_MANAGER: "ROLE_MANAGER",
+    ROLE_HR: "ROLE_HR",
 };
 
 const ListMaritalStatus = [

@@ -15,17 +15,15 @@ export default class LoginStore {
 
     constructor() {
         makeAutoObservable(this);
-        this.loginObject = {...this.intactLoginObject};
     }
 
     setLoadingInitial = (state) => {
         this.loadingInitial = state;
     };
 
-    handleLogin = async () => {
+    handleLogin = async (payload) => {
         this.setLoadingInitial(true);
         try {
-            const payload = {...this.loginObject};
             const response = await accessToken(payload);
 
             if (response.status === 200) {
@@ -45,10 +43,6 @@ export default class LoginStore {
             toast.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
         }
         this.setLoadingInitial(false);
-    };
-
-    handleSetLoginObject = (searchObject) => {
-        this.loginObject = {...searchObject};
     };
 
     resetStore = () => {
