@@ -1,190 +1,161 @@
-import React, { useMemo } from "react";
-import PropTypes from "prop-types";
-import MaterialTable from "material-table";
-import { useTranslation } from "react-i18next";
-import CommonPagination from "./CommonPagination";
-import {makeStyles} from "@mui/material";
+import React, { useEffect } from 'react';
+import {
+  flexRender,
+  MRT_TableBodyCellValue,
+  useMaterialReactTable,
+} from 'material-react-table';
+import {
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Pagination,
+  Select,
+  MenuItem,
+  Typography,
+} from '@mui/material';
 
-const useStyles = makeStyles(() => ({
-  globitsTableWraper: {
-    width: "100%",
-    "& td": {
-      border: "1px solid #ccc",
-      paddingLeft: "4px",
-    },
-    "& th": {
-      border: "1px solid #ccc",
-      fontWeight: "600",
-      color: "#000000",
-    },
-    border: "0 !important",
-    overflow: "hidden",
-    backgroundColor: "white",
-
-    "& .MuiCheckbox-root": {
-      display: "flex",
-      justifyContent: "center",
-      margin: 0,
-    },
-
-    "& .MuiPaper-elevation2": {
-      boxShadow: "none",
-    },
-
-    "& .mat-mdc-row:hover": {
-      backgroundColor: "red",
-    },
-  },
-}));
-
-function CommonTable(props) {
-  const classes = useStyles();
-  const { t } = useTranslation();
-
+const Example = (props) => {
   const {
-    data,
-    columns,
+    handleSelectList,
+    data = [],
+    columns = [],
+    selection = false,
+    nonePagination = false,
+    colParent = false,
+    defaultExpanded = false,
     totalPages,
     handleChangePage,
     setRowsPerPage,
-    pageSize,
-    pageSizeOption,
+    pageSize = 10,
+    pageSizeOption = [10, 15, 25, 30],
     totalElements,
-    page,
-    selection,
-    handleSelectList,
-    maxWidth,
-    nonePagination,
-    maxHeight,
-    colParent = false,
-    specialStyleForLastRow,
-    defaultExpanded = false,
-    rowStyle: propRowStyle,
+    page = 1,
   } = props;
 
-  const internalRowStyle = useMemo(() => {
-    return (rowData, index) => {
-      if (!data || !Array.isArray(data)) {
-        return {};
-      }
-      const isLastRow = index === data.length - 1;
-      if (specialStyleForLastRow && isLastRow) {
-        return {
-          backgroundColor: "#fffacd",
-          fontWeight: "bold",
-          textAlign: "center",
-          color: "#000",
-          border: "1px solid #000",
-        };
-      }
-      return {
-        backgroundColor: !(index % 2 === 1) ? "#fbfcfd" : "#ffffff",
-        textAlign: "center",
-        color: "red",
-      };
-    };
-  }, [data, specialStyleForLastRow]);
+  const table = useMaterialReactTable({
+    columns,
+    data,
+    enableRowSelection: selection,
+    enablePagination: !nonePagination,
+    manualPagination: !!handleChangePage,
+    pageCount: totalPages,
+    initialState: {
+      pagination: {
+        pageIndex: page,
+        pageSize,
+      },
+      expanded: colParent ? { [0]: defaultExpanded } : {},
+      showGlobalFilter: false,
+    },
+    muiPaginationProps: {
+      rowsPerPageOptions: pageSizeOption,
+      variant: 'outlined',
+      onPageChange: (e, newPage) => {
+        if (handleChangePage) handleChangePage(newPage);
+      },
+      onRowsPerPageChange: (e) => {
+        if (setRowsPerPage) setRowsPerPage(Number(e.target.value));
+      },
+      rowsPerPage: pageSize,
+      page,
+      count: totalElements,
+    },
+    paginationDisplayMode: 'pages',
+    enableExpanding: colParent,
+  });
 
-  const filterCellStyle = useMemo(() => {
-    return () => ({});
-  }, []);
-
-  const rowStyle = propRowStyle || internalRowStyle;
+  useEffect(() => {
+    if (selection) {
+      const selectedRows = table.getSelectedRowModel().rows.map(
+          (row) => row.original
+      );
+      handleSelectList?.(selectedRows);
+    }
+  }, [table.getState().rowSelection, selection, handleSelectList]);
 
   return (
-      <div className={classes.globitsTableWraper}>
-        <MaterialTable
-            data={data}
-            columns={columns}
-            style={{
-              borderRadius: "10px",
-              maxWidth: maxWidth || "auto",
-            }}
-            parentChildData={
-              colParent
-                  ? (row, rows) => {
-                    if (row?.parentId) {
-                      return rows.find((a) => a?.id === row?.parentId);
-                    }
-                    return null;
-                  }
-                  : undefined
-            }
-            options={{
-              selection: Boolean(selection),
-              sorting: false,
-              actionsColumnIndex: -1,
-              paging: false,
-              search: false,
-              toolbar: false,
-              draggable: false,
-              maxBodyHeight: maxHeight || "unset",
-              headerStyle: {
-                color: "#000",
-                paddingLeft: "4px",
-                paddingRight: !selection ? "4px" : "unset",
-                paddingTop: "8px",
-                paddingBottom: "8px",
-                fontSize: "14px",
-                maxWidth: maxWidth || "auto",
-                textAlign: "center",
-              },
-              rowStyle,
-              filterCellStyle,
-              defaultExpanded,
-            }}
-            onSelectionChange={(rows) => {
-              if (handleSelectList) {
-                handleSelectList(rows);
-              }
-            }}
-            localization={{
-              body: {
-                emptyDataSourceMessage: `${t("general.emptyDataMessageTable")}`,
-              },
-            }}
-        />
+      <Stack sx={{ m: '2rem 0' }} spacing={2}>
+        <TableContainer>
+          <Table>
+            <TableHead>
+              {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => (
+                        <TableCell align="center" variant="head" key={header.id}>
+                          {header.isPlaceholder
+                              ? null
+                              : flexRender(
+                                  header.column.columnDef.Header ??
+                                  header.column.columnDef.header,
+                                  header.getContext()
+                              )}
+                        </TableCell>
+                    ))}
+                  </TableRow>
+              ))}
+            </TableHead>
 
-        {!nonePagination && (
-            <CommonPagination
-                totalPages={totalPages}
-                handleChangePage={handleChangePage}
-                setRowsPerPage={setRowsPerPage}
-                pageSize={pageSize}
-                pageSizeOption={pageSizeOption}
-                totalElements={totalElements}
-                page={page}
-            />
+            <TableBody>
+              {table.getRowModel().rows.map((row, rowIndex) => (
+                  <TableRow key={row.id} selected={row.getIsSelected()}>
+                    {row.getVisibleCells().map((cell) => (
+                        <TableCell align="center" variant="body" key={cell.id}>
+                          <MRT_TableBodyCellValue
+                              cell={cell}
+                              table={table}
+                              staticRowIndex={rowIndex}
+                          />
+                        </TableCell>
+                    ))}
+                  </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+
+        {!nonePagination && totalElements > 0 && (
+            <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+                sx={{ px: 2 }}
+                spacing={2}
+            >
+              <Typography variant="body2">
+                Tổng cộng: {totalElements} bản ghi
+              </Typography>
+
+              <Stack direction="row" spacing={2} alignItems="center">
+                <Typography variant="body2">Số dòng/trang:</Typography>
+                <Select
+                    value={pageSize}
+                    onChange={(e) => setRowsPerPage?.(Number(e.target.value))}
+                    size="small"
+                >
+                  {pageSizeOption.map((option) => (
+                      <MenuItem key={option} value={option}>
+                        {option}
+                      </MenuItem>
+                  ))}
+                </Select>
+
+                <Pagination
+                    count={totalPages}
+                    page={page + 1}
+                    onChange={(e, value) => handleChangePage?.(value - 1)}
+                    color="primary"
+                    shape="rounded"
+                    size="small"
+                />
+              </Stack>
+            </Stack>
         )}
-      </div>
+      </Stack>
   );
-}
-
-CommonTable.propTypes = {
-  ...CommonPagination.propTypes,
-  data: PropTypes.array.isRequired,
-  columns: PropTypes.arrayOf(
-      PropTypes.shape({
-        field: PropTypes.string,
-        title: PropTypes.string,
-        minWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        render: PropTypes.func,
-        cellStyle: PropTypes.object,
-        headerStyle: PropTypes.object,
-        align: PropTypes.string,
-      })
-  ).isRequired,
-  selection: PropTypes.bool,
-  handleSelectList: PropTypes.func,
-  maxWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  maxHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  nonePagination: PropTypes.bool,
-  defaultExpanded: PropTypes.bool,
-  rowStyle: PropTypes.func,
 };
 
-CommonTable.defaultProps = {
-  data: [],
-};
-
-export default CommonTable;
+export default Example;

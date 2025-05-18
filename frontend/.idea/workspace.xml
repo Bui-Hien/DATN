@@ -5,19 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e47dca97-3d3a-416a-b068-5f4a89d0539a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/postcss.config.mjs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config-overrides.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/_index.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/auth/AuthStore.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/auth/AuthStore.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/auth/authService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/auth/authService.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/navigations.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/navigations.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/Layout/AppLayout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Layout/AppLayout.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/Layout/styledComponents.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Layout/styledComponents.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/login/LoginIndex.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/login/LoginIndex.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/CommonPagination.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/CommonPopup.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/CommonSearchInput.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/CommonTable.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/CommonTable.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/CommonTableNoHeader.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/CommonTableNotPagination.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/PaginationOptionPopup.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/SearchBox.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,6 +94,7 @@
       <workItem from="1747315180105" duration="11040000" />
       <workItem from="1747336226245" duration="448000" />
       <workItem from="1747336849014" duration="5181000" />
+      <workItem from="1747601295932" duration="932000" />
     </task>
     <servers />
   </component>
