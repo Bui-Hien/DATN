@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -65,6 +67,16 @@ public class UserServiceImpl extends GenericServiceImpl<User, UserDto, SearchDto
     @Override
     public User findUserByRole(String role) {
         return userRepository.findUserByRole(role).orElse(null);
+    }
+
+    @Override
+    public UserDto getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof User) {
+            User result = (User) authentication.getPrincipal();
+            return new UserDto(result);
+        }
+        throw new SecurityException("Bạn chưa đăng nhập");
     }
 
     @Override

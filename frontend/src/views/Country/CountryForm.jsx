@@ -1,12 +1,14 @@
-import React, {memo, useEffect, useState} from "react";
+import React, {memo} from "react";
 import {Form, Formik} from "formik";
 import {useTranslation} from "react-i18next";
 import {useStore} from "../../stores";
 import * as Yup from "yup";
 import CommonPopupV2 from "../../common/CommonPopupV2";
-import {Button, DialogActions, DialogContent, Grid} from "@mui/material";
+import {Button, DialogActions, DialogContent, div} from "@mui/material";
 import CommonTextField from "../../common/form/CommonTextField";
 import {observer} from "mobx-react-lite";
+import SaveIcon from '@mui/icons-material/Save';
+import CloseIcon from "@mui/icons-material/Close";
 
 function CountryForm(props) {
     const {t} = useTranslation();
@@ -15,11 +17,18 @@ function CountryForm(props) {
     const {
         handleClose,
         saveCountry,
-        selectCountry,
+        selectedRow,
         openCreateEditPopup,
     } = countryStore;
 
-    const validationSchema = Yup.object({});
+    const validationSchema = Yup.object({
+        code: Yup.string()
+            .trim()
+            .required(t("validation.required")),
+        name: Yup.string().trim().nullable().required(t("validation.required")),
+        description: Yup.string().nullable(),
+    });
+
 
     async function handleSaveForm(values) {
         await saveCountry(values);
@@ -31,58 +40,61 @@ function CountryForm(props) {
             scroll={"body"}
             open={openCreateEditPopup}
             noDialogContent
-            title={(selectCountry?.id ? t("general.button.edit") : t("general.button.add")) + ' ' + t("navigation.hrIntroduceCost.title")}
+            title={(selectedRow?.id ? t("general.button.edit") : t("general.button.add")) + ' ' + t("Quốc gia")}
             onClosePopup={handleClose}
+            isCreate={!selectedRow?.id}
         >
             <Formik
                 validationSchema={validationSchema}
                 enableReinitialize
-                initialValues={selectCountry}
+                initialValues={selectedRow}
                 onSubmit={handleSaveForm}
             >
                 {({isSubmitting, values, setFieldValue, initialValues}) => {
                     return (
                         <Form autoComplete="off">
-                            <DialogContent className="dialog-body p-12">
-                                <Grid container spacing={2}>
-                                    <Grid item xs={12}>
+                            <DialogContent className="p-6">
+                                <div className={"grid grid-cols-12 gap-2"}>
+                                    <div className="sm:col-span-12 md:col-span-6 ">
                                         <CommonTextField
-                                            label="Ghi chú"
+                                            label="Mã quốc gia"
                                             name="code"
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12}>
+                                            required/>
+                                    </div>
+                                    <div className="sm:col-span-12 md:col-span-6 ">
                                         <CommonTextField
-                                            label="Ghi chú"
+                                            label="Tên quốc gia"
                                             name="name"
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12}>
+                                            required/>
+                                    </div>
+                                    <div className="col-span-12">
                                         <CommonTextField
-                                            label="Ghi chú"
+                                            label="Mô tả"
                                             name="description"
                                         />
-                                    </Grid>
-                                </Grid>
+                                    </div>
+                                </div>
                             </DialogContent>
 
-                            <DialogActions className="dialog-footer px-12">
-                                <div className="flex flex-space-between flex-middle">
+                            <DialogActions className="px-6 pb-4">
+                                <div className="flex justify-end w-full">
                                     <Button
-                                        variant="contained"
-                                        className="mr-12 btn btn-secondary d-inline-flex"
+                                        variant="outlined"
                                         color="secondary"
                                         disabled={isSubmitting}
                                         onClick={handleClose}
+                                        className="rounded-lg px-4 py-2 !mr-2 !bg-red-500"
+                                        startIcon={<CloseIcon/>}
                                     >
                                         {t("general.button.close")}
                                     </Button>
                                     <Button
-                                        className="mr-0 btn btn-primary d-inline-flex"
                                         variant="contained"
                                         color="primary"
                                         type="submit"
                                         disabled={isSubmitting}
+                                        className="rounded-lg px-4 py-2"
+                                        startIcon={<SaveIcon/>}
                                     >
                                         {t("general.button.save")}
                                     </Button>

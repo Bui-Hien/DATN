@@ -67,7 +67,7 @@ public class GenericApi<DTO extends AuditableDto, S extends SearchDto> {
 
     @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN})
     @DeleteMapping("/{id}")
-    public ResponseData<?> deleteById(@PathVariable @Min(1) UUID id) {
+    public ResponseData<?> deleteById(@PathVariable  UUID id) {
         genericService.deleteById(id);
         return new ResponseData<>(HttpStatus.NO_CONTENT.value(), "Delete success by id " + id);
     }

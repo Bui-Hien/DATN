@@ -1,13 +1,12 @@
 import {memo, useEffect} from "react";
 import {useTranslation} from "react-i18next";
-import CountryToolbar from "./CountryToolbar";
-import CommonBreadcrumb from "../../common/CommonBreadcrumb";
-import {Grid} from "@mui/material";
 import {observer} from "mobx-react-lite";
 import {useStore} from "../../stores";
-import CommonConfirmationDialog from "../../common/CommonConfirmationDialog";
 import CountryForm from "./CountryForm";
+import CommonBreadcrumb from "../../common/CommonBreadcrumb";
 import CountryList from "./CountryList";
+import AlertDialog from "../../common/CommonConfirmationDialog";
+import CountryToolbar from "./CountryToolbar";
 
 function CountryIndex() {
     const {countryStore} = useStore();
@@ -28,28 +27,28 @@ function CountryIndex() {
     }, []);
     return (
         <div className="content-index">
-            <div className="index-breadcrumb py-6">
+            <div className="">
                 <CommonBreadcrumb routeSegments={[
-                    {name: "Nhân viên"},
-                    {name: t("navigation.staff.introduceCost")}
+                    {name: t("Danh mục chung")},
+                    {name: t("Quốc gia")}
                 ]}/>
             </div>
-            <Grid className="index-card" container spacing={2}>
-                <Grid item xs={12}>
+            <div className="index-card grid grid-cols-12">
+                <div className={"col-span-12"}>
                     <CountryToolbar/>
-                </Grid>
+                </div>
 
-                <Grid item xs={12}>
+                <div className={"col-span-12"}>
                     <CountryList/>
-                </Grid>
-            </Grid>
+                </div>
+            </div>
 
             {openCreateEditPopup && (
                 <CountryForm/>
             )}
 
             {openConfirmDeletePopup && (
-                <CommonConfirmationDialog
+                <AlertDialog
                     open={openConfirmDeletePopup}
                     onConfirmDialogClose={handleClose}
                     onYesClick={handleConfirmDelete}
@@ -61,7 +60,7 @@ function CountryIndex() {
             )}
 
             {openConfirmDeleteListPopup && (
-                <CommonConfirmationDialog
+                <AlertDialog
                     open={openConfirmDeleteListPopup}
                     onConfirmDialogClose={handleClose}
                     onYesClick={handleConfirmDeleteMultiple}

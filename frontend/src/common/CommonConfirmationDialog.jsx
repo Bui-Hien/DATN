@@ -1,83 +1,58 @@
-import React, {memo} from "react";
-import DoneIcon from "@mui/icons-material/Done";
-import BlockIcon from "@mui/icons-material/Block";
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Icon, IconButton, Paper} from "@mui/material";
-import Draggable from "react-draggable";
-import "./SearchBox.scss";
-import {useTranslation} from "react-i18next";
+import * as React from 'react';
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle
+} from '@mui/material';
 
-function CommonConfirmationDialog(props) {
-    const { open, onConfirmDialogClose, text, title, agree, cancel, onYesClick, handleAfterConfirm } = props;
-    const { t } = useTranslation();
+export default function AlertDialog(props) {
+    const {
+        open,
+        onConfirmDialogClose,
+        text,
+        title,
+        agree,
+        cancel,
+        onYesClick,
+        handleAfterConfirm
+    } = props;
+
+    const handleAgree = async () => {
+        if (typeof onYesClick === 'function') {
+            await onYesClick();
+        }
+        if (typeof handleAfterConfirm === 'function') {
+            handleAfterConfirm();
+        }
+        onConfirmDialogClose();
+    };
 
     return (
         <Dialog
-            maxWidth="xs"
-            fullWidth
             open={open}
             onClose={onConfirmDialogClose}
-            className="confirmDeletePopup"
-            PaperComponent={PaperComponent}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
         >
-            <DialogTitle
-                className="bgc-lighter-dark-blue confirmDeletePopupTitle uppercase capitalize text-white py-8 px-12"
-                style={{ cursor: "move" }}
-                id="draggable-confirm-dialog-title"
-            >
-                {title}
+            <DialogTitle id="alert-dialog-title">
+                {title || 'Xác nhận'}
             </DialogTitle>
-
-            <IconButton
-                className="p-12"
-                style={{ position: "absolute", right: 0, color: "white" }}
-                onClick={onConfirmDialogClose}
-            >
-                <Icon title={t("general.close")}>close</Icon>
-            </IconButton>
-
-            <DialogContent className="px-12 py-0">
-                <p className="py-12">{text}</p>
+            <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                    {text || 'Bạn có chắc chắn muốn thực hiện hành động này?'}
+                </DialogContentText>
             </DialogContent>
-
-            <DialogActions className="confirmDeletePopupFooter">
-                <div className="flex flex-space-between flex-middle">
-                    <Button
-                        startIcon={<BlockIcon className="mr-4" />}
-                        variant="contained"
-                        className="btn bg-light-gray d-inline-flex mr-12"
-                        onClick={onConfirmDialogClose}
-                    >
-                        {cancel}
-                    </Button>
-                    <Button
-                        className="btn btn-success d-inline-flex"
-                        variant="contained"
-                        startIcon={<DoneIcon className="mr-4" />}
-                        onClick={async () => {
-                            await onYesClick();
-                            if (typeof handleAfterConfirm === "function") {
-                                handleAfterConfirm();
-                            }
-                            onConfirmDialogClose();
-                        }}
-                    >
-                        {agree}
-                    </Button>
-                </div>
+            <DialogActions>
+                <Button onClick={onConfirmDialogClose}>
+                    {cancel || 'Hủy'}
+                </Button>
+                <Button onClick={handleAgree} autoFocus>
+                    {agree || 'Đồng ý'}
+                </Button>
             </DialogActions>
         </Dialog>
-    );
-}
-
-export default memo(CommonConfirmationDialog);
-
-function PaperComponent(props) {
-    return (
-        <Draggable
-            handle="#draggable-confirm-dialog-title"
-            cancel={'[class*="MuiDialogContent-root"]'}
-        >
-            <Paper {...props} />
-        </Draggable>
     );
 }

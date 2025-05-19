@@ -5,17 +5,156 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e47dca97-3d3a-416a-b068-5f4a89d0539a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/controller/RestEducationDegreeController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/controller/RestFamilyRelationshipController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/FamilyRelationshipService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/FamilyRelationshipServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Bank/Bank.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Bank/BankFilter.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Bank/BankForm.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Bank/BankIndex.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Bank/BankList.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Bank/BankRoutes.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Bank/BankService.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Bank/BankStore.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Bank/BankToolbar.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Bank/SearchObject.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/EducationDegree/EducationDegree.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/EducationDegree/EducationDegreeFilter.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/EducationDegree/EducationDegreeForm.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/EducationDegree/EducationDegreeIndex.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/EducationDegree/EducationDegreeList.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/EducationDegree/EducationDegreeRoutes.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/EducationDegree/EducationDegreeService.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/EducationDegree/EducationDegreeStore.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/EducationDegree/EducationDegreeToolbar.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/EducationDegree/SearchObject.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Ethnics/Ethnics.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Ethnics/EthnicsFilter.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Ethnics/EthnicsForm.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Ethnics/EthnicsIndex.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Ethnics/EthnicsList.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Ethnics/EthnicsRoutes.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Ethnics/EthnicsService.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Ethnics/EthnicsStore.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Ethnics/EthnicsToolbar.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Ethnics/SearchObject.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/FamilyRelationship/FamilyRelationship.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/FamilyRelationship/FamilyRelationshipFilter.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/FamilyRelationship/FamilyRelationshipForm.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/FamilyRelationship/FamilyRelationshipIndex.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/FamilyRelationship/FamilyRelationshipList.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/FamilyRelationship/FamilyRelationshipRoutes.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/FamilyRelationship/FamilyRelationshipService.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/FamilyRelationship/FamilyRelationshipStore.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/FamilyRelationship/FamilyRelationshipToolbar.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/FamilyRelationship/SearchObject.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Profession/Profession.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Profession/ProfessionFilter.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Profession/ProfessionForm.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Profession/ProfessionIndex.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Profession/ProfessionList.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Profession/ProfessionRoutes.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Profession/ProfessionService.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Profession/ProfessionStore.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Profession/ProfessionToolbar.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Profession/SearchObject.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Religion/Religion.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Religion/ReligionFilter.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Religion/ReligionForm.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Religion/ReligionIndex.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Religion/ReligionList.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Religion/ReligionRoutes.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Religion/ReligionService.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Religion/ReligionStore.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Religion/ReligionToolbar.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Religion/SearchObject.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/controller/RestUserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/controller/RestUserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/generic/GenericApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/generic/GenericApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/SetupDateServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/SetupDateServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/UserServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/CommonPagination.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/CommonPopup.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/CommonSearchInput.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/LocalConstants.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/LocalConstants.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RootRoutes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/RootRoutes.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/_index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/_index.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/CommonBreadcrumb.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/CommonBreadcrumb.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/CommonConfirmationDialog.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/CommonConfirmationDialog.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/CommonPopupV2.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/CommonPopupV2.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/common/CommonTable.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/CommonTable.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/CommonTableNoHeader.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/CommonTableNotPagination.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/PaginationOptionPopup.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/SearchBox.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/locales/vi.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/locales/vi.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/navigations.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/navigations.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/_app.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/_mixins.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/_reboot.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/_variables.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/components/_avatar.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/components/_calendar-month.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/components/_customizer.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/components/_egret-search-box.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/components/_egret-sidenav.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/components/_egret-tootbar-menu.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/components/_form.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/components/_index.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/components/_list.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/components/_loader.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/components/_notification.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/components/_shopping-cart.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/components/_table.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/custom.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/globitsStyles.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/layouts/_index.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/layouts/layout1/_index.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/layouts/layout1/_layout1.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/layouts/layout2/_index.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/layouts/layout2/_layout2.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/layouts/layout2/_navbar.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/layouts/layout2/_topbar.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/layouts/layout2/_variables.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/layouts/shared/_footer.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/layouts/shared/_index.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/layouts/shared/_layout.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/layouts/shared/_sidenav.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/nprogress.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/tinymce/5.3.2-85/tinymce.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/utilities/_animations.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/utilities/_border.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/utilities/_carousel.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/utilities/_color.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/utilities/_common.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/utilities/_flex-box-and-grid.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/utilities/_functions.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/utilities/_layout.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/utilities/_positionings.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/utilities/_shadow.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/utilities/_sizing.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/utilities/_spacing.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/utilities/_typography.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/utilities/_utilities.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/views/_index.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/views/_list.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/views/_page-layouts.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/views/_sessions.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/views/_topbar.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/Country/Country.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Country/Country.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/Country/CountryFilter.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Country/CountryFilter.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/Country/CountryForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Country/CountryForm.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/Country/CountryIndex.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Country/CountryIndex.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/Country/CountryList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Country/CountryList.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/Country/CountryStore.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Country/CountryStore.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/Country/CountryToolbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Country/CountryToolbar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/Layout/AppLayout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Layout/AppLayout.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/TemplateFrontend/HrIntroduceCostCUForm.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/TemplateFrontend/HrIntroduceCostFilter.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/TemplateFrontend/HrIntroduceCostIndex.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/TemplateFrontend/HrIntroduceCostList.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/TemplateFrontend/HrIntroduceCostRoutes.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/TemplateFrontend/HrIntroduceCostService.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/TemplateFrontend/HrIntroduceCostStore.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/TemplateFrontend/HrIntroduceCostToolbar.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,26 +176,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/workspace/DATN/frontend&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
-    &quot;npm.start.executor&quot;: &quot;Run&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\WebStorm 2024.3.1.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/workspace/DATN/frontend/src/views",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "yarn",
+    "npm.start.executor": "Run",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2024.3.1.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\workspace\DATN\frontend\src\views" />
+      <recent name="C:\workspace\DATN\frontend\src\views\Ethnics" />
+      <recent name="C:\workspace\DATN\frontend\src" />
+      <recent name="C:\workspace\DATN\frontend\src\auth" />
       <recent name="C:\workspace\DATN\frontend" />
-      <recent name="C:\workspace\DATN\my-app\src" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\workspace\DATN\frontend\src\views\EducationDegree" />
     </key>
   </component>
   <component name="RunManager">
@@ -94,11 +240,24 @@
       <workItem from="1747315180105" duration="11040000" />
       <workItem from="1747336226245" duration="448000" />
       <workItem from="1747336849014" duration="5181000" />
-      <workItem from="1747601295932" duration="932000" />
+      <workItem from="1747601295932" duration="1242000" />
+      <workItem from="1747660218157" duration="2417000" />
+      <workItem from="1747662837686" duration="16975000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

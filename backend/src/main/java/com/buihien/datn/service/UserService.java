@@ -22,4 +22,6 @@ public interface UserService extends GenericService<UserDto, SearchDto> {
     List<String> getAllRolesByUserUserName(String username);
 
     User findUserByRole(String role);
+
+    UserDto getCurrentUser();
 }

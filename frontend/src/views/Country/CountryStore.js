@@ -20,7 +20,7 @@ export default class CountryStore {
     openConfirmDeletePopup = false;
     openConfirmDeleteListPopup = false;
     openCreateEditPopup = false;
-    selectedRow = null;
+    selectedRow = new CountryObject();
     selectedDataList = [];
     isOpenFilter = false;
 
@@ -43,10 +43,12 @@ export default class CountryStore {
 
     pagingCountry = async () => {
         try {
-            const data = await pagingCountry(this.searchObject);
-            this.dataList = data.data.content;
-            this.totalElements = data.data.totalElements;
-            this.totalPages = data.data.totalPages;
+            const response = await pagingCountry(this.searchObject);
+            const result = response.data;
+            this.dataList = result.data.content || [];
+            this.totalElements = result.data.totalElements || 0;
+            this.totalPages = result.data.totalPages || 0;
+            console.log(this.dataList)
         } catch (error) {
             console.error(error);
             toast.error(i18n.t("toast.error"));
@@ -74,7 +76,7 @@ export default class CountryStore {
                 const {data} = await getCountryById(id);
                 this.selectedRow = {
                     ...new CountryObject(),
-                    ...data,
+                    ...data.data,
                 };
             } else {
                 this.selectedRow = new CountryObject();
@@ -118,6 +120,7 @@ export default class CountryStore {
         try {
             const ids = this.selectedDataList.map((item) => item.id);
             await deleteMultipleCountryByIds(ids);
+            this.selectedDataList = [];
             toast.success(i18n.t("toast.delete_success"));
             await this.pagingCountry();
             this.handleClose();

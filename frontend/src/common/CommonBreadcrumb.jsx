@@ -1,8 +1,8 @@
 import React, {Fragment} from "react";
 import {useTranslation} from "react-i18next";
-import {makeStyles} from "@mui/material";
 import ConstantList from "../appConfig";
 import {NavLink} from 'react-router-dom';
+import {makeStyles} from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
     root: {

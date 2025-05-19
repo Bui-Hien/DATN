@@ -7,15 +7,13 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import {Button, ButtonGroup, Collapse, Grid} from "@mui/material";
 import RotateLeftIcon from '@mui/icons-material/RotateLeft';
 
-function CountryFilter(props) {
-    const {} = useStore();
-    const {t} = useTranslation();
-    const {values} = useFormikContext()
+function CountryFilter() {
+    const {countryStore} = useStore();
     const {
         isOpenFilter,
         handleFilter,
         handleCloseFilter
-    } = props;
+    } = countryStore;
 
     function handleResetFilter() {
         const newSearchObject = {

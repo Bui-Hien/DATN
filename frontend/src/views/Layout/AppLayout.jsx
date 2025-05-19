@@ -25,7 +25,7 @@ import {navigations} from "../../navigations";
 const COLORS = {
     rootActiveBg: '#ef4444',    // Cho cha cấp 1
     parentActiveBg: '#3b82f6', // Cho cha từ cấp 2
-    itemActiveBg: '#fef3c7',   // Cho item được chọn
+    itemActiveBg: '#269066',   // Cho item được chọn
     activeText: 'white',       // Chữ trắng cho cha được active
 };
 
@@ -174,7 +174,7 @@ function AppLayout({routes}) {
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <Drawer variant="permanent" open={open}>
+            <Drawer variant="permanent" open={open} className={"h-screen bg-amber-100"}>
                 <DrawerHeader/>
                 <List className={"!py-0"}>
                     {renderNavItems(navigations)}
@@ -182,7 +182,7 @@ function AppLayout({routes}) {
             </Drawer>
             <Box component="main" sx={{flexGrow: 1}}>
                 <DrawerHeader/>
-                <Box className={""}>
+                <Box className={"!px-4"}>
                     <Routes>
                         {routes?.map((item, index) => {
                             const hasAccess = !item.auth || item.auth.some(role => roles.includes(role));

@@ -1,8 +1,8 @@
 export class CountryObject {
     id = null;
     code = null;
-    name = 0;
-    description = 10;
+    name = null;
+    description = null;
     constructor() {
     }
 }

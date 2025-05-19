@@ -60,9 +60,9 @@ public class SetupDateServiceImpl implements SetupDateService {
     }
 
     private void createUserAdmin() {
-        User user = userService.findUserByRole(DatnConstants.ROLE_SUPER_ADMIN);
+        User user = userService.findUserByRole(DatnConstants.ROLE_ADMIN);
         if (user != null) return;
-        Role role = roleRepository.findByName(DatnConstants.ROLE_SUPER_ADMIN).orElse(null);
+        Role role = roleRepository.findByName(DatnConstants.ROLE_ADMIN).orElse(null);
         UserDto userDto = new UserDto();
         userDto.setUsername("admin");
         userDto.setPassword("123456");
