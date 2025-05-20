@@ -4,6 +4,19 @@ import ListAltIcon from '@mui/icons-material/ListAlt';
 
 export const navigations = [
     {
+        name: i18next.t("Cơ cấu tổ chức"),
+        icon: <ListAltIcon/>,
+        isVisible: true,
+        auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER],
+        children: [
+            {
+                name: i18next.t("Phòng ban"),
+                path: "/organization/department",
+                isVisible: true,
+            },
+        ]
+    },
+    {
         name: i18next.t("Nhân viên"),
         icon: <ListAltIcon/>,
         isVisible: true,

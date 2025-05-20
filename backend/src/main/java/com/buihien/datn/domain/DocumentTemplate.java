@@ -8,6 +8,7 @@ import java.util.Set;
 @Table(name = "tbl_hr_document_template")
 public class DocumentTemplate extends BaseObject {
     @OneToMany(mappedBy = "documentTemplate", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("displayOrder")
     private Set<DocumentItem> documentItems; // các tài liệu trong bộ hồ sơ/tài liệu
 
     public DocumentTemplate() {

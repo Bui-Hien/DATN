@@ -180,8 +180,8 @@ const Example = (props) => {
 
                         <Pagination
                             count={totalPages}
-                            page={page + 1}
-                            onChange={(e, value) => handleChangePage?.(value - 1)}
+                            page={page}
+                            onChange={(e, value) => handleChangePage?.(value)}
                             color="primary"
                             shape="rounded"
                             size="small"

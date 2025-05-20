@@ -7,6 +7,7 @@ import ProfessionRoutes from "./views/Profession/ProfessionRoutes";
 import ReligionRoutes from "./views/Religion/ReligionRoutes";
 import AdministrativeUnitRoutes from "./views/AdministrativeUnit/AdministrativeUnitRoutes";
 import DocumentTemplateRoutes from "./views/DocumentTemplate/DocumentTemplateRoutes";
+import DepartmentRoutes from "./views/Department/DepartmentRoutes";
 
 const routes = [
     //Danh mục chung
@@ -20,6 +21,9 @@ const routes = [
     ...AdministrativeUnitRoutes,
     //Nhân viên
     ...DocumentTemplateRoutes,
+
+    //Cơ cấu tổ chức
+    ...DepartmentRoutes,
 ];
 
 export default routes;

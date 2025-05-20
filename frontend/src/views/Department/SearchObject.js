@@ -11,8 +11,10 @@ export class SearchObject {
     roleId = null;
     parentId = null;
     exportExcel = false;
-
+    level = null;
+    province = null;
+    district = null;
+    ward = null;
     constructor() {
-
     }
 }

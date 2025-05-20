@@ -1,7 +1,7 @@
 import "./i18n";
 import React, {useCallback, useEffect, useState} from "react";
 import {BrowserRouter, Route, Routes, useLocation, useNavigate} from 'react-router-dom';
-import AppLayout from "./views/Layout/AppLayout";
+import AppLayout from "./common/Layout/AppLayout";
 import routes from "./RootRoutes";
 import {LOGIN_PAGE} from "./appConfig";
 import LoginIndex from "./views/Login/LoginIndex";

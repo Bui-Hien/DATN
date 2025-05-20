@@ -1,7 +1,6 @@
 package com.buihien.datn.dto;
 
 import com.buihien.datn.domain.Department;
-import com.buihien.datn.domain.Position;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,9 +9,8 @@ import java.util.UUID;
 public class DepartmentDto extends BaseObjectDto {
     private DepartmentDto parent; // Phòng ban cha
     private UUID parentId; // ID phòng ban cha
-    private List<DepartmentDto> subDepartments; // Danh sách phòng ban con
-    private List<PositionDto> positions; // Các chức danh trong phòng ban
-    private PositionDto positionManager; // Vị trí quản lý
+    private List<DepartmentDto> subRows; // Danh sách phòng ban con
+    private StaffDto staffManager; // Vị trí quản lý
 
     public DepartmentDto() {
     }
@@ -21,62 +19,20 @@ public class DepartmentDto extends BaseObjectDto {
         super(entity);
         if (entity != null) {
             this.parentId = entity.getParent() != null ? entity.getParent().getId() : null;
-            if (entity.getPositionManager() != null) {
-                this.positionManager = new PositionDto(entity.getPositionManager(), false);
+            if (entity.getStaffManager() != null) {
+                this.staffManager = new StaffDto(entity.getStaffManager(), false);
             }
             if (isGetParent && entity.getParent() != null) {
                 this.parent = new DepartmentDto(entity.getParent(), false, false, isGetFull);
             }
 
             if (isGetSub && entity.getSubDepartments() != null) {
-                this.subDepartments = new ArrayList<>();
+                this.subRows = new ArrayList<>();
                 for (Department sub : entity.getSubDepartments()) {
-                    this.subDepartments.add(new DepartmentDto(sub, false, true, isGetFull));
-                }
-            }
-            if (isGetFull) {
-                if (entity.getPositions() != null && !entity.getPositions().isEmpty()) {
-                    this.positions = new ArrayList<>();
-                    for (Position dto : entity.getPositions()) {
-                        PositionDto positionDto = new PositionDto(dto, false);
-                        this.positions.add(positionDto);
-                    }
+                    this.subRows.add(new DepartmentDto(sub, false, true, isGetFull));
                 }
             }
         }
-    }
-
-    public List<DepartmentDto> getTreeDepartments(Department entity) {
-        List<DepartmentDto> result = new ArrayList<>();
-        if (entity == null) {
-            return result;
-        }
-
-        // Tạo DTO cho entity hiện tại
-        DepartmentDto currentDto = new DepartmentDto();
-        currentDto.setName(entity.getName());
-        currentDto.setCode(entity.getCode());
-        currentDto.setDescription(entity.getDescription());
-        currentDto.setParentId(entity.getParent() != null ? entity.getParent().getId() : null);
-        result.add(currentDto);
-
-        // Xử lý các child nếu có
-        if (entity.getSubDepartments() != null && !entity.getSubDepartments().isEmpty()) {
-            for (Department child : entity.getSubDepartments()) {
-                // Đệ quy để lấy danh sách từ các child
-                List<DepartmentDto> childDtos = getTreeDepartments(child);
-                result.addAll(childDtos);
-
-                // Set parentId cho các child ngay lập tức
-                for (DepartmentDto dto : childDtos) {
-                    if (dto.getParentId() == null) {
-                        dto.setParentId(entity.getId());
-                    }
-                }
-            }
-        }
-
-        return result;
     }
 
     public DepartmentDto getParent() {
@@ -95,27 +51,19 @@ public class DepartmentDto extends BaseObjectDto {
         this.parentId = parentId;
     }
 
-    public List<DepartmentDto> getSubDepartments() {
-        return subDepartments;
+    public List<DepartmentDto> getSubRows() {
+        return subRows;
     }
 
-    public void setSubDepartments(List<DepartmentDto> subDepartments) {
-        this.subDepartments = subDepartments;
+    public void setSubRows(List<DepartmentDto> subRows) {
+        this.subRows = subRows;
     }
 
-    public List<PositionDto> getPositions() {
-        return positions;
+    public StaffDto getStaffManager() {
+        return staffManager;
     }
 
-    public void setPositions(List<PositionDto> positions) {
-        this.positions = positions;
-    }
-
-    public PositionDto getPositionManager() {
-        return positionManager;
-    }
-
-    public void setPositionManager(PositionDto positionManager) {
-        this.positionManager = positionManager;
+    public void setStaffManager(StaffDto staffManager) {
+        this.staffManager = staffManager;
     }
 }

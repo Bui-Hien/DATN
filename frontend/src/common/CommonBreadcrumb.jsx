@@ -9,6 +9,7 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
+
     },
     title: {
         display: "flex",
@@ -38,7 +39,7 @@ const CommonBreadcrumb = ({routeSegments, noRight}) => {
     const {t} = useTranslation();
 
     return (
-        <div className={classes.root}>
+        <div className={`${classes.root}`}>
             <div className={classes.title}>
                 {(!noRight && routeSegments) ? (
                     <span style={{color: "#717276", textTransform: 'uppercase'}}>

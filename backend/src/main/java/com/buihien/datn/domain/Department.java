@@ -1,6 +1,7 @@
 package com.buihien.datn.domain;
 
 import jakarta.persistence.*;
+
 import java.util.Set;
 
 @Entity
@@ -14,12 +15,9 @@ public class Department extends BaseObject {
     @OneToMany(mappedBy = "parent")
     private Set<Department> subDepartments; // Danh sách phòng ban con
 
-    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Position> positions; // Các chức danh trong phòng ban
-
     @ManyToOne
-    @JoinColumn(name = "position_manager_id")
-    private Position positionManager; // Vị trí quản lý
+    @JoinColumn(name = "staff_manager_id")
+    private Staff staffManager; // Vị trí quản lý
 
     public Department() {
     }
@@ -40,19 +38,11 @@ public class Department extends BaseObject {
         this.subDepartments = subDepartments;
     }
 
-    public Set<Position> getPositions() {
-        return positions;
+    public Staff getStaffManager() {
+        return staffManager;
     }
 
-    public void setPositions(Set<Position> positions) {
-        this.positions = positions;
-    }
-
-    public Position getPositionManager() {
-        return positionManager;
-    }
-
-    public void setPositionManager(Position positionManager) {
-        this.positionManager = positionManager;
+    public void setStaffManager(Staff staffManager) {
+        this.staffManager = staffManager;
     }
 }

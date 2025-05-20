@@ -10,6 +10,7 @@ import ProfessionStore from "./views/Profession/ProfessionStore";
 import ReligionStore from "./views/Religion/ReligionStore";
 import AdministrativeUnitStore from "./views/AdministrativeUnit/AdministrativeUnitStore";
 import DocumentTemplateStore from "./views/DocumentTemplate/DocumentTemplateStore";
+import DepartmentStore from "./views/Department/DepartmentStore";
 
 export const store = {
     loginStore: new LoginStore(),
@@ -25,6 +26,9 @@ export const store = {
 
     //Nhân viên
     documentTemplateStore: new DocumentTemplateStore(),
+
+    //Cơ cấu tổ chức
+    departmentStore: new DepartmentStore(),
 };
 
 export const StoreContext = createContext(store);

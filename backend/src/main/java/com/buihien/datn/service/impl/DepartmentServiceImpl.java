@@ -1,13 +1,15 @@
 package com.buihien.datn.service.impl;
 
 import com.buihien.datn.domain.Department;
-import com.buihien.datn.domain.Position;
+import com.buihien.datn.domain.Staff;
 import com.buihien.datn.dto.DepartmentDto;
 import com.buihien.datn.dto.search.SearchDto;
 import com.buihien.datn.generic.GenericServiceImpl;
 import com.buihien.datn.repository.PositionRepository;
+import com.buihien.datn.repository.StaffRepository;
 import com.buihien.datn.service.DepartmentService;
 import jakarta.persistence.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -16,12 +18,8 @@ import org.springframework.util.StringUtils;
 
 @Service
 public class DepartmentServiceImpl extends GenericServiceImpl<Department, DepartmentDto, SearchDto> implements DepartmentService {
-    private final PositionRepository positionRepository;
-
-    public DepartmentServiceImpl(PositionRepository positionRepository) {
-        super();
-        this.positionRepository = positionRepository;
-    }
+    @Autowired
+    private StaffRepository staffRepository;
 
     @Override
     protected DepartmentDto convertToDto(Department entity) {
@@ -47,11 +45,11 @@ public class DepartmentServiceImpl extends GenericServiceImpl<Department, Depart
         }
         entity.setParent(parent);
 
-        Position positionManager = null;
-        if (dto.getPositionManager() != null && dto.getPositionManager().getId() != null) {
-            positionManager = positionRepository.findById(dto.getPositionManager().getId()).orElse(null);
+        Staff staffManager = null;
+        if (dto.getStaffManager() != null && dto.getStaffManager().getId() != null) {
+            staffManager = staffRepository.findById(dto.getStaffManager().getId()).orElse(null);
         }
-        entity.setPositionManager(positionManager);
+        entity.setStaffManager(staffManager);
 
         return entity;
     }
@@ -65,7 +63,7 @@ public class DepartmentServiceImpl extends GenericServiceImpl<Department, Depart
 
 
         StringBuilder sqlCount = new StringBuilder("SELECT COUNT(entity.id) FROM Department entity WHERE (1=1) ");
-        StringBuilder sql = new StringBuilder("SELECT new com.buihien.datn.dto.DepartmentDto(entity) FROM Department entity WHERE (1=1) ");
+        StringBuilder sql = new StringBuilder("SELECT new com.buihien.datn.dto.DepartmentDto(entity, false, false, false) FROM Department entity WHERE (1=1) ");
 
         StringBuilder whereClause = new StringBuilder();
 
@@ -114,5 +112,10 @@ public class DepartmentServiceImpl extends GenericServiceImpl<Department, Depart
             return new PageImpl<>(q.getResultList(), PageRequest.of(pageIndex, pageSize), (long) qCount.getSingleResult());
         }
         return new PageImpl<>(q.getResultList());
+    }
+
+    @Override
+    public Page<DepartmentDto> pagingTreeSearch(SearchDto dto) {
+        return null;
     }
 }
