@@ -1,7 +1,7 @@
 export class SearchObject {
     id = null;
     ownerId = null;
-    pageIndex = 0;
+    pageIndex = 1;
     pageSize = 10;
     keyword = '';
     fromDate = null;
@@ -13,17 +13,5 @@ export class SearchObject {
     exportExcel = false;
 
     constructor() {
-        this.id = null;
-        this.ownerId = null;
-        this.pageIndex = 0;
-        this.pageSize = 10;
-        this.keyword = '';
-        this.fromDate = null;
-        this.toDate = null;
-        this.voided = null;
-        this.orderBy = false;
-        this.roleId = null;
-        this.parentId = null;
-        this.exportExcel = false;
     }
 }

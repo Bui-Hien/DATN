@@ -1,7 +1,7 @@
 export class SearchObject {
     id = null;
     ownerId = null;
-    pageIndex = 0;
+    pageIndex = 1;
     pageSize = 10;
     keyword = '';
     fromDate = null;
@@ -15,13 +15,6 @@ export class SearchObject {
     province = null;
     district = null;
     ward = null;
-    provinceId = null;
-    districtId = null;
-    wardId = null;
-
     constructor() {
-        this.pageIndex = 0;
-        this.pageSize = 10;
-        this.keyword = '';
     }
 }

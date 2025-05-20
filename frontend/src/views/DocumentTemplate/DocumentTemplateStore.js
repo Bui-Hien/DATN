@@ -9,9 +9,10 @@ import {
 import {toast} from "react-toastify";
 import i18n from "i18next";
 import {DocumentTemplateObject} from "./DocumentTemplate";
+import {SearchObject} from "./SearchObject";
 
 export default class DocumentTemplateStore {
-    searchObject = JSON.parse(JSON.stringify(new DocumentTemplateObject()));
+    searchObject = JSON.parse(JSON.stringify(new SearchObject()));
 
     totalElements = 0;
     totalPages = 0;
@@ -28,7 +29,7 @@ export default class DocumentTemplateStore {
     }
 
     resetStore = () => {
-        this.searchObject = JSON.parse(JSON.stringify(new DocumentTemplateObject()));
+        this.searchObject = JSON.parse(JSON.stringify(new SearchObject()));
         this.totalElements = 0;
         this.totalPages = 0;
         this.dataList = [];
@@ -164,7 +165,7 @@ export default class DocumentTemplateStore {
     handleSetSearchObject = (searchObject) => {
         this.searchObject = {...searchObject};
     };
-    
+
     handleCloseFilter = () => {
         this.isOpenFilter = false;
     };
