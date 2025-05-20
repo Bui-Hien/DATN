@@ -4,7 +4,7 @@ import {BrowserRouter, Route, Routes, useLocation, useNavigate} from 'react-rout
 import AppLayout from "./views/Layout/AppLayout";
 import routes from "./RootRoutes";
 import {LOGIN_PAGE} from "./appConfig";
-import LoginIndex from "./views/login/LoginIndex";
+import LoginIndex from "./views/Login/LoginIndex";
 import {useStore} from "./stores";
 import {ToastContainer} from "react-toastify";
 

@@ -47,7 +47,7 @@ const MySelectInput = ({
         ...field,
         ...otherProps,
         select: true,
-        label,
+        // label,
         variant,
         size,
         fullWidth: true,
@@ -63,6 +63,12 @@ const MySelectInput = ({
 
     return (
         <FormControl fullWidth>
+            {label && (
+                <label htmlFor={name} className={`${oldStyle ? "old-label" : "label-container"}`}>
+                    {label}
+                    {required && <span style={{color: "red"}}> * </span>}
+                </label>
+            )}
             <TextField {...configSelectInput}>
                 {!hideNullOption && (
                     <MenuItem value="">

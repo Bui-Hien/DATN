@@ -36,7 +36,7 @@ import java.util.UUID;
 public class GenericApi<DTO extends AuditableDto, S extends SearchDto> {
     private final Logger log = LoggerFactory.getLogger(GenericApi.class);
     private final Class<DTO> dtoClass;
-    private final GenericService<DTO, S> genericService;
+    protected final GenericService<DTO, S> genericService;
 
     public GenericApi(Class<DTO> dtoClass, GenericService<DTO, S> genericService) {
         this.dtoClass = dtoClass;
@@ -67,7 +67,7 @@ public class GenericApi<DTO extends AuditableDto, S extends SearchDto> {
 
     @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN})
     @DeleteMapping("/{id}")
-    public ResponseData<?> deleteById(@PathVariable  UUID id) {
+    public ResponseData<?> deleteById(@PathVariable UUID id) {
         genericService.deleteById(id);
         return new ResponseData<>(HttpStatus.NO_CONTENT.value(), "Delete success by id " + id);
     }

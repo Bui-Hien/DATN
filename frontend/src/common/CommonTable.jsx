@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
+import {flexRender, MRT_TableBodyCellValue, useMaterialReactTable,} from 'material-react-table';
 import {
-    flexRender,
-    MRT_TableBodyCellValue,
-    useMaterialReactTable,
-} from 'material-react-table';
-import {
+    MenuItem,
+    Pagination,
+    Select,
     Stack,
     Table,
     TableBody,
@@ -12,9 +11,6 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Pagination,
-    Select,
-    MenuItem,
     Typography,
 } from '@mui/material';
 
@@ -48,7 +44,7 @@ const Example = (props) => {
                 pageIndex: page,
                 pageSize,
             },
-            expanded: colParent ? { [0]: defaultExpanded } : {},
+            expanded: colParent ? {[0]: defaultExpanded} : {},
             showGlobalFilter: false,
         },
         muiPaginationProps: {
@@ -77,12 +73,23 @@ const Example = (props) => {
         }
     }, [table.getState().rowSelection, selection, handleSelectList]);
 
+    const [columnNumber, setColumnNumber] = React.useState(columns.length);
+    useEffect(() => {
+        if (selection) {
+            setColumnNumber(prev => prev + 1);
+        }
+        if (colParent) {
+            setColumnNumber(prev => prev + 1);
+        }
+    }, [selection, colParent]);
+
+
     return (
-        <Stack sx={{ m: '2rem 0' }} spacing={2}>
+        <Stack className={"gap-2 my-2"}>
             <TableContainer className="border border-gray-300 rounded-xl overflow-hidden">
                 <Table
                     className="w-full"
-                    style={{ borderCollapse: 'collapse' }}
+                    style={{borderCollapse: 'collapse'}}
                 >
                     <TableHead className="bg-gray-100">
                         {table.getHeaderGroups().map((headerGroup) => (
@@ -134,7 +141,7 @@ const Example = (props) => {
                             <TableRow>
                                 <TableCell
                                     align="center"
-                                    colSpan={selection ? columns.length + 1 : columns.length}
+                                    colSpan={columnNumber}
                                     className="text-sm text-gray-500 border border-gray-300 py-5"
                                 >
                                     Không có dữ liệu
@@ -150,7 +157,7 @@ const Example = (props) => {
                     direction="row"
                     alignItems="center"
                     justifyContent="space-between"
-                    sx={{ px: 2 }}
+                    sx={{px: 2}}
                     spacing={2}
                 >
                     <Typography variant="body2">

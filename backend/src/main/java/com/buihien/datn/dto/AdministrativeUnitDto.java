@@ -5,9 +5,8 @@ import com.buihien.datn.domain.AdministrativeUnit;
 import com.buihien.datn.dto.validator.ValidEnumValue;
 import jakarta.validation.Valid;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Valid
 public class AdministrativeUnitDto extends AuditableDto {
@@ -17,7 +16,7 @@ public class AdministrativeUnitDto extends AuditableDto {
     private Integer level;
     private AdministrativeUnitDto parent;
     private UUID parentId;
-    private List<AdministrativeUnitDto> subAdministrativeUnits;
+    private List<AdministrativeUnitDto> subRows;
 
     public AdministrativeUnitDto() {
     }
@@ -37,45 +36,12 @@ public class AdministrativeUnitDto extends AuditableDto {
             }
 
             if (isGetSub && entity.getSubAdministrativeUnits() != null) {
-                this.subAdministrativeUnits = new ArrayList<>();
+                this.subRows = new ArrayList<>();
                 for (AdministrativeUnit sub : entity.getSubAdministrativeUnits()) {
-                    this.subAdministrativeUnits.add(new AdministrativeUnitDto(sub, false, true));
+                    this.subRows.add(new AdministrativeUnitDto(sub, false, true));
                 }
             }
         }
-    }
-
-    public List<AdministrativeUnitDto> getTreeAdministrativeUnits(AdministrativeUnit entity) {
-        List<AdministrativeUnitDto> result = new ArrayList<>();
-        if (entity == null) {
-            return result;
-        }
-
-        // Tạo DTO cho entity hiện tại
-        AdministrativeUnitDto currentDto = new AdministrativeUnitDto();
-        currentDto.setName(entity.getName());
-        currentDto.setCode(entity.getCode());
-        currentDto.setLevel(entity.getLevel());
-        currentDto.setParentId(entity.getParent() != null ? entity.getParent().getId() : null);
-        result.add(currentDto);
-
-        // Xử lý các child nếu có
-        if (entity.getSubAdministrativeUnits() != null && !entity.getSubAdministrativeUnits().isEmpty()) {
-            for (AdministrativeUnit child : entity.getSubAdministrativeUnits()) {
-                // Đệ quy để lấy danh sách từ các child
-                List<AdministrativeUnitDto> childDtos = getTreeAdministrativeUnits(child);
-                result.addAll(childDtos);
-
-                // Set parentId cho các child ngay lập tức
-                for (AdministrativeUnitDto dto : childDtos) {
-                    if (dto.getParentId() == null) {
-                        dto.setParentId(entity.getId());
-                    }
-                }
-            }
-        }
-
-        return result;
     }
 
 
@@ -119,11 +85,11 @@ public class AdministrativeUnitDto extends AuditableDto {
         this.parentId = parentId;
     }
 
-    public List<AdministrativeUnitDto> getSubAdministrativeUnits() {
-        return subAdministrativeUnits;
+    public List<AdministrativeUnitDto> getSubRows() {
+        return subRows;
     }
 
-    public void setSubAdministrativeUnits(List<AdministrativeUnitDto> subAdministrativeUnits) {
-        this.subAdministrativeUnits = subAdministrativeUnits;
+    public void setSubRows(List<AdministrativeUnitDto> subRows) {
+        this.subRows = subRows;
     }
 }

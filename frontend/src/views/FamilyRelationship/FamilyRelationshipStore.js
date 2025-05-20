@@ -51,7 +51,11 @@ export default class FamilyRelationshipStore {
             console.log(this.dataList)
         } catch (error) {
             console.error(error);
-            toast.error(i18n.t("toast.error"));
+            if (error?.response?.data?.message) {
+                toast.error(error?.response?.data?.message);
+            } else {
+                toast.error(i18n.t("toast.error"));
+            }
         }
     };
 
@@ -64,10 +68,6 @@ export default class FamilyRelationshipStore {
         this.searchObject.pageSize = size;
         this.searchObject.pageIndex = 1;
         await this.pagingFamilyRelationship();
-    };
-
-    handleChangePage = async (event, newPage) => {
-        await this.setPageIndex(newPage);
     };
 
     handleOpenCreateEdit = async (id) => {
@@ -84,7 +84,11 @@ export default class FamilyRelationshipStore {
             this.openCreateEditPopup = true;
         } catch (error) {
             console.error(error);
-            toast.error(i18n.t("toast.error"));
+            if (error?.response?.data?.message) {
+                toast.error(error?.response?.data?.message);
+            } else {
+                toast.error(i18n.t("toast.error"));
+            }
         }
     };
 
@@ -112,7 +116,11 @@ export default class FamilyRelationshipStore {
             return data;
         } catch (error) {
             console.log(error);
-            toast.warning(i18n.t("toast.error"));
+            if (error?.response?.data?.message) {
+                toast.error(error?.response?.data?.message);
+            } else {
+                toast.error(i18n.t("toast.error"));
+            }
         }
     };
 
@@ -126,7 +134,11 @@ export default class FamilyRelationshipStore {
             this.handleClose();
         } catch (error) {
             console.log(error);
-            toast.warning(i18n.t("toast.error"));
+            if (error?.response?.data?.message) {
+                toast.error(error?.response?.data?.message);
+            } else {
+                toast.error(i18n.t("toast.error"));
+            }
         }
     };
 
@@ -142,41 +154,16 @@ export default class FamilyRelationshipStore {
             await this.pagingFamilyRelationship();
         } catch (error) {
             console.error(error);
-            toast.error(i18n.t("toast.error"));
-        }
-    };
-
-    getBank = async (id) => {
-        if (id) {
-            try {
-                const {data} = await getFamilyRelationshipById(id);
-                this.selectedRow = data;
-                this.openCreateEditPopup = true;
-            } catch (error) {
-                console.log(error);
-                toast.warning(i18n.t("toast.error"));
+            if (error?.response?.data?.message) {
+                toast.error(error?.response?.data?.message);
+            } else {
+                toast.error(i18n.t("toast.error"));
             }
-        } else {
-            this.selectedRow = {};
         }
     };
 
     handleSetSearchObject = (searchObject) => {
         this.searchObject = {...searchObject};
-    };
-
-    setOpenCreateEditPopup = (value) => {
-        this.openCreateEditPopup = value;
-    };
-
-    setSelectedRow = (data) => {
-        this.selectedRow = {
-            ...data,
-        };
-    };
-
-    handleOpenFilter = () => {
-        this.isOpenFilter = true;
     };
 
     handleCloseFilter = () => {

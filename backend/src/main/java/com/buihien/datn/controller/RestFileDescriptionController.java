@@ -33,17 +33,16 @@ public class RestFileDescriptionController {
     }
 
 
-
     @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN})
     @DeleteMapping("/{id}")
-    public ResponseData<?> deleteById(@PathVariable @Min(1) UUID id) {
+    public ResponseData<?> deleteById(@PathVariable UUID id) {
         fileDescriptionService.deleteById(id);
         return new ResponseData<>(HttpStatus.NO_CONTENT.value(), "Delete success by id " + id);
     }
 
     @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN})
     @GetMapping("/{id}")
-    public ResponseData<FileDescriptionDto> getById(@PathVariable @Min(1) UUID id) {
+    public ResponseData<FileDescriptionDto> getById(@PathVariable UUID id) {
         FileDescriptionDto result = fileDescriptionService.getById(id); // nếu không tồn tại sẽ throw ResourceNotFoundException
         return new ResponseData<>(HttpStatus.OK.value(), "Get success by id " + id, result);
     }

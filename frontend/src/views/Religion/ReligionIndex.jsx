@@ -7,7 +7,6 @@ import CommonBreadcrumb from "../../common/CommonBreadcrumb";
 import EducationDegreeList from "./ReligionList";
 import AlertDialog from "../../common/CommonConfirmationDialog";
 import EducationDegreeToolbar from "./ReligionToolbar";
-import ReligionStore from "./ReligionStore";
 
 function ReligionIndex() {
     const {religionStore} = useStore();
@@ -21,10 +20,12 @@ function ReligionIndex() {
         handleConfirmDelete,
         handleConfirmDeleteMultiple,
         pagingReligion,
+        resetStore
     } = religionStore;
 
     useEffect(() => {
         pagingReligion()
+        return resetStore;
     }, []);
     return (
         <div className="content-index">

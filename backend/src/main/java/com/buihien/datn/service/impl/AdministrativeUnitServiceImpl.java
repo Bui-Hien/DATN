@@ -12,13 +12,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class AdministrativeUnitServiceImpl extends GenericServiceImpl<AdministrativeUnit, AdministrativeUnitDto, AdministrativeUnitSearchDto> implements AdministrativeUnitService {
     @Override
     protected AdministrativeUnitDto convertToDto(AdministrativeUnit entity) {
-        return new AdministrativeUnitDto(entity, false, false);
+        return new AdministrativeUnitDto(entity, true, false);
     }
 
     @Override
@@ -165,4 +166,182 @@ public class AdministrativeUnitServiceImpl extends GenericServiceImpl<Administra
         return new PageImpl<>(results, PageRequest.of(pageIndex, pageSize), total);
     }
 
+    @Override
+    public Page<AdministrativeUnitDto> pagingTreeSearch(AdministrativeUnitSearchDto dto) {
+        int pageIndex = (dto.getPageIndex() == null || dto.getPageIndex() < 1) ? 0 : dto.getPageIndex() - 1;
+        int pageSize = (dto.getPageSize() == null || dto.getPageSize() < 10) ? 10 : dto.getPageSize();
+
+        // Truy vấn tất cả dữ liệu theo điều kiện lọc
+        StringBuilder sql = new StringBuilder("SELECT new com.buihien.datn.dto.AdministrativeUnitDto(entity, true, false) FROM AdministrativeUnit entity ");
+        StringBuilder sqlCount = new StringBuilder("SELECT COUNT(entity.id) FROM AdministrativeUnit entity ");
+
+        // Join để hỗ trợ lọc cấp tỉnh/huyện/xã theo parent
+        sql.append(" LEFT JOIN entity.parent parent ");
+        sql.append(" LEFT JOIN parent.parent grandParent ");
+
+        sqlCount.append(" LEFT JOIN entity.parent parent ");
+        sqlCount.append(" LEFT JOIN parent.parent grandParent ");
+
+        StringBuilder whereClause = new StringBuilder(" WHERE (1=1) ");
+
+        if (dto.getVoided() == null || !dto.getVoided()) {
+            whereClause.append(" AND (entity.voided = false OR entity.voided IS NULL) ");
+        } else {
+            whereClause.append(" AND entity.voided = true ");
+        }
+
+        if (dto.getKeyword() != null && StringUtils.hasText(dto.getKeyword())) {
+            whereClause.append(" AND (LOWER(entity.name) LIKE LOWER(:text) OR LOWER(entity.code) LIKE LOWER(:text)) ");
+        }
+
+        if (dto.getLevel() != null) {
+            whereClause.append(" AND entity.level = :level ");
+        }
+
+        if (dto.getParentId() != null) {
+            whereClause.append(" AND entity.parent.id = :parentId ");
+        }
+
+        // Phân cấp địa lý
+        if (dto.getProvinceId() != null && dto.getDistrictId() == null && dto.getWardId() == null) {
+            whereClause.append(" AND (entity.id = :provinceId OR parent.id = :provinceId OR grandParent.id = :provinceId) ");
+        }
+
+        if (dto.getProvinceId() != null && dto.getDistrictId() != null && dto.getWardId() == null) {
+            whereClause.append(" AND (entity.id = :districtId OR parent.id = :districtId) ");
+        }
+
+        if (dto.getProvinceId() != null && dto.getDistrictId() != null && dto.getWardId() != null) {
+            whereClause.append(" AND entity.id = :wardId ");
+        }
+
+        if (dto.getFromDate() != null) {
+            whereClause.append(" AND entity.createdAt >= :fromDate ");
+        }
+
+        if (dto.getToDate() != null) {
+            whereClause.append(" AND entity.createdAt <= :toDate ");
+        }
+
+        // Gộp where vào câu truy vấn
+        sql.append(whereClause);
+        sqlCount.append(whereClause);
+
+        // Sắp xếp
+        sql.append(dto.getOrderBy() != null && dto.getOrderBy()
+                ? " ORDER BY entity.createdAt ASC"
+                : " ORDER BY entity.createdAt DESC");
+
+        // Tạo truy vấn
+        Query q = manager.createQuery(sql.toString(), AdministrativeUnitDto.class);
+        Query qCount = manager.createQuery(sqlCount.toString());
+
+        // Set parameters
+        if (dto.getKeyword() != null && StringUtils.hasText(dto.getKeyword())) {
+            q.setParameter("text", "%" + dto.getKeyword().toLowerCase() + "%");
+            qCount.setParameter("text", "%" + dto.getKeyword().toLowerCase() + "%");
+        }
+
+        if (dto.getLevel() != null) {
+            q.setParameter("level", dto.getLevel());
+            qCount.setParameter("level", dto.getLevel());
+        }
+
+        if (dto.getParentId() != null) {
+            q.setParameter("parentId", dto.getParentId());
+            qCount.setParameter("parentId", dto.getParentId());
+        }
+
+        if (dto.getProvinceId() != null && dto.getDistrictId() == null && dto.getWardId() == null) {
+            q.setParameter("provinceId", dto.getProvinceId());
+            qCount.setParameter("provinceId", dto.getProvinceId());
+        }
+
+        if (dto.getProvinceId() != null && dto.getDistrictId() != null && dto.getWardId() == null) {
+            q.setParameter("districtId", dto.getDistrictId());
+            qCount.setParameter("districtId", dto.getDistrictId());
+        }
+
+        if (dto.getProvinceId() != null && dto.getDistrictId() != null && dto.getWardId() != null) {
+            q.setParameter("wardId", dto.getWardId());
+            qCount.setParameter("wardId", dto.getWardId());
+        }
+
+        if (dto.getFromDate() != null) {
+            q.setParameter("fromDate", dto.getFromDate());
+            qCount.setParameter("fromDate", dto.getFromDate());
+        }
+
+        if (dto.getToDate() != null) {
+            q.setParameter("toDate", dto.getToDate());
+            qCount.setParameter("toDate", dto.getToDate());
+        }
+
+        // Lấy tổng số bản ghi
+        Long total = (Long) qCount.getSingleResult();
+
+        // Lấy tất cả kết quả (không phân trang ở database)
+        @SuppressWarnings("unchecked")
+        List<AdministrativeUnitDto> allUnits = q.getResultList();
+
+        // Xây dựng cấu trúc cây từ danh sách phẳng
+        List<AdministrativeUnitDto> treeResults = buildTree(allUnits);
+
+        // Phân trang thủ công
+        List<AdministrativeUnitDto> pagedResults = manualPaging(treeResults, pageIndex, pageSize);
+
+        return new PageImpl<>(pagedResults, PageRequest.of(pageIndex, pageSize), total);
+    }
+
+    private List<AdministrativeUnitDto> buildTree(List<AdministrativeUnitDto> allUnits) {
+        if (allUnits == null || allUnits.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        // Tạo map để truy cập nhanh theo ID
+        Map<UUID, AdministrativeUnitDto> unitMap = new HashMap<>();
+        for (AdministrativeUnitDto unit : allUnits) {
+            if (unit.getId() != null) {
+                unitMap.put(unit.getId(), unit);
+            }
+        }
+
+        // Danh sách các node gốc
+        List<AdministrativeUnitDto> rootUnits = new ArrayList<>();
+
+        // Xác định các node gốc và xây dựng cây
+        for (AdministrativeUnitDto unit : allUnits) {
+            // Nếu không có parent hoặc parent không nằm trong kết quả => là node gốc
+            if (unit.getParentId() == null || !unitMap.containsKey(unit.getParentId())) {
+                rootUnits.add(unit);
+            } else {
+                // Không phải node gốc, thêm vào parent tương ứng
+                AdministrativeUnitDto parent = unitMap.get(unit.getParentId());
+                if (parent != null) {
+                    if (parent.getSubRows() == null) {
+                        parent.setSubRows(new ArrayList<>());
+                    }
+                    parent.getSubRows().add(unit);
+                }
+            }
+        }
+
+        return rootUnits;
+    }
+
+    private List<AdministrativeUnitDto> manualPaging(List<AdministrativeUnitDto> treeResults, int pageIndex, int pageSize) {
+        if (treeResults == null || treeResults.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        int startIndex = pageIndex * pageSize;
+        int endIndex = Math.min(startIndex + pageSize, treeResults.size());
+
+        // Nếu start index vượt quá kích thước của danh sách, trả về list rỗng
+        if (startIndex >= treeResults.size()) {
+            return new ArrayList<>();
+        }
+
+        return treeResults.subList(startIndex, endIndex);
+    }
 }

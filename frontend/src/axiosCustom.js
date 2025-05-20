@@ -27,7 +27,7 @@ api.interceptors.request.use(
             config.headers.Authorization = `Bearer ${token}`;
         }
         if (!isExcluded && !token) {
-            window.location.href = "/login";
+            window.location.href = "/Login";
         }
         return config;
     },
@@ -46,7 +46,7 @@ api.interceptors.response.use(
             const refresh = getRefreshToken();
             if (!refresh) {
                 localStorage.clear();
-                window.location.href = "/login";
+                window.location.href = "/Login";
                 return Promise.reject(error);
             }
 
@@ -60,7 +60,7 @@ api.interceptors.response.use(
                 }
             } catch (refreshError) {
                 localStorage.clear();
-                window.location.href = "/login";
+                window.location.href = "/Login";
                 return Promise.reject(refreshError);
             }
         }

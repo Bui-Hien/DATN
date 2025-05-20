@@ -20,10 +20,13 @@ function FamilyRelationshipIndex() {
         handleConfirmDelete,
         handleConfirmDeleteMultiple,
         pagingFamilyRelationship,
+        resetStore
     } = familyRelationshipStore;
 
     useEffect(() => {
         pagingFamilyRelationship()
+
+        return resetStore;
     }, []);
     return (
         <div className="content-index">

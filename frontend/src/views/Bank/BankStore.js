@@ -1,11 +1,5 @@
 import {makeAutoObservable} from "mobx";
-import {
-    pagingBank,
-    getBankById,
-    saveBank,
-    deleteBank,
-    deleteMultipleBankByIds,
-} from "./BankService";
+import {deleteBank, deleteMultipleBankByIds, getBankById, pagingBank, saveBank,} from "./BankService";
 import {toast} from "react-toastify";
 import i18n from "i18next";
 import {SearchObject} from "./SearchObject";
@@ -51,7 +45,15 @@ export default class BankStore {
             console.log(this.dataList)
         } catch (error) {
             console.error(error);
-            toast.error(i18n.t("toast.error"));
+            if (error?.response?.data?.message) {
+                toast.error(error?.response?.data?.message);
+            } else {
+                if (error?.response?.data?.message) {
+                    toast.error(error?.response?.data?.message);
+                } else {
+                    toast.error(i18n.t("toast.error"));
+                }
+            }
         }
     };
 
@@ -65,11 +67,6 @@ export default class BankStore {
         this.searchObject.pageIndex = 1;
         await this.pagingBank();
     };
-
-    handleChangePage = async (event, newPage) => {
-        await this.setPageIndex(newPage);
-    };
-
     handleOpenCreateEdit = async (id) => {
         try {
             if (id) {
@@ -84,7 +81,11 @@ export default class BankStore {
             this.openCreateEditPopup = true;
         } catch (error) {
             console.error(error);
-            toast.error(i18n.t("toast.error"));
+            if (error?.response?.data?.message) {
+                toast.error(error?.response?.data?.message);
+            } else {
+                toast.error(i18n.t("toast.error"));
+            }
         }
     };
 
@@ -112,7 +113,11 @@ export default class BankStore {
             return data;
         } catch (error) {
             console.log(error);
-            toast.warning(i18n.t("toast.error"));
+            if (error?.response?.data?.message) {
+                toast.error(error?.response?.data?.message);
+            } else {
+                toast.error(i18n.t("toast.error"));
+            }
         }
     };
 
@@ -126,7 +131,11 @@ export default class BankStore {
             this.handleClose();
         } catch (error) {
             console.log(error);
-            toast.warning(i18n.t("toast.error"));
+            if (error?.response?.data?.message) {
+                toast.error(error?.response?.data?.message);
+            } else {
+                toast.error(i18n.t("toast.error"));
+            }
         }
     };
 
@@ -142,41 +151,15 @@ export default class BankStore {
             await this.pagingBank();
         } catch (error) {
             console.error(error);
-            toast.error(i18n.t("toast.error"));
-        }
-    };
-
-    getBank = async (id) => {
-        if (id) {
-            try {
-                const {data} = await getBankById(id);
-                this.selectedRow = data;
-                this.openCreateEditPopup = true;
-            } catch (error) {
-                console.log(error);
-                toast.warning(i18n.t("toast.error"));
+            if (error?.response?.data?.message) {
+                toast.error(error?.response?.data?.message);
+            } else {
+                toast.error(i18n.t("toast.error"));
             }
-        } else {
-            this.selectedRow = {};
         }
     };
-
     handleSetSearchObject = (searchObject) => {
         this.searchObject = {...searchObject};
-    };
-
-    setOpenCreateEditPopup = (value) => {
-        this.openCreateEditPopup = value;
-    };
-
-    setSelectedRow = (data) => {
-        this.selectedRow = {
-            ...data,
-        };
-    };
-
-    handleOpenFilter = () => {
-        this.isOpenFilter = true;
     };
 
     handleCloseFilter = () => {

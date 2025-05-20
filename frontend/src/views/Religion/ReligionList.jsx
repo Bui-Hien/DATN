@@ -6,7 +6,6 @@ import {Tooltip} from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CommonTable from "../../common/CommonTable";
-import {EducationLevel} from "../../LocalConstants";
 
 function ReligionList() {
     const {t} = useTranslation();

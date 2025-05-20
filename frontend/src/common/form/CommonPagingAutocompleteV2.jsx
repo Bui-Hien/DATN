@@ -1,9 +1,9 @@
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import { FastField, getIn } from "formik";
-import { isEqual } from "lodash";
-import React, { useEffect, useState } from "react";
-import {makeStyles} from "@mui/material";
+import {FastField, getIn} from "formik";
+import {isEqual} from "lodash";
+import React, {useEffect, useState} from "react";
+import {makeStyles} from "@mui/styles";
 
 const PAGE_SIZE = 20;
 
@@ -24,8 +24,8 @@ const useStyles = makeStyles(() => ({
 const CommonPagingAutocompleteV2 = (props) => {
     return (
         <FastField {...props} name={props.name} shouldUpdate={shouldComponentUpdate}>
-            {({ field, meta, form }) => (
-                <MyPagingAutocomplete {...props} field={field} meta={meta} setFieldValue={form.setFieldValue} />
+            {({field, meta, form}) => (
+                <MyPagingAutocomplete {...props} field={field} meta={meta} setFieldValue={form.setFieldValue}/>
             )}
         </FastField>
     );
@@ -80,10 +80,11 @@ function MyPagingAutocomplete({
             pageIndex: newPage,
             pageSize: PAGE_SIZE,
             keyword,
-        }).then(({ data }) => {
-            if (data && data.content) {
-                setOptions([...data.content]);
-                setTotalPage(data.totalPages);
+        }).then((response) => {
+            const result = response?.data;
+            if (result && result.data?.content) {
+                setOptions([...result.data.content]);
+                setTotalPage(result.data.totalPages);
             } else {
                 setOptions([]);
             }
@@ -98,12 +99,14 @@ function MyPagingAutocomplete({
             pageIndex: nextPage,
             pageSize: PAGE_SIZE,
             keyword,
-        }).then(({ data }) => {
-            if (data && data.content) {
-                setOptions((prev) => [...prev, ...data.content]);
-                setTotalPage(data.totalPages);
+        }).then((response) => {
+            const result = response?.data;
+            if (result && result.data?.content) {
+                setOptions((prev) => [...prev, ...result.data.content]);
+                setTotalPage(result.data.totalPages);
             }
         });
+
     };
 
     const handleScroll = (event) => {
@@ -184,7 +187,7 @@ function MyPagingAutocomplete({
                     {label && (
                         <label htmlFor={name} className={`${oldStyle ? "old-label" : "label-container"}`}>
                             {label}
-                            {required && <span style={{ color: "red" }}> * </span>}
+                            {required && <span style={{color: "red"}}> * </span>}
                         </label>
                     )}
                     <TextField

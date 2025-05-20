@@ -20,10 +20,12 @@ function BankIndex() {
         handleConfirmDelete,
         handleConfirmDeleteMultiple,
         pagingBank,
+        resetStore
     } = bankStore;
 
     useEffect(() => {
         pagingBank()
+        return resetStore
     }, []);
     return (
         <div className="content-index">

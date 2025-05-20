@@ -20,10 +20,13 @@ function ProfessionIndex() {
         handleConfirmDelete,
         handleConfirmDeleteMultiple,
         pagingProfession,
+        resetStore
     } = professionStore;
 
     useEffect(() => {
         pagingProfession()
+
+        return resetStore;
     }, []);
     return (
         <div className="content-index">

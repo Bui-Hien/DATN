@@ -1,9 +1,21 @@
 import {SystemRole} from "./LocalConstants";
 import i18next from "i18next";
 import ListAltIcon from '@mui/icons-material/ListAlt';
-import ConstantList from "./appConfig";
 
 export const navigations = [
+    {
+        name: i18next.t("Nhân viên"),
+        icon: <ListAltIcon/>,
+        isVisible: true,
+        auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER],
+        children: [
+            {
+                name: i18next.t("Mẫu hồ sơ chung"),
+                path: "/staff/document-template",
+                isVisible: true,
+            },
+        ]
+    },
     {
         name: i18next.t("Danh mục chung"),
         icon: <ListAltIcon/>,
@@ -43,6 +55,11 @@ export const navigations = [
             {
                 name: i18next.t("Tôn giáo"),
                 path: "/administration/religion",
+                isVisible: true,
+            },
+            {
+                name: i18next.t("Đơn vị hành chính"),
+                path: "/administration/administrative-unit",
                 isVisible: true,
             }
         ]

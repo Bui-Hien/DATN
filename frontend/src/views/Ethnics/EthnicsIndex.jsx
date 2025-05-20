@@ -20,10 +20,13 @@ function EthnicsIndex() {
         handleConfirmDelete,
         handleConfirmDeleteMultiple,
         pagingEthnics,
+        resetStore
     } = ethnicsStore;
 
     useEffect(() => {
         pagingEthnics()
+
+        return resetStore;
     }, []);
     return (
         <div className="content-index">

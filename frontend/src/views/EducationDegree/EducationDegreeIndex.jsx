@@ -20,10 +20,13 @@ function EducationDegreeIndex() {
         handleConfirmDelete,
         handleConfirmDeleteMultiple,
         pagingEducationDegree,
+        resetStore
     } = educationDegreeStore;
 
     useEffect(() => {
         pagingEducationDegree()
+
+        return resetStore;
     }, []);
     return (
         <div className="content-index">

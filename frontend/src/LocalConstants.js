@@ -20,7 +20,29 @@ const EducationLevel = {
     },
 };
 
+const AdministrativeUnitLevel = {
+    PROVINCE: {value: 1, name: "Tỉnh"},
+    DISTRICT: {value: 2, name: "Huyện"},
+    WARD: {value: 3, name: "Xã"},
+    getListData() {
+        return Object.keys(this)
+            .filter(key => typeof this[key] === 'object' && this[key] !== null && 'value' in this[key])
+            .map(key => this[key]);
+    },
+};
+const DocumentItemRequired = {
+    PROVINCE: {value: true, name: "Bắt buộc"},
+    DISTRICT: {value: false, name: "Không bắt buộc"},
+    getListData() {
+        return Object.keys(this)
+            .filter(key => typeof this[key] === 'object' && this[key] !== null && 'value' in this[key])
+            .map(key => this[key]);
+    },
+};
+
 module.exports = Object.freeze({
     SystemRole: SYSTEM_ROLE,
-    EducationLevel: EducationLevel
+    EducationLevel: EducationLevel,
+    AdministrativeUnitLevel: AdministrativeUnitLevel,
+    DocumentItemRequired: DocumentItemRequired
 });

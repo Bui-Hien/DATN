@@ -1,5 +1,5 @@
 import {createContext, useContext} from "react";
-import LoginStore from "./views/login/LoginStore";
+import LoginStore from "./views/Login/LoginStore";
 import AuthStore from "./auth/AuthStore";
 import CountryStore from "./views/Country/CountryStore";
 import BankStore from "./views/Bank/BankStore";
@@ -8,6 +8,8 @@ import FamilyRelationshipStore from "./views/FamilyRelationship/FamilyRelationsh
 import EthnicsStore from "./views/Ethnics/EthnicsStore";
 import ProfessionStore from "./views/Profession/ProfessionStore";
 import ReligionStore from "./views/Religion/ReligionStore";
+import AdministrativeUnitStore from "./views/AdministrativeUnit/AdministrativeUnitStore";
+import DocumentTemplateStore from "./views/DocumentTemplate/DocumentTemplateStore";
 
 export const store = {
     loginStore: new LoginStore(),
@@ -18,7 +20,11 @@ export const store = {
     ethnicsStore: new EthnicsStore(),
     familyRelationshipStore: new FamilyRelationshipStore(),
     professionStore: new ProfessionStore(),
-    religionStore: new ReligionStore()
+    religionStore: new ReligionStore(),
+    administrativeUnitStore: new AdministrativeUnitStore(),
+
+    //Nhân viên
+    documentTemplateStore: new DocumentTemplateStore(),
 };
 
 export const StoreContext = createContext(store);

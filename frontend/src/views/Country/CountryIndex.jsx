@@ -20,10 +20,13 @@ function CountryIndex() {
         handleConfirmDelete,
         handleConfirmDeleteMultiple,
         pagingCountry,
+        resetStore
     } = countryStore;
 
     useEffect(() => {
         pagingCountry()
+
+        return resetStore;
     }, []);
     return (
         <div className="content-index">
