@@ -1,16 +1,16 @@
 package com.buihien.datn.dto;
 
 import com.buihien.datn.domain.Department;
+import com.buihien.datn.domain.Position;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class DepartmentDto extends BaseObjectDto {
     private DepartmentDto parent; // Phòng ban cha
     private UUID parentId; // ID phòng ban cha
     private List<DepartmentDto> subRows; // Danh sách phòng ban con
-    private StaffDto staffManager; // Vị trí quản lý
+    private PositionDto positionManager; // Vị trí quản lý
+    private List<PositionDto> positions; //
 
     public DepartmentDto() {
     }
@@ -19,8 +19,8 @@ public class DepartmentDto extends BaseObjectDto {
         super(entity);
         if (entity != null) {
             this.parentId = entity.getParent() != null ? entity.getParent().getId() : null;
-            if (entity.getStaffManager() != null) {
-                this.staffManager = new StaffDto(entity.getStaffManager(), false);
+            if (entity.getPositionManager() != null) {
+                this.positionManager = new PositionDto(entity.getPositionManager(), false, true);
             }
             if (isGetParent && entity.getParent() != null) {
                 this.parent = new DepartmentDto(entity.getParent(), false, false, isGetFull);
@@ -30,6 +30,26 @@ public class DepartmentDto extends BaseObjectDto {
                 this.subRows = new ArrayList<>();
                 for (Department sub : entity.getSubDepartments()) {
                     this.subRows.add(new DepartmentDto(sub, false, true, isGetFull));
+                }
+            }
+            if (entity.getPositions() != null && !entity.getPositions().isEmpty()) {
+                this.positions = new ArrayList<>();
+                for (Position position : entity.getPositions()) {
+                    PositionDto positionDto = new PositionDto();
+                    positionDto.setId(position.getId());
+                    positionDto.setName(position.getName());
+                    positionDto.setCode(position.getCode());
+                    positionDto.setDescription(position.getDescription());
+                    positionDto.setIsMain(position.getIsMain());
+
+                    if (position.getStaff() != null) {
+                        StaffDto staffDto = new StaffDto();
+                        staffDto.setId(position.getStaff().getId());
+                        staffDto.setStaffCode(position.getStaff().getStaffCode());
+                        staffDto.setDisplayName(position.getStaff().getDisplayName());
+                        positionDto.setStaff(staffDto);
+                    }
+                    this.positions.add(positionDto);
                 }
             }
         }
@@ -59,11 +79,19 @@ public class DepartmentDto extends BaseObjectDto {
         this.subRows = subRows;
     }
 
-    public StaffDto getStaffManager() {
-        return staffManager;
+    public PositionDto getPositionManager() {
+        return positionManager;
     }
 
-    public void setStaffManager(StaffDto staffManager) {
-        this.staffManager = staffManager;
+    public void setPositionManager(PositionDto positionManager) {
+        this.positionManager = positionManager;
+    }
+
+    public List<PositionDto> getPositions() {
+        return positions;
+    }
+
+    public void setPositions(List<PositionDto> positions) {
+        this.positions = positions;
     }
 }

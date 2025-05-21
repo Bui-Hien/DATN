@@ -30,6 +30,19 @@ export const navigations = [
         ]
     },
     {
+        name: i18next.t("Chấm công"),
+        icon: <ListAltIcon/>,
+        isVisible: true,
+        auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER],
+        children: [
+            {
+                name: i18next.t("White list"),
+                path: "/schedule/department-ip",
+                isVisible: true,
+            },
+        ]
+    },
+    {
         name: i18next.t("Danh mục chung"),
         icon: <ListAltIcon/>,
         isVisible: true,

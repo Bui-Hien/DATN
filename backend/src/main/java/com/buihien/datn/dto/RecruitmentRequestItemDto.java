@@ -38,7 +38,7 @@ public class RecruitmentRequestItemDto extends AuditableDto {
                 this.recruitmentRequest = new RecruitmentRequestDto(entity.getRecruitmentRequest(), false);
             }
             if (entity.getPosition() != null) {
-                this.position = new PositionDto(entity.getPosition(), false);
+                this.position = new PositionDto(entity.getPosition(), true, true);
             }
         }
     }

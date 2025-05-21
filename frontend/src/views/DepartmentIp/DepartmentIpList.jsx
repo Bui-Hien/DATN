@@ -6,10 +6,10 @@ import {Tooltip} from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CommonTable from "../../common/CommonTable";
-import CheckIcon from '@mui/icons-material/Check';
-function DepartmentList() {
+
+function DepartmentIpList() {
     const {t} = useTranslation();
-    const {departmentStore} = useStore();
+    const {departmentIpStore} = useStore();
 
     const {
         handleOpenCreateEdit,
@@ -21,7 +21,7 @@ function DepartmentList() {
         setPageIndex,
         setPageSize,
         handleSelectListDelete
-    } = departmentStore;
+    } = departmentIpStore;
 
 
     const columns = [
@@ -49,28 +49,15 @@ function DepartmentList() {
             ),
         },
         {
-            accessorKey: "code",
-            header: t("Mã phòng ban"),
-        },
-        {
-            accessorKey: "name",
+            accessorKey: "departmentName",
             header: t("Tên phòng ban"),
-        },
-        {
-            accessorKey: "nameParent",
-            header: t("Tên phòng ban cha"),
             Cell: ({row}) => {
-                const name = row.original?.parent?.name;
-                return <span>{name}</span>;
+                return <span>{row.original?.department?.name || ""}</span>;
             }
         },
         {
-            accessorKey: "positionManager",
-            header: t("Phòng ban đã có quản lý"),
-            Cell: ({row}) => {
-                const isPositionManager = row.original?.positionManager?.id;
-                return <span>{isPositionManager ? <CheckIcon fontSize="small" style={{color: "green"}}/> : ""}</span>;
-            }
+            accessorKey: "ipAddress",
+            header: t("Địa chỉ ip phòng ban"),
         },
         {
             accessorKey: "description",
@@ -81,7 +68,6 @@ function DepartmentList() {
 
     return (
         <CommonTable
-            colParent={true}
             data={dataList}
             columns={columns}
             selection={true}
@@ -98,4 +84,4 @@ function DepartmentList() {
     );
 }
 
-export default observer(DepartmentList);
+export default observer(DepartmentIpList);

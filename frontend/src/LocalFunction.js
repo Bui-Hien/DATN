@@ -1,10 +1,18 @@
 import moment from "moment";
-import React, { useMemo } from "react";
-import localStorageService from "./services/localStorageService";
+import React from "react";
 
 // export function getDate(date) {
 //     return new Date(date).getDate();
 // }
+export function removeVietnameseTones(str) {
+    return str
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "") // bỏ dấu
+        .replace(/đ/g, "d")
+        .replace(/Đ/g, "D")
+        .replace(/[^a-zA-Z0-9\s]/g, "") // bỏ ký tự đặc biệt
+        .trim();
+}
 
 export function getDate(date, titleNoDate = '', stringFormate = 'DD/MM/YYYY') {
     return (date && moment(date).isValid()) ? moment(date).format(stringFormate) : titleNoDate;
@@ -182,7 +190,7 @@ export function getTextWidth(text, fontSize) {
 
 export const RequiredLabel = React.memo(() => {
     return (
-        <span style={{ color: 'red' }}>*</span>
+        <span style={{color: 'red'}}>*</span>
     )
 });
 
@@ -280,12 +288,13 @@ export function bytesToKB(bytes) {
     if (size) return size + " KB";
     return "";
 }
+
 export function getDateTime(date, titleNoDate = '', stringFormate = 'DD/MM/YYYY HH:mm') {
     return (date && moment(date).isValid()) ? moment(date).format(stringFormate) : titleNoDate;
 };
 export const checkSearchObject = (oldValue, newValue) => {
     if ("pageIndex" in newValue && "pageSize" in newValue) {
-        oldValue = { ...newValue, pageSize: oldValue.pageSize, pageIndex: 1 };
+        oldValue = {...newValue, pageSize: oldValue.pageSize, pageIndex: 1};
     } else if ("pageIndex" in newValue) {
         oldValue.pageIndex = newValue.pageIndex;
     } else if ("pageSize" in newValue) {
@@ -293,7 +302,7 @@ export const checkSearchObject = (oldValue, newValue) => {
         oldValue.pageIndex = 1;
     }
 
-    return { ...oldValue, keyword: oldValue?.keyword?.trim() };
+    return {...oldValue, keyword: oldValue?.keyword?.trim()};
 }
 
 export const getFormData = (object) => {
@@ -305,6 +314,7 @@ export const getFormData = (object) => {
 
     return formData;
 };
+
 export function getTime(value, format = "HH:mm") {
     return value && moment(value).isValid() ? moment(value).format(format) : "";
 }
@@ -317,7 +327,7 @@ export const formatNumber = (value) => {
 
 export const getCheckInAndCheckOutTimeOfShiftWork = (shiftWork) => {
     if (!shiftWork || !shiftWork.timePeriods || shiftWork.timePeriods.length === 0) {
-        return { checkInTime: null, checkOutTime: null };
+        return {checkInTime: null, checkOutTime: null};
     }
 
     // Sort timePeriods by startTime to find the earliest and latest

@@ -10,15 +10,16 @@ public class PositionDto extends BaseObjectDto {
     public PositionDto() {
     }
 
-    public PositionDto(Position entity, Boolean isGetFull) {
+    public PositionDto(Position entity, Boolean isGetDepartment, Boolean isGetStaff) {
         super(entity);
         if (entity != null) {
-            this.department = new DepartmentDto(entity.getDepartment(), false, false, false);
-            this.staff = new StaffDto(entity.getStaff(), false);
-            this.isMain = entity.getMain();
-            if (isGetFull) {
-                //todo
+            if (isGetDepartment && entity.getDepartment() != null) {
+                this.department = new DepartmentDto(entity.getDepartment(), false, false, false);
             }
+            if (isGetStaff && entity.getStaff() != null) {
+                this.staff = new StaffDto(entity.getStaff(), false);
+            }
+            this.isMain = entity.getIsMain();
         }
     }
 
@@ -38,11 +39,11 @@ public class PositionDto extends BaseObjectDto {
         this.staff = staff;
     }
 
-    public Boolean getMain() {
+    public Boolean getIsMain() {
         return isMain;
     }
 
-    public void setMain(Boolean main) {
+    public void setIsMain(Boolean main) {
         isMain = main;
     }
 

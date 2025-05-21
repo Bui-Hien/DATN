@@ -40,10 +40,10 @@ public class DepartmentIpServiceImpl extends GenericServiceImpl<DepartmentIp, De
             department = departmentRepository.findById(dto.getDepartment().getId()).orElse(null);
         }
         if (department == null) {
-            throw new ResourceNotFoundException("No Found Department");
+            throw new ResourceNotFoundException("Không tìm thấy phòng ban");
         }
         entity.setDepartment(department);
-        entity.setIpAddress(entity.getIpAddress());
+        entity.setIpAddress(dto.getIpAddress());
         entity.setDescription(dto.getDescription());
         return entity;
     }
@@ -57,7 +57,7 @@ public class DepartmentIpServiceImpl extends GenericServiceImpl<DepartmentIp, De
 
 
         StringBuilder sqlCount = new StringBuilder("SELECT COUNT(entity.id) FROM DepartmentIp entity WHERE (1=1) ");
-        StringBuilder sql = new StringBuilder("SELECT new com.buihien.datn.dto.DepartmentIpDto(entity) FROM DepartmentIp entity WHERE (1=1) ");
+        StringBuilder sql = new StringBuilder("SELECT new com.buihien.datn.dto.DepartmentIpDto(entity, false) FROM DepartmentIp entity WHERE (1=1) ");
 
         StringBuilder whereClause = new StringBuilder();
 
@@ -65,6 +65,10 @@ public class DepartmentIpServiceImpl extends GenericServiceImpl<DepartmentIp, De
             whereClause.append(" AND (entity.voided = false OR entity.voided IS NULL) ");
         } else {
             whereClause.append(" AND entity.voided = true ");
+        }
+
+        if (dto.getOwnerId() != null) {
+            whereClause.append(" AND (entity.department.id = :ownerId) ");
         }
 
         if (dto.getKeyword() != null && StringUtils.hasText(dto.getKeyword())) {
@@ -89,6 +93,11 @@ public class DepartmentIpServiceImpl extends GenericServiceImpl<DepartmentIp, De
         if (dto.getKeyword() != null && StringUtils.hasText(dto.getKeyword())) {
             q.setParameter("text", '%' + dto.getKeyword() + '%');
             qCount.setParameter("text", '%' + dto.getKeyword() + '%');
+        }
+
+        if (dto.getOwnerId() != null) {
+            q.setParameter("ownerId", dto.getOwnerId());
+            qCount.setParameter("ownerId", dto.getOwnerId());
         }
 
         if (dto.getFromDate() != null) {

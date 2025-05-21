@@ -8,6 +8,7 @@ import ReligionRoutes from "./views/Religion/ReligionRoutes";
 import AdministrativeUnitRoutes from "./views/AdministrativeUnit/AdministrativeUnitRoutes";
 import DocumentTemplateRoutes from "./views/DocumentTemplate/DocumentTemplateRoutes";
 import DepartmentRoutes from "./views/Department/DepartmentRoutes";
+import DepartmentIpRoutes from "./views/DepartmentIp/DepartmentIpRoutes";
 
 const routes = [
     //Danh mục chung
@@ -24,6 +25,9 @@ const routes = [
 
     //Cơ cấu tổ chức
     ...DepartmentRoutes,
+
+    //Chấm công
+    ...DepartmentIpRoutes
 ];
 
 export default routes;

@@ -4,11 +4,76 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e47dca97-3d3a-416a-b068-5f4a89d0539a" name="Changes" comment="" />
+    <list default="true" id="e47dca97-3d3a-416a-b068-5f4a89d0539a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/common/form/CommonSelectInputV2.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Department/PositionSection.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/DepartmentIp/DepartmentIp.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/DepartmentIp/DepartmentIpFilter.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/DepartmentIp/DepartmentIpForm.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/DepartmentIp/DepartmentIpIndex.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/DepartmentIp/DepartmentIpList.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/DepartmentIp/DepartmentIpRoutes.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/DepartmentIp/DepartmentIpSection.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/DepartmentIp/DepartmentIpService.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/DepartmentIp/DepartmentIpStore.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/DepartmentIp/DepartmentIpToolbar.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/DepartmentIp/SearchObject.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/Position/PositionService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/domain/Department.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/domain/Department.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/domain/Position.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/domain/Position.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/CandidateDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/CandidateDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/DepartmentDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/DepartmentDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/PositionDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/PositionDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/RecruitmentRequestItemDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/RecruitmentRequestItemDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/repository/DepartmentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/repository/DepartmentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/repository/PositionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/repository/PositionRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/DepartmentServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/DepartmentServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/PositionServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/PositionServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/LocalFunction.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/LocalFunction.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RootRoutes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/RootRoutes.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/SelectComponent/PositionSelectExample.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/SelectComponent/ReusableSelectList.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/SelectComponent/ReusableSelectPopup.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/SelectComponent/ReusableSelectToolbar.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/SelectComponent/SelectDepartment/SelectDepartmentComponent.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/SelectComponent/SelectDepartment/SelectDepartmentPopupV2.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/SelectComponent/SelectDepartmentTreeView/TreeAutocompleteExample.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/SelectComponent/SelectDepartmentTreeView/TreeAutocompleteSelector.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/SelectComponent/SelectMultipleStaffs/ChooseMultipleStaffsPopup.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/SelectComponent/SelectMultipleStaffs/ChooseStaffsPopupFilter.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/SelectComponent/SelectMultipleStaffs/ChooseStaffsPopupToolbar.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/SelectComponent/SelectMultipleStaffs/ChosenStaffDraggableTable.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/SelectComponent/SelectMultipleStaffs/ChosenStaffList.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/SelectComponent/SelectMultipleStaffs/ChosenStaffRegularTable.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/SelectComponent/SelectMultipleStaffs/SelectMultipleStaffsComponent.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/SelectComponent/SelectPositionTreeView/MyTreeAutocomplete.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/SelectComponent/SelectPositionTreeView/StyledTreeItem.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/SelectComponent/SelectPositionTreeView/TreeAutocompletePositionSelector.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/SelectComponent/SelectPositionTreeView/v1Position.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/SelectComponent/SelectSigle/ObjectSelectorPopup.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/SelectComponent/SelectSigle/ObjectSelectorSection.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/SelectComponent/SelectSigle/StaffSelectionForm.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/SelectComponent/SelectSigle/StaffWorkScheduleSelectionForm.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/navigations.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/navigations.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/Department/Department.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Department/Department.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/Department/DepartmentForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Department/DepartmentForm.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/Department/DepartmentList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Department/DepartmentList.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/DocumentTemplate/DocumentTemplateItemSection.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/DocumentTemplate/DocumentTemplateItemSection.jsx" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+        <option value="JSX File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -30,7 +95,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/workspace/DATN/frontend/src/views",
+    "last_opened_file_path": "C:/workspace/DATN/frontend/src/views/DepartmentIp",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -44,13 +109,14 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\workspace\DATN\frontend\src\views\DepartmentIp" />
       <recent name="C:\workspace\DATN\frontend\src\views" />
-      <recent name="C:\workspace\DATN\frontend\src\views\Ethnics" />
-      <recent name="C:\workspace\DATN\frontend\src" />
-      <recent name="C:\workspace\DATN\frontend\src\auth" />
-      <recent name="C:\workspace\DATN\frontend" />
+      <recent name="C:\workspace\DATN\frontend\src\views\Department" />
+      <recent name="C:\workspace\DATN\frontend\src\views\DocumentTemplate" />
+      <recent name="C:\workspace\DATN\frontend\src\common\UploadFile" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\workspace\DATN\frontend\src\common" />
       <recent name="C:\workspace\DATN\frontend\src\views\EducationDegree" />
     </key>
   </component>
@@ -92,6 +158,8 @@
       <workItem from="1747601295932" duration="1242000" />
       <workItem from="1747660218157" duration="2417000" />
       <workItem from="1747662837686" duration="17017000" />
+      <workItem from="1747735871403" duration="20522000" />
+      <workItem from="1747795529751" duration="8926000" />
     </task>
     <servers />
   </component>

@@ -7,8 +7,7 @@ export class DepartmentObject {
     parentId = null;
     positions = [];
     subRows = [];
-    staffManager = null;
-
+    positionManager = null;
     constructor() {
     }
 }

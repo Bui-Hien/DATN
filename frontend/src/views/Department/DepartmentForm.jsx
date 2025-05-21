@@ -11,6 +11,9 @@ import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from "@mui/icons-material/Close";
 import CommonPagingAutocompleteV2 from "../../common/form/CommonPagingAutocompleteV2";
 import {pagingDepartment} from "./DepartmentService";
+import CommonSelectInputV2 from "../../common/form/CommonSelectInputV2";
+import PositionSection from "./PositionSection";
+import {removeVietnameseTones} from "../../LocalFunction";
 
 function DepartmentForm() {
     const {t} = useTranslation();
@@ -28,7 +31,18 @@ function DepartmentForm() {
         name: Yup.string().trim().nullable().required(t("validation.required")),
         description: Yup.string().nullable(),
         parent: Yup.object().nullable(),
-        staffManager: Yup.object().nullable(),
+        positionManager: Yup.object().nullable(),
+        positions: Yup.array()
+            .of(
+                Yup.object({
+                    code: Yup.string().trim().required(t("validation.required")),
+                    name: Yup.string().trim().required(t("validation.required")),
+                    description: Yup.string().nullable(),
+                    staff: Yup.object().nullable(),
+                    isMain: Yup.boolean().nullable(),
+                }).nullable()
+            )
+            .nullable(),
     });
 
 
@@ -38,7 +52,7 @@ function DepartmentForm() {
 
     return (
         <CommonPopupV2
-            size="sm"
+            size="md"
             scroll={"body"}
             open={openCreateEditPopup}
             noDialogContent
@@ -57,38 +71,64 @@ function DepartmentForm() {
                         <Form autoComplete="off">
                             <DialogContent className="p-6">
                                 <div className={"grid grid-cols-12 gap-2"}>
-                                    <div className="sm:col-span-12">
-                                        <CommonTextField
-                                            label="Mã phòng ban"
-                                            name="code"
-                                            required/>
-                                    </div>
-                                    <div className="sm:col-span-12">
+                                    <div className="col-span-12 md:col-span-6 xl:col-span-4">
                                         <CommonTextField
                                             label="Tên phòng ban"
                                             name="name"
+                                            onChange={(e) => {
+                                                const nameValue = e.target.value;
+                                                const codeValue = removeVietnameseTones(nameValue).toUpperCase().replace(/\s+/g, "_");
+                                                setFieldValue("name", nameValue);
+                                                setFieldValue("code", codeValue);
+                                            }}
+                                            required
+                                        />
+                                    </div>
+                                    <div className="col-span-12 md:col-span-6 xl:col-span-4">
+                                        <CommonTextField
+                                            label="Mã phòng ban"
+                                            name="code"
+                                            onChange={(e) => {
+                                                const nameValue = e.target.value;
+                                                const codeValue = removeVietnameseTones(nameValue).toUpperCase().replace(/\s+/g, "_");
+                                                setFieldValue("code", codeValue);
+                                            }}
                                             required/>
                                     </div>
-                                    <div className="sm:col-span-12">
-                                        <CommonTextField
-                                            label="Mô tả phòng ban"
-                                            name="description"
-                                        />
-                                    </div>
-                                    <div className="sm:col-span-12">
-                                        <CommonPagingAutocompleteV2
-                                            label={"Nhân viên quản lý"}
-                                            name={"staffManager"}
-                                            api={pagingDepartment}
-                                        />
-                                    </div>
+                                    <div className="col-span-12 md:col-span-6 xl:col-span-4">
+                                        <CommonSelectInputV2
+                                            name="positionManager"
+                                            label="Quản lý phòng ban"
+                                            options={values?.positions}
+                                            getOptionLabel={(option) => {
+                                                const positionName = option?.name;
+                                                const staffName = option?.staff?.displayName;
 
-                                    <div className="sm:col-span-12">
+                                                if (positionName && staffName) {
+                                                    return `${positionName} - ${staffName}`;
+                                                } else {
+                                                    return positionName || staffName || "";
+                                                }
+                                            }}
+                                        />
+                                    </div>
+                                    <div className="col-span-12 md:col-span-6 xl:col-span-4">
                                         <CommonPagingAutocompleteV2
                                             label={"Trực thuộc phòng ban"}
                                             name={"parent"}
                                             api={pagingDepartment}
                                         />
+                                    </div>
+                                    <div className="col-span-12">
+                                        <CommonTextField
+                                            label="Mô tả phòng ban"
+                                            name="description"
+                                            multiline={true}
+                                            rows={4}
+                                        />
+                                    </div>
+                                    <div className="col-span-12">
+                                        <PositionSection/>
                                     </div>
                                 </div>
                             </DialogContent>
@@ -119,8 +159,7 @@ function DepartmentForm() {
                             </DialogActions>
                         </Form>
                     );
-                }
-                }
+                }}
             </Formik>
         </CommonPopupV2>
     );

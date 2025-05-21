@@ -1,17 +1,17 @@
 import {makeAutoObservable} from "mobx";
 import {
-    deleteDepartment,
-    deleteMultipleDepartmentByIds,
-    getDepartmentById,
-    pagingTreeDepartment,
-    saveDepartment,
-} from "./DepartmentService";
+    deleteDepartmentIp,
+    deleteMultipleDepartmentIpByIds,
+    getDepartmentIpById,
+    pagingDepartmentIp,
+    saveDepartmentIp,
+} from "./DepartmentIpService";
 import {toast} from "react-toastify";
 import i18n from "i18next";
 import {SearchObject} from "./SearchObject";
-import {DepartmentObject} from "./Department";
+import {DepartmentIpObject} from "./DepartmentIp";
 
-export default class DepartmentStore {
+export default class DepartmentIpStore {
     searchObject = JSON.parse(JSON.stringify(new SearchObject()));
 
     totalElements = 0;
@@ -20,7 +20,7 @@ export default class DepartmentStore {
     openConfirmDeletePopup = false;
     openConfirmDeleteListPopup = false;
     openCreateEditPopup = false;
-    selectedRow = new DepartmentObject();
+    selectedRow = new DepartmentIpObject();
     selectedDataList = [];
     isOpenFilter = false;
 
@@ -41,12 +41,14 @@ export default class DepartmentStore {
         this.isOpenFilter = false;
     };
 
-    pagingTreeDepartment = async () => {
+    pagingDepartmentIp = async () => {
         try {
             const newSearch = {
                 ...this.searchObject,
+                ownerId: this.searchObject.owner?.id,
+                owner: null,
             }
-            const response = await pagingTreeDepartment(newSearch);
+            const response = await pagingDepartmentIp(newSearch);
             const result = response.data;
             this.dataList = result.data.content || [];
             this.totalElements = result.data.totalElements || 0;
@@ -64,25 +66,25 @@ export default class DepartmentStore {
 
     setPageIndex = async (page) => {
         this.searchObject.pageIndex = page;
-        await this.pagingTreeDepartment();
+        await this.pagingDepartmentIp();
     };
 
     setPageSize = async (size) => {
         this.searchObject.pageSize = size;
         this.searchObject.pageIndex = 1;
-        await this.pagingTreeDepartment();
+        await this.pagingDepartmentIp();
     };
 
     handleOpenCreateEdit = async (id) => {
         try {
             if (id) {
-                const {data} = await getDepartmentById(id);
+                const {data} = await getDepartmentIpById(id);
                 this.selectedRow = {
-                    ...new DepartmentObject(),
+                    ...new DepartmentIpObject(),
                     ...data.data,
                 };
             } else {
-                this.selectedRow = new DepartmentObject();
+                this.selectedRow = new DepartmentIpObject();
             }
             this.openCreateEditPopup = true;
         } catch (error) {
@@ -112,9 +114,9 @@ export default class DepartmentStore {
 
     handleConfirmDelete = async () => {
         try {
-            const {data} = await deleteDepartment(this.selectedRow.id);
+            const {data} = await deleteDepartmentIp(this.selectedRow.id);
             toast.success(i18n.t("toast.delete_success"));
-            await this.pagingTreeDepartment();
+            await this.pagingDepartmentIp();
             this.handleClose();
             return data;
         } catch (error) {
@@ -130,10 +132,10 @@ export default class DepartmentStore {
     handleConfirmDeleteMultiple = async () => {
         try {
             const ids = this.selectedDataList.map((item) => item.id);
-            await deleteMultipleDepartmentByIds(ids);
+            await deleteMultipleDepartmentIpByIds(ids);
             this.selectedDataList = [];
             toast.success(i18n.t("toast.delete_success"));
-            await this.pagingTreeDepartment();
+            await this.pagingDepartmentIp();
             this.handleClose();
         } catch (error) {
             console.log(error);
@@ -149,12 +151,12 @@ export default class DepartmentStore {
         this.selectedDataList = dataList;
     };
 
-    saveDepartment = async (data) => {
+    saveDepartmentIp = async (data) => {
         try {
-            await saveDepartment(data);
+            await saveDepartmentIp(data);
             toast.success(i18n.t("toast.save_success"));
             this.handleClose();
-            await this.pagingTreeDepartment();
+            await this.pagingDepartmentIp();
         } catch (error) {
             console.error(error);
             if (error?.response?.data?.message) {

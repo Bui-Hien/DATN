@@ -2,7 +2,7 @@ import {FieldArray, useFormikContext} from "formik";
 import React, {memo} from "react";
 import {useTranslation} from "react-i18next";
 import {observer} from "mobx-react-lite";
-import {Add, Delete} from "@mui/icons-material";
+import {Delete} from "@mui/icons-material";
 import {Button, ButtonGroup} from "@mui/material";
 import CommonTextField from "../../common/form/CommonTextField";
 import CommonNumberInput from "../../common/form/CommonNumberInput";

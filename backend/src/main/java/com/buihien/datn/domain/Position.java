@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 public class Position extends BaseObject {
 
     @ManyToOne
+    @JoinColumn(name = "department_id")
     private Department department;
 
     @ManyToOne
@@ -37,11 +38,11 @@ public class Position extends BaseObject {
         this.staff = staff;
     }
 
-    public Boolean getMain() {
+    public Boolean getIsMain() {
         return isMain;
     }
 
-    public void setMain(Boolean main) {
+    public void setIsMain(Boolean main) {
         isMain = main;
     }
 

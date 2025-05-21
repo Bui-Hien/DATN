@@ -36,7 +36,7 @@ public class CandidateDto extends PersonDto {
         if (entity != null) {
             this.candidateCode = entity.getCandidateCode();
             this.recruitmentPlan = new RecruitmentPlanDto(entity.getRecruitmentPlan(), false);
-            this.position = new PositionDto(entity.getPosition(), false);
+            this.position = new PositionDto(entity.getPosition(), true, true);
             this.submissionDate = entity.getSubmissionDate();
             this.interviewDate = entity.getInterviewDate();
             this.desiredPay = entity.getDesiredPay();

@@ -16,8 +16,12 @@ public class Department extends BaseObject {
     private Set<Department> subDepartments; // Danh sách phòng ban con
 
     @ManyToOne
-    @JoinColumn(name = "staff_manager_id")
-    private Staff staffManager; // Vị trí quản lý
+    @JoinColumn(name = "position_manager_id")
+    private Position positionManager; // Vị trí quản lý
+
+
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Position> positions; //
 
     public Department() {
     }
@@ -38,11 +42,19 @@ public class Department extends BaseObject {
         this.subDepartments = subDepartments;
     }
 
-    public Staff getStaffManager() {
-        return staffManager;
+    public Position getPositionManager() {
+        return positionManager;
     }
 
-    public void setStaffManager(Staff staffManager) {
-        this.staffManager = staffManager;
+    public void setPositionManager(Position positionManager) {
+        this.positionManager = positionManager;
+    }
+
+    public Set<Position> getPositions() {
+        return positions;
+    }
+
+    public void setPositions(Set<Position> positions) {
+        this.positions = positions;
     }
 }

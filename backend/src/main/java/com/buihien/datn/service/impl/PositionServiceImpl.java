@@ -27,7 +27,7 @@ public class PositionServiceImpl extends GenericServiceImpl<Position, PositionDt
 
     @Override
     protected PositionDto convertToDto(Position entity) {
-        return new PositionDto(entity, true);
+        return new PositionDto(entity, true, true);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class PositionServiceImpl extends GenericServiceImpl<Position, PositionDt
         entity.setName(dto.getName());
         entity.setCode(dto.getCode());
         entity.setDescription(dto.getDescription());
-        entity.setMain(dto.getMain());
+        entity.setIsMain(dto.getIsMain());
         Department department = null;
         if (dto.getDepartment() != null && dto.getDepartment().getId() != null) {
             department = departmentRepository.findById(dto.getDepartment().getId()).orElse(null);
@@ -67,7 +67,7 @@ public class PositionServiceImpl extends GenericServiceImpl<Position, PositionDt
 
 
         StringBuilder sqlCount = new StringBuilder("SELECT COUNT(entity.id) FROM Position entity WHERE (1=1) ");
-        StringBuilder sql = new StringBuilder("SELECT new com.buihien.datn.dto.PositionDto(entity, false) FROM Position entity WHERE (1=1) ");
+        StringBuilder sql = new StringBuilder("SELECT new com.buihien.datn.dto.PositionDto(entity, false, false) FROM Position entity WHERE (1=1) ");
 
         StringBuilder whereClause = new StringBuilder();
 
