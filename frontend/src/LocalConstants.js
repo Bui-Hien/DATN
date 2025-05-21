@@ -40,9 +40,36 @@ const DocumentItemRequired = {
     },
 };
 
+const Gender = {
+    MALE: {value: 1, name: "Nam"},
+    FEMALE: {value: 2, name: "Nữ"},
+    OTHER: {value: 3, name: "Khác"},
+    getListData() {
+        return Object.keys(this)
+            .filter(key => typeof this[key] === 'object' && this[key] !== null && 'value' in this[key])
+            .map(key => this[key]);
+    },
+};
+
+
+const MaritalStatus = {
+    SINGLE: {value: 1, name: "Độc thân"},
+    MARRIED: {value: 2, name: "Đã kết hôn"},
+    DIVORCED: {value: 3, name: "Ly hôn"},
+    WIDOWED: {value: 4, name: "Góa vợ/chồng"},
+    SEPARATED: {value: 5, name: "Ly thân"},
+    getListData() {
+        return Object.keys(this)
+            .filter(key => typeof this[key] === 'object' && this[key] !== null && 'value' in this[key])
+            .map(key => this[key]);
+    },
+};
+
 module.exports = Object.freeze({
     SystemRole: SYSTEM_ROLE,
     EducationLevel: EducationLevel,
     AdministrativeUnitLevel: AdministrativeUnitLevel,
-    DocumentItemRequired: DocumentItemRequired
+    DocumentItemRequired: DocumentItemRequired,
+    Gender: Gender,
+    MaritalStatus: MaritalStatus
 });

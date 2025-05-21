@@ -1,11 +1,13 @@
 import {SystemRole} from "./LocalConstants";
 import i18next from "i18next";
 import ListAltIcon from '@mui/icons-material/ListAlt';
-
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import GroupIcon from '@mui/icons-material/Group';
+import EventNoteIcon from '@mui/icons-material/EventNote';
 export const navigations = [
     {
         name: i18next.t("Cơ cấu tổ chức"),
-        icon: <ListAltIcon/>,
+        icon: <AccountTreeIcon/>,
         isVisible: true,
         auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER],
         children: [
@@ -18,20 +20,25 @@ export const navigations = [
     },
     {
         name: i18next.t("Nhân viên"),
-        icon: <ListAltIcon/>,
+        icon: <GroupIcon/>,
         isVisible: true,
         auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER],
         children: [
             {
+                name: i18next.t("Hồ sơ nhân viên"),
+                path: "/staff",
+                isVisible: true,
+            },
+            {
                 name: i18next.t("Mẫu hồ sơ chung"),
-                path: "/staff/document-template",
+                path: "/document-template",
                 isVisible: true,
             },
         ]
     },
     {
         name: i18next.t("Chấm công"),
-        icon: <ListAltIcon/>,
+        icon: <EventNoteIcon/>,
         isVisible: true,
         auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER],
         children: [

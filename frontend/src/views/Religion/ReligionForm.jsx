@@ -9,6 +9,7 @@ import CommonTextField from "../../common/form/CommonTextField";
 import {observer} from "mobx-react-lite";
 import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from "@mui/icons-material/Close";
+import {removeVietnameseTones} from "../../LocalFunction";
 
 function ReligionForm(props) {
     const {t} = useTranslation();
@@ -53,22 +54,35 @@ function ReligionForm(props) {
                         <Form autoComplete="off">
                             <DialogContent className="p-6">
                                 <div className={"grid grid-cols-12 gap-2"}>
-                                    <div className="sm:col-span-12">
-                                        <CommonTextField
-                                            label="Mã tôn giáo"
-                                            name="code"
-                                            required/>
-                                    </div>
-                                    <div className="sm:col-span-12">
+                                    <div className="col-span-12">
                                         <CommonTextField
                                             label="Tên tôn giáo"
                                             name="name"
+                                            onChange={(e) => {
+                                                const nameValue = e.target.value;
+                                                const codeValue = removeVietnameseTones(nameValue).toUpperCase().replace(/\s+/g, "_");
+                                                setFieldValue("name", nameValue);
+                                                setFieldValue("code", codeValue);
+                                            }}
                                             required/>
                                     </div>
-                                    <div className="sm:col-span-12">
+                                    <div className="col-span-12">
+                                        <CommonTextField
+                                            label="Mã tôn giáo"
+                                            name="code"
+                                            onChange={(e) => {
+                                                const nameValue = e.target.value;
+                                                const codeValue = removeVietnameseTones(nameValue).toUpperCase().replace(/\s+/g, "_");
+                                                setFieldValue("code", codeValue);
+                                            }}
+                                            required/>
+                                    </div>
+                                    <div className="col-span-12">
                                         <CommonTextField
                                             label="Mô tả tôn giáo"
                                             name="description"
+                                            multiline
+                                            rows={3}
                                         />
                                     </div>
                                 </div>

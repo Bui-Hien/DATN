@@ -12,6 +12,8 @@ import AdministrativeUnitStore from "./views/AdministrativeUnit/AdministrativeUn
 import DocumentTemplateStore from "./views/DocumentTemplate/DocumentTemplateStore";
 import DepartmentStore from "./views/Department/DepartmentStore";
 import DepartmentIpStore from "./views/DepartmentIp/DepartmentIpStore";
+import CandidateWorkingExperienceStore from "./views/CandidateWorkingExperience/CandidateWorkingExperienceStore";
+import StaffStore from "./views/Staff/StaffStore";
 
 export const store = {
     loginStore: new LoginStore(),
@@ -26,6 +28,7 @@ export const store = {
     administrativeUnitStore: new AdministrativeUnitStore(),
 
     //Nhân viên
+    staffStore: new StaffStore(),
     documentTemplateStore: new DocumentTemplateStore(),
 
     //Cơ cấu tổ chức
@@ -33,6 +36,8 @@ export const store = {
 
     //Chấm công
     departmentIpStore: new DepartmentIpStore(),
+    //Tuyển dụng
+    candidateWorkingExperienceStore: new CandidateWorkingExperienceStore(),
 };
 
 export const StoreContext = createContext(store);

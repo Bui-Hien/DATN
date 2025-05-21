@@ -20,6 +20,7 @@ import {useStore} from "../../stores";
 import PropTypes from "prop-types";
 import {observer} from "mobx-react-lite";
 import {navigations} from "../../navigations";
+import NotFound from "./NotFound";
 
 
 const COLORS = {
@@ -182,7 +183,7 @@ function AppLayout({routes}) {
             </Drawer>
             <Box component="main" sx={{flexGrow: 1}}>
                 <DrawerHeader/>
-                <Box className={"!px-4 h-screen"}>
+                <Box className={"!px-4 !min-h-screen"}>
                     <Routes>
                         {routes?.map((item, index) => {
                             const hasAccess = !item.auth || item.auth.some(role => roles.includes(role));
@@ -197,7 +198,7 @@ function AppLayout({routes}) {
                             }
                             return null;
                         })}
-                        {/*<Route path="*" element={<NotFound/>}/>*/}
+                        <Route path="*" element={<NotFound/>}/>
                     </Routes>
                 </Box>
             </Box>

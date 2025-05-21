@@ -154,13 +154,22 @@ const Component = ({
                 InputProps: {
                     ...InputProps,
                     readOnly: readOnly,
-                    style: readOnly
-                        ? {
-                            color: "rgba(0, 0, 0, 0.87)",
-                            backgroundColor: "rgba(0, 0, 0, 0.02)",
-                            opacity: 1,
-                        }
-                        : undefined,
+                    sx: {
+                        height: "40px", // chiều cao tổng thể của input
+                        "& .MuiInputBase-input": {
+                            height: "40px",
+                            padding: "0 14px",
+                            display: "flex",
+                            alignItems: "center",
+                        },
+                        ...(readOnly
+                            ? {
+                                color: "rgba(0, 0, 0, 0.87)",
+                                backgroundColor: "rgba(0, 0, 0, 0.02)",
+                                opacity: 1,
+                            }
+                            : {}),
+                    },
                 },
                 inputProps: {
                     tabIndex,
@@ -183,14 +192,13 @@ const Component = ({
     };
 
     return (
-        <div className="h-100 flex justify-right align-start flex-column">
+        <div className="flex flex-col">
+            {label && (
+                <label htmlFor={name} className="label-container">
+                    {label} {required ? <span style={{color: "red"}}> * </span> : null}
+                </label>
+            )}
             <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={viLocale}>
-                {label && (
-                    <label htmlFor={name} className="label-container">
-                        {label} {required ? <span style={{color: "red"}}> * </span> : null}
-                    </label>
-                )}
-
                 {isDateTimePicker ? (
                     <DateTimePicker {...pickerProps} />
                 ) : isTimePicker ? (

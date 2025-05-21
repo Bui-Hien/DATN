@@ -13,6 +13,7 @@ import CommonSelectInput from "../../common/form/CommonSelectInput";
 import {AdministrativeUnitLevel} from "../../LocalConstants";
 import {pagingAdministrativeUnit} from "./AdministrativeUnitService";
 import CommonPagingAutocompleteV2 from "../../common/form/CommonPagingAutocompleteV2";
+import {removeVietnameseTones} from "../../LocalFunction";
 
 function AdministrativeUnitForm(props) {
     const {t} = useTranslation();
@@ -58,7 +59,7 @@ function AdministrativeUnitForm(props) {
                         <Form autoComplete="off">
                             <DialogContent className="p-6">
                                 <div className={"grid grid-cols-12 gap-2"}>
-                                    <div className="sm:col-span-12">
+                                    <div className="col-span-12">
                                         <CommonSelectInput
                                             label={"Cấp độ"}
                                             name={"level"}
@@ -66,20 +67,32 @@ function AdministrativeUnitForm(props) {
                                             options={AdministrativeUnitLevel.getListData()}
                                             required/>
                                     </div>
-                                    <div className="sm:col-span-12">
-                                        <CommonTextField
-                                            label="Mã đơn vị hành chính"
-                                            name="code"
-                                            required/>
-                                    </div>
-                                    <div className="sm:col-span-12">
+                                    <div className="col-span-12">
                                         <CommonTextField
                                             label="Tên đơn vị hành chính"
                                             name="name"
+                                            onChange={(e) => {
+                                                const nameValue = e.target.value;
+                                                const codeValue = removeVietnameseTones(nameValue).toUpperCase().replace(/\s+/g, "_");
+                                                setFieldValue("name", nameValue);
+                                                setFieldValue("code", codeValue);
+                                            }}
+                                            required
+                                        />
+                                    </div>
+                                    <div className="col-span-12">
+                                        <CommonTextField
+                                            label="Mã đơn vị hành chính"
+                                            name="code"
+                                            onChange={(e) => {
+                                                const nameValue = e.target.value;
+                                                const codeValue = removeVietnameseTones(nameValue).toUpperCase().replace(/\s+/g, "_");
+                                                setFieldValue("code", codeValue);
+                                            }}
                                             required/>
                                     </div>
                                     {values?.level !== AdministrativeUnitLevel.PROVINCE.value && (
-                                        <div className="sm:col-span-12">
+                                        <div className="col-span-12">
                                             <CommonPagingAutocompleteV2
                                                 label={"Trực thuộc đơn vị"}
                                                 name={"parent"}

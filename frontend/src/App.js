@@ -1,5 +1,5 @@
 import "./i18n";
-import React, {useCallback, useEffect, useState} from "react";
+import React, {Suspense, useCallback, useEffect, useState} from "react";
 import {BrowserRouter, Route, Routes, useLocation, useNavigate} from 'react-router-dom';
 import AppLayout from "./common/Layout/AppLayout";
 import routes from "./RootRoutes";
@@ -7,6 +7,7 @@ import {LOGIN_PAGE} from "./appConfig";
 import LoginIndex from "./views/Login/LoginIndex";
 import {useStore} from "./stores";
 import {ToastContainer} from "react-toastify";
+import Loading from "./common/Layout/Loading";
 
 function AppWrapper() {
     const navigate = useNavigate();
@@ -34,14 +35,14 @@ function AppWrapper() {
     }, [initAuth]);
 
     return (
-        <>
+        <Suspense fallback={<Loading/>}>
             <Routes>
                 <Route path={LOGIN_PAGE} element={<LoginIndex/>}/>
             </Routes>
             {isLoginPage && (
                 <AppLayout routes={routes}/>
             )}
-        </>
+        </Suspense>
     );
 }
 

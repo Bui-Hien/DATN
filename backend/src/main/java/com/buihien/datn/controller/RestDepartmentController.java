@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping("/api/department")
 @RestController
-public class DepartmentController extends GenericApi<DepartmentDto, SearchDto> {
+public class RestDepartmentController extends GenericApi<DepartmentDto, SearchDto> {
 
-    public DepartmentController(GenericService<DepartmentDto, SearchDto> genericService) {
+    public RestDepartmentController(GenericService<DepartmentDto, SearchDto> genericService) {
         super(DepartmentDto.class, genericService);
     }
 

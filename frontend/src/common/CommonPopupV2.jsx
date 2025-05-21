@@ -34,6 +34,7 @@ export default function CommonPopupV2({
                                           scroll = 'paper', // 'paper' | 'body'
                                           isCreate = false,
                                           isEdit = !isCreate,
+                                          noIcon = false
                                       }) {
     return (
         <StyledDialog
@@ -51,14 +52,14 @@ export default function CommonPopupV2({
                     sx={{m: 0, p: 2, ...styleTitle}}
                     className="border-b border-gray-300 flex justify-between"
                 >
-
                     <div className="">
-                        {isCreate && (
+                        {(!noIcon && isCreate) && (
                             <AddIcon/>
                         )}
-                        {isEdit && (
-                            <EditIcon/>
-                        )}
+                        {(!noIcon && isEdit)
+                            && (
+                                <EditIcon/>
+                            )}
                         {title}
                     </div>
                     <IconButton

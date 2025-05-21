@@ -4,11 +4,12 @@ import {useTranslation} from "react-i18next";
 import {useStore} from "../../stores";
 import * as Yup from "yup";
 import CommonPopupV2 from "../../common/CommonPopupV2";
-import {Button, DialogActions, DialogContent, div} from "@mui/material";
+import {Button, DialogActions, DialogContent} from "@mui/material";
 import CommonTextField from "../../common/form/CommonTextField";
 import {observer} from "mobx-react-lite";
 import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from "@mui/icons-material/Close";
+import {removeVietnameseTones} from "../../LocalFunction";
 
 function CountryForm(props) {
     const {t} = useTranslation();
@@ -55,22 +56,36 @@ function CountryForm(props) {
                         <Form autoComplete="off">
                             <DialogContent className="p-6">
                                 <div className={"grid grid-cols-12 gap-2"}>
-                                    <div className="sm:col-span-12 md:col-span-6 ">
-                                        <CommonTextField
-                                            label="Mã quốc gia"
-                                            name="code"
-                                            required/>
-                                    </div>
-                                    <div className="sm:col-span-12 md:col-span-6 ">
+                                    <div className="col-span-12">
                                         <CommonTextField
                                             label="Tên quốc gia"
                                             name="name"
+                                            onChange={(e) => {
+                                                const nameValue = e.target.value;
+                                                const codeValue = removeVietnameseTones(nameValue).toUpperCase().replace(/\s+/g, "_");
+                                                setFieldValue("name", nameValue);
+                                                setFieldValue("code", codeValue);
+                                            }}
+                                            required
+                                        />
+                                    </div>
+                                    <div className="col-span-12">
+                                        <CommonTextField
+                                            label="Mã quốc gia"
+                                            name="code"
+                                            onChange={(e) => {
+                                                const nameValue = e.target.value;
+                                                const codeValue = removeVietnameseTones(nameValue).toUpperCase().replace(/\s+/g, "_");
+                                                setFieldValue("code", codeValue);
+                                            }}
                                             required/>
                                     </div>
                                     <div className="col-span-12">
                                         <CommonTextField
                                             label="Mô tả"
                                             name="description"
+                                            multiline
+                                            rows={3}
                                         />
                                     </div>
                                 </div>

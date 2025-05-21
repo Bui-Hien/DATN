@@ -1,74 +1,32 @@
 package com.buihien.datn.dto;
 
-import com.buihien.datn.DatnConstants;
 import com.buihien.datn.domain.PersonAddress;
-import com.buihien.datn.dto.validator.ValidEnumValue;
 import jakarta.validation.Valid;
 
 @Valid
 public class PersonAddressDto extends AuditableDto {
-    @ValidEnumValue(enumClass = DatnConstants.AddressType.class, message = "Loại địa chỉ không hợp lệ")
-    private Integer addressType;
     private String addressDetail;
     private AdministrativeUnitDto province;
     private AdministrativeUnitDto district;
     private AdministrativeUnitDto ward;
-    private PersonDto person;
 
     public PersonAddressDto() {
     }
 
-    public PersonAddressDto(PersonAddress entity, Boolean isGetPerson) {
+    public PersonAddressDto(PersonAddress entity) {
         super(entity);
         if (entity != null) {
-            this.addressType = entity.getAddressType();
             this.addressDetail = entity.getAddressDetail();
-            if (isGetPerson) {
-                this.person = entity.getPerson() != null ? new PersonDto(entity.getPerson(), false) : null;
+            if (entity.getProvince() != null) {
+                this.province = new AdministrativeUnitDto(entity.getProvince(), false, false);
             }
-            if (entity.getAdminUnit() != null && entity.getAdminUnit().getLevel() != null) {
-                if (DatnConstants.AdministrativeUnitLevel.WARD.getValue().equals(entity.getAdminUnit().getLevel())) {
-                    this.ward = new AdministrativeUnitDto(entity.getAdminUnit(), false, false);
-
-                    if (entity.getAdminUnit().getParent() != null && entity.getAdminUnit().getParent().getLevel() != null) {
-                        if (DatnConstants.AdministrativeUnitLevel.DISTRICT.getValue().equals(entity.getAdminUnit().getParent().getLevel())) {
-                            this.district = new AdministrativeUnitDto(entity.getAdminUnit().getParent(),false, false);
-
-                            if (entity.getAdminUnit().getParent().getParent() != null &&
-                                    entity.getAdminUnit().getParent().getParent().getLevel() != null) {
-                                if (DatnConstants.AdministrativeUnitLevel.PROVINCE.getValue().equals(entity.getAdminUnit().getParent().getParent().getLevel())) {
-                                    this.province = new AdministrativeUnitDto(entity.getAdminUnit().getParent().getParent(), false, false);
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if (DatnConstants.AdministrativeUnitLevel.DISTRICT.getValue().equals(entity.getAdminUnit().getLevel())) {
-                    this.district = new AdministrativeUnitDto(entity.getAdminUnit(), false, false);
-
-                    // Kiểm tra và lấy thông tin Tỉnh (Province) của huyện
-                    if (entity.getAdminUnit().getParent() != null &&
-                            entity.getAdminUnit().getParent().getLevel() != null) {
-                        if (DatnConstants.AdministrativeUnitLevel.PROVINCE.getValue().equals(entity.getAdminUnit().getParent().getLevel())) {
-                            this.province = new AdministrativeUnitDto(entity.getAdminUnit().getParent(), false, false);
-                        }
-                    }
-                }
-
-                if (DatnConstants.AdministrativeUnitLevel.PROVINCE.getValue().equals(entity.getAdminUnit().getLevel())) {
-                    this.province = new AdministrativeUnitDto(entity.getAdminUnit(), false, false);
-                }
+            if (entity.getDistrict() != null) {
+                this.district = new AdministrativeUnitDto(entity.getDistrict(), false, false);
+            }
+            if (entity.getWard() != null) {
+                this.ward = new AdministrativeUnitDto(entity.getWard(), false, false);
             }
         }
-    }
-
-    public Integer getAddressType() {
-        return addressType;
-    }
-
-    public void setAddressType(Integer addressType) {
-        this.addressType = addressType;
     }
 
     public String getAddressDetail() {
@@ -103,11 +61,4 @@ public class PersonAddressDto extends AuditableDto {
         this.ward = ward;
     }
 
-    public PersonDto getPerson() {
-        return person;
-    }
-
-    public void setPerson(PersonDto person) {
-        this.person = person;
-    }
 }

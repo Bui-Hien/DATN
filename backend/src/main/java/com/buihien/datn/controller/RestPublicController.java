@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/public")
 @Validated
-public class PublicController {
-    private static final Logger log = LoggerFactory.getLogger(PublicController.class);
+public class RestPublicController {
+    private static final Logger log = LoggerFactory.getLogger(RestPublicController.class);
 }

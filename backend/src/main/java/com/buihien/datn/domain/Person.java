@@ -73,11 +73,20 @@ public class Person extends AuditableEntity {
     @Column(name = "weight")
     protected Double weight; // Cân nặng (kg)
 
-    @OneToMany(mappedBy = "person", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    protected Set<PersonFamilyRelationship> familyRelationships;// Quan hệ gia đình
+    @OneToOne
+    @JoinColumn(name = "avatar_id")
+    protected FileDescription avatar;
+
+    @OneToOne
+    @JoinColumn(name = "permanent_residence_id")
+    protected PersonAddress permanentResidence; //thường chú
+
+    @OneToOne
+    @JoinColumn(name = "temporary_residence_id")
+    protected PersonAddress temporaryResidence;// Tạm chú
 
     @OneToMany(mappedBy = "person", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    protected Set<PersonAddress> personAddresses;// Địa chỉ
+    protected Set<PersonFamilyRelationship> familyRelationships;// Quan hệ gia đình
 
     @OneToMany(mappedBy = "person", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     protected Set<Certificate> certificates; // Chứng chỉ
@@ -248,6 +257,14 @@ public class Person extends AuditableEntity {
         this.weight = weight;
     }
 
+    public FileDescription getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(FileDescription avatar) {
+        this.avatar = avatar;
+    }
+
     public Set<PersonFamilyRelationship> getFamilyRelationships() {
         return familyRelationships;
     }
@@ -256,12 +273,20 @@ public class Person extends AuditableEntity {
         this.familyRelationships = familyRelationships;
     }
 
-    public Set<PersonAddress> getPersonAddresses() {
-        return personAddresses;
+    public PersonAddress getPermanentResidence() {
+        return permanentResidence;
     }
 
-    public void setPersonAddresses(Set<PersonAddress> personAddresses) {
-        this.personAddresses = personAddresses;
+    public void setPermanentResidence(PersonAddress permanentResidence) {
+        this.permanentResidence = permanentResidence;
+    }
+
+    public PersonAddress getTemporaryResidence() {
+        return temporaryResidence;
+    }
+
+    public void setTemporaryResidence(PersonAddress temporaryResidence) {
+        this.temporaryResidence = temporaryResidence;
     }
 
     public Set<Certificate> getCertificates() {

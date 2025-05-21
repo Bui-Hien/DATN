@@ -9,8 +9,7 @@ import CommonTextField from "../../common/form/CommonTextField";
 import {observer} from "mobx-react-lite";
 import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from "@mui/icons-material/Close";
-import CommonSelectInput from "../../common/form/CommonSelectInput";
-import {EducationLevel} from "../../LocalConstants";
+import {removeVietnameseTones} from "../../LocalFunction";
 
 function ProfessionForm(props) {
     const {t} = useTranslation();
@@ -55,22 +54,35 @@ function ProfessionForm(props) {
                         <Form autoComplete="off">
                             <DialogContent className="p-6">
                                 <div className={"grid grid-cols-12 gap-2"}>
-                                    <div className="sm:col-span-12">
-                                        <CommonTextField
-                                            label="Mã nghề nghiệp"
-                                            name="code"
-                                            required/>
-                                    </div>
-                                    <div className="sm:col-span-12">
+                                    <div className="col-span-12">
                                         <CommonTextField
                                             label="Tên nghề nghiệp"
                                             name="name"
+                                            onChange={(e) => {
+                                                const nameValue = e.target.value;
+                                                const codeValue = removeVietnameseTones(nameValue).toUpperCase().replace(/\s+/g, "_");
+                                                setFieldValue("name", nameValue);
+                                                setFieldValue("code", codeValue);
+                                            }}
                                             required/>
                                     </div>
-                                    <div className="sm:col-span-12">
+                                    <div className="col-span-12">
+                                        <CommonTextField
+                                            label="Mã nghề nghiệp"
+                                            name="code"
+                                            onChange={(e) => {
+                                                const nameValue = e.target.value;
+                                                const codeValue = removeVietnameseTones(nameValue).toUpperCase().replace(/\s+/g, "_");
+                                                setFieldValue("code", codeValue);
+                                            }}
+                                            required/>
+                                    </div>
+                                    <div className="col-span-12">
                                         <CommonTextField
                                             label="Mô tả nghề nghiệp"
                                             name="description"
+                                            multiline
+                                            rows={3}
                                         />
                                     </div>
                                 </div>

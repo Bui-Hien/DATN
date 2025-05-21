@@ -6,7 +6,7 @@ const ViewComponent = lazy(() => import("./DocumentTemplateIndex"));
 
 const DocumentTemplateRoutes = [
     {
-        path: ConstantList.ROOT_PATH + "staff/document-template",
+        path: ConstantList.ROOT_PATH + "document-template",
         exact: true,
         component: ViewComponent,
         auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER],

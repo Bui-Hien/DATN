@@ -6,29 +6,19 @@ import jakarta.persistence.*;
 @Table(name = "tbl_person_address")
 public class PersonAddress extends AuditableEntity {
 
-    @Column(name = "address_type")
-    private Integer addressType; // DatnConstants.AddressType
-
     @Column(name = "address_detail")
     private String addressDetail; // Chi tiết địa chỉ (số nhà, tên đường,...)
-
     @ManyToOne
-    @JoinColumn(name = "admin_unit_id")
-    private AdministrativeUnit adminUnit; // Đơn vị hành chính tương ứng
-
+    @JoinColumn(name = "province_id")
+    private AdministrativeUnit province;
     @ManyToOne
-    @JoinColumn(name = "person_id")
-    private Person person; // Người sở hữu địa chỉ này
+    @JoinColumn(name = "district_id")
+    private AdministrativeUnit district;
+    @ManyToOne
+    @JoinColumn(name = "ward_id")
+    private AdministrativeUnit ward;
 
     public PersonAddress() {
-    }
-
-    public Integer getAddressType() {
-        return addressType;
-    }
-
-    public void setAddressType(Integer addressType) {
-        this.addressType = addressType;
     }
 
     public String getAddressDetail() {
@@ -39,19 +29,27 @@ public class PersonAddress extends AuditableEntity {
         this.addressDetail = addressDetail;
     }
 
-    public AdministrativeUnit getAdminUnit() {
-        return adminUnit;
+    public AdministrativeUnit getProvince() {
+        return province;
     }
 
-    public void setAdminUnit(AdministrativeUnit adminUnit) {
-        this.adminUnit = adminUnit;
+    public void setProvince(AdministrativeUnit province) {
+        this.province = province;
     }
 
-    public Person getPerson() {
-        return person;
+    public AdministrativeUnit getDistrict() {
+        return district;
     }
 
-    public void setPerson(Person person) {
-        this.person = person;
+    public void setDistrict(AdministrativeUnit district) {
+        this.district = district;
+    }
+
+    public AdministrativeUnit getWard() {
+        return ward;
+    }
+
+    public void setWard(AdministrativeUnit ward) {
+        this.ward = ward;
     }
 }

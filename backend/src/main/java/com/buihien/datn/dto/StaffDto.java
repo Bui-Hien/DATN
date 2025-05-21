@@ -6,7 +6,6 @@ import com.buihien.datn.domain.StaffDocumentItem;
 import com.buihien.datn.domain.StaffLabourAgreement;
 import com.buihien.datn.dto.validator.ValidEnumValue;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,7 +13,6 @@ import java.util.List;
 
 @Valid
 public class StaffDto extends PersonDto {
-    @NotBlank(message = "Mã nhân viên không được để trống")
     private String staffCode;// Mã nhân viên
     private Date recruitmentDate; // Ngày tuyển dụng
     private Date startDate; // Ngày bắt đầu công việc

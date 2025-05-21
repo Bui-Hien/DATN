@@ -115,38 +115,6 @@ public class DatnConstants {
         }
     }
 
-    public enum AddressType {
-        TEMPORARY(1, "Tạm trú"),
-        PERMANENT(2, "Thường trú"),
-        NATIVE_VILLAGE(3, "Quê quán");
-
-        private final Integer value;
-        private final String name;
-
-        AddressType(Integer value, String name) {
-            this.value = value;
-            this.name = name;
-        }
-
-        public Integer getValue() {
-            return value;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public static String getNameByValue(Integer value) {
-            if (value == null) return null;
-            for (AddressType item : AddressType.values()) {
-                if (item.getValue().equals(value)) {
-                    return item.getName();
-                }
-            }
-            return null;
-        }
-    }
-
     public enum EducationLevel {
         PHD(1, "Tiến sĩ"),
         MASTER(2, "Thạc sĩ"),

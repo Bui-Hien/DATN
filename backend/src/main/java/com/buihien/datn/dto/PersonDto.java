@@ -3,6 +3,8 @@ package com.buihien.datn.dto;
 import com.buihien.datn.DatnConstants;
 import com.buihien.datn.domain.*;
 import com.buihien.datn.dto.validator.ValidEnumValue;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.Valid;
 
 import java.util.ArrayList;
@@ -33,8 +35,10 @@ public class PersonDto extends AuditableDto {
     protected EducationDegreeDto educationDegree;
     protected Double height;
     protected Double weight;
+    protected FileDescriptionDto avatar;
+    protected PersonAddressDto permanentResidence; //thường chú
+    protected PersonAddressDto temporaryResidence;// Tạm chú
     protected List<PersonFamilyRelationshipDto> familyRelationships;
-    protected List<PersonAddressDto> personAddresses;
     protected List<CertificateDto> certificates;
     protected List<PersonBankAccountDto> personBankAccounts;
 
@@ -60,6 +64,9 @@ public class PersonDto extends AuditableDto {
             this.height = entity.getHeight();
             this.weight = entity.getWeight();
 
+            if (entity.getAvatar() != null) {
+                this.avatar = new FileDescriptionDto(entity.getAvatar());
+            }
             if (entity.getNationality() != null) {
                 this.nationality = new CountryDto(entity.getNationality());
             }
@@ -80,6 +87,12 @@ public class PersonDto extends AuditableDto {
                 this.educationDegree = new EducationDegreeDto(entity.getEducationDegree());
             }
 
+            if (entity.getPermanentResidence() != null) {
+                this.permanentResidence = new PersonAddressDto(entity.getPermanentResidence());
+            }
+            if (entity.getTemporaryResidence() != null) {
+                this.temporaryResidence = new PersonAddressDto(entity.getTemporaryResidence());
+            }
             if (isGetFull) {
                 if (entity.getFamilyRelationships() != null && !entity.getFamilyRelationships().isEmpty()) {
                     this.familyRelationships = new ArrayList<>();
@@ -89,13 +102,7 @@ public class PersonDto extends AuditableDto {
                     }
                 }
 
-                if (entity.getPersonAddresses() != null && !entity.getPersonAddresses().isEmpty()) {
-                    this.personAddresses = new ArrayList<>();
-                    for (PersonAddress personAddress : entity.getPersonAddresses()) {
-                        PersonAddressDto dto = new PersonAddressDto(personAddress, false);
-                        this.personAddresses.add(dto);
-                    }
-                }
+
                 if (entity.getCertificates() != null && !entity.getCertificates().isEmpty()) {
                     this.certificates = new ArrayList<>();
                     for (Certificate certificate : entity.getCertificates()) {
@@ -274,6 +281,14 @@ public class PersonDto extends AuditableDto {
         this.weight = weight;
     }
 
+    public FileDescriptionDto getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(FileDescriptionDto avatar) {
+        this.avatar = avatar;
+    }
+
     public List<PersonFamilyRelationshipDto> getFamilyRelationships() {
         return familyRelationships;
     }
@@ -282,12 +297,20 @@ public class PersonDto extends AuditableDto {
         this.familyRelationships = familyRelationships;
     }
 
-    public List<PersonAddressDto> getPersonAddresses() {
-        return personAddresses;
+    public PersonAddressDto getPermanentResidence() {
+        return permanentResidence;
     }
 
-    public void setPersonAddresses(List<PersonAddressDto> personAddresses) {
-        this.personAddresses = personAddresses;
+    public void setPermanentResidence(PersonAddressDto permanentResidence) {
+        this.permanentResidence = permanentResidence;
+    }
+
+    public PersonAddressDto getTemporaryResidence() {
+        return temporaryResidence;
+    }
+
+    public void setTemporaryResidence(PersonAddressDto temporaryResidence) {
+        this.temporaryResidence = temporaryResidence;
     }
 
     public List<CertificateDto> getCertificates() {

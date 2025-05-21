@@ -10,6 +10,7 @@ import {observer} from "mobx-react-lite";
 import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from "@mui/icons-material/Close";
 import DocumentTemplateItemSection from "./DocumentTemplateItemSection";
+import {removeVietnameseTones} from "../../LocalFunction";
 
 function DocumentTemplateForm(props) {
     const {t} = useTranslation();
@@ -64,20 +65,33 @@ function DocumentTemplateForm(props) {
                                 <div className={"grid grid-cols-12 gap-2"}>
                                     <div className="sm:col-span-12">
                                         <CommonTextField
-                                            label="Mã mẫu hồ sơ chung"
-                                            name="code"
+                                            label="Tên mẫu hồ sơ chung"
+                                            name="name"
+                                            onChange={(e) => {
+                                                const nameValue = e.target.value;
+                                                const codeValue = removeVietnameseTones(nameValue).toUpperCase().replace(/\s+/g, "_");
+                                                setFieldValue("name", nameValue);
+                                                setFieldValue("code", codeValue);
+                                            }}
                                             required/>
                                     </div>
                                     <div className="sm:col-span-12">
                                         <CommonTextField
-                                            label="Tên mẫu hồ sơ chung"
-                                            name="name"
+                                            label="Mã mẫu hồ sơ chung"
+                                            name="code"
+                                            onChange={(e) => {
+                                                const nameValue = e.target.value;
+                                                const codeValue = removeVietnameseTones(nameValue).toUpperCase().replace(/\s+/g, "_");
+                                                setFieldValue("code", codeValue);
+                                            }}
                                             required/>
                                     </div>
                                     <div className="sm:col-span-12">
                                         <CommonTextField
                                             label="Mô tả mẫu hồ sơ chung"
                                             name="description"
+                                            multiline
+                                            rows={3}
                                         />
                                     </div>
                                     <div className="sm:col-span-12">

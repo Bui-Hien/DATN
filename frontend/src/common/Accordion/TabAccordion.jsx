@@ -1,9 +1,10 @@
-import React, { memo, useState } from "react";
-import { Accordion, AccordionSummary, AccordionDetails, Typography } from "@mui/material";
+import React, {memo, useState} from "react";
 import "react-toastify/dist/ReactToastify.css";
-import { observable } from "mobx";
+import {Accordion, AccordionDetails, AccordionSummary, Typography} from "@mui/material";
+import {observer} from "mobx-react-lite";
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
-function TabAccordion({ children, title, component, className = "", open = true, handleOnClick }) {
+function TabAccordion({children, title, component, className = "", open = true, handleOnClick}) {
     const [expanded, setExpanded] = useState(open);
 
     return (
@@ -14,23 +15,15 @@ function TabAccordion({ children, title, component, className = "", open = true,
                 setExpanded(value);
                 if (handleOnClick) handleOnClick(value);
             }}
-            className={`card accordion-root m-0 ${className}`}
+            className={`${className} !rounded-lg border-[#c9dce8]`}
         >
-            <AccordionSummary>
-                <svg
-                    className="accordion-icon"
-                    fill="#000000"
-                    width="24px"
-                    height="24px"
-                    viewBox="0 0 24 24"
-                >
-                    <g strokeWidth="0" />
-                    <g strokeLinecap="round" strokeLinejoin="round" />
-                    <g>
-                        <path d="M9.9,17.2c-0.6,0-1-0.4-1-1c0-0.3,0.1-0.5,0.3-0.7l3.5-3.5L9.2,8.5c-0.4-0.4-0.4-1,0-1.4c0.4-0.4,1-0.4,1.4,0l4.2,4.2c0.4,0.4,0.4,1,0,1.4c0,0,0,0,0,0l-4.2,4.2C10.4,17.1,10.1,17.2,9.9,17.2z"></path>
-                    </g>
-                </svg>
-                <Typography className="accordion-title">{title}</Typography>
+            <AccordionSummary className={`px-4 py-3 !min-h-[50px] ${expanded && "!bg-[#f1f8fd] !border-[1px] !border-solid !rounded-lg"} !border-[#c9dce8]`}>
+                <Typography className={` flex items-center gap-2 text-[#508dc1] !font-medium`}>
+                    <ChevronRightIcon
+                        className={`transition-transform duration-300 ${expanded ? 'rotate-90' : 'rotate-0'}`}
+                    />
+                    {title}
+                </Typography>
             </AccordionSummary>
 
             <AccordionDetails className="p-8">
@@ -40,4 +33,4 @@ function TabAccordion({ children, title, component, className = "", open = true,
     );
 }
 
-export default memo(observable (TabAccordion));
+export default memo(observer(TabAccordion));

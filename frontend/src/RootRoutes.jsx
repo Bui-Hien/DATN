@@ -9,6 +9,7 @@ import AdministrativeUnitRoutes from "./views/AdministrativeUnit/AdministrativeU
 import DocumentTemplateRoutes from "./views/DocumentTemplate/DocumentTemplateRoutes";
 import DepartmentRoutes from "./views/Department/DepartmentRoutes";
 import DepartmentIpRoutes from "./views/DepartmentIp/DepartmentIpRoutes";
+import StaffRoutes from "./views/Staff/StaffRoutes";
 
 const routes = [
     //Danh mục chung
@@ -21,6 +22,7 @@ const routes = [
     ...ReligionRoutes,
     ...AdministrativeUnitRoutes,
     //Nhân viên
+    ...StaffRoutes,
     ...DocumentTemplateRoutes,
 
     //Cơ cấu tổ chức
