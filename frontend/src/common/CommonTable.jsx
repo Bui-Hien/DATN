@@ -99,7 +99,7 @@ const Example = (props) => {
                                         align="center"
                                         variant="head"
                                         key={header.id}
-                                        className="font-semibold text-sm text-gray-700 border border-gray-300 py-3"
+                                        className={`${header.column.id === 'mrt-row-select' ? "" : "min-w-[150px]"} font-semibold text-sm text-gray-700 border border-gray-300 py-3`}
                                     >
                                         {header.isPlaceholder
                                             ? null
@@ -126,71 +126,74 @@ const Example = (props) => {
                                             align={cell.column.id === 'mrt-row-select' ? 'center' : 'left'}
                                             variant="body"
                                             key={cell.id}
-                                            className="text-sm text-gray-800 border border-gray-300 py-2"
+                                            className={`${cell.column.id === 'mrt-row-select' ? "" : "min-w-[150px]"} text-sm text-gray-800 border border-gray-300 py-2`}
                                         >
-                                            <MRT_TableBodyCellValue
-                                                cell={cell}
-                                                table={table}
-                                                staticRowIndex={rowIndex}
-                                            />
+                                        <MRT_TableBodyCellValue
+                                        cell={cell}
+                                        table={table}
+                                        staticRowIndex={rowIndex}
+                                        />
                                         </TableCell>
-                                    ))}
+                                        ))}
                                 </TableRow>
                             ))
-                        ) : (
+                            ) : (
                             <TableRow>
-                                <TableCell
-                                    align="center"
-                                    colSpan={columnNumber}
-                                    className="text-sm text-gray-500 border border-gray-300 py-5"
-                                >
-                                    Không có dữ liệu
-                                </TableCell>
-                            </TableRow>
-                        )}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                            <TableCell
+                            align="center"
+                            colSpan={columnNumber}
+                        className="text-sm text-gray-500 border border-gray-300 py-5"
+                    >
+                        Không có dữ liệu
+                    </TableCell>
+                </TableRow>
+                )}
+            </TableBody>
+        </Table>
+</TableContainer>
 
-            {!nonePagination && totalElements > 0 && (
-                <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    sx={{px: 2}}
-                    spacing={2}
-                >
-                    <Typography variant="body2">
-                        Tổng cộng: {totalElements} bản ghi
-                    </Typography>
+    {
+        !nonePagination && totalElements > 0 && (
+            <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+                sx={{px: 2}}
+                spacing={2}
+            >
+                <Typography variant="body2">
+                    Tổng cộng: {totalElements} bản ghi
+                </Typography>
 
-                    <Stack direction="row" spacing={2} alignItems="center">
-                        <Typography variant="body2">Số dòng/trang:</Typography>
-                        <Select
-                            value={pageSize}
-                            onChange={(e) => setRowsPerPage?.(Number(e.target.value))}
-                            size="small"
-                        >
-                            {pageSizeOption.map((option) => (
-                                <MenuItem key={option} value={option}>
-                                    {option}
-                                </MenuItem>
-                            ))}
-                        </Select>
+                <Stack direction="row" spacing={2} alignItems="center">
+                    <Typography variant="body2">Số dòng/trang:</Typography>
+                    <Select
+                        value={pageSize}
+                        onChange={(e) => setRowsPerPage?.(Number(e.target.value))}
+                        size="small"
+                    >
+                        {pageSizeOption.map((option) => (
+                            <MenuItem key={option} value={option}>
+                                {option}
+                            </MenuItem>
+                        ))}
+                    </Select>
 
-                        <Pagination
-                            count={totalPages}
-                            page={page}
-                            onChange={(e, value) => handleChangePage?.(value)}
-                            color="primary"
-                            shape="rounded"
-                            size="small"
-                        />
-                    </Stack>
+                    <Pagination
+                        count={totalPages}
+                        page={page}
+                        onChange={(e, value) => handleChangePage?.(value)}
+                        color="primary"
+                        shape="rounded"
+                        size="small"
+                    />
                 </Stack>
-            )}
-        </Stack>
-    );
+            </Stack>
+        )
+    }
+</Stack>
+)
+    ;
 };
 
 export default Example;

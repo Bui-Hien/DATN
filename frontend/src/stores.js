@@ -17,6 +17,8 @@ import PersonFamilyRelationshipStore from "./views/PersonFamilyRelationship/Pers
 import StaffDocumentItemStore from "./views/StaffDocumentItem/StaffDocumentItemStore";
 import PersonBankAccountStore from "./views/PersonBankAccount/PersonBankAccountStore";
 import CertificateStore from "./views/Certificate/CertificateStore";
+import StaffLabourAgreementStore from "./views/StaffLabourAgreement/StaffLabourAgreementStore";
+import SalaryTemplateStore from "./views/SalaryTemplate/SalaryTemplateStore";
 
 export const store = {
     loginStore: new LoginStore(),
@@ -36,6 +38,7 @@ export const store = {
     certificateStore: new CertificateStore(),
     personBankAccountStore: new PersonBankAccountStore(),
     staffDocumentItemStore: new StaffDocumentItemStore(),
+    staffLabourAgreementStore: new StaffLabourAgreementStore(),
 
     //Cơ cấu tổ chức
     departmentStore: new DepartmentStore(),
@@ -44,6 +47,9 @@ export const store = {
     departmentIpStore: new DepartmentIpStore(),
     //Tuyển dụng
     candidateWorkingExperienceStore: new CandidateWorkingExperienceStore(),
+
+    //Lương
+    salaryTemplateStore: new SalaryTemplateStore(),
 };
 
 export const StoreContext = createContext(store);

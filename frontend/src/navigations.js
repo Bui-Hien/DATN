@@ -4,6 +4,8 @@ import ListAltIcon from '@mui/icons-material/ListAlt';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import GroupIcon from '@mui/icons-material/Group';
 import EventNoteIcon from '@mui/icons-material/EventNote';
+import ConstantList from "./appConfig";
+
 export const navigations = [
     {
         name: i18next.t("Cơ cấu tổ chức"),
@@ -54,6 +56,20 @@ export const navigations = [
             },
         ]
     },
+    {
+        name: i18next.t("Lương"),
+        icon: <EventNoteIcon/>,
+        isVisible: true,
+        auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER],
+        children: [
+            {
+                name: i18next.t("Mẫu bảng lương"),
+                path: "/salary-template",
+                isVisible: true,
+            },
+        ]
+    },
+
     {
         name: i18next.t("Danh mục chung"),
         icon: <ListAltIcon/>,

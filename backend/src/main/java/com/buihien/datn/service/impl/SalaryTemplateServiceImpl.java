@@ -41,8 +41,6 @@ public class SalaryTemplateServiceImpl extends GenericServiceImpl<SalaryTemplate
             entity = new SalaryTemplate();
         }
         entity.setName(dto.getName());
-        entity.setCode(dto.getCode());
-        entity.setDescription(dto.getDescription());
 
         if (entity.getTemplateItems() == null) {
             entity.setTemplateItems(new HashSet<>());

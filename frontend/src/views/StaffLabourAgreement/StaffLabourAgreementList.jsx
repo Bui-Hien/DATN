@@ -6,16 +6,15 @@ import {Tooltip} from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CommonTable from "../../common/CommonTable";
-import {useNavigate} from "react-router-dom";
 import {getDate} from "../../LocalFunction";
-import {Gender} from "../../LocalConstants";
+import {StaffLabourAgreementStatus} from "../../LocalConstants";
 
-function StaffList() {
+function StaffLabourAgreementList() {
     const {t} = useTranslation();
-    const navigate = useNavigate();
-    const {staffStore} = useStore();
+    const {staffLabourAgreementStore} = useStore();
 
     const {
+        handleOpenCreateEdit,
         totalPages,
         handleDelete,
         dataList,
@@ -24,7 +23,7 @@ function StaffList() {
         setPageIndex,
         setPageSize,
         handleSelectListDelete
-    } = staffStore;
+    } = staffLabourAgreementStore;
 
 
     const columns = [
@@ -38,7 +37,7 @@ function StaffList() {
                         title={t("Cập nhật thông tin")}
                         placement="top">
                         <EditIcon
-                            onClick={() => navigate(`/staff/${row.original.id}`)}
+                            onClick={() => handleOpenCreateEdit(row.original.id)}
                         />
                     </Tooltip>
 
@@ -52,45 +51,63 @@ function StaffList() {
             ),
         },
         {
-            accessorKey: "staffCode",
+            accessorKey: "labourAgreementNumber",
             header:
-                t("Mã nhân viên"),
+                t("Số hợp đồng"),
         },
         {
-            accessorKey: "displayName",
+            accessorKey: "contractType",
             header:
-                t("Họ và tên"),
-        },
-        {
-            accessorKey: "gender",
-            header:
-                t("Giới tính"),
+                t("Loại hợp đồng"),
             Cell: ({row}) => {
-                const value = row.original.gender;
-                const name = Gender.getListData().find(i => i.value === value)?.name || "";
-                return <span>{name}</span>;
-            }
-        },
-        {
-            accessorKey: "birthDate",
-            header:
-                t("Ngày sinh"),
-            Cell: ({row}) => {
-                const value = row.original.birthDate;
-                return <span>{getDate(value)}</span>;
-            }
-        },
-        {
-            accessorKey: "phoneNumber",
-            header:
-                t("Số điện thoại"),
-        },
-        {
-            accessorKey: "email",
-            header:
-                t("Email"),
+                const statusValue = row.original?.contractType;
+                return <span>{StaffLabourAgreementStatus.getListData().find(elem => elem.value === statusValue)?.name || t("Không xác định")}</span>;
+            },
         },
 
+        {
+            accessorKey: "startDate",
+            header:
+                t("Ngày ký"),
+            Cell: ({row}) => <span>{getDate(row.original?.startDate)}</span>
+
+        },
+        {
+            accessorKey: "durationMonths",
+            header:
+                t("Số tháng"),
+        },
+        {
+            accessorKey: "workingHour",
+            header:
+                t("Số giờ làm việc tối thiểu trong ngày"),
+        },
+        {
+            accessorKey: "workingHourWeekMin",
+            header:
+                t("Số giờ làm việc tối thiểu trong tuần"),
+        },
+        {
+            accessorKey: "salary",
+            header:
+                t("Lương cơ bản"),
+        },
+        {
+            accessorKey: "signedDate",
+            header:
+                t("Ngày hết hạn"),
+            Cell: ({row}) => <span>{getDate(row.original?.signedDate)}</span>
+
+        },
+        {
+            accessorKey: "agreementStatus",
+            header:
+                t("Trạng thái hợp đồng"),
+            Cell: ({row}) => {
+                const statusValue = row.original?.agreementStatus;
+                return <span>{StaffLabourAgreementStatus.getListData().find(elem => elem.value === statusValue)?.name || t("Không xác định")}</span>;
+            },
+        },
     ];
 
     return (
@@ -111,4 +128,4 @@ function StaffList() {
     );
 }
 
-export default observer(StaffList);
+export default observer(StaffLabourAgreementList);

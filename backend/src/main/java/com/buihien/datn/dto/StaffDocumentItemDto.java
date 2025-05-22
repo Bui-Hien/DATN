@@ -18,7 +18,10 @@ public class StaffDocumentItemDto extends AuditableDto {
         super(entity);
         if (entity != null) {
             if (isGetStaff && entity.getStaff() != null) {
-                this.staff = new StaffDto(entity.getStaff(), false);
+                this.staff = new StaffDto();
+                this.staff.setId(entity.getStaff().getId());
+                this.staff.setStaffCode(entity.getStaff().getStaffCode());
+                this.staff.setDisplayName(entity.getStaff().getDisplayName());
             }
             if (entity.getDocumentFile() != null) {
                 this.documentFile = new FileDescriptionDto(entity.getDocumentFile());

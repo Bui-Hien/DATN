@@ -19,7 +19,8 @@ import PersonBankAccountIndex from "../../PersonBankAccount/PersonBankAccountInd
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import FolderIcon from '@mui/icons-material/Folder';
 import CertificateIndex from "../../Certificate/CertificateIndex";
-
+import StaffLabourAgreementIndex from "../../StaffLabourAgreement/StaffLabourAgreementIndex";
+import AssignmentIcon from '@mui/icons-material/Assignment';
 // Component hiển thị từng tab panel
 function CustomTabPanel(props) {
     const {children, value, index, ...other} = props;
@@ -85,6 +86,11 @@ function ProfileStaffTabs() {
             title: "Hồ sơ cá nhân",
             icon: <FolderIcon fontSize="small"/>,
             component: <StaffDocumentItemIndex/>,
+        },
+        {
+            title: "Hợp đồng",
+            icon: <AssignmentIcon fontSize="small"/>,
+            component: <StaffLabourAgreementIndex/>,
         }
     ];
 

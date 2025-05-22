@@ -6,16 +6,13 @@ import {Tooltip} from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CommonTable from "../../common/CommonTable";
-import {useNavigate} from "react-router-dom";
-import {getDate} from "../../LocalFunction";
-import {Gender} from "../../LocalConstants";
 
-function StaffList() {
+function SalaryTemplateList() {
     const {t} = useTranslation();
-    const navigate = useNavigate();
-    const {staffStore} = useStore();
+    const {salaryTemplateStore} = useStore();
 
     const {
+        handleOpenCreateEdit,
         totalPages,
         handleDelete,
         dataList,
@@ -24,7 +21,7 @@ function StaffList() {
         setPageIndex,
         setPageSize,
         handleSelectListDelete
-    } = staffStore;
+    } = salaryTemplateStore;
 
 
     const columns = [
@@ -38,7 +35,7 @@ function StaffList() {
                         title={t("Cập nhật thông tin")}
                         placement="top">
                         <EditIcon
-                            onClick={() => navigate(`/staff/${row.original.id}`)}
+                            onClick={() => handleOpenCreateEdit(row.original.id)}
                         />
                     </Tooltip>
 
@@ -52,45 +49,18 @@ function StaffList() {
             ),
         },
         {
-            accessorKey: "staffCode",
-            header:
-                t("Mã nhân viên"),
+            accessorKey: "code",
+            header: t("Mã mẫu bẳng lương"), // hoặc "Code"
         },
         {
-            accessorKey: "displayName",
-            header:
-                t("Họ và tên"),
+            accessorKey: "name",
+            header: t("Tên mẫu bẳng lương"), // hoặc "Name"
         },
         {
-            accessorKey: "gender",
-            header:
-                t("Giới tính"),
-            Cell: ({row}) => {
-                const value = row.original.gender;
-                const name = Gender.getListData().find(i => i.value === value)?.name || "";
-                return <span>{name}</span>;
-            }
-        },
-        {
-            accessorKey: "birthDate",
-            header:
-                t("Ngày sinh"),
-            Cell: ({row}) => {
-                const value = row.original.birthDate;
-                return <span>{getDate(value)}</span>;
-            }
-        },
-        {
-            accessorKey: "phoneNumber",
-            header:
-                t("Số điện thoại"),
-        },
-        {
-            accessorKey: "email",
-            header:
-                t("Email"),
-        },
+            accessorKey: "description",
+            header: t("Mô tả mẫu bẳng lương"),
 
+        },
     ];
 
     return (
@@ -111,4 +81,4 @@ function StaffList() {
     );
 }
 
-export default observer(StaffList);
+export default observer(SalaryTemplateList);

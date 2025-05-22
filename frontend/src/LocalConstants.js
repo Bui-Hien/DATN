@@ -88,6 +88,41 @@ const StaffPhase = {
     },
 };
 
+
+const StaffLabourAgreementStatus = {
+    UNSIGNED: {value: 1, name: "Hợp đồng chưa được ký"},
+    SIGNED: {value: 2, name: "Hợp đồng đã được ký"},
+    TERMINATED: {value: 3, name: "Đã chấm dứt"},
+    EXPIRED: {value: 4, name: "Đã hết hạn"},
+    getListData() {
+        return Object.keys(this)
+            .filter(key => typeof this[key] === 'object' && this[key] !== null && 'value' in this[key])
+            .map(key => this[key]);
+    },
+};
+const ContractType = {
+    PROBATION: {value: 1, name: "Thử việc"},
+    OFFICIAL: {value: 2, name: "Chính thức"},
+    SEASONAL: {value: 3, name: "Thời vụ"},
+    FIXED_TERM: {value: 4, name: "Xác định thời hạn"},
+    UNLIMITED_TERM: {value: 5, name: "Không xác định thời hạn"},
+
+    getListData() {
+        return Object.keys(this)
+            .filter(key => typeof this[key] === 'object' && this[key] !== null && 'value' in this[key])
+            .map(key => this[key]);
+    },
+};
+const SalaryItemType = {
+    VALUE: {value: 1, name: "Giá trị"},
+    FORMULA: {value: 2, name: "Công thức"},
+
+    getListData() {
+        return Object.keys(this)
+            .filter(key => typeof this[key] === 'object' && this[key] !== null && 'value' in this[key])
+            .map(key => this[key]);
+    },
+};
 module.exports = Object.freeze({
     SystemRole: SYSTEM_ROLE,
     EducationLevel: EducationLevel,
@@ -96,5 +131,8 @@ module.exports = Object.freeze({
     Gender: Gender,
     MaritalStatus: MaritalStatus,
     EmployeeStatus: EmployeeStatus,
-    StaffPhase: StaffPhase
+    StaffPhase: StaffPhase,
+    StaffLabourAgreementStatus: StaffLabourAgreementStatus,
+    ContractType: ContractType,
+    SalaryItemType: SalaryItemType
 });

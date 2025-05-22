@@ -9,6 +9,7 @@ import DocumentTemplateRoutes from "./views/DocumentTemplate/DocumentTemplateRou
 import DepartmentRoutes from "./views/Department/DepartmentRoutes";
 import DepartmentIpRoutes from "./views/DepartmentIp/DepartmentIpRoutes";
 import StaffRoutes from "./views/Staff/StaffRoutes";
+import SalaryTemplateRoutes from "./views/SalaryTemplate/SalaryTemplateRoutes";
 
 const routes = [
     //Danh mục chung
@@ -27,7 +28,10 @@ const routes = [
     ...DepartmentRoutes,
 
     //Chấm công
-    ...DepartmentIpRoutes
+    ...DepartmentIpRoutes,
+
+    //Lương
+    ...SalaryTemplateRoutes
 ];
 
 export default routes;
