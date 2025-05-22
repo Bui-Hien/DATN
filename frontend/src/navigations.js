@@ -34,6 +34,11 @@ export const navigations = [
                 path: "/document-template",
                 isVisible: true,
             },
+            {
+                name: i18next.t("Quan hệ nhân thân"),
+                path: "/family-relationship",
+                isVisible: true,
+            },
         ]
     },
     {
@@ -66,18 +71,8 @@ export const navigations = [
                 isVisible: true,
             },
             {
-                name: i18next.t("Bằng cấp"),
-                path: "/administration/education-degree",
-                isVisible: true,
-            },
-            {
                 name: i18next.t("Dân tộc"),
                 path: "/administration/ethnics",
-                isVisible: true,
-            },
-            {
-                name: i18next.t("Quan hệ nhân thân"),
-                path: "/administration/family-relationship",
                 isVisible: true,
             },
             {

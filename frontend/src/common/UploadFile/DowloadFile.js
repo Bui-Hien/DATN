@@ -1,24 +1,38 @@
-import {downloadFile} from "./UploadFileService";
 import {toast} from "react-toastify";
+import {API_ENDPOINT} from "../../appConfig";
+import api from "../../axiosCustom";
 
-const handleDownload = async (id, fileDisplayName = "file") => {
-    if (!id) return;
+const handleDownload = async (fileData) => {
+    if (!fileData?.filePath) {
+        toast.error("Không có thông tin file");
+        return;
+    }
 
     try {
-        const response = await downloadFile(id); // có thể là id hoặc file name
+        const fileUrl = `${API_ENDPOINT}/${fileData.filePath}`;
+
+        // Gọi API tải file dạng blob
+        const response = await api.get(fileUrl, {
+            responseType: "blob",
+        });
+
+        // Tạo một blob và tự động tải về
         const blob = new Blob([response.data]);
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
-        link.setAttribute("download", fileDisplayName); // tên khi lưu
+
+        // Tên file tải về = name.extension, ví dụ: bang_cap.png
+        const downloadName = fileData.name || `file.${fileData.extension || "dat"}`;
+        link.setAttribute("download", downloadName);
+
         document.body.appendChild(link);
         link.click();
         link.remove();
-        URL.revokeObjectURL(url);
+        window.URL.revokeObjectURL(url);
     } catch (err) {
-        console.error(err);
+        console.error("Download failed:", err);
         toast.error("Không thể tải file");
     }
 };
-
 export default handleDownload;

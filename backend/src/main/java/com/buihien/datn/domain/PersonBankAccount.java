@@ -4,9 +4,9 @@ import jakarta.persistence.*;
 
 @Table(
         name = "tbl_person_bank_account",
-        uniqueConstraints= @UniqueConstraint(columnNames = {"person_id", "bank_id"}))
+        uniqueConstraints = @UniqueConstraint(columnNames = {"person_id", "bank_id"}))
 @Entity
-public class PersonBankAccount extends AuditableEntity{
+public class PersonBankAccount extends AuditableEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "person_id")
     private Person person;
@@ -70,11 +70,11 @@ public class PersonBankAccount extends AuditableEntity{
         this.bankBranch = bankBranch;
     }
 
-    public Boolean getMain() {
+    public Boolean getIsMain() {
         return isMain;
     }
 
-    public void setMain(Boolean main) {
+    public void setIsMain(Boolean main) {
         isMain = main;
     }
 }

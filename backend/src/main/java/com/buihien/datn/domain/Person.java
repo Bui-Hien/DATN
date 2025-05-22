@@ -60,12 +60,11 @@ public class Person extends AuditableEntity {
     @Column(name = "tax_code")
     private String taxCode; // Mã số thuế
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     protected User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "education_degree_id")
-    protected EducationDegree educationDegree;// Trình độ học vấn
+    @Column(name = "education_level")
+    protected Integer educationLevel; //DatnConstants.EducationLevel // Trình độ học vấn (tiến sĩ, thạc sĩ, cử nhân, kỹ sư, trung cấp, cao đẳng, ...)
 
     @Column(name = "height")
     protected Double height; // Chiều cao (cm)
@@ -73,15 +72,15 @@ public class Person extends AuditableEntity {
     @Column(name = "weight")
     protected Double weight; // Cân nặng (kg)
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "avatar_id")
     protected FileDescription avatar;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "permanent_residence_id")
     protected PersonAddress permanentResidence; //thường chú
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "temporary_residence_id")
     protected PersonAddress temporaryResidence;// Tạm chú
 
@@ -233,12 +232,12 @@ public class Person extends AuditableEntity {
         this.user = user;
     }
 
-    public EducationDegree getEducationDegree() {
-        return educationDegree;
+    public Integer getEducationLevel() {
+        return educationLevel;
     }
 
-    public void setEducationDegree(EducationDegree educationDegree) {
-        this.educationDegree = educationDegree;
+    public void setEducationLevel(Integer educationLevel) {
+        this.educationLevel = educationLevel;
     }
 
     public Double getHeight() {

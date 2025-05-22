@@ -65,11 +65,36 @@ const MaritalStatus = {
     },
 };
 
+const EmployeeStatus = {
+    WORKING: {value: 1, name: "Đang làm việc"},
+    RESIGNED: {value: 2, name: "Đã nghỉ việc"},
+    RETIRED: {value: 3, name: "Đã nghỉ hưu"},
+    SUSPENDED: {value: 4, name: "Tạm ngưng"},
+    TERMINATED: {value: 5, name: "Chấm dứt hợp đồng"},
+    getListData() {
+        return Object.keys(this)
+            .filter(key => typeof this[key] === 'object' && this[key] !== null && 'value' in this[key])
+            .map(key => this[key]);
+    },
+};
+const StaffPhase = {
+    INTERN: {value: 1, name: "Học việc (HV)"},
+    PROBATION: {value: 2, name: "Thử việc (TV)"},
+    OFFICIAL: {value: 3, name: "Chính thức (CT)"},
+    getListData() {
+        return Object.keys(this)
+            .filter(key => typeof this[key] === 'object' && this[key] !== null && 'value' in this[key])
+            .map(key => this[key]);
+    },
+};
+
 module.exports = Object.freeze({
     SystemRole: SYSTEM_ROLE,
     EducationLevel: EducationLevel,
     AdministrativeUnitLevel: AdministrativeUnitLevel,
     DocumentItemRequired: DocumentItemRequired,
     Gender: Gender,
-    MaritalStatus: MaritalStatus
+    MaritalStatus: MaritalStatus,
+    EmployeeStatus: EmployeeStatus,
+    StaffPhase: StaffPhase
 });

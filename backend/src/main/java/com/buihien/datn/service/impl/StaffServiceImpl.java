@@ -2,10 +2,12 @@ package com.buihien.datn.service.impl;
 
 import com.buihien.datn.DatnConstants;
 import com.buihien.datn.domain.*;
+import com.buihien.datn.dto.PersonAddressDto;
 import com.buihien.datn.dto.StaffDto;
 import com.buihien.datn.dto.search.StaffSearchDto;
 import com.buihien.datn.generic.GenericServiceImpl;
 import com.buihien.datn.repository.*;
+import com.buihien.datn.service.FileDescriptionService;
 import com.buihien.datn.service.StaffDocumentItemService;
 import com.buihien.datn.service.StaffService;
 import jakarta.persistence.Query;
@@ -27,8 +29,6 @@ public class StaffServiceImpl extends GenericServiceImpl<Staff, StaffDto, StaffS
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private EducationDegreeRepository educationDegreeRepository;
-    @Autowired
     private ReligionRepository religionRepository;
     @Autowired
     private EthnicsRepository ethnicsRepository;
@@ -42,6 +42,12 @@ public class StaffServiceImpl extends GenericServiceImpl<Staff, StaffDto, StaffS
     private StaffRepository staffRepository;
     @Autowired
     private CandidateRepository candidateRepository;
+    @Autowired
+    private PersonAddressRepository personAddressRepository;
+    @Autowired
+    private AdministrativeUnitRepository administrativeUnitRepository;
+    @Autowired
+    private FileDescriptionService fileDescriptionService;
 
     @Override
     protected StaffDto convertToDto(Staff entity) {
@@ -97,13 +103,91 @@ public class StaffServiceImpl extends GenericServiceImpl<Staff, StaffDto, StaffS
         }
         entity.setUser(user);
 
-        EducationDegree educationDegree = null;
-        if (dto.getEducationDegree() != null && dto.getEducationDegree().getId() != null) {
-            educationDegree = educationDegreeRepository.findById(dto.getEducationDegree().getId()).orElse(null);
-        }
-        entity.setEducationDegree(educationDegree);
+        entity.setEducationLevel(dto.getEducationLevel());
         entity.setHeight(dto.getHeight());
         entity.setWeight(dto.getWeight());
+
+
+        //thường chú
+        if (dto.getPermanentResidence() != null) {
+            PersonAddress permanentResidence = null;
+            if (dto.getPermanentResidence().getId() != null) {
+                permanentResidence = personAddressRepository.findById(dto.getPermanentResidence().getId()).orElse(null);
+            }
+            if (permanentResidence == null) {
+                permanentResidence = new PersonAddress();
+            }
+            permanentResidence.setAddressDetail(dto.getPermanentResidence().getAddressDetail());
+
+            AdministrativeUnit province = null;
+            if (dto.getPermanentResidence().getProvince() != null && dto.getPermanentResidence().getProvince().getId() != null) {
+                province = administrativeUnitRepository.findById(dto.getPermanentResidence().getProvince().getId()).orElse(null);
+            }
+            permanentResidence.setProvince(province);
+
+            AdministrativeUnit district = null;
+            if (dto.getPermanentResidence().getDistrict() != null && dto.getPermanentResidence().getDistrict().getId() != null) {
+                district = administrativeUnitRepository.findById(dto.getPermanentResidence().getDistrict().getId()).orElse(null);
+            }
+            permanentResidence.setDistrict(district);
+
+            AdministrativeUnit ward = null;
+            if (dto.getPermanentResidence().getWard() != null && dto.getPermanentResidence().getWard().getId() != null) {
+                ward = administrativeUnitRepository.findById(dto.getPermanentResidence().getWard().getId()).orElse(null);
+            }
+            permanentResidence.setWard(ward);
+            entity.setPermanentResidence(permanentResidence);
+        } else {
+            entity.setPermanentResidence(null);
+        }
+
+        //Tạm chú
+        if (dto.getTemporaryResidence() != null) {
+            PersonAddress temporaryResidence = null;
+            if (dto.getPermanentResidence().getId() != null) {
+                temporaryResidence = personAddressRepository.findById(dto.getTemporaryResidence().getId()).orElse(null);
+            }
+            if (temporaryResidence == null) {
+                temporaryResidence = new PersonAddress();
+            }
+            temporaryResidence.setAddressDetail(dto.getTemporaryResidence().getAddressDetail());
+
+            AdministrativeUnit province = null;
+            if (dto.getTemporaryResidence().getProvince() != null && dto.getTemporaryResidence().getProvince().getId() != null) {
+                province = administrativeUnitRepository.findById(dto.getTemporaryResidence().getProvince().getId()).orElse(null);
+            }
+            temporaryResidence.setProvince(province);
+
+            AdministrativeUnit district = null;
+            if (dto.getTemporaryResidence().getDistrict() != null && dto.getTemporaryResidence().getDistrict().getId() != null) {
+                district = administrativeUnitRepository.findById(dto.getTemporaryResidence().getDistrict().getId()).orElse(null);
+            }
+            temporaryResidence.setDistrict(district);
+
+            AdministrativeUnit ward = null;
+            if (dto.getTemporaryResidence().getWard() != null && dto.getTemporaryResidence().getWard().getId() != null) {
+                ward = administrativeUnitRepository.findById(dto.getTemporaryResidence().getWard().getId()).orElse(null);
+            }
+            temporaryResidence.setWard(ward);
+            entity.setTemporaryResidence(temporaryResidence);
+        } else {
+            entity.setTemporaryResidence(null);
+        }
+
+        FileDescription newAvatar = null;
+        if (dto.getAvatar() != null && dto.getAvatar().getId() != null) {
+            newAvatar = fileDescriptionService.getEntityById(dto.getAvatar().getId());
+        }
+
+        FileDescription oldAvatar = entity.getAvatar();
+
+        if (oldAvatar != null && oldAvatar.getId() != null) {
+            // Nếu file mới khác file cũ thì xóa file cũ
+            if (newAvatar == null || !oldAvatar.getId().equals(newAvatar.getId())) {
+                fileDescriptionService.deleteById(oldAvatar.getId());
+            }
+        }
+        entity.setAvatar(newAvatar);
 
         // ----- Thông tin riêng của Nhân viên -----
         entity.setRecruitmentDate(dto.getRecruitmentDate());
@@ -114,11 +198,6 @@ public class StaffServiceImpl extends GenericServiceImpl<Staff, StaffDto, StaffS
         DocumentTemplate documentTemplate = null;
         if (dto.getDocumentTemplate() != null && dto.getDocumentTemplate().getId() != null) {
             documentTemplate = documentTemplateRepository.findById(dto.getDocumentTemplate().getId()).orElse(null);
-        }
-        //Setup lại các tài liệu của nhân viên
-        // nếu có thay đổi bộ hồ sơ/tài liệu thì xóa các tài liệu cũ
-        if (documentTemplate != null) {
-            staffDocumentItemService.handleSetUpStaffDocumentItemByDocumentTemplate(documentTemplate, entity);
         }
         entity.setDocumentTemplate(documentTemplate);
         entity.setStaffPhase(dto.getStaffPhase());
@@ -260,11 +339,8 @@ public class StaffServiceImpl extends GenericServiceImpl<Staff, StaffDto, StaffS
         }
         entity.setUser(user);
 
-        EducationDegree educationDegree = null;
-        if (candidate.getEducationDegree() != null && candidate.getEducationDegree().getId() != null) {
-            educationDegree = educationDegreeRepository.findById(candidate.getEducationDegree().getId()).orElse(null);
-        }
-        entity.setEducationDegree(educationDegree);
+
+        entity.setEducationLevel(candidate.getEducationLevel());
         entity.setHeight(candidate.getHeight());
         entity.setWeight(candidate.getWeight());
 

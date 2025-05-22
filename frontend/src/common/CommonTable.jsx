@@ -123,10 +123,10 @@ const Example = (props) => {
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell
-                                            align="center"
+                                            align={cell.column.id === 'mrt-row-select' ? 'center' : 'left'}
                                             variant="body"
                                             key={cell.id}
-                                            className="text-sm text-gray-800 border border-gray-300 py-3"
+                                            className="text-sm text-gray-800 border border-gray-300 py-2"
                                         >
                                             <MRT_TableBodyCellValue
                                                 cell={cell}

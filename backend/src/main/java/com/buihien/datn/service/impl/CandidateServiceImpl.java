@@ -37,8 +37,6 @@ public class CandidateServiceImpl extends GenericServiceImpl<Candidate, Candidat
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private EducationDegreeRepository educationDegreeRepository;
-    @Autowired
     private RecruitmentPlanRepository recruitmentPlanRepository;
     @Autowired
     private PositionRepository positionRepository;
@@ -104,11 +102,7 @@ public class CandidateServiceImpl extends GenericServiceImpl<Candidate, Candidat
         }
         entity.setUser(user);
 
-        EducationDegree educationDegree = null;
-        if (dto.getEducationDegree() != null && dto.getEducationDegree().getId() != null) {
-            educationDegree = educationDegreeRepository.findById(dto.getEducationDegree().getId()).orElse(null);
-        }
-        entity.setEducationDegree(educationDegree);
+        entity.setEducationLevel(dto.getEducationLevel());
         entity.setHeight(dto.getHeight());
         entity.setWeight(dto.getWeight());
 

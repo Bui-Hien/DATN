@@ -6,7 +6,7 @@ public class DocumentItemDto extends AuditableDto {
     private DocumentTemplateDto documentTemplate; // Thuộc bộ tài liệu nào
     private String name; // tên tài liệu
     private String description; // mô tả tài liệu
-    private Integer displayOrder; // thứ tự hiển thị
+        private Integer displayOrder; // thứ tự hiển thị
     private Boolean isRequired = false; //Cần phải nộp
 
     public DocumentItemDto() {

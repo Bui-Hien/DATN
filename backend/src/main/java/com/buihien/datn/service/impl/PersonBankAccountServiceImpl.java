@@ -20,6 +20,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class PersonBankAccountServiceImpl extends GenericServiceImpl<PersonBankAccount, PersonBankAccountDto, SearchDto> implements PersonBankAccountService {
     @Autowired
@@ -66,7 +69,21 @@ public class PersonBankAccountServiceImpl extends GenericServiceImpl<PersonBankA
         entity.setBankAccountName(dto.getBankAccountName());
         entity.setBankAccountNumber(dto.getBankAccountNumber());
         entity.setBankBranch(dto.getBankBranch());
-        entity.setMain(dto.getMain());
+
+        if (dto.getIsMain() != null && dto.getIsMain()) {
+            List<PersonBankAccount> personBankAccountList = personBankAccountRepository.findPersonBankAccountByIsMain(entity.getPerson().getId());
+            if (personBankAccountList != null && !personBankAccountList.isEmpty()) {
+                List<PersonBankAccount> personBankAccounts = new ArrayList<>();
+                for (PersonBankAccount item : personBankAccountList) {
+                    item.setIsMain(false);
+                    personBankAccounts.add(item);
+                }
+                personBankAccountRepository.saveAll(personBankAccounts);
+            }
+            entity.setIsMain(dto.getIsMain());
+        } else {
+            entity.setIsMain(false);
+        }
         return entity;
     }
 
@@ -107,7 +124,7 @@ public class PersonBankAccountServiceImpl extends GenericServiceImpl<PersonBankA
 
         sql.append(dto.getOrderBy() != null && dto.getOrderBy() ? " ORDER BY entity.createdAt ASC" : " ORDER BY entity.createdAt DESC");
 
-        Query q = manager.createQuery(sql.toString(), BankDto.class);
+        Query q = manager.createQuery(sql.toString(), PersonBankAccountDto.class);
         Query qCount = manager.createQuery(sqlCount.toString());
 
         if (dto.getKeyword() != null && StringUtils.hasText(dto.getKeyword())) {

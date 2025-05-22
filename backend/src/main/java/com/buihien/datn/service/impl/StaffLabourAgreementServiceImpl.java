@@ -56,39 +56,6 @@ public class StaffLabourAgreementServiceImpl extends GenericServiceImpl<StaffLab
         entity.setWorkingHourWeekMin(dto.getWorkingHourWeekMin());
         entity.setSalary(dto.getSalary());
         entity.setSignedDate(dto.getSignedDate());
-
-        SalaryTemplate salaryTemplate = null;
-        if (dto.getSalaryTemplate() != null && dto.getSalaryTemplate().getId() != null) {
-            salaryTemplate = salaryTemplateRepository.findById(dto.getSalaryTemplate().getId()).orElse(null);
-        }
-        entity.setSalaryTemplate(salaryTemplate);
-
-        //Thông tin bảo hiển xã hội
-        //Kiểm tra xem nhân viên có đóng bảo hiểm xã hội hay không
-        if (staff.getHasSocialIns() != null && staff.getHasSocialIns() || dto.getHasSocialIns() != null && dto.getHasSocialIns()) {
-            staff.setHasSocialIns(true);
-            staff = staffRepository.save(staff);
-        }
-        if (staff.getHasSocialIns() != null && staff.getHasSocialIns()) {
-            entity.setSocialInsuranceNumber(entity.getSocialInsuranceNumber());
-            entity.setStartInsDate(entity.getStartInsDate());
-            entity.setInsuranceSalary(entity.getInsuranceSalary());
-
-            //Cá nhân đóng bảo hiểm xã hội
-            entity.setStaffSocialInsurancePercentage(entity.getStaffSocialInsurancePercentage());
-            entity.setStaffHealthInsurancePercentage(entity.getStaffHealthInsurancePercentage());
-            entity.setStaffUnemploymentInsurancePercentage(entity.getStaffUnemploymentInsurancePercentage());
-
-            //Công ty đóng bảo hiểm xã hội
-            entity.setOrgSocialInsurancePercentage(entity.getOrgSocialInsurancePercentage());
-            entity.setOrgHealthInsurancePercentage(entity.getOrgHealthInsurancePercentage());
-            entity.setOrgUnemploymentInsurancePercentage(entity.getOrgUnemploymentInsurancePercentage());
-
-            entity.setPaidStatus(entity.getPaidStatus());
-            entity.setInsuranceStartDate(entity.getInsuranceStartDate());
-            entity.setInsuranceEndDate(entity.getInsuranceEndDate());
-            entity.setAgreementStatus(entity.getAgreementStatus());
-        }
         return entity;
     }
 

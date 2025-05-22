@@ -6,7 +6,7 @@ const ViewComponent = lazy(() => import("./FamilyRelationshipIndex"));
 
 const FamilyRelationshipRoutes = [
     {
-        path: ConstantList.ROOT_PATH + "administration/family-relationship",
+        path: ConstantList.ROOT_PATH + "family-relationship",
         exact: true,
         component: ViewComponent,
         auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER],

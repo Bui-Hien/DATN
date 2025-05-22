@@ -6,12 +6,18 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
 public interface PersonBankAccountRepository extends JpaRepository<PersonBankAccount, UUID> {
     @Query("SELECT entity FROM PersonBankAccount entity " +
-            "WHERE entity.person.id = :peronId and entity.bank.id = :bankId")
+            "WHERE entity.person.id = :personId and entity.bank.id = :bankId")
     PersonBankAccount findByPersonIdAndBankId(
-            @Param("peronId") UUID peronId, @Param("bankId") UUID bankId);
+            @Param("personId") UUID peronId, @Param("bankId") UUID bankId);
+
+    @Query("SELECT entity FROM PersonBankAccount entity " +
+            "WHERE entity.person.id = :personId AND entity.isMain IS TRUE")
+    List<PersonBankAccount> findPersonBankAccountByIsMain(@Param("personId") UUID personId);
+
 }

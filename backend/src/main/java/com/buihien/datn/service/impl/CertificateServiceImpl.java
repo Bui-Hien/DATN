@@ -57,7 +57,7 @@ public class CertificateServiceImpl extends GenericServiceImpl<Certificate, Cert
         if (person == null) {
             throw new ResourceNotFoundException("Người dùng không tồn tại");
         }
-
+        entity.setPerson(person);
         FileDescription newFile = null;
         if (dto.getCertificateFile() != null && dto.getCertificateFile().getId() != null) {
             newFile = fileDescriptionService.getEntityById(dto.getCertificateFile().getId());

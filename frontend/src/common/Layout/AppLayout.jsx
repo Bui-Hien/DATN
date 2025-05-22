@@ -157,8 +157,10 @@ function AppLayout({routes}) {
             });
     };
     return (
-        <Box sx={{display: 'flex'}}>
-            <CssBaseline/>
+        <Box sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
+            <CssBaseline />
+
+            {/* AppBar */}
             <AppBar position="fixed" className="!bg-slate-800">
                 <Toolbar>
                     <IconButton
@@ -166,24 +168,55 @@ function AppLayout({routes}) {
                         aria-label="open drawer"
                         onClick={() => setOpen(!open)}
                         edge="start"
-                        className={""}
                     >
-                        <MenuIcon/>
+                        <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap component="div">
                         Mini variant drawer
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <Drawer variant="permanent" open={open} className={"h-screen bg-amber-100"}>
-                <DrawerHeader/>
-                <List className={"!py-0"}>
-                    {renderNavItems(navigations)}
-                </List>
+
+            {/* Drawer */}
+            <Drawer
+                variant="permanent"
+                open={open}
+                className="h-screen bg-amber-100"
+                sx={{
+                    '& .MuiDrawer-paper': {
+                        position: 'relative',
+                        whiteSpace: 'nowrap',
+                        width: open ? 240 : 56,
+                        transition: 'width 0.3s',
+                        overflowX: 'hidden',
+                        boxSizing: 'border-box',
+                    }
+                }}
+            >
+                <DrawerHeader />
+                <List className="!py-0">{renderNavItems(navigations)}</List>
             </Drawer>
-            <Box component="main" sx={{flexGrow: 1}}>
-                <DrawerHeader/>
-                <Box className={"!px-4 !min-h-screen"}>
+
+            {/* Main Content */}
+            <Box
+                component="main"
+                sx={{
+                    flexGrow: 1,
+                    overflow: 'auto',
+                    height: '100vh',
+                    display: 'flex',
+                    flexDirection: 'column',
+                }}
+            >
+                <DrawerHeader />
+                <Box
+                    className="!px-4"
+                    sx={{
+                        flexGrow: 1,
+                        overflowY: 'auto',
+                        minHeight: 0, // Quan trọng để scroll hoạt động
+                    }}
+                >
                     <Routes>
                         {routes?.map((item, index) => {
                             const hasAccess = !item.auth || item.auth.some(role => roles.includes(role));
@@ -192,13 +225,13 @@ function AppLayout({routes}) {
                                     <Route
                                         key={index}
                                         path={item.path}
-                                        element={<item.component/>}
+                                        element={React.createElement(item.component)}
                                     />
                                 );
                             }
                             return null;
                         })}
-                        <Route path="*" element={<NotFound/>}/>
+                        <Route path="*" element={<NotFound />} />
                     </Routes>
                 </Box>
             </Box>

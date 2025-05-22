@@ -23,7 +23,6 @@ const FileUploadWithPreview = (props) => {
             const res = await saveFile(file); // gửi file lên server
             if (onUploadSuccess) {
                 onUploadSuccess(res?.data?.data); // gọi callback nếu có
-                console.log(res?.data?.data);
             }
             toast.success("Tải file thành công!");
             if (handleClose) handleClose(); // GỌI handleClose ở đây

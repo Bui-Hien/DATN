@@ -1,6 +1,7 @@
 package com.buihien.datn.service.impl;
 
 import com.buihien.datn.domain.*;
+import com.buihien.datn.dto.DocumentItemDto;
 import com.buihien.datn.dto.StaffDocumentItemDto;
 import com.buihien.datn.dto.search.SearchDto;
 import com.buihien.datn.exception.InvalidDataException;
@@ -21,10 +22,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class StaffDocumentItemServiceImpl extends GenericServiceImpl<StaffDocumentItem, StaffDocumentItemDto, SearchDto> implements StaffDocumentItemService {
@@ -46,13 +44,6 @@ public class StaffDocumentItemServiceImpl extends GenericServiceImpl<StaffDocume
 
     @Override
     protected StaffDocumentItem convertToEntity(StaffDocumentItemDto dto) {
-        StaffDocumentItem entity = null;
-        if (dto.getId() != null) {
-            entity = repository.findById(dto.getId()).orElse(null);
-        }
-        if (entity == null) {
-            entity = new StaffDocumentItem();
-        }
         Staff staff = null;
         if (dto.getStaff() != null && dto.getStaff().getId() != null) {
             staff = staffRepository.findById(dto.getStaff().getId()).orElse(null);
@@ -62,6 +53,17 @@ public class StaffDocumentItemServiceImpl extends GenericServiceImpl<StaffDocume
         }
         if (staff.getDocumentTemplate() == null) {
             throw new ResourceNotFoundException("Nhân viên chưa có mẫu hồ sơ");
+        }
+
+        StaffDocumentItem entity = null;
+        if (dto.getId() != null) {
+            entity = repository.findById(dto.getId()).orElse(null);
+        }
+        if (entity == null && staff.getDocumentTemplate() != null && staff.getDocumentTemplate().getId() != null && dto.getDocumentItem() != null && dto.getDocumentItem().getId() != null) {
+            entity = staffDocumentItemRepository.findByStaffIdAndDocumentItemId(staff.getId(), dto.getDocumentItem().getId());
+        }
+        if (entity == null) {
+            entity = new StaffDocumentItem();
         }
         entity.setStaff(staff);
 
@@ -73,23 +75,6 @@ public class StaffDocumentItemServiceImpl extends GenericServiceImpl<StaffDocume
             throw new ResourceNotFoundException("Tài liệu không tồn tại");
         }
         entity.setDocumentItem(documentItem);
-
-        if (staff.getDocumentTemplate() != null && !staff.getStaffDocumentItems().isEmpty()) {
-            boolean found = false;
-            Set<DocumentItem> documentItems = staff.getDocumentTemplate().getDocumentItems();
-            if (documentItems != null) {
-                for (DocumentItem item : documentItems) {
-                    if (item.getId().equals(documentItem.getId())) {
-                        found = true;
-                        break;
-                    }
-                }
-            }
-
-            if (!found) {
-                throw new InvalidDataException("Tài liệu không thuộc mẫu hồ sơ của nhân viên.");
-            }
-        }
         FileDescription newFile = null;
         if (dto.getDocumentFile() != null && dto.getDocumentFile().getId() != null) {
             newFile = fileDescriptionService.getEntityById(dto.getDocumentFile().getId());
@@ -109,105 +94,8 @@ public class StaffDocumentItemServiceImpl extends GenericServiceImpl<StaffDocume
     }
 
     @Override
-    public Boolean deleteById(UUID id) {
-        logger.info("Đang xóa bản ghi với ID: {}", id);
-        StaffDocumentItem entity = repository.findById(id).orElse(null);
-        if (entity != null) {
-            if (entity.getDocumentFile() != null && entity.getDocumentFile().getId() != null) {
-                // Xóa file đính kèm nếu có
-                fileDescriptionService.deleteById(entity.getDocumentFile().getId());
-            }
-            // Xóa entity
-            repository.deleteById(id);
-            logger.info("Xóa bản ghi thành công với ID: {}", id);
-            return true;
-        } else {
-            logger.warn("Không tìm thấy bản ghi để xóa với ID: {}", id);
-            throw new ResourceNotFoundException("Không tìm thấy bản ghi để xóa với ID: " + id);
-        }
-    }
-
-
-    @Override
-    public int deleteMultiple(List<UUID> ids) {
-        logger.info("Đang xóa nhiều bản ghi với các ID: {}", ids);
-        if (ids == null || ids.isEmpty()) {
-            logger.warn("Danh sách ID rỗng. Không có bản ghi nào để xóa.");
-            throw new ResourceNotFoundException("Danh sách ID rỗng. Không có bản ghi nào để xóa.");
-        }
-
-        for (UUID id : ids) {
-            StaffDocumentItem entity = repository.findById(id).orElse(null);
-            if (entity != null && entity.getDocumentFile() != null && entity.getDocumentFile().getId() != null) {
-                // Xóa file đính kèm nếu có
-                fileDescriptionService.deleteById(entity.getDocumentFile().getId());
-            }
-        }
-
-        repository.deleteAllById(ids);
-        logger.info("Đã xóa thành công {} bản ghi", ids.size());
-        return ids.size();
-    }
-
-
-    @Override
     public Page<StaffDocumentItemDto> pagingSearch(SearchDto dto) {
-        int pageIndex = (dto.getPageIndex() == null || dto.getPageIndex() < 1) ? 0 : dto.getPageIndex() - 1;
-        int pageSize = (dto.getPageSize() == null || dto.getPageSize() < 10) ? 10 : dto.getPageSize();
-
-        boolean isExportExcel = dto.getExportExcel() != null && dto.getExportExcel();
-
-
-        StringBuilder sqlCount = new StringBuilder("SELECT COUNT(entity.id) FROM StaffDocumentItem entity WHERE (1=1) ");
-        StringBuilder sql = new StringBuilder("SELECT new com.buihien.datn.dto.StaffDocumentItemDto(entity, true) FROM StaffDocumentItem entity WHERE (1=1) ");
-
-        StringBuilder whereClause = new StringBuilder();
-
-        if (dto.getVoided() == null || !dto.getVoided()) {
-            whereClause.append(" AND (entity.voided = false OR entity.voided IS NULL) ");
-        } else {
-            whereClause.append(" AND entity.voided = true ");
-        }
-
-        if (dto.getKeyword() != null && StringUtils.hasText(dto.getKeyword())) {
-            whereClause.append(" AND (LOWER(entity.name) LIKE LOWER(:text) OR LOWER(entity.code) LIKE LOWER(:text)) ");
-        }
-
-        if (dto.getFromDate() != null) {
-            whereClause.append(" AND entity.createdAt >= :fromDate ");
-        }
-        if (dto.getToDate() != null) {
-            whereClause.append(" AND entity.createdAt <= :toDate ");
-        }
-
-        sql.append(whereClause);
-        sqlCount.append(whereClause);
-
-        sql.append(dto.getOrderBy() != null && dto.getOrderBy() ? " ORDER BY entity.createdAt ASC" : " ORDER BY entity.createdAt DESC");
-
-        Query q = manager.createQuery(sql.toString(), StaffDocumentItemDto.class);
-        Query qCount = manager.createQuery(sqlCount.toString());
-
-        if (dto.getKeyword() != null && StringUtils.hasText(dto.getKeyword())) {
-            q.setParameter("text", '%' + dto.getKeyword() + '%');
-            qCount.setParameter("text", '%' + dto.getKeyword() + '%');
-        }
-
-        if (dto.getFromDate() != null) {
-            q.setParameter("fromDate", dto.getFromDate());
-            qCount.setParameter("fromDate", dto.getFromDate());
-        }
-        if (dto.getToDate() != null) {
-            q.setParameter("toDate", dto.getToDate());
-            qCount.setParameter("toDate", dto.getToDate());
-        }
-        if (!isExportExcel) {
-            q.setFirstResult(pageIndex * pageSize);
-            q.setMaxResults(pageSize);
-
-            return new PageImpl<>(q.getResultList(), PageRequest.of(pageIndex, pageSize), (long) qCount.getSingleResult());
-        }
-        return new PageImpl<>(q.getResultList());
+        return new PageImpl<>(null);
     }
 
     @Override
@@ -218,6 +106,15 @@ public class StaffDocumentItemServiceImpl extends GenericServiceImpl<StaffDocume
         if (staff == null) {
             throw new ResourceNotFoundException("Nhân viên không tồn tại");
         }
+
+        if (staff.getDocumentTemplate() != null
+                && staff.getDocumentTemplate().getId().equals(documentTemplate.getId())
+                && staff.getStaffDocumentItems() != null
+                && !staff.getStaffDocumentItems().isEmpty()) {
+            return;
+        }
+
+
         if (documentTemplate.getDocumentItems() != null && !documentTemplate.getDocumentItems().isEmpty()) {
             if (staff.getStaffDocumentItems() == null) {
                 staff.setStaffDocumentItems(new HashSet<>());
@@ -231,8 +128,45 @@ public class StaffDocumentItemServiceImpl extends GenericServiceImpl<StaffDocume
                     staffDocumentItem = new StaffDocumentItem();
                 }
                 staffDocumentItem.setDocumentItem(documentItem);
+                staffDocumentItem.setStaff(staff);
                 staff.getStaffDocumentItems().add(staffDocumentItem);
             }
         }
+    }
+
+    @Override
+    public List<StaffDocumentItemDto> getStaffDocumentItemByDocumentTemplate(UUID staffId) {
+        Staff staff = staffRepository.findById(staffId).orElse(null);
+        if (staff == null) {
+            throw new ResourceNotFoundException("Nhân viên không tồn tại");
+        }
+
+        if (staff.getDocumentTemplate() == null) {
+            return List.of();
+        }
+
+        List<StaffDocumentItemDto> response = new ArrayList<>();
+
+        for (DocumentItem item : staff.getDocumentTemplate().getDocumentItems()) {
+            StaffDocumentItem staffDocumentItem = null;
+            if (item.getId() != null) {
+                staffDocumentItem = staffDocumentItemRepository.findByStaffIdAndDocumentItemId(staff.getId(), item.getId());
+            }
+            if (staffDocumentItem == null) {
+                staffDocumentItem = new StaffDocumentItem();
+            }
+
+            staffDocumentItem.setDocumentItem(item);
+            staffDocumentItem.setStaff(staff);
+
+            response.add(new StaffDocumentItemDto(staffDocumentItem, true));
+        }
+
+        response.sort(Comparator.comparing(dto -> {
+            DocumentItemDto documentItem = dto.getDocumentItem();
+            return documentItem != null && documentItem.getDisplayOrder() != null ? documentItem.getDisplayOrder() : 0;
+        }));
+
+        return response;
     }
 }

@@ -18,7 +18,7 @@ export class StaffObject {
     maritalStatus = null; // enum
     taxCode = '';
     user = null;        // object: UserDto
-    educationDegree = null; // object: EducationDegreeDto
+    educationLevel = null; //trình độ học vấn
     height = null;
     weight = null;
     permanentResidence = {
@@ -45,7 +45,7 @@ export class StaffObject {
     documentTemplate = null; // DocumentTemplateDto
     staffDocumentItems = []; // StaffDocumentItemDto[]
     staffPhase = null; // Enum tình trạng nhân viên (DatnConstants.StaffPhase)
-    requireAttendance = false; // Nhân viên cần chấm công hay không
+    requireAttendance = true; // Nhân viên cần chấm công hay không
     allowExternalIpTimekeeping = false; // Cho phép chấm công ngoài công ty
     hasSocialIns = false; // Có đóng BHXH không
     constructor() {

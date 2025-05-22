@@ -26,10 +26,9 @@ public class PersonBankAccountDto extends AuditableDto {
             this.bankAccountName = entity.getBankAccountName();
             this.bankAccountNumber = entity.getBankAccountNumber();
             this.bankBranch = entity.getBankBranch();
-            this.isMain = entity.getMain();
+            this.isMain = entity.getIsMain();
         }
     }
-
 
     public PersonDto getPerson() {
         return person;
@@ -71,11 +70,11 @@ public class PersonBankAccountDto extends AuditableDto {
         this.bankBranch = bankBranch;
     }
 
-    public Boolean getMain() {
+    public Boolean getIsMain() {
         return isMain;
     }
 
-    public void setMain(Boolean main) {
+    public void setIsMain(Boolean main) {
         isMain = main;
     }
 }

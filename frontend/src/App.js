@@ -11,52 +11,66 @@ import Loading from "./common/Layout/Loading";
 
 function AppWrapper() {
     const navigate = useNavigate();
-    const location = useLocation();  // Lấy thông tin đường dẫn hiện tại
-    const [isLoginPage, setIsLoginPage] = useState(false);
+    const location = useLocation();
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isLoading, setIsLoading] = useState(true); // Thêm loading state
 
-    const {authStore} = useStore();
-    const {
-        getCurrentUser,
-    } = authStore;
+    const { authStore } = useStore();
+    const { getCurrentUser } = authStore;
 
     const initAuth = useCallback(async () => {
-        if (location.pathname !== LOGIN_PAGE) {
+        try {
             const user = await getCurrentUser();
-            if (user === null || user === undefined) {
+            if (!user && location.pathname !== LOGIN_PAGE) {
                 navigate(LOGIN_PAGE);
-            } else {
-                setIsLoginPage(true);
+                setIsAuthenticated(false);
+            } else if (user) {
+                setIsAuthenticated(true);
             }
+        } catch (error) {
+            console.error('Auth error:', error);
+            if (location.pathname !== LOGIN_PAGE) {
+                navigate(LOGIN_PAGE);
+            }
+            setIsAuthenticated(false);
+        } finally {
+            setIsLoading(false);
         }
-    }, [location.pathname, getCurrentUser, navigate]); // Đặt đầy đủ dependency ở đây
+    }, [getCurrentUser, navigate, location.pathname]);
 
     useEffect(() => {
         initAuth();
     }, [initAuth]);
 
+    // Hiển thị loading khi đang xác thực
+    if (isLoading) {
+        return <Loading />;
+    }
+
+    // Nếu chưa authenticated và không phải login page
+    if (!isAuthenticated && location.pathname !== LOGIN_PAGE) {
+        return <Loading />;
+    }
+
     return (
-        <Suspense fallback={<Loading/>}>
+        <Suspense fallback={<Loading />}>
             <Routes>
-                <Route path={LOGIN_PAGE} element={<LoginIndex/>}/>
+                <Route path={LOGIN_PAGE} element={<LoginIndex />} />
+                <Route path="/*" element={<AppLayout routes={routes} />} />
             </Routes>
-            {isLoginPage && (
-                <AppLayout routes={routes}/>
-            )}
         </Suspense>
     );
 }
 
 function App() {
     return (
-        <React.StrictMode>
-            <BrowserRouter>
-                <AppWrapper/>
-                <ToastContainer
-                    position="top-right"
-                    limit={3}
-                />
-            </BrowserRouter>
-        </React.StrictMode>
+        <BrowserRouter>
+            <AppWrapper/>
+            <ToastContainer
+                position="top-right"
+                limit={3}
+            />
+        </BrowserRouter>
     );
 }
 

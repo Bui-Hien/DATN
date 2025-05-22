@@ -5,10 +5,10 @@ import {observer} from "mobx-react-lite";
 import {Delete} from "@mui/icons-material";
 import {Button, ButtonGroup} from "@mui/material";
 import CommonTextField from "../../common/form/CommonTextField";
-import CommonNumberInput from "../../common/form/CommonNumberInput";
 import CommonSelectInput from "../../common/form/CommonSelectInput";
 import {DocumentItemRequired} from "../../LocalConstants";
 import AddIcon from "@mui/icons-material/Add";
+import CommonNumberInput from "../../common/form/CommonNumberInput";
 
 function DocumentTemplateItemSection() {
     const {t} = useTranslation();

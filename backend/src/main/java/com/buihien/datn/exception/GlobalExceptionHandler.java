@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Date;
 
+import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCause;
 import static org.springframework.http.HttpStatus.*;
 
 @RestControllerAdvice
@@ -107,6 +109,13 @@ public class GlobalExceptionHandler {
                 message = message.substring(start, end).trim();
                 errorResponse.setMessage(message);
             }
+        }
+
+        Throwable rootCause = getRootCause(e);
+        if (rootCause instanceof SQLIntegrityConstraintViolationException ||
+                (rootCause != null && rootCause.getMessage().contains("a foreign key constraint fails"))) {
+            errorResponse.setMessage("Không thể xóa bản ghi vì dữ liệu đang được sử dụng ở nơi khác.");
+
         }
         return errorResponse;
     }

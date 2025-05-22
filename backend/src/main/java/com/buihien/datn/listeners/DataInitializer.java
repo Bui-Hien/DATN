@@ -1,6 +1,6 @@
 package com.buihien.datn.listeners;
 
-import com.buihien.datn.service.SetupDateService;
+import com.buihien.datn.service.SetupDataService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +16,17 @@ public class DataInitializer implements CommandLineRunner {
     @Value("${server.port}")
     private int port;
     @Autowired
-    private SetupDateService setupDateService;
+    private SetupDataService setupDateService;
 
     @Override
     public void run(String... args) {
         setupDateService.setupRoles();
+        setupDateService.setupNationality();
+        setupDateService.setupEthnics();
+        setupDateService.setupReligion();
+        setupDateService.setupProfession();
+        setupDateService.setupFamilyRelationship();
+        setupDateService.setupBank();
         log.info("Server started on " + port);
     }
 }

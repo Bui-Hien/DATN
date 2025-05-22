@@ -12,9 +12,3 @@ export const saveFile = (file) => {
         }
     });
 };
-
-export const downloadFile = async (fileIdOrName) => {
-    return api.get(`${API_PATH}/download/${fileIdOrName}`, {
-        responseType: 'blob', // Quan trọng để nhận file nhị phân
-    });
-};

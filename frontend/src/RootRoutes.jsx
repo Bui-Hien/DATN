@@ -2,7 +2,6 @@ import CountryRoutes from "./views/Country/CountryRoutes";
 import BankRoutes from "./views/Bank/BankRoutes";
 import FamilyRelationshipRoutes from "./views/FamilyRelationship/FamilyRelationshipRoutes";
 import EthnicsRoutes from "./views/Ethnics/EthnicsRoutes";
-import EducationDegreeRoutes from "./views/EducationDegree/EducationDegreeRoutes";
 import ProfessionRoutes from "./views/Profession/ProfessionRoutes";
 import ReligionRoutes from "./views/Religion/ReligionRoutes";
 import AdministrativeUnitRoutes from "./views/AdministrativeUnit/AdministrativeUnitRoutes";
@@ -16,14 +15,13 @@ const routes = [
     ...CountryRoutes,
     ...BankRoutes,
     ...EthnicsRoutes,
-    ...EducationDegreeRoutes,
-    ...FamilyRelationshipRoutes,
     ...ProfessionRoutes,
     ...ReligionRoutes,
     ...AdministrativeUnitRoutes,
     //Nhân viên
     ...StaffRoutes,
     ...DocumentTemplateRoutes,
+    ...FamilyRelationshipRoutes,
 
     //Cơ cấu tổ chức
     ...DepartmentRoutes,

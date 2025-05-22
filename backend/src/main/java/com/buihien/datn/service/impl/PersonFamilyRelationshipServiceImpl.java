@@ -4,7 +4,6 @@ import com.buihien.datn.domain.FamilyRelationship;
 import com.buihien.datn.domain.Person;
 import com.buihien.datn.domain.PersonFamilyRelationship;
 import com.buihien.datn.domain.Profession;
-import com.buihien.datn.dto.BankDto;
 import com.buihien.datn.dto.PersonFamilyRelationshipDto;
 import com.buihien.datn.dto.search.SearchDto;
 import com.buihien.datn.exception.ResourceNotFoundException;
@@ -14,6 +13,7 @@ import com.buihien.datn.repository.PersonRepository;
 import com.buihien.datn.repository.ProfessionRepository;
 import com.buihien.datn.service.PersonFamilyRelationshipService;
 import jakarta.persistence.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -23,16 +23,12 @@ import org.springframework.util.StringUtils;
 @Service
 public class PersonFamilyRelationshipServiceImpl extends GenericServiceImpl<PersonFamilyRelationship, PersonFamilyRelationshipDto, SearchDto> implements PersonFamilyRelationshipService {
 
-    private final PersonRepository personRepository;
-    private final FamilyRelationshipRepository familyRelationshipRepository;
-    private final ProfessionRepository professionRepository;
-
-    public PersonFamilyRelationshipServiceImpl(PersonRepository personRepository, FamilyRelationshipRepository familyRelationshipRepository, ProfessionRepository professionRepository) {
-        super();
-        this.personRepository = personRepository;
-        this.familyRelationshipRepository = familyRelationshipRepository;
-        this.professionRepository = professionRepository;
-    }
+    @Autowired
+    private PersonRepository personRepository;
+    @Autowired
+    private FamilyRelationshipRepository familyRelationshipRepository;
+    @Autowired
+    private ProfessionRepository professionRepository;
 
     @Override
     protected PersonFamilyRelationshipDto convertToDto(PersonFamilyRelationship entity) {
@@ -70,8 +66,9 @@ public class PersonFamilyRelationshipServiceImpl extends GenericServiceImpl<Pers
             throw new ResourceNotFoundException("Mối quan hệ gia đình không tồn tại");
         }
         entity.setFamilyRelationship(familyRelationship);
-        entity.setAddress(entity.getAddress());
-        entity.setBirthDate(entity.getBirthDate());
+        entity.setFullName(dto.getFullName());
+        entity.setAddress(dto.getAddress());
+        entity.setBirthDate(dto.getBirthDate());
 
         // Load Profession
         Profession profession = null;
@@ -104,7 +101,7 @@ public class PersonFamilyRelationshipServiceImpl extends GenericServiceImpl<Pers
         }
 
         if (dto.getKeyword() != null && StringUtils.hasText(dto.getKeyword())) {
-            whereClause.append(" AND (LOWER(entity.name) LIKE LOWER(:text) OR LOWER(entity.code) LIKE LOWER(:text)) ");
+            whereClause.append(" AND (LOWER(entity.fullName) LIKE LOWER(:text)) ");
         }
         if (dto.getOwnerId() != null) {
             whereClause.append(" AND entity.person.id = :ownerId ");
@@ -121,7 +118,7 @@ public class PersonFamilyRelationshipServiceImpl extends GenericServiceImpl<Pers
 
         sql.append(dto.getOrderBy() != null && dto.getOrderBy() ? " ORDER BY entity.createdAt ASC" : " ORDER BY entity.createdAt DESC");
 
-        Query q = manager.createQuery(sql.toString(), BankDto.class);
+        Query q = manager.createQuery(sql.toString(), PersonFamilyRelationshipDto.class);
         Query qCount = manager.createQuery(sqlCount.toString());
 
         if (dto.getKeyword() != null && StringUtils.hasText(dto.getKeyword())) {

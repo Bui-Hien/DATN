@@ -73,19 +73,31 @@ const Component = ({
     // Chuyển value từ formik thành Date hoặc null
     // Nếu field.value là số (timestamp) hoặc string hợp lệ, convert sang Date
     const parseToDate = (val) => {
-        if (!val) return null;
-        if (val instanceof Date) return val;
-        if (typeof val === "number") return new Date(val);
+        if (!val && val !== 0) return null;
+
+        if (val instanceof Date) {
+            if (isNaN(val.getTime())) return null;
+            return val;
+        }
+
+        if (typeof val === "number") {
+            const d = new Date(val);
+            if (isNaN(d.getTime())) return null;
+            return d;
+        }
+
         if (typeof val === "string") {
             const m = moment(val, ["DD/MM/YYYY", moment.ISO_8601], true);
             if (m.isValid()) return m.toDate();
-            return new Date(val);
+            const d = new Date(val);
+            if (isNaN(d.getTime())) return null;
+            return d;
         }
+
         return null;
     };
 
-    const [value, setValue] = useState(parseToDate(field.value));
-    const [debounceTimer, setDebounceTimer] = useState(null);
+    const [value, setValue] = useState(() => parseToDate(field.value));
 
     useEffect(() => {
         setValue(parseToDate(field.value));
@@ -96,15 +108,8 @@ const Component = ({
 
         setValue(newValue);
 
-        // Chuẩn hóa value trả về (timestamp hoặc null)
-        let newDate = newValue;
-        if (newDate instanceof Date && !isNaN(newDate)) {
-            if (!configDefaultForm.notValueMillisecond) {
-                newDate = newDate.getTime();
-            }
-        } else {
-            newDate = null;
-        }
+        // Luôn truyền Date hoặc null về Formik (không truyền số)
+        let newDate = newValue instanceof Date && !isNaN(newValue.getTime()) ? newValue : null;
 
         if (!notDelay) {
             if (debounceTimer) clearTimeout(debounceTimer);
@@ -126,6 +131,13 @@ const Component = ({
             }
         }
     };
+
+
+    const [debounceTimer, setDebounceTimer] = useState(null);
+
+    useEffect(() => {
+        setValue(parseToDate(field.value));
+    }, [field.value]);
 
     const isError = meta?.touched && Boolean(meta?.error);
 
