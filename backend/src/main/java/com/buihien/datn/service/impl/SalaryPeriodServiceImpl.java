@@ -4,14 +4,18 @@ import com.buihien.datn.DatnConstants;
 import com.buihien.datn.domain.SalaryPeriod;
 import com.buihien.datn.dto.SalaryPeriodDto;
 import com.buihien.datn.dto.search.SearchDto;
+import com.buihien.datn.exception.InvalidDataException;
 import com.buihien.datn.generic.GenericServiceImpl;
 import com.buihien.datn.service.SalaryPeriodService;
+import com.buihien.datn.util.DateTimeUtil;
 import jakarta.persistence.Query;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+
+import static com.buihien.datn.util.DateTimeUtil.calculateDaysBetween;
 
 @Service
 public class SalaryPeriodServiceImpl extends GenericServiceImpl<SalaryPeriod, SalaryPeriodDto, SearchDto> implements SalaryPeriodService {
@@ -32,8 +36,17 @@ public class SalaryPeriodServiceImpl extends GenericServiceImpl<SalaryPeriod, Sa
         }
         if (DatnConstants.SalaryPeriodStatus.DRAFT.getValue().equals(dto.getSalaryPeriodStatus())) {
             entity.setName(dto.getName());
+            entity.setCode(dto.getCode());
+            entity.setDescription(dto.getDescription());
             entity.setStartDate(dto.getStartDate());
             entity.setEndDate(dto.getEndDate());
+            if (dto.getStartDate() != null && dto.getEndDate() != null) {
+                long betweenDate = calculateDaysBetween(dto.getStartDate(), dto.getEndDate());
+                if (dto.getEstimatedWorkingDays() != null && dto.getEstimatedWorkingDays() > betweenDate) {
+                    throw new InvalidDataException("Số ngày làm việc trong kỳ lương không thể lớn hơn tổng số ngày thực tế");
+                }
+            }
+            entity.setEstimatedWorkingDays(dto.getEstimatedWorkingDays());
         }
 
         return entity;

@@ -1,4 +1,4 @@
-import React, {memo} from "react";
+import React, {memo, useState} from "react";
 import {Form, Formik} from "formik";
 import {useTranslation} from "react-i18next";
 import {useStore} from "../../stores";
@@ -11,6 +11,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from "@mui/icons-material/Close";
 import SalaryTemplateItemSection from "./SalaryTemplateItemSection";
 import {removeVietnameseTones} from "../../LocalFunction";
+import FormulaEditor from "../../common/form/FormulaEditor";
 
 function SalaryTemplateForm(props) {
     const {t} = useTranslation();
@@ -27,6 +28,7 @@ function SalaryTemplateForm(props) {
         name: Yup.string().trim().required(t("validation.required")),
         code: Yup.string().trim().required(t("validation.required")),
         description: Yup.string().nullable(),
+        formula: Yup.string().nullable(),
         templateItems: Yup.array().of(
             Yup.object({
                 name: Yup.string().trim().required(t("validation.required")),
@@ -41,12 +43,14 @@ function SalaryTemplateForm(props) {
 
 
     async function handleSaveForm(values) {
+
+
         await saveSalaryTemplate(values);
     }
 
     return (
         <CommonPopupV2
-            size="md"
+            size="xl"
             scroll={"body"}
             open={openCreateEditPopup}
             noDialogContent
@@ -66,6 +70,16 @@ function SalaryTemplateForm(props) {
                             <DialogContent className="p-6">
                                 <div className={"grid grid-cols-12 gap-2"}>
                                     <div className="sm:col-span-12">
+
+                                        <div style={{padding: 20}}>
+                                            <FormulaEditor
+                                                name="formula"
+                                                label="Công thức"
+                                                variables={['A', 'B', 'C']}
+                                                required={true}
+                                                open={true}
+                                            />
+                                        </div>
                                         <CommonTextField
                                             label="Tên mẫu bảng lương"
                                             name="name"

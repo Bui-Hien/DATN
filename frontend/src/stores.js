@@ -19,6 +19,7 @@ import PersonBankAccountStore from "./views/PersonBankAccount/PersonBankAccountS
 import CertificateStore from "./views/Certificate/CertificateStore";
 import StaffLabourAgreementStore from "./views/StaffLabourAgreement/StaffLabourAgreementStore";
 import SalaryTemplateStore from "./views/SalaryTemplate/SalaryTemplateStore";
+import SalaryPeriodStore from "./views/SalaryPeriod/SalaryPeriodStore";
 
 export const store = {
     loginStore: new LoginStore(),
@@ -50,6 +51,7 @@ export const store = {
 
     //Lương
     salaryTemplateStore: new SalaryTemplateStore(),
+    salaryPeriodStore: new SalaryPeriodStore()
 };
 
 export const StoreContext = createContext(store);

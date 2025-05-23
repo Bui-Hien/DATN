@@ -2,10 +2,16 @@ package com.buihien.datn.util;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import net.objecthunter.exp4j.Expression;
+import net.objecthunter.exp4j.ExpressionBuilder;
 
+import java.util.*;
+import java.util.regex.*;
 public class DateTimeUtil {
 
     // Định dạng mặc định: yyyy-MM-dd
@@ -199,5 +205,54 @@ public class DateTimeUtil {
 
         return !cal1.getTime().after(cal2.getTime()); // date1 <= date2
     }
+    public static long calculateDaysBetween(Date startDate, Date endDate) {
+        if (startDate == null || endDate == null) {
+            return 0;
+        }
 
+        LocalDate start = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate end = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        return ChronoUnit.DAYS.between(start, end) + 1; // +1 nếu bạn muốn tính cả ngày bắt đầu và kết thúc
+    }
+    public static double evaluateExpression(String expr) {
+        // 1. Tách tất cả biến trong biểu thức
+        Set<String> variables = new HashSet<>();
+        Pattern pattern = Pattern.compile("\\b[A-Za-z_][A-Za-z0-9_]*\\b");
+        Matcher matcher = pattern.matcher(expr);
+
+        while (matcher.find()) {
+            String token = matcher.group();
+            // Bỏ qua hàm hoặc số nếu cần (ví dụ Math.PI), còn đây lấy hết biến
+            variables.add(token);
+        }
+
+        // 2. Nhập giá trị cho từng biến
+        Map<String, Double> variableValues = new HashMap<>();
+        Scanner scanner = new Scanner(System.in);
+        for (String var : variables) {
+            System.out.print("Nhập giá trị cho biến " + var + ": ");
+            double value = scanner.nextDouble();
+            variableValues.put(var, value);
+        }
+
+        // 3. Dùng exp4j để xây biểu thức
+        Expression e = new ExpressionBuilder(expr)
+                .variables(variables)
+                .build();
+
+        // 4. Gán giá trị biến vào biểu thức
+        for (Map.Entry<String, Double> entry : variableValues.entrySet()) {
+            e.setVariable(entry.getKey(), entry.getValue());
+        }
+
+        // 5. Trả kết quả
+        return e.evaluate();
+
+//        public static void main(String[] args) {
+//            String inputExpr = "SO_NGAY_CONG_THUC_TE / SO_NGAY_CONG_TIEU_CHUAN * LUONG_CO_BAN";
+//            double result = evaluateExpression(inputExpr);
+//            System.out.println("Kết quả biểu thức: " + result);
+//        }
+    }
 }

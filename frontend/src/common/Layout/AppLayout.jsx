@@ -112,10 +112,11 @@ function AppLayout({routes}) {
                                     <ListItemText
                                         primary={item.name}
                                         sx={{opacity: open ? 1 : 0}}
-                                        className={`${!open && 'hidden'}`}
+                                        className={`${!open && 'hidden'} text-white`}
                                     />
                                     {open && (
-                                        isExpanded ? <ExpandMore/> : <ChevronRight/>
+                                        isExpanded ? <ExpandMore className={"text-white"}/> :
+                                            <ChevronRight className={"text-white"}/>
                                     )}
                                 </ListItemButton>
                             </Tooltip>
@@ -149,6 +150,7 @@ function AppLayout({routes}) {
                                 <ListItemText
                                     primary={item.name}
                                     sx={{opacity: open ? 1 : 0}}
+                                    className={" text-white"}
                                 />
                             </ListItemButton>
                         </Tooltip>
@@ -157,8 +159,8 @@ function AppLayout({routes}) {
             });
     };
     return (
-        <Box sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
-            <CssBaseline />
+        <Box sx={{display: "flex", height: "100vh", overflow: "hidden"}}>
+            <CssBaseline/>
 
             {/* AppBar */}
             <AppBar position="fixed" className="!bg-slate-800">
@@ -169,7 +171,7 @@ function AppLayout({routes}) {
                         onClick={() => setOpen(!open)}
                         edge="start"
                     >
-                        <MenuIcon />
+                        <MenuIcon/>
                     </IconButton>
                     <Typography variant="h6" noWrap component="div">
                         Mini variant drawer
@@ -181,7 +183,7 @@ function AppLayout({routes}) {
             <Drawer
                 variant="permanent"
                 open={open}
-                className="h-screen bg-amber-100"
+                className="h-screen !bg-slate-800"
                 sx={{
                     '& .MuiDrawer-paper': {
                         position: 'relative',
@@ -193,7 +195,7 @@ function AppLayout({routes}) {
                     }
                 }}
             >
-                <DrawerHeader />
+                <DrawerHeader/>
                 <List className="!py-0">{renderNavItems(navigations)}</List>
             </Drawer>
 
@@ -208,7 +210,7 @@ function AppLayout({routes}) {
                     flexDirection: 'column',
                 }}
             >
-                <DrawerHeader />
+                <DrawerHeader/>
                 <Box
                     className="!px-4"
                     sx={{
@@ -231,7 +233,7 @@ function AppLayout({routes}) {
                             }
                             return null;
                         })}
-                        <Route path="*" element={<NotFound />} />
+                        <Route path="*" element={<NotFound/>}/>
                     </Routes>
                 </Box>
             </Box>

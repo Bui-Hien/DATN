@@ -9,10 +9,7 @@ import java.util.Date;
 //Kỳ lương (VD: tháng 5/2025, tháng 6/2025...)
 @Entity
 @Table(name = "tbl_salary_period")
-public class SalaryPeriod extends AuditableEntity {
-    @Column(name = "name")
-    private String name; // Ví dụ: "Tháng 5/2025"
-
+public class SalaryPeriod extends BaseObject {
     @Column(name = "start_date")
     private Date startDate;
 
@@ -22,15 +19,10 @@ public class SalaryPeriod extends AuditableEntity {
     @Column(name = "status")
     private Integer salaryPeriodStatus;//Xem status: DatnConstants.SalaryPeriodStatus
 
+    @Column(name = "estimated_working_days")
+    private Integer estimatedWorkingDays; // Số ngày làm việc ước tính
+
     public SalaryPeriod() {
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Date getStartDate() {
@@ -55,5 +47,13 @@ public class SalaryPeriod extends AuditableEntity {
 
     public void setSalaryPeriodStatus(Integer salaryPeriodStatus) {
         this.salaryPeriodStatus = salaryPeriodStatus;
+    }
+
+    public Integer getEstimatedWorkingDays() {
+        return estimatedWorkingDays;
+    }
+
+    public void setEstimatedWorkingDays(Integer estimatedWorkingDays) {
+        this.estimatedWorkingDays = estimatedWorkingDays;
     }
 }

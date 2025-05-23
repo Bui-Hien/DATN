@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Date;
@@ -117,6 +118,22 @@ public class GlobalExceptionHandler {
             errorResponse.setMessage("Không thể xóa bản ghi vì dữ liệu đang được sử dụng ở nơi khác.");
 
         }
+        return errorResponse;
+    }
+
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    @ResponseStatus(NOT_FOUND)
+    public ErrorResponse handleResponseStatusException(NoResourceFoundException e, WebRequest request) {
+        log.error(e.getMessage(), e);
+
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setTimestamp(new Date());
+        errorResponse.setPath(request.getDescription(false).replace("uri=", ""));
+        errorResponse.setStatus(NOT_FOUND.value());
+        errorResponse.setError(NOT_FOUND.getReasonPhrase());
+        errorResponse.setMessage("Api không tồn tại");
+
         return errorResponse;
     }
 

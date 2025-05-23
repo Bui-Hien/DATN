@@ -4,12 +4,16 @@ import jakarta.persistence.*;
 
 @Table(name = "tbl_salary_template_item")
 @Entity
-public class SalaryTemplateItem extends BaseObject {
+public class SalaryTemplateItem extends AuditableEntity {
+    @Column(name = "code")
+    private String code;
+    @Column(name = "name")
+    private String name;
     @Column(name = "display_order", nullable = false)
     private Integer displayOrder; // Thứ tự hiển thị
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "salary_template_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "salary_template_id", nullable = false)
     private SalaryTemplate salaryTemplate; // thuộc mẫu bang luong nao
 
     @Column(name = "salary_item_type")
@@ -22,6 +26,22 @@ public class SalaryTemplateItem extends BaseObject {
     private String formula; // nếu type là USING_FORMULA thì lưu công thức
 
     public SalaryTemplateItem() {
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Integer getDisplayOrder() {

@@ -1,7 +1,11 @@
 {
   "validation": {
     "required": "Đây là trường bắt buộc",
-    "invalid_email": "Email không hợp lệ"
+    "invalid_email": "Email không hợp lệ",
+    "duplicateCode": "Mã không được trùng",
+    "endDateMustBeAfterStartDate": "Ngày kết thúc phải sau hoặc bằng ngày bắt đầu",
+    "invalidStatus": "Trạng thái không hợp lệ",
+    "workingDaysExceed": "Số ngày ước tính vượt quá số ngày thực tế"
   },
   "general": {
     "youAreHere": "Bạn đang ở đây:",

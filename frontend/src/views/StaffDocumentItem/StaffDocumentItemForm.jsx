@@ -109,7 +109,7 @@ function StaffDocumentItemForm({handleClose}) {
                         <CommonPopupV2
                             size="xs"
                             scroll={"paper"}
-                            open={true}
+                            open={previewFile}
                             noDialogContent
                             title={"Tài liệu vừa tải lên"}
                             onClosePopup={() => setPreviewFile(null)}

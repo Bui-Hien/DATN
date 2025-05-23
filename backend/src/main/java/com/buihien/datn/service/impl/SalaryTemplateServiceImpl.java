@@ -5,6 +5,7 @@ import com.buihien.datn.domain.SalaryTemplateItem;
 import com.buihien.datn.dto.SalaryTemplateDto;
 import com.buihien.datn.dto.SalaryTemplateItemDto;
 import com.buihien.datn.dto.search.SearchDto;
+import com.buihien.datn.exception.ConflictDataException;
 import com.buihien.datn.generic.GenericServiceImpl;
 import com.buihien.datn.repository.SalaryTemplateItemRepository;
 import com.buihien.datn.service.SalaryTemplateService;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class SalaryTemplateServiceImpl extends GenericServiceImpl<SalaryTemplate, SalaryTemplateDto, SearchDto> implements SalaryTemplateService {
@@ -28,7 +30,7 @@ public class SalaryTemplateServiceImpl extends GenericServiceImpl<SalaryTemplate
 
     @Override
     protected SalaryTemplateDto convertToDto(SalaryTemplate entity) {
-        return new SalaryTemplateDto(entity, false);
+        return new SalaryTemplateDto(entity, true);
     }
 
     @Override
@@ -41,12 +43,26 @@ public class SalaryTemplateServiceImpl extends GenericServiceImpl<SalaryTemplate
             entity = new SalaryTemplate();
         }
         entity.setName(dto.getName());
-
+        entity.setCode(dto.getCode());
+        entity.setDescription(dto.getDescription());
         if (entity.getTemplateItems() == null) {
             entity.setTemplateItems(new HashSet<>());
         }
         entity.getTemplateItems().clear();
         if (dto.getTemplateItems() != null && !dto.getTemplateItems().isEmpty()) {
+            Set<String> checkCodes = new HashSet<>();
+            Set<Integer> checkDisplayOrders = new HashSet<>();
+            for (SalaryTemplateItemDto item : dto.getTemplateItems()) {
+                checkCodes.add(item.getCode());
+                checkDisplayOrders.add(item.getDisplayOrder());
+            }
+            if (checkCodes.size() < dto.getTemplateItems().size()) {
+                throw new ConflictDataException("Mã phần tử lương trong cùng một mẫu bảng lương không được trùng nhau");
+            }
+            if (checkDisplayOrders.size() < dto.getTemplateItems().size()) {
+                throw new ConflictDataException("Thứ tự hiển thị phần tử lương không được trùng nhau");
+            }
+
             for (SalaryTemplateItemDto item : dto.getTemplateItems()) {
                 SalaryTemplateItem salaryTemplateItem = null;
                 if (item.getId() != null) {
@@ -55,11 +71,14 @@ public class SalaryTemplateServiceImpl extends GenericServiceImpl<SalaryTemplate
                 if (salaryTemplateItem == null) {
                     salaryTemplateItem = new SalaryTemplateItem();
                 }
+                salaryTemplateItem.setName(item.getName());
+                salaryTemplateItem.setCode(item.getCode());
                 salaryTemplateItem.setDisplayOrder(item.getDisplayOrder());
                 salaryTemplateItem.setSalaryTemplate(entity);
                 salaryTemplateItem.setSalaryItemType(item.getSalaryItemType());
                 salaryTemplateItem.setDefaultAmount(item.getDefaultAmount());
                 salaryTemplateItem.setFormula(item.getFormula());
+                entity.getTemplateItems().add(salaryTemplateItem);
             }
         }
         return entity;

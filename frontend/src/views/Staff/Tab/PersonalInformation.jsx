@@ -427,12 +427,6 @@ function PersonalInformation() {
                                                 name="allowExternalIpTimekeeping"
                                             />
                                         </div>
-                                        <div className="col-span-12 md:col-span-4 xl:col-span-3">
-                                            <CommonCheckBox
-                                                label={t("Tham gia bảo hiểm xã hội")}
-                                                name="hasSocialIns"
-                                            />
-                                        </div>
                                     </div>
                                 </TabAccordion>
                             </div>

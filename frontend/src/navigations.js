@@ -1,15 +1,18 @@
 import {SystemRole} from "./LocalConstants";
 import i18next from "i18next";
+
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import GroupIcon from '@mui/icons-material/Group';
 import EventNoteIcon from '@mui/icons-material/EventNote';
-import ConstantList from "./appConfig";
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+
+const iconStyle = "!size-6 !text-white"; // 👈 style dùng chung
 
 export const navigations = [
     {
         name: i18next.t("Cơ cấu tổ chức"),
-        icon: <AccountTreeIcon/>,
+        icon: <AccountTreeIcon className={iconStyle}/>,
         isVisible: true,
         auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER],
         children: [
@@ -22,7 +25,7 @@ export const navigations = [
     },
     {
         name: i18next.t("Nhân viên"),
-        icon: <GroupIcon/>,
+        icon: <GroupIcon className={iconStyle}/>,
         isVisible: true,
         auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER],
         children: [
@@ -45,7 +48,7 @@ export const navigations = [
     },
     {
         name: i18next.t("Chấm công"),
-        icon: <EventNoteIcon/>,
+        icon: <EventNoteIcon className={iconStyle}/>,
         isVisible: true,
         auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER],
         children: [
@@ -58,7 +61,7 @@ export const navigations = [
     },
     {
         name: i18next.t("Lương"),
-        icon: <EventNoteIcon/>,
+        icon: <AttachMoneyIcon className={iconStyle}/>,
         isVisible: true,
         auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER],
         children: [
@@ -67,12 +70,16 @@ export const navigations = [
                 path: "/salary-template",
                 isVisible: true,
             },
+            {
+                name: i18next.t("Kỳ lương"),
+                path: "/salary-period",
+                isVisible: true,
+            },
         ]
     },
-
     {
         name: i18next.t("Danh mục chung"),
-        icon: <ListAltIcon/>,
+        icon: <ListAltIcon className={iconStyle}/>,
         isVisible: true,
         auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER],
         children: [

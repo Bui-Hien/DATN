@@ -1,158 +1,230 @@
+import React, {memo, useEffect, useState} from "react";
 import {FieldArray, useFormikContext} from "formik";
-import React, {memo} from "react";
 import {useTranslation} from "react-i18next";
 import {observer} from "mobx-react-lite";
-import {Delete} from "@mui/icons-material";
+
+import {Delete, Add as AddIcon} from "@mui/icons-material";
 import {Button, ButtonGroup} from "@mui/material";
+
 import CommonTextField from "../../common/form/CommonTextField";
 import CommonSelectInput from "../../common/form/CommonSelectInput";
-import {SalaryItemType} from "../../LocalConstants";
-import AddIcon from "@mui/icons-material/Add";
 import CommonNumberInput from "../../common/form/CommonNumberInput";
+import CommonCheckBox from "../../common/form/CommonCheckBox";
+
+import {SalaryItemType, SalaryTemplateItemSystem} from "../../LocalConstants";
 import {removeVietnameseTones} from "../../LocalFunction";
+import FormulaEditor from "../../common/form/FormulaEditor";
 
 function SalaryTemplateItemSection() {
     const {t} = useTranslation();
-    const {values} = useFormikContext();
+    const {values, setFieldValue} = useFormikContext();
 
-    function handleAddNewRow(push) {
+    const handleAddNewRow = (push) => {
         const newItem = {
-            name: "",
-            code: "",
-            displayOrder: null,
-            salaryItemType: null,
-            defaultAmount: null,
-            formula: "",
+            name: "", code: "", displayOrder: null, salaryItemType: null, defaultAmount: null, formula: "",
         };
         push(newItem);
-    }
+    };
 
-    return (
-        <div className="w-full">
-            <FieldArray name="documentItems">
-                {({insert, remove, push}) => (
-                    <>
-                        <div className="mb-4">
-                            <ButtonGroup
-                                color="container"
-                                aria-label="outlined primary button group"
-                            >
-                                <Button
-                                    onClick={() => handleAddNewRow(push)}
-                                    startIcon={<AddIcon/>}
-                                >
-                                    {t("Thêm phần tử lương")}
-                                </Button>
-                                <Button
-                                    onClick={() => handleAddNewRow(push)}
-                                    startIcon={<AddIcon/>}
-                                >
-                                    {t("Thêm phần tử lương từ hệ thống")}
-                                </Button>
-                            </ButtonGroup>
-                        </div>
+    const handleRemoveRow = (indexToRemove, remove) => {
+        const itemToRemove = values.templateItems[indexToRemove];
+        const code = itemToRemove?.code;
 
-                        <section className="mt-4 overflow-x-auto">
-                            <table className="w-full border border-gray-300 table-auto">
-                                <thead>
-                                <tr className="bg-gray-100">
-                                    <th className="border border-gray-300 w-[5%] text-center">{t("STT")}</th>
-                                    <th className="border border-gray-300 text-center">{t("Tên phần tử")}</th>
-                                    <th className="border border-gray-300 text-center">{t("Mã phần tử")}</th>
-                                    <th className="border border-gray-300 text-center">{t("Thứ tự hiển thị")}</th>
-                                    <th className="border border-gray-300 text-center">{t("Loại phần tử lương")}</th>
-                                    <th className="border border-gray-300 text-center">{t("Giá trị / Công thức")}</th>
-                                    <th className="border border-gray-300 text-center">{t("Hành động")}</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {values?.documentItems?.length > 0 ? (
-                                    values.documentItems.map((item, index) => (
-                                        <SalaryTemplateItem
-                                            key={index}
-                                            index={index}
-                                            nameSpace={`documentItems[${index}]`}
-                                            remove={() => remove(index)}
-                                        />
-                                    ))
-                                ) : (
-                                    <tr>
-                                        <td colSpan={10} className="text-center py-4 text-gray-500">
-                                            {t("Chưa có phần tử nào")}
-                                        </td>
-                                    </tr>
-                                )}
-                                </tbody>
-                            </table>
-                        </section>
-                    </>
-                )}
-            </FieldArray>
-        </div>
-    );
+        remove(indexToRemove);
+
+        // Nếu phần tử hệ thống bị xóa thì bỏ check tương ứng
+        if (code === SalaryTemplateItemSystem.ACTUAL_NUMBER_OF_WORKING_DAYS.code) {
+            setFieldValue(SalaryTemplateItemSystem.ACTUAL_NUMBER_OF_WORKING_DAYS.code, false);
+        } else if (code === SalaryTemplateItemSystem.STANDARD_NUMBER_OF_WORKING_DAYS.code) {
+            setFieldValue(SalaryTemplateItemSystem.STANDARD_NUMBER_OF_WORKING_DAYS.code, false);
+        } else if (code === SalaryTemplateItemSystem.BASIC_SALARY.code) {
+            setFieldValue(SalaryTemplateItemSystem.BASIC_SALARY.code, false);
+        }
+    };
+
+    useEffect(() => {
+        const templateItems = values?.templateItems;
+        templateItems.forEach(templateItem => {
+            if (templateItem?.code === SalaryTemplateItemSystem.ACTUAL_NUMBER_OF_WORKING_DAYS.code) {
+                setFieldValue(SalaryTemplateItemSystem.ACTUAL_NUMBER_OF_WORKING_DAYS.code, true);
+            } else if (templateItem?.code === SalaryTemplateItemSystem.STANDARD_NUMBER_OF_WORKING_DAYS.code) {
+                setFieldValue(SalaryTemplateItemSystem.STANDARD_NUMBER_OF_WORKING_DAYS.code, true);
+            } else if (templateItem?.code === SalaryTemplateItemSystem.BASIC_SALARY.code) {
+                setFieldValue(SalaryTemplateItemSystem.BASIC_SALARY.code, true);
+            }
+        })
+    }, [])
+    return (<div className="w-full">
+        <FieldArray name="templateItems">
+            {({insert, remove, push}) => (<>
+                <div className="mb-4 flex gap-4 items-center">
+                    <ButtonGroup color="container" aria-label="outlined primary button group">
+                        <Button onClick={() => handleAddNewRow(push)} startIcon={<AddIcon/>}>
+                            {t("Thêm phần tử lương")}
+                        </Button>
+                    </ButtonGroup>
+
+                    {/* Các checkbox điều khiển phần tử hệ thống */}
+                    <CommonCheckBox
+                        label={t("Số ngày công thực tế")}
+                        name={SalaryTemplateItemSystem.ACTUAL_NUMBER_OF_WORKING_DAYS.code}
+                        handleChange={(_, value) => {
+                            setFieldValue(SalaryTemplateItemSystem.ACTUAL_NUMBER_OF_WORKING_DAYS.code, value);
+                            const currentItems = values.templateItems || [];
+                            const existsIndex = currentItems.findIndex((item) => item?.code === SalaryTemplateItemSystem.ACTUAL_NUMBER_OF_WORKING_DAYS.code);
+                            if (value) {
+                                if (existsIndex === -1) {
+                                    push(SalaryTemplateItemSystem.ACTUAL_NUMBER_OF_WORKING_DAYS);
+                                }
+                            } else {
+                                if (existsIndex !== -1) {
+                                    remove(existsIndex);
+                                }
+                            }
+                        }}
+                    />
+
+                    <CommonCheckBox
+                        label={t("Số ngày công tiêu chuẩn")}
+                        name={SalaryTemplateItemSystem.STANDARD_NUMBER_OF_WORKING_DAYS.code}
+                        handleChange={(_, value) => {
+                            setFieldValue(SalaryTemplateItemSystem.STANDARD_NUMBER_OF_WORKING_DAYS.code, value);
+                            const currentItems = values.templateItems || [];
+                            const existsIndex = currentItems.findIndex((item) => item?.code === SalaryTemplateItemSystem.STANDARD_NUMBER_OF_WORKING_DAYS.code);
+                            if (value) {
+                                if (existsIndex === -1) {
+                                    push(SalaryTemplateItemSystem.STANDARD_NUMBER_OF_WORKING_DAYS);
+                                }
+                            } else {
+                                if (existsIndex !== -1) {
+                                    remove(existsIndex);
+                                }
+                            }
+                        }}
+                    />
+
+                    <CommonCheckBox
+                        label={t("Lương cơ bản")}
+                        name={SalaryTemplateItemSystem.BASIC_SALARY.code}
+                        handleChange={(_, value) => {
+                            setFieldValue(SalaryTemplateItemSystem.BASIC_SALARY.code, value);
+                            const currentItems = values.templateItems || [];
+                            const existsIndex = currentItems.findIndex((item) => item?.code === SalaryTemplateItemSystem.BASIC_SALARY.code);
+                            if (value) {
+                                if (existsIndex === -1) {
+                                    push(SalaryTemplateItemSystem.BASIC_SALARY);
+                                }
+                            } else {
+                                if (existsIndex !== -1) {
+                                    remove(existsIndex);
+                                }
+                            }
+                        }}
+                    />
+                </div>
+
+                <section className="mt-4 overflow-x-auto">
+                    <table className="w-full border border-gray-300 table-auto">
+                        <thead>
+                        <tr className="bg-gray-100">
+                            <th className="border border-gray-300 w-[5%] text-center">{t("STT")}</th>
+                            <th className="border border-gray-300 text-center">{t("Tên phần tử")}</th>
+                            <th className="border border-gray-300 text-center">{t("Mã phần tử")}</th>
+                            <th className="border border-gray-300 text-center">{t("Thứ tự hiển thị")}</th>
+                            <th className="border border-gray-300 text-center">{t("Loại phần tử lương")}</th>
+                            <th className="border border-gray-300 text-center">{t("Giá trị / Công thức")}</th>
+                            <th className="border border-gray-300 text-center">{t("Hành động")}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {values?.templateItems?.length > 0 ? (values.templateItems.map((item, index) => (
+                            <SalaryTemplateItem
+                                key={index}
+                                index={index}
+                                nameSpace={`templateItems[${index}]`}
+                                remove={() => handleRemoveRow(index, remove)}
+                            />))) : (<tr>
+                            <td colSpan={7} className="text-center py-4 text-gray-500">
+                                {t("Chưa có phần tử nào")}
+                            </td>
+                        </tr>)}
+                        </tbody>
+                    </table>
+                </section>
+            </>)}
+        </FieldArray>
+    </div>);
 }
 
-const SalaryTemplateItem = memo((props) => {
-    const {index, nameSpace, remove, disabled} = props;
+const SalaryTemplateItem = memo(({index, nameSpace, remove, disabled}) => {
     const {t} = useTranslation();
+    const {values, setFieldValue} = useFormikContext();
 
     const withNameSpace = (field) => (field ? `${nameSpace}.${field}` : nameSpace);
-    const {values, setFieldValue} = useFormikContext();
-    return (
-        <tr className="border border-gray-300">
-            <td className="text-center border border-gray-300">{index + 1}</td>
-            <td className="border border-gray-300">
-                <CommonTextField
-                    name={withNameSpace("name")}
-                    onChange={(e) => {
-                        const nameValue = e.target.value;
-                        const codeValue = removeVietnameseTones(nameValue).toUpperCase().replace(/\s+/g, "_");
-                        setFieldValue(withNameSpace("name"), nameValue);
-                        setFieldValue(withNameSpace("code"), codeValue);
-                    }}
-                    required/>
-            </td>
-            <td className="border border-gray-300">
-                <CommonTextField
-                    name={withNameSpace("code")}
-                    onChange={(e) => {
-                        const nameValue = e.target.value;
-                        const codeValue = removeVietnameseTones(nameValue).toUpperCase().replace(/\s+/g, "_");
-                        setFieldValue(withNameSpace("code"), codeValue);
-                    }}
+    const item = values.templateItems[index];
+    const isSystemType = item?.salaryItemType === SalaryItemType.SYSTEM.value;
 
-                />
-            </td>
-            <td className="border border-gray-300">
-                <CommonNumberInput name={withNameSpace("displayOrder")}/>
-            </td>
-            <td className="border border-gray-300">
-                <CommonSelectInput
-                    name={withNameSpace("salaryItemType")}
-                    options={SalaryItemType.getListData()}
-                />
-            </td>
-            <td className="border border-gray-300">
-                {values.documentItems[index]?.salaryItemType === SalaryItemType.FORMULA.value ? (
-                    <CommonTextField name={withNameSpace("formula")}/>
-                ) : (
-                    <CommonNumberInput name={withNameSpace("defaultAmount")}/>
-                )}
+    return (<tr className="border border-gray-300">
+        <td className="text-center border border-gray-300">{index + 1}
+        </td>
 
-            </td>
-            {!disabled && (
-                <td className="text-center border border-gray-300">
-                    <span
-                        className="text-red-600 cursor-pointer hover:text-red-800"
-                        onClick={remove}
-                        title={t("Xóa")}
-                    >
-                        <Delete/>
-                    </span>
-                </td>
-            )}
-        </tr>
-    );
+        <td className="border border-gray-300">
+            <CommonTextField
+                name={withNameSpace("name")}
+                onChange={(e) => {
+                    const nameValue = e.target.value;
+                    const codeValue = removeVietnameseTones(nameValue).toUpperCase().replace(/\s+/g, "_");
+                    setFieldValue(withNameSpace("name"), nameValue);
+                    setFieldValue(withNameSpace("code"), codeValue);
+                }}
+                required
+                disabled={isSystemType}
+            />
+        </td>
+
+        <td className="border border-gray-300">
+            <CommonTextField
+                name={withNameSpace("code")}
+                onChange={(e) => {
+                    const codeValue = removeVietnameseTones(e.target.value).toUpperCase().replace(/\s+/g, "_");
+                    setFieldValue(withNameSpace("code"), codeValue);
+                }}
+                disabled={isSystemType}
+            />
+        </td>
+
+        <td className="border border-gray-300">
+            <CommonNumberInput name={withNameSpace("displayOrder")}/>
+        </td>
+
+        <td className="border border-gray-300">
+            {isSystemType ? (<CommonSelectInput
+                name={withNameSpace("salaryItemType")}
+                options={SalaryItemType.getListData()}
+                disabled={isSystemType}
+            />) : (<CommonSelectInput
+                name={withNameSpace("salaryItemType")}
+                options={SalaryItemType.getListData().filter((item) => item.value !== SalaryItemType.SYSTEM.value)}
+                disabled={isSystemType}
+            />)}
+        </td>
+
+        <td className="border border-gray-300">
+            {item?.salaryItemType === SalaryItemType.FORMULA.value ? (
+                <CommonTextField name={withNameSpace("formula")} disabled={isSystemType}/>) : (
+                <CommonNumberInput name={withNameSpace("defaultAmount")} disabled={isSystemType}/>)}
+        </td>
+
+        {!disabled && (<td className="text-center border border-gray-300">
+          <span
+              className="text-red-600 cursor-pointer hover:text-red-800"
+              onClick={remove}
+              title={t("Xóa")}
+          >
+            <Delete/>
+          </span>
+        </td>)}
+    </tr>);
 });
 
 export default memo(observer(SalaryTemplateItemSection));

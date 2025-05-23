@@ -47,7 +47,6 @@ export class StaffObject {
     staffPhase = null; // Enum tình trạng nhân viên (DatnConstants.StaffPhase)
     requireAttendance = true; // Nhân viên cần chấm công hay không
     allowExternalIpTimekeeping = false; // Cho phép chấm công ngoài công ty
-    hasSocialIns = false; // Có đóng BHXH không
     constructor() {
     }
 }

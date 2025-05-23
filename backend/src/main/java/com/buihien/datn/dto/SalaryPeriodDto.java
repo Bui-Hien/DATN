@@ -8,32 +8,24 @@ import jakarta.validation.Valid;
 import java.util.Date;
 
 @Valid
-public class SalaryPeriodDto extends AuditableDto {
-    private String name; // Ví dụ: "Tháng 5/2025"
+public class SalaryPeriodDto extends BaseObjectDto {
     private Date startDate;
     private Date endDate;
     @ValidEnumValue(enumClass = DatnConstants.SalaryPeriodStatus.class, message = "Trạng thái kỳ lương không hợp lệ")
     private Integer salaryPeriodStatus;//Xem status: DatnConstants.SalaryPeriodStatus
+    private Integer estimatedWorkingDays; // Số ngày làm việc ước tính
 
     public SalaryPeriodDto() {
     }
 
     public SalaryPeriodDto(SalaryPeriod entity) {
         super(entity);
-        if(entity!= null) {
-            this.name = entity.getName();
+        if (entity != null) {
             this.startDate = entity.getStartDate();
             this.endDate = entity.getEndDate();
             this.salaryPeriodStatus = entity.getSalaryPeriodStatus();
+            this.estimatedWorkingDays = entity.getEstimatedWorkingDays();
         }
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Date getStartDate() {
@@ -58,5 +50,13 @@ public class SalaryPeriodDto extends AuditableDto {
 
     public void setSalaryPeriodStatus(Integer salaryPeriodStatus) {
         this.salaryPeriodStatus = salaryPeriodStatus;
+    }
+
+    public Integer getEstimatedWorkingDays() {
+        return estimatedWorkingDays;
+    }
+
+    public void setEstimatedWorkingDays(Integer estimatedWorkingDays) {
+        this.estimatedWorkingDays = estimatedWorkingDays;
     }
 }

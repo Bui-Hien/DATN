@@ -8,7 +8,9 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 @Valid
-public class SalaryTemplateItemDto extends BaseObjectDto {
+public class SalaryTemplateItemDto extends AuditableDto {
+    private String code;
+    private String name;
     @NotNull(message = "Thứ tự hiển thị không được để trống")
     @Min(value = 1, message = "Thứ tự hiển thị phải lớn hơn 0")
     private Integer displayOrder; // Thứ tự hiển thị
@@ -24,6 +26,8 @@ public class SalaryTemplateItemDto extends BaseObjectDto {
     public SalaryTemplateItemDto(SalaryTemplateItem entity, Boolean isGetSalaryTemplate) {
         super(entity);
         if (entity != null) {
+            this.code = entity.getCode();
+            this.name = entity.getName();
             this.displayOrder = entity.getDisplayOrder();
             this.defaultAmount = entity.getDefaultAmount();
             this.salaryItemType = entity.getSalaryItemType();
@@ -36,6 +40,22 @@ public class SalaryTemplateItemDto extends BaseObjectDto {
             }
 
         }
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Integer getDisplayOrder() {

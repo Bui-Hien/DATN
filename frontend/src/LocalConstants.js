@@ -116,12 +116,48 @@ const ContractType = {
 const SalaryItemType = {
     VALUE: {value: 1, name: "Giá trị"},
     FORMULA: {value: 2, name: "Công thức"},
+    SYSTEM: {value: 3, name: "Hệ thống lấy dự liệu"},
 
     getListData() {
         return Object.keys(this)
             .filter(key => typeof this[key] === 'object' && this[key] !== null && 'value' in this[key])
             .map(key => this[key]);
     },
+};
+const SalaryTemplateItemSystem = {
+    ACTUAL_NUMBER_OF_WORKING_DAYS: {
+        name: "Số ngày công thực tế",
+        code: "SO_NGAY_CONG_THUC_TE",
+        salaryItemType: SalaryItemType.SYSTEM.value
+    },
+    STANDARD_NUMBER_OF_WORKING_DAYS: {
+        name: "Số ngày công tiêu chuẩn",
+        code: "SO_NGAY_CONG_TIEU_CHUAN",
+        salaryItemType: SalaryItemType.SYSTEM.value
+    },
+    BASIC_SALARY: {
+        name: "Lương cơ bản",
+        code: "LUONG_CO_BAN",
+        salaryItemType: SalaryItemType.SYSTEM.value
+    },
+    getListData() {
+        return Object.keys(this)
+            .filter((key) => typeof this[key] === "object" && this[key] !== null && key !== "getListData")
+            .map((key) => this[key]);
+    },
+}
+
+const SalaryPeriodStatus = {
+    DRAFT: {value: 1, name: "Nháp"},
+    APPROVED: {value: 2, name: "Đã duyệt"},
+    FINALIZED: {value: 3, name: "Đã chốt"},
+
+    getListData() {
+        return Object.keys(this)
+            .filter(key => typeof this[key] === 'object' && this[key] !== null && 'value' in this[key])
+            .map(key => this[key]);
+    },
+
 };
 module.exports = Object.freeze({
     SystemRole: SYSTEM_ROLE,
@@ -134,5 +170,7 @@ module.exports = Object.freeze({
     StaffPhase: StaffPhase,
     StaffLabourAgreementStatus: StaffLabourAgreementStatus,
     ContractType: ContractType,
-    SalaryItemType: SalaryItemType
+    SalaryItemType: SalaryItemType,
+    SalaryTemplateItemSystem: SalaryTemplateItemSystem,
+    SalaryPeriodStatus: SalaryPeriodStatus
 });

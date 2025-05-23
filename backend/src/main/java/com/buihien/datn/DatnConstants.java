@@ -600,8 +600,8 @@ public class DatnConstants {
 
     public enum SalaryItemType {
         VALUE(1, "Giá trị"),
-        FORMULA(2, "Công thức");
-
+        FORMULA(2, "Công thức"),
+        SYSTEM(3, "Hệ thống lấy dự liệu");
         private final Integer value;
         private final String name;
 
@@ -628,6 +628,35 @@ public class DatnConstants {
             return null;
         }
     }
+
+    public enum SalaryTemplateItemSystem {
+        ACTUAL_NUMBER_OF_WORKING_DAYS("Số ngày công thực tế", "SO_NGAY_CONG_THUC_TE", SalaryItemType.SYSTEM.getValue()),
+        STANDARD_NUMBER_OF_WORKING_DAYS("Số ngày công tiêu chuẩn", "SO_NGAY_CONG_TIEU_CHUAN", SalaryItemType.SYSTEM.getValue()),
+        BASIC_SALARY("Lương cơ bản", "LUONG_CO_BAN", SalaryItemType.SYSTEM.getValue()),;
+
+        private final String name;
+        private final String code;
+        private final Integer salaryItemType;
+
+        SalaryTemplateItemSystem(String name, String code, Integer salaryItemType) {
+            this.name = name;
+            this.code = code;
+            this.salaryItemType = salaryItemType;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public Integer getSalaryItemType() {
+            return salaryItemType;
+        }
+    }
+
 
     public enum SalaryPeriodStatus {
         DRAFT(1, "Nháp"),
