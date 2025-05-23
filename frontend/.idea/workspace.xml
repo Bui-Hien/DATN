@@ -5,63 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e47dca97-3d3a-416a-b068-5f4a89d0539a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/controller/RestSalaryResultController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/controller/RestSalaryResultItemController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/CalculatedWorkingDay/ShiftWorkTypeCount.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/SalaryResultItemService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/SalaryResultItemServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/SalaryResult/SalaryResult.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/SalaryResult/SalaryResultForm.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/SalaryResult/SalaryResultIndex.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/SalaryResult/SalaryResultList.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/SalaryResult/SalaryResultRoutes.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/SalaryResult/SalaryResultService.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/SalaryResult/SalaryResultStore.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/SalaryResult/SalaryResultToolbar.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/SalaryResult/SearchObject.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/SalaryResultItem/SalaryResultItemIndex.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/SalaryResultItem/SalaryResultItemList.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/SalaryResultItem/SalaryResultItemService.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/SalaryResultItem/SalaryResultItemStore.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/SalaryResultItem/SalaryResultItemToolbar.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/SalaryResultItem/SearchObject.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/DatnConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/DatnConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/domain/SalaryPeriod.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/domain/SalaryPeriod.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/domain/SalaryResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/domain/SalaryResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/domain/SalaryResultItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/domain/SalaryResultItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/domain/SalaryResultItemDetail.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/domain/SalaryResultItemDetail.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/domain/SalaryTemplate.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/domain/SalaryTemplate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/domain/Staff.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/domain/Staff.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/domain/StaffSalaryTemplateHistory.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/SalaryPeriodDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/SalaryPeriodDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/SalaryResultDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/SalaryResultDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/SalaryResultItemDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/SalaryResultItemDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/StaffDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/StaffDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/StaffSalaryTemplateHistoryDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/repository/SalaryResultItemDetailRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/repository/SalaryResultItemDetailRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/repository/SalaryResultItemRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/repository/SalaryResultItemRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/repository/StaffLabourAgreementRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/repository/StaffLabourAgreementRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/repository/StaffRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/repository/StaffRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/repository/StaffSalaryTemplateHistoryRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/repository/StaffWorkScheduleRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/repository/StaffWorkScheduleRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/SalaryResultItemDetailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/SalaryResultItemDetailService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/StaffSalaryTemplateHistoryService.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/SalaryResultItemDetailServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/SalaryResultItemDetailServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/SalaryResultServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/SalaryResultServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/StaffLabourAgreementServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/StaffLabourAgreementServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/StaffSalaryTemplateHistoryServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/StaffServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/StaffServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/util/DateTimeUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/util/DateTimeUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/RootRoutes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/RootRoutes.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/auth/AuthStore.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/auth/AuthStore.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/CommonTable.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/CommonTable.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/Layout/AppLayout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/Layout/AppLayout.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/navigations.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/navigations.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/Staff/Staff.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Staff/Staff.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/Staff/StaffList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Staff/StaffList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/Staff/Tab/PersonalInformation.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Staff/Tab/PersonalInformation.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -164,7 +110,7 @@
       <workItem from="1747662837686" duration="17017000" />
       <workItem from="1747735871403" duration="20522000" />
       <workItem from="1747795529751" duration="33485000" />
-      <workItem from="1747881001810" duration="70630000" />
+      <workItem from="1747881001810" duration="72120000" />
     </task>
     <servers />
   </component>

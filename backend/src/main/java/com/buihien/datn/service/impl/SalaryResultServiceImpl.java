@@ -41,7 +41,7 @@ public class SalaryResultServiceImpl extends GenericServiceImpl<SalaryResult, Sa
     @Override
     protected SalaryResult convertToEntity(SalaryResultDto dto) {
         SalaryResult entity = null;
-        boolean isCreated = false;
+        boolean isCreated = true;
         if (dto.getId() != null) {
             entity = repository.findById(dto.getId()).orElse(null);
             isCreated = true;
