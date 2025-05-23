@@ -369,21 +369,21 @@ const MyFormulaEditor = ({
                             ))}
 
                             {/* Thêm nút số mẫu */}
-                            {['0', '1', '10', '100'].map((number) => (
-                                <Chip
-                                    key={number}
-                                    label={number}
-                                    size="small"
-                                    variant="outlined"
-                                    color="info"
-                                    onClick={() => {
-                                        const currentValue = field.value || "";
-                                        const newValue = currentValue + number;
-                                        handleChange(newValue);
-                                    }}
-                                    sx={{cursor: 'pointer'}}
-                                />
-                            ))}
+                            {/*{['0', '1', '10', '100'].map((number) => (*/}
+                            {/*    <Chip*/}
+                            {/*        key={number}*/}
+                            {/*        label={number}*/}
+                            {/*        size="small"*/}
+                            {/*        variant="outlined"*/}
+                            {/*        color="info"*/}
+                            {/*        onClick={() => {*/}
+                            {/*            const currentValue = field.value || "";*/}
+                            {/*            const newValue = currentValue + number;*/}
+                            {/*            handleChange(newValue);*/}
+                            {/*        }}*/}
+                            {/*        sx={{cursor: 'pointer'}}*/}
+                            {/*    />*/}
+                            {/*))}*/}
 
                             {/* Thêm nút ngoặc */}
                             {['( )', '[ ]', '{ }'].map((bracket) => (

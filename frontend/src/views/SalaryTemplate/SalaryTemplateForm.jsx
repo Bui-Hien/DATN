@@ -48,6 +48,7 @@ function SalaryTemplateForm(props) {
         await saveSalaryTemplate(values);
     }
 
+
     return (
         <CommonPopupV2
             size="xl"
@@ -70,16 +71,6 @@ function SalaryTemplateForm(props) {
                             <DialogContent className="p-6">
                                 <div className={"grid grid-cols-12 gap-2"}>
                                     <div className="sm:col-span-12">
-
-                                        <div style={{padding: 20}}>
-                                            <FormulaEditor
-                                                name="formula"
-                                                label="Công thức"
-                                                variables={['A', 'B', 'C']}
-                                                required={true}
-                                                open={true}
-                                            />
-                                        </div>
                                         <CommonTextField
                                             label="Tên mẫu bảng lương"
                                             name="name"

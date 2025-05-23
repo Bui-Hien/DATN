@@ -2,9 +2,9 @@ import React, {memo, useEffect, useState} from "react";
 import {FieldArray, useFormikContext} from "formik";
 import {useTranslation} from "react-i18next";
 import {observer} from "mobx-react-lite";
-
+import EditIcon from '@mui/icons-material/Edit';
 import {Delete, Add as AddIcon} from "@mui/icons-material";
-import {Button, ButtonGroup} from "@mui/material";
+import {Button, ButtonGroup, Tooltip} from "@mui/material";
 
 import CommonTextField from "../../common/form/CommonTextField";
 import CommonSelectInput from "../../common/form/CommonSelectInput";
@@ -127,14 +127,14 @@ function SalaryTemplateItemSection() {
                     <table className="w-full border border-gray-300 table-auto">
                         <thead>
                         <tr className="bg-gray-100">
-                            <th className="border border-gray-300 w-[5%] text-center">{t("STT")}</th>
-                            <th className="border border-gray-300 text-center">{t("Tên phần tử")}</th>
-                            <th className="border border-gray-300 text-center">{t("Mã phần tử")}</th>
-                            <th className="border border-gray-300 text-center">{t("Thứ tự hiển thị")}</th>
-                            <th className="border border-gray-300 text-center">{t("Loại phần tử lương")}</th>
+                            <th className="border border-gray-300 w-[85px] text-center">{t("Thứ tự hiển thị")}</th>
+                            <th className="border border-gray-300 w-[15%] text-center">{t("Tên phần tử")}</th>
+                            <th className="border border-gray-300 w-[15%] text-center">{t("Mã phần tử")}</th>
+                            <th className="border border-gray-300 w-[15%] text-center">{t("Loại phần tử lương")}</th>
                             <th className="border border-gray-300 text-center">{t("Giá trị / Công thức")}</th>
-                            <th className="border border-gray-300 text-center">{t("Hành động")}</th>
+                            <th className="border border-gray-300 w-[85px] text-center">{t("Hành động")}</th>
                         </tr>
+
                         </thead>
                         <tbody>
                         {values?.templateItems?.length > 0 ? (values.templateItems.map((item, index) => (
@@ -163,11 +163,12 @@ const SalaryTemplateItem = memo(({index, nameSpace, remove, disabled}) => {
     const withNameSpace = (field) => (field ? `${nameSpace}.${field}` : nameSpace);
     const item = values.templateItems[index];
     const isSystemType = item?.salaryItemType === SalaryItemType.SYSTEM.value;
+    const [open, setOpen] = React.useState(false);
 
     return (<tr className="border border-gray-300">
-        <td className="text-center border border-gray-300">{index + 1}
+        <td className="border border-gray-300">
+            <CommonNumberInput name={withNameSpace("displayOrder")}/>
         </td>
-
         <td className="border border-gray-300">
             <CommonTextField
                 name={withNameSpace("name")}
@@ -194,10 +195,6 @@ const SalaryTemplateItem = memo(({index, nameSpace, remove, disabled}) => {
         </td>
 
         <td className="border border-gray-300">
-            <CommonNumberInput name={withNameSpace("displayOrder")}/>
-        </td>
-
-        <td className="border border-gray-300">
             {isSystemType ? (<CommonSelectInput
                 name={withNameSpace("salaryItemType")}
                 options={SalaryItemType.getListData()}
@@ -211,11 +208,35 @@ const SalaryTemplateItem = memo(({index, nameSpace, remove, disabled}) => {
 
         <td className="border border-gray-300">
             {item?.salaryItemType === SalaryItemType.FORMULA.value ? (
-                <CommonTextField name={withNameSpace("formula")} disabled={isSystemType}/>) : (
-                <CommonNumberInput name={withNameSpace("defaultAmount")} disabled={isSystemType}/>)}
+                <div className="flex items-center space-x-2">
+                    <div className="flex-1">
+                        <CommonTextField name={withNameSpace("formula")} disabled fullWidth/>
+                    </div>
+                    <Tooltip title="Nhập công thức"
+                             className={"!max-w-10 !p-0 flex"}
+                    >
+                        <Button
+                            onClick={() => setOpen(true)}
+                            startIcon={<EditIcon/>}
+                            className="!m-0 h-full"
+                        />
+                    </Tooltip>
+                    <FormulaEditor
+                        name={withNameSpace("formula")}
+                        label="Công thức"
+                        variables={values.templateItems?.map(item => item.code)}
+                        required={true}
+                        open={open}
+                        onClosePopup={() => setOpen(false)}
+                    />
+                </div>
+            ) : (
+                <CommonNumberInput name={withNameSpace("defaultAmount")} disabled={isSystemType}/>
+            )}
         </td>
 
-        {!disabled && (<td className="text-center border border-gray-300">
+        {
+            !disabled && (<td className="text-center border border-gray-300">
           <span
               className="text-red-600 cursor-pointer hover:text-red-800"
               onClick={remove}
@@ -223,7 +244,8 @@ const SalaryTemplateItem = memo(({index, nameSpace, remove, disabled}) => {
           >
             <Delete/>
           </span>
-        </td>)}
+            </td>)
+        }
     </tr>);
 });
 
