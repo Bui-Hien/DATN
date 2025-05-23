@@ -1,13 +1,13 @@
 package com.buihien.datn.service.impl;
 
-import com.buihien.datn.domain.SalaryTemplate;
+import com.buihien.datn.DatnConstants;
 import com.buihien.datn.domain.Staff;
 import com.buihien.datn.domain.StaffLabourAgreement;
 import com.buihien.datn.dto.StaffLabourAgreementDto;
 import com.buihien.datn.dto.search.SearchDto;
 import com.buihien.datn.exception.ResourceNotFoundException;
 import com.buihien.datn.generic.GenericServiceImpl;
-import com.buihien.datn.repository.SalaryTemplateRepository;
+import com.buihien.datn.repository.StaffLabourAgreementRepository;
 import com.buihien.datn.repository.StaffRepository;
 import com.buihien.datn.service.StaffLabourAgreementService;
 import jakarta.persistence.Query;
@@ -18,12 +18,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.Date;
+import java.util.List;
+
 @Service
 public class StaffLabourAgreementServiceImpl extends GenericServiceImpl<StaffLabourAgreement, StaffLabourAgreementDto, SearchDto> implements StaffLabourAgreementService {
     @Autowired
     private StaffRepository staffRepository;
     @Autowired
-    private SalaryTemplateRepository salaryTemplateRepository;
+    private StaffLabourAgreementRepository staffLabourAgreementRepository;
 
     protected StaffLabourAgreementDto convertToDto(StaffLabourAgreement entity) {
         return new StaffLabourAgreementDto(entity, true);
@@ -56,6 +59,31 @@ public class StaffLabourAgreementServiceImpl extends GenericServiceImpl<StaffLab
         entity.setWorkingHourWeekMin(dto.getWorkingHourWeekMin());
         entity.setSalary(dto.getSalary());
         entity.setSignedDate(dto.getSignedDate());
+        entity.setAgreementStatus(dto.getAgreementStatus());
+
+        if (dto.getAgreementStatus() != null && dto.getAgreementStatus().equals(DatnConstants.StaffLabourAgreementStatus.SIGNED.getValue())) {
+            // Lấy các hợp đồng đã được ký và chuyển trạng thái
+            List<StaffLabourAgreement> signedAgreements =
+                    staffLabourAgreementRepository.findByStaffIdAndAgreementStatus(staff.getId(), DatnConstants.StaffLabourAgreementStatus.SIGNED.getValue());
+            Date now = new Date();
+
+            for (StaffLabourAgreement agreement : signedAgreements) {
+                if (agreement.getEndDate() != null && agreement.getEndDate().before(now)) {
+                    agreement.setAgreementStatus(DatnConstants.StaffLabourAgreementStatus.EXPIRED.getValue());
+                } else {
+                    agreement.setAgreementStatus(DatnConstants.StaffLabourAgreementStatus.TERMINATED.getValue());
+                }
+            }
+
+            // Lưu lại các thay đổi
+            staffLabourAgreementRepository.saveAll(signedAgreements);
+
+            //set hợp đồng mới về trạng đã ký
+            entity.setAgreementStatus(DatnConstants.StaffLabourAgreementStatus.SIGNED.getValue());
+        } else {
+            entity.setAgreementStatus(dto.getAgreementStatus());
+        }
+
         return entity;
     }
 

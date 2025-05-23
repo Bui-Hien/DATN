@@ -3,6 +3,7 @@ package com.buihien.datn.domain;
 import jakarta.persistence.*;
 
 import java.util.Set;
+
 //Bảng lương tổng hợp theo kỳ lương
 @Entity
 @Table(name = "tbl_salary_result")
@@ -10,6 +11,11 @@ public class SalaryResult extends AuditableEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "salary_period_id")
     private SalaryPeriod salaryPeriod;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "salary_template_id")
+    private SalaryTemplate salaryTemplate;
 
     @Column(name = "name")
     private String name; // "Lương tháng 5/2025"
@@ -42,5 +48,13 @@ public class SalaryResult extends AuditableEntity {
 
     public void setSalaryResultItems(Set<SalaryResultItem> salaryResultItems) {
         this.salaryResultItems = salaryResultItems;
+    }
+
+    public SalaryTemplate getSalaryTemplate() {
+        return salaryTemplate;
+    }
+
+    public void setSalaryTemplate(SalaryTemplate salaryTemplate) {
+        this.salaryTemplate = salaryTemplate;
     }
 }

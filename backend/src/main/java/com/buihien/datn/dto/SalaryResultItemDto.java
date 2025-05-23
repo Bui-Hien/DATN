@@ -1,14 +1,15 @@
 package com.buihien.datn.dto;
 
 import com.buihien.datn.domain.SalaryResultItem;
+import com.buihien.datn.domain.SalaryResultItemDetail;
 import com.buihien.datn.domain.SalaryTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SalaryResultItemDto extends AuditableDto {
     private SalaryResultDto salaryResult;
     private StaffDto staff;
-    private Double totalSalary;
     private List<SalaryResultItemDetailDto> salaryResultItemDetails;
 
     public SalaryResultItemDto() {
@@ -17,9 +18,31 @@ public class SalaryResultItemDto extends AuditableDto {
     public SalaryResultItemDto(SalaryResultItem entity, Boolean isGetFull) {
         super(entity);
         if (entity != null) {
-            this.salaryResult = new SalaryResultDto(entity.getSalaryResult(), false);
-            this.staff = new StaffDto(entity.getStaff(), false);
-            this.totalSalary = entity.getTotalSalary();
+            if (entity.getSalaryResult() != null) {
+                this.salaryResult = new SalaryResultDto();
+                this.salaryResult.setId(entity.getSalaryResult().getId());
+                this.salaryResult.setName(entity.getSalaryResult().getName());
+            }
+            if (entity.getStaff() != null) {
+                this.staff = new StaffDto();
+                this.staff.setId(entity.getStaff().getId());
+                this.staff.setStaffCode(entity.getStaff().getStaffCode());
+                this.staff.setDisplayName(entity.getStaff().getDisplayName());
+            }
+            if (isGetFull) {
+                if (entity.getSalaryResultItemDetails() != null && !entity.getSalaryResultItemDetails().isEmpty()) {
+                    this.salaryResultItemDetails = new ArrayList<>();
+                    for (SalaryResultItemDetail itemDetail : entity.getSalaryResultItemDetails()) {
+                        this.salaryResultItemDetails.add(new SalaryResultItemDetailDto(itemDetail, false, true));
+                    }
+                    // Sắp xếp theo displayOrder của SalaryTemplateItem
+                    this.salaryResultItemDetails.sort((d1, d2) -> {
+                        Integer order1 = d1.getSalaryTemplateItem() != null ? d1.getSalaryTemplateItem().getDisplayOrder() : Integer.MAX_VALUE;
+                        Integer order2 = d2.getSalaryTemplateItem() != null ? d2.getSalaryTemplateItem().getDisplayOrder() : Integer.MAX_VALUE;
+                        return order1.compareTo(order2);
+                    });
+                }
+            }
         }
     }
 
@@ -37,14 +60,6 @@ public class SalaryResultItemDto extends AuditableDto {
 
     public void setStaff(StaffDto staff) {
         this.staff = staff;
-    }
-
-    public Double getTotalSalary() {
-        return totalSalary;
-    }
-
-    public void setTotalSalary(Double totalSalary) {
-        this.totalSalary = totalSalary;
     }
 
     public List<SalaryResultItemDetailDto> getSalaryResultItemDetails() {

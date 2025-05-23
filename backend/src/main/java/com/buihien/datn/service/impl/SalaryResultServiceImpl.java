@@ -1,17 +1,13 @@
 package com.buihien.datn.service.impl;
 
-import com.buihien.datn.domain.SalaryPeriod;
-import com.buihien.datn.domain.SalaryResult;
-import com.buihien.datn.domain.SalaryResultItem;
-import com.buihien.datn.domain.Staff;
+import com.buihien.datn.domain.*;
 import com.buihien.datn.dto.SalaryResultDto;
 import com.buihien.datn.dto.SalaryResultItemDto;
 import com.buihien.datn.dto.search.SearchDto;
 import com.buihien.datn.exception.ResourceNotFoundException;
 import com.buihien.datn.generic.GenericServiceImpl;
-import com.buihien.datn.repository.SalaryPeriodRepository;
-import com.buihien.datn.repository.SalaryResultItemRepository;
-import com.buihien.datn.repository.StaffRepository;
+import com.buihien.datn.repository.*;
+import com.buihien.datn.service.SalaryResultItemDetailService;
 import com.buihien.datn.service.SalaryResultService;
 import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.HashSet;
+import java.util.List;
 
 @Service
 public class SalaryResultServiceImpl extends GenericServiceImpl<SalaryResult, SalaryResultDto, SearchDto> implements SalaryResultService {
@@ -31,6 +28,10 @@ public class SalaryResultServiceImpl extends GenericServiceImpl<SalaryResult, Sa
     private SalaryResultItemRepository salaryResultItemRepository;
     @Autowired
     private StaffRepository staffRepository;
+    @Autowired
+    private SalaryTemplateRepository salaryTemplateRepository;
+    @Autowired
+    private SalaryResultItemDetailService salaryResultItemDetailService;
 
     @Override
     protected SalaryResultDto convertToDto(SalaryResult entity) {
@@ -40,8 +41,10 @@ public class SalaryResultServiceImpl extends GenericServiceImpl<SalaryResult, Sa
     @Override
     protected SalaryResult convertToEntity(SalaryResultDto dto) {
         SalaryResult entity = null;
+        boolean isCreated = false;
         if (dto.getId() != null) {
             entity = repository.findById(dto.getId()).orElse(null);
+            isCreated = true;
         }
         if (entity == null) {
             entity = new SalaryResult();
@@ -55,27 +58,37 @@ public class SalaryResultServiceImpl extends GenericServiceImpl<SalaryResult, Sa
             throw new ResourceNotFoundException("Kỳ lương không tồn tại");
         }
         entity.setSalaryPeriod(salaryPeriod);
-        if (entity.getSalaryResultItems() == null) {
-            entity.setSalaryResultItems(new HashSet<>());
+
+
+        SalaryTemplate salaryTemplate = null;
+        if (dto.getSalaryTemplate() != null && dto.getSalaryTemplate().getId() != null) {
+            salaryTemplate = salaryTemplateRepository.findById(dto.getSalaryTemplate().getId()).orElse(null);
         }
-        if (dto.getSalaryResultItems() != null && !dto.getSalaryResultItems().isEmpty()) {
+        if (salaryTemplate == null) {
+            throw new ResourceNotFoundException("Mẫu bảng lương không tồn tại");
+        }
+        entity.setSalaryTemplate(salaryTemplate);
+
+        if (isCreated) {
+            if (entity.getSalaryResultItems() == null) {
+                entity.setSalaryResultItems(new HashSet<>());
+            }
             entity.getSalaryResultItems().clear();
-            for (SalaryResultItemDto item : dto.getSalaryResultItems()) {
-                SalaryResultItem salaryResultItem = null;
-                if (item.getId() != null) {
-                    salaryResultItem = salaryResultItemRepository.findById(item.getId()).orElse(null);
-                }
+
+            //Lấy tất cả nhân viên sử dụng mẫu bảng lương
+            List<Staff> staffList = staffRepository.findAllStaffBySalaryTemplateId(salaryTemplate.getId());
+            if (staffList == null || staffList.isEmpty()) {
+                throw new ResourceNotFoundException("Bảng lương hiện tại không có nhân viên nào sử dụng");
+            }
+            for (Staff staff : staffList) {
+                SalaryResultItem salaryResultItem = salaryResultItemRepository.findSalaryResultItemByStaffIdAndSalaryResultId(staff.getId(), entity.getId());
                 if (salaryResultItem == null) {
                     salaryResultItem = new SalaryResultItem();
                 }
+                salaryResultItem.setStaff(staff);
                 salaryResultItem.setSalaryResult(entity);
-                Staff staff = null;
-                if (item.getStaff() != null && item.getStaff().getId() != null) {
-                    staff = staffRepository.findById(item.getStaff().getId()).orElse(null);
-                }
-                if (staff == null) {
-                    throw new ResourceNotFoundException("Nhân viên không tồn tại");
-                }
+                salaryResultItemDetailService.handleSetUpSalaryResultItemDetailByStaff(salaryResultItem, salaryTemplate);
+                entity.getSalaryResultItems().add(salaryResultItem);
             }
         }
         return entity;

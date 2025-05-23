@@ -15,7 +15,6 @@ export default class AuthStore {
     getCurrentUser = async () => {
         try {
             const {data} = await getCurrentUser();
-            console.log(data);
             // Gán currentUser
             this.currentUser = data.data || null;
 

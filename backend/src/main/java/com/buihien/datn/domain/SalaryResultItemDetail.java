@@ -2,9 +2,13 @@ package com.buihien.datn.domain;
 
 import jakarta.persistence.*;
 
-//Chi tiết từng khoản lương
+//Chi tiết từng khoản lương phần tử lương
 @Entity
-@Table(name = "tbl_salary_result_item_detail")
+@Table(name = "tbl_salary_result_item_detail",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"salary_result_item_id", "salary_template_item_id"})
+        }
+)
 public class SalaryResultItemDetail extends AuditableEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "salary_result_item_id")

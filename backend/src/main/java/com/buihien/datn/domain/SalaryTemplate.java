@@ -8,7 +8,7 @@ import java.util.Set;
 @Entity
 public class SalaryTemplate extends BaseObject{
     @OneToMany(mappedBy = "salaryTemplate", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @OrderBy("displayOrder")
+    @OrderBy("displayOrder ASC")
     private Set<SalaryTemplateItem> templateItems; // thành phần lương chính là các cột trong mẫu bảng lương
 
     public SalaryTemplate() {

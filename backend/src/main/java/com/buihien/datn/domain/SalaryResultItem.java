@@ -6,7 +6,11 @@ import java.util.Set;
 
 //Chi tiết bảng lương của từng nhân viên
 @Entity
-@Table(name = "tbl_salary_result_item")
+@Table(name = "tbl_salary_result_item",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"salary_result_id", "staff_id"})
+        }
+)
 public class SalaryResultItem extends AuditableEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "salary_result_id")
@@ -16,11 +20,8 @@ public class SalaryResultItem extends AuditableEntity {
     @JoinColumn(name = "staff_id")
     private Staff staff;
 
-    @Column(name = "total_salary")
-    private Double totalSalary;
-
     @OneToMany(mappedBy = "salaryResultItem", cascade = CascadeType.ALL, orphanRemoval = true)
-        private Set<SalaryResultItemDetail> salaryResultItemDetails;
+    private Set<SalaryResultItemDetail> salaryResultItemDetails;
 
     public SalaryResultItem() {
     }
@@ -39,14 +40,6 @@ public class SalaryResultItem extends AuditableEntity {
 
     public void setStaff(Staff staff) {
         this.staff = staff;
-    }
-
-    public Double getTotalSalary() {
-        return totalSalary;
-    }
-
-    public void setTotalSalary(Double totalSalary) {
-        this.totalSalary = totalSalary;
     }
 
     public Set<SalaryResultItemDetail> getSalaryResultItemDetails() {

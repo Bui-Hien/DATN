@@ -75,6 +75,11 @@ export const navigations = [
                 path: "/salary-period",
                 isVisible: true,
             },
+            {
+                name: i18next.t("Bảng lương"),
+                path: "/salary-result",
+                isVisible: true,
+            },
         ]
     },
     {

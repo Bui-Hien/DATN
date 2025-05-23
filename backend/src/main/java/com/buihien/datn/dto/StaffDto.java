@@ -1,6 +1,7 @@
 package com.buihien.datn.dto;
 
 import com.buihien.datn.DatnConstants;
+import com.buihien.datn.domain.SalaryTemplate;
 import com.buihien.datn.domain.Staff;
 import com.buihien.datn.domain.StaffDocumentItem;
 import com.buihien.datn.domain.StaffLabourAgreement;
@@ -26,7 +27,7 @@ public class StaffDto extends PersonDto {
     private Integer staffPhase; // Tình trạng nhân viên. Chi tiết: DatnConstants.StaffPhase
     private Boolean requireAttendance; //Nhân viên có cần chấm công không không
     private Boolean allowExternalIpTimekeeping; // Cho phép chấm công ngoài
-    private Boolean hasSocialIns; // Có đóng BHXH hay không
+    private SalaryTemplateDto salaryTemplate; //Mẫu bảng lương nhân viên sử dụng dùng để tính lương
 
     public StaffDto() {
     }
@@ -42,9 +43,11 @@ public class StaffDto extends PersonDto {
             this.staffPhase = entity.getStaffPhase();
             this.requireAttendance = entity.getRequireAttendance();
             this.allowExternalIpTimekeeping = entity.getAllowExternalIpTimekeeping();
-            this.hasSocialIns = entity.getHasSocialIns();
             if (entity.getDocumentTemplate() != null) {
                 this.documentTemplate = new DocumentTemplateDto(entity.getDocumentTemplate(), false);
+            }
+            if (entity.getSalaryTemplate() != null) {
+                this.salaryTemplate = new SalaryTemplateDto(entity.getSalaryTemplate(), false);
             }
             if (isGetFull) {
                 if (entity.getAgreements() != null && !entity.getAgreements().isEmpty()) {
@@ -151,11 +154,11 @@ public class StaffDto extends PersonDto {
         this.allowExternalIpTimekeeping = allowExternalIpTimekeeping;
     }
 
-    public Boolean getHasSocialIns() {
-        return hasSocialIns;
+    public SalaryTemplateDto getSalaryTemplate() {
+        return salaryTemplate;
     }
 
-    public void setHasSocialIns(Boolean hasSocialIns) {
-        this.hasSocialIns = hasSocialIns;
+    public void setSalaryTemplate(SalaryTemplateDto salaryTemplate) {
+        this.salaryTemplate = salaryTemplate;
     }
 }

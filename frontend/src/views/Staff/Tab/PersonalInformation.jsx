@@ -32,6 +32,7 @@ import {pagingDocumentTemplate} from "../../DocumentTemplate/DocumentTemplateSer
 import CommonCheckBox from "../../../common/form/CommonCheckBox";
 import CloseIcon from "@mui/icons-material/Close";
 import SaveIcon from "@mui/icons-material/Save";
+import {pagingSalaryTemplate} from "../../SalaryTemplate/SalaryTemplateService";
 
 function PersonalInformation() {
     const {id} = useParams();
@@ -425,6 +426,13 @@ function PersonalInformation() {
                                             <CommonCheckBox
                                                 label={t("Cho phép chấm công ngoài văn phòng")}
                                                 name="allowExternalIpTimekeeping"
+                                            />
+                                        </div>
+                                        <div className="col-span-12 md:col-span-4  xl:col-span-3">
+                                            <CommonPagingAutocompleteV2
+                                                label={t("Mẫu bảng lương")}
+                                                name="salaryTemplate"
+                                                api={pagingSalaryTemplate}
                                             />
                                         </div>
                                     </div>

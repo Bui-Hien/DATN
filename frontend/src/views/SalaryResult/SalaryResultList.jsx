@@ -7,15 +7,14 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CommonTable from "../../common/CommonTable";
 import {useNavigate} from "react-router-dom";
-import {getDate} from "../../LocalFunction";
-import {Gender} from "../../LocalConstants";
-
-function StaffList() {
+import VisibilityIcon from '@mui/icons-material/Visibility';
+function SalaryResultList() {
     const {t} = useTranslation();
     const navigate = useNavigate();
-    const {staffStore} = useStore();
+    const {salaryResultStore} = useStore();
 
     const {
+        handleOpenCreateEdit,
         totalPages,
         handleDelete,
         dataList,
@@ -24,7 +23,7 @@ function StaffList() {
         setPageIndex,
         setPageSize,
         handleSelectListDelete
-    } = staffStore;
+    } = salaryResultStore;
 
 
     const columns = [
@@ -38,10 +37,15 @@ function StaffList() {
                         title={t("Cập nhật thông tin")}
                         placement="top">
                         <EditIcon
-                            onClick={() => navigate(`/staff/${row.original.id}`)}
+                            onClick={() => handleOpenCreateEdit(row.original.id)}
                         />
                     </Tooltip>
-
+                    <Tooltip title={t("Xem chi tiết bảng lương")} placement="top">
+                        <VisibilityIcon
+                            className="cursor-pointer ml-4"
+                            onClick={() => navigate(`/salary-result/${row.original.id}`)}
+                        />
+                    </Tooltip>
                     <Tooltip title={t("Xóa")} placement="top">
                         <DeleteIcon
                             className="cursor-pointer ml-4"
@@ -52,54 +56,28 @@ function StaffList() {
             ),
         },
         {
-            accessorKey: "staffCode",
+            accessorKey: "name",
             header:
-                t("Mã nhân viên"),
+                t("Tên bảng lương"),
         },
         {
-            accessorKey: "displayName",
+            accessorKey: "salaryPeriod",
             header:
-                t("Họ và tên"),
-        },
-        {
-            accessorKey: "gender",
-            header:
-                t("Giới tính"),
+                t("Tên kỳ lương được tính"),
             Cell: ({row}) => {
-                const value = row.original.gender;
-                const name = Gender.getListData().find(i => i.value === value)?.name || "";
-                return <span>{name}</span>;
+                const value = row.original?.salaryPeriod?.name || "";
+                return <span>{value}</span>;
             }
-        },
-        {
-            accessorKey: "birthDate",
-            header:
-                t("Ngày sinh"),
-            Cell: ({row}) => {
-                const value = row.original.birthDate;
-                return <span>{getDate(value)}</span>;
-            }
-        },
-        {
-            accessorKey: "phoneNumber",
-            header:
-                t("Số điện thoại"),
-        },
-        {
-            accessorKey: "email",
-            header:
-                t("Email"),
         },
         {
             accessorKey: "salaryTemplate",
             header:
-                t("Mẫu bảng lương"),
+                t("Mẫu bảng lương sử dụng"),
             Cell: ({row}) => {
-                const value = row.original.salaryTemplate?.name || "";
+                const value = row.original?.salaryTemplate?.name || "";
                 return <span>{value}</span>;
             }
         },
-
     ];
 
     return (
@@ -120,4 +98,4 @@ function StaffList() {
     );
 }
 
-export default observer(StaffList);
+export default observer(SalaryResultList);

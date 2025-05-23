@@ -20,7 +20,7 @@ public class SalaryPeriod extends BaseObject {
     private Integer salaryPeriodStatus;//Xem status: DatnConstants.SalaryPeriodStatus
 
     @Column(name = "estimated_working_days")
-    private Integer estimatedWorkingDays; // Số ngày làm việc ước tính
+    private Double estimatedWorkingDays; // Số ngày làm việc ước tính
 
     public SalaryPeriod() {
     }
@@ -49,11 +49,11 @@ public class SalaryPeriod extends BaseObject {
         this.salaryPeriodStatus = salaryPeriodStatus;
     }
 
-    public Integer getEstimatedWorkingDays() {
+    public Double getEstimatedWorkingDays() {
         return estimatedWorkingDays;
     }
 
-    public void setEstimatedWorkingDays(Integer estimatedWorkingDays) {
+    public void setEstimatedWorkingDays(Double estimatedWorkingDays) {
         this.estimatedWorkingDays = estimatedWorkingDays;
     }
 }

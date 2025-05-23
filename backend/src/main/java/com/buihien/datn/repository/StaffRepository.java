@@ -17,4 +17,7 @@ public interface StaffRepository extends JpaRepository<Staff, UUID> {
     @Query("SELECT s.staffCode FROM Staff s WHERE s.staffCode LIKE CONCAT(:prefix, '%')")
     List<String> findStaffCodesStartingWith(@Param("prefix") String prefix);
 
+    @Query("SELECT entity FROM Staff entity WHERE entity.salaryTemplate.id = :salaryTemplateId")
+    List<Staff> findAllStaffBySalaryTemplateId(@Param("salaryTemplateId") UUID salaryTemplateId);
+
 }

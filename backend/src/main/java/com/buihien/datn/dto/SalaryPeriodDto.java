@@ -13,7 +13,7 @@ public class SalaryPeriodDto extends BaseObjectDto {
     private Date endDate;
     @ValidEnumValue(enumClass = DatnConstants.SalaryPeriodStatus.class, message = "Trạng thái kỳ lương không hợp lệ")
     private Integer salaryPeriodStatus;//Xem status: DatnConstants.SalaryPeriodStatus
-    private Integer estimatedWorkingDays; // Số ngày làm việc ước tính
+    private Double estimatedWorkingDays; // Số ngày làm việc ước tính
 
     public SalaryPeriodDto() {
     }
@@ -52,11 +52,11 @@ public class SalaryPeriodDto extends BaseObjectDto {
         this.salaryPeriodStatus = salaryPeriodStatus;
     }
 
-    public Integer getEstimatedWorkingDays() {
+    public Double getEstimatedWorkingDays() {
         return estimatedWorkingDays;
     }
 
-    public void setEstimatedWorkingDays(Integer estimatedWorkingDays) {
+    public void setEstimatedWorkingDays(Double estimatedWorkingDays) {
         this.estimatedWorkingDays = estimatedWorkingDays;
     }
 }

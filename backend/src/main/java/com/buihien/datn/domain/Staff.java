@@ -32,8 +32,9 @@ public class Staff extends Person {
     private Boolean requireAttendance; //Nhân viên có cần chấm công không không
     @Column(name = "allow_external_ip_timekeeping")
     private Boolean allowExternalIpTimekeeping; // Cho phép chấm công ngoài
-    @Column(name = "has_social_ins")
-    private Boolean hasSocialIns; // Có đóng BHXH hay không
+    @ManyToOne
+    @JoinColumn(name = "salary_template_id")
+    private SalaryTemplate salaryTemplate; //Mẫu bảng lương nhân viên sử dụng dùng để tính lương
 
     public Staff() {
     }
@@ -126,11 +127,11 @@ public class Staff extends Person {
         this.allowExternalIpTimekeeping = allowExternalIpTimekeeping;
     }
 
-    public Boolean getHasSocialIns() {
-        return hasSocialIns;
+    public SalaryTemplate getSalaryTemplate() {
+        return salaryTemplate;
     }
 
-    public void setHasSocialIns(Boolean hasSocialIns) {
-        this.hasSocialIns = hasSocialIns;
+    public void setSalaryTemplate(SalaryTemplate salaryTemplate) {
+        this.salaryTemplate = salaryTemplate;
     }
 }

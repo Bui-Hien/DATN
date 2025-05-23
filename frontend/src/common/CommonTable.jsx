@@ -14,7 +14,7 @@ import {
     Typography,
 } from '@mui/material';
 
-const Example = (props) => {
+const CommonTable = (props) => {
     const {
         handleSelectList,
         data = [],
@@ -29,10 +29,13 @@ const Example = (props) => {
         pageSize = 10,
         pageSizeOption = [10, 15, 25, 30],
         totalElements,
+        enableColumnPinning = false,
+        pinnedLeftColumns = [], // thêm prop này
         page = 1,
     } = props;
 
     const table = useMaterialReactTable({
+        enableColumnPinning: enableColumnPinning,
         columns,
         data,
         enableRowSelection: selection,
@@ -46,6 +49,9 @@ const Example = (props) => {
             },
             expanded: colParent ? {[0]: defaultExpanded} : {},
             showGlobalFilter: false,
+            columnPinning: {
+                left: pinnedLeftColumns,
+            },
         },
         muiPaginationProps: {
             rowsPerPageOptions: pageSizeOption,
@@ -83,7 +89,19 @@ const Example = (props) => {
         }
     }, [selection, colParent]);
 
+    const getPinnedLeft = (column) => {
+        if (!table || !column || !column.getIsPinned?.() || column.getIsPinned() !== 'left') return undefined;
 
+        const allColumns = table.getAllLeafColumns();
+        let leftOffset = 0;
+        for (const col of allColumns) {
+            if (col.id === column.id) break;
+            if (col.getIsPinned?.() === 'left') {
+                leftOffset += 150;
+            }
+        }
+        return leftOffset;
+    };
     return (
         <Stack className={"gap-2 my-2"}>
             <TableContainer className="border border-gray-300 rounded-xl overflow-hidden">
@@ -100,6 +118,12 @@ const Example = (props) => {
                                         variant="head"
                                         key={header.id}
                                         className={`${header.column.id === 'mrt-row-select' ? "" : "min-w-[150px]"} font-semibold text-sm text-gray-700 border border-gray-300 py-3`}
+                                        style={{
+                                            position: header.column.getIsPinned?.() === 'left' ? 'sticky' : undefined,
+                                            left: getPinnedLeft(header.column),
+                                            zIndex: 10,
+                                            backgroundColor: 'white',
+                                        }}
                                     >
                                         {header.isPlaceholder
                                             ? null
@@ -127,73 +151,79 @@ const Example = (props) => {
                                             variant="body"
                                             key={cell.id}
                                             className={`${cell.column.id === 'mrt-row-select' ? "" : "min-w-[150px]"} text-sm text-gray-800 border border-gray-300 py-2`}
+                                            style={{
+                                                position: cell.column.getIsPinned?.() === 'left' ? 'sticky' : undefined,
+                                                left: getPinnedLeft(cell.column),
+                                                zIndex: 10,
+                                                backgroundColor: 'white',
+                                            }}
                                         >
-                                        <MRT_TableBodyCellValue
-                                        cell={cell}
-                                        table={table}
-                                        staticRowIndex={rowIndex}
-                                        />
+                                            <MRT_TableBodyCellValue
+                                                cell={cell}
+                                                table={table}
+                                                staticRowIndex={rowIndex}
+                                            />
                                         </TableCell>
-                                        ))}
+                                    ))}
                                 </TableRow>
                             ))
-                            ) : (
+                        ) : (
                             <TableRow>
-                            <TableCell
-                            align="center"
-                            colSpan={columnNumber}
-                        className="text-sm text-gray-500 border border-gray-300 py-5"
+                                <TableCell
+                                    align="center"
+                                    colSpan={columnNumber}
+                                    className="text-sm text-gray-500 border border-gray-300 py-5"
+                                >
+                                    Không có dữ liệu
+                                </TableCell>
+                            </TableRow>
+                        )}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+
+            {
+                !nonePagination && totalElements > 0 && (
+                    <Stack
+                        direction="row"
+                        alignItems="center"
+                        justifyContent="space-between"
+                        sx={{px: 2}}
+                        spacing={2}
                     >
-                        Không có dữ liệu
-                    </TableCell>
-                </TableRow>
-                )}
-            </TableBody>
-        </Table>
-</TableContainer>
+                        <Typography variant="body2">
+                            Tổng cộng: {totalElements} bản ghi
+                        </Typography>
 
-    {
-        !nonePagination && totalElements > 0 && (
-            <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="space-between"
-                sx={{px: 2}}
-                spacing={2}
-            >
-                <Typography variant="body2">
-                    Tổng cộng: {totalElements} bản ghi
-                </Typography>
+                        <Stack direction="row" spacing={2} alignItems="center">
+                            <Typography variant="body2">Số dòng/trang:</Typography>
+                            <Select
+                                value={pageSize}
+                                onChange={(e) => setRowsPerPage?.(Number(e.target.value))}
+                                size="small"
+                            >
+                                {pageSizeOption.map((option) => (
+                                    <MenuItem key={option} value={option}>
+                                        {option}
+                                    </MenuItem>
+                                ))}
+                            </Select>
 
-                <Stack direction="row" spacing={2} alignItems="center">
-                    <Typography variant="body2">Số dòng/trang:</Typography>
-                    <Select
-                        value={pageSize}
-                        onChange={(e) => setRowsPerPage?.(Number(e.target.value))}
-                        size="small"
-                    >
-                        {pageSizeOption.map((option) => (
-                            <MenuItem key={option} value={option}>
-                                {option}
-                            </MenuItem>
-                        ))}
-                    </Select>
-
-                    <Pagination
-                        count={totalPages}
-                        page={page}
-                        onChange={(e, value) => handleChangePage?.(value)}
-                        color="primary"
-                        shape="rounded"
-                        size="small"
-                    />
-                </Stack>
-            </Stack>
-        )
-    }
-</Stack>
-)
-    ;
+                            <Pagination
+                                count={totalPages}
+                                page={page}
+                                onChange={(e, value) => handleChangePage?.(value)}
+                                color="primary"
+                                shape="rounded"
+                                size="small"
+                            />
+                        </Stack>
+                    </Stack>
+                )
+            }
+        </Stack>
+    )
+        ;
 };
 
-export default Example;
+export default React.memo(CommonTable);

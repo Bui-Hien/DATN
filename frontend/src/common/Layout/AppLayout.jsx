@@ -47,7 +47,6 @@ function AppLayout({routes}) {
             [itemPath]: !prev[itemPath]
         }));
     };
-    console.log(roles)
     // Hàm kiểm tra xem item có con đang được chọn không
     const hasActiveChild = (item, currentPath) => {
         if (!item.children) return false;

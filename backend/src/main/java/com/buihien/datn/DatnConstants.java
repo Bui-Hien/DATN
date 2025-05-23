@@ -285,18 +285,20 @@ public class DatnConstants {
 
     public enum ShiftWorkType {
 
-        MORNING(1, "Ca sáng", DateTimeUtil.getTime(8, 30), DateTimeUtil.getTime(12, 0)),
-        AFTERNOON(2, "Ca chiều", DateTimeUtil.getTime(13, 30), DateTimeUtil.getTime(17, 30)),
-        FULL_DAY(3, "Ca nguyên ngày", DateTimeUtil.getTime(8, 30), DateTimeUtil.getTime(17, 30));
+        MORNING(1, "Ca sáng", 0.5, DateTimeUtil.getTime(8, 30), DateTimeUtil.getTime(12, 0)),
+        AFTERNOON(2, "Ca chiều", 0.5, DateTimeUtil.getTime(13, 30), DateTimeUtil.getTime(17, 30)),
+        FULL_DAY(3, "Ca nguyên ngày", 1.0, DateTimeUtil.getTime(8, 30), DateTimeUtil.getTime(17, 30));
 
         private final Integer value;
         private final String name;
+        private final Double calculatedWorkingDay; // công được tính
         private final Date startTime;
         private final Date endTime;
 
-        ShiftWorkType(Integer value, String name, Date startTime, Date endTime) {
+        ShiftWorkType(Integer value, String name, Double calculatedWorkingDay, Date startTime, Date endTime) {
             this.value = value;
             this.name = name;
+            this.calculatedWorkingDay = calculatedWorkingDay;
             this.startTime = startTime;
             this.endTime = endTime;
         }
@@ -307,6 +309,10 @@ public class DatnConstants {
 
         public String getName() {
             return name;
+        }
+
+        public Double getCalculatedWorkingDay() {
+            return calculatedWorkingDay;
         }
 
         public Date getStartTime() {
@@ -333,9 +339,8 @@ public class DatnConstants {
                     return type;
                 }
             }
-            throw null;
+            return null;
         }
-
     }
 
     public enum RecruitmentRequestStatus {
@@ -632,7 +637,8 @@ public class DatnConstants {
     public enum SalaryTemplateItemSystem {
         ACTUAL_NUMBER_OF_WORKING_DAYS("Số ngày công thực tế", "SO_NGAY_CONG_THUC_TE", SalaryItemType.SYSTEM.getValue()),
         STANDARD_NUMBER_OF_WORKING_DAYS("Số ngày công tiêu chuẩn", "SO_NGAY_CONG_TIEU_CHUAN", SalaryItemType.SYSTEM.getValue()),
-        BASIC_SALARY("Lương cơ bản", "LUONG_CO_BAN", SalaryItemType.SYSTEM.getValue()),;
+        BASIC_SALARY("Lương cơ bản", "LUONG_CO_BAN", SalaryItemType.SYSTEM.getValue()),
+        ;
 
         private final String name;
         private final String code;

@@ -48,6 +48,8 @@ public class StaffServiceImpl extends GenericServiceImpl<Staff, StaffDto, StaffS
     private AdministrativeUnitRepository administrativeUnitRepository;
     @Autowired
     private FileDescriptionService fileDescriptionService;
+    @Autowired
+    private SalaryTemplateRepository salaryTemplateRepository;
 
     @Override
     protected StaffDto convertToDto(Staff entity) {
@@ -203,7 +205,12 @@ public class StaffServiceImpl extends GenericServiceImpl<Staff, StaffDto, StaffS
         entity.setStaffPhase(dto.getStaffPhase());
         entity.setRequireAttendance(dto.getRequireAttendance());
         entity.setAllowExternalIpTimekeeping(dto.getAllowExternalIpTimekeeping());
-        entity.setHasSocialIns(dto.getHasSocialIns());
+
+        SalaryTemplate salaryTemplate = null;
+        if (dto.getSalaryTemplate() != null && dto.getSalaryTemplate().getId() != null) {
+            salaryTemplate = salaryTemplateRepository.findById(dto.getSalaryTemplate().getId()).orElse(null);
+        }
+        entity.setSalaryTemplate(salaryTemplate);
         return entity;
     }
 

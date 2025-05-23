@@ -11,6 +11,7 @@ import DepartmentIpRoutes from "./views/DepartmentIp/DepartmentIpRoutes";
 import StaffRoutes from "./views/Staff/StaffRoutes";
 import SalaryTemplateRoutes from "./views/SalaryTemplate/SalaryTemplateRoutes";
 import SalaryPeriodRoutes from "./views/SalaryPeriod/SalaryPeriodRoutes";
+import SalaryResultRoutes from "./views/SalaryResult/SalaryResultRoutes";
 
 const routes = [
     //Danh mục chung
@@ -33,7 +34,8 @@ const routes = [
 
     //Lương
     ...SalaryTemplateRoutes,
-    ...SalaryPeriodRoutes
+    ...SalaryPeriodRoutes,
+    ...SalaryResultRoutes
 ];
 
 export default routes;

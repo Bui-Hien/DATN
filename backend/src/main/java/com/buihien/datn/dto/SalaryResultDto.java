@@ -8,6 +8,7 @@ import java.util.List;
 
 public class SalaryResultDto extends AuditableDto {
     private SalaryPeriodDto salaryPeriod;
+    private SalaryTemplateDto salaryTemplate;
     private String name; // "Lương tháng 5/2025"
     private List<SalaryResultItemDto> salaryResultItems;
 
@@ -18,6 +19,7 @@ public class SalaryResultDto extends AuditableDto {
         super(entity);
         if (entity != null) {
             this.salaryPeriod = new SalaryPeriodDto(entity.getSalaryPeriod());
+            this.salaryTemplate = new SalaryTemplateDto(entity.getSalaryTemplate(), false);
             this.name = entity.getName();
             if (isGetFull) {
                 if (entity.getSalaryResultItems() != null && !entity.getSalaryResultItems().isEmpty()) {
@@ -52,5 +54,13 @@ public class SalaryResultDto extends AuditableDto {
 
     public void setSalaryResultItems(List<SalaryResultItemDto> salaryResultItems) {
         this.salaryResultItems = salaryResultItems;
+    }
+
+    public SalaryTemplateDto getSalaryTemplate() {
+        return salaryTemplate;
+    }
+
+    public void setSalaryTemplate(SalaryTemplateDto salaryTemplate) {
+        this.salaryTemplate = salaryTemplate;
     }
 }

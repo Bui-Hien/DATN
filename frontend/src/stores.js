@@ -20,6 +20,8 @@ import CertificateStore from "./views/Certificate/CertificateStore";
 import StaffLabourAgreementStore from "./views/StaffLabourAgreement/StaffLabourAgreementStore";
 import SalaryTemplateStore from "./views/SalaryTemplate/SalaryTemplateStore";
 import SalaryPeriodStore from "./views/SalaryPeriod/SalaryPeriodStore";
+import SalaryResultStore from "./views/SalaryResult/SalaryResultStore";
+import SalaryResultItemStore from "./views/SalaryResultItem/SalaryResultItemStore";
 
 export const store = {
     loginStore: new LoginStore(),
@@ -51,7 +53,9 @@ export const store = {
 
     //Lương
     salaryTemplateStore: new SalaryTemplateStore(),
-    salaryPeriodStore: new SalaryPeriodStore()
+    salaryPeriodStore: new SalaryPeriodStore(),
+    salaryResultStore: new SalaryResultStore(),
+    salaryResultItemStore: new SalaryResultItemStore()
 };
 
 export const StoreContext = createContext(store);
