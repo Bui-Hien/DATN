@@ -5,42 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e47dca97-3d3a-416a-b068-5f4a89d0539a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/controller/RestSalaryPeriodController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/form/FormulaEditor.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/SalaryPeriod/SalaryPeriod.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/SalaryPeriod/SalaryPeriodForm.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/SalaryPeriod/SalaryPeriodIndex.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/SalaryPeriod/SalaryPeriodList.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/SalaryPeriod/SalaryPeriodRoutes.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/SalaryPeriod/SalaryPeriodService.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/SalaryPeriod/SalaryPeriodStore.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/SalaryPeriod/SalaryPeriodToolbar.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/SalaryPeriod/SearchObject.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/DatnConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/DatnConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/domain/SalaryPeriod.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/domain/SalaryPeriod.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/domain/SalaryTemplateItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/domain/SalaryTemplateItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/SalaryPeriodDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/SalaryPeriodDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/SalaryTemplateItemDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/SalaryTemplateItemDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/exception/GlobalExceptionHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/SalaryPeriodServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/SalaryPeriodServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/SalaryTemplateServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/SalaryTemplateServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/util/DateTimeUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/util/DateTimeUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/LocalConstants.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/LocalConstants.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/RootRoutes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/RootRoutes.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/Layout/AppLayout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/Layout/AppLayout.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/locales/vi.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/locales/vi.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/navigations.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/navigations.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/SalaryTemplate/SalaryTemplate.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/SalaryTemplate/SalaryTemplate.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/SalaryTemplate/SalaryTemplateForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/SalaryTemplate/SalaryTemplateForm.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/SalaryTemplate/SalaryTemplateItemSection.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/SalaryTemplate/SalaryTemplateItemSection.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/Staff/Staff.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Staff/Staff.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/Staff/Tab/PersonalInformation.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Staff/Tab/PersonalInformation.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/StaffDocumentItem/StaffDocumentItemForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/StaffDocumentItem/StaffDocumentItemForm.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/form/FormulaEditor.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/form/FormulaEditor.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -143,7 +108,7 @@
       <workItem from="1747662837686" duration="17017000" />
       <workItem from="1747735871403" duration="20522000" />
       <workItem from="1747795529751" duration="33485000" />
-      <workItem from="1747881001810" duration="55787000" />
+      <workItem from="1747881001810" duration="56083000" />
     </task>
     <servers />
   </component>

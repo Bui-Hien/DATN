@@ -68,7 +68,7 @@ const MyFormulaEditor = ({
     const [usedVariables, setUsedVariables] = useState([]);
     const [isEditorReady, setIsEditorReady] = useState(false);
 
-    // Validation function - hỗ trợ toán tử cơ bản và ngoặc
+    // Validation function - hỗ trợ số, toán tử cơ bản và ngoặc
     const validateFormula = useCallback((value) => {
         if (!value?.trim()) {
             setValidationStatus(null);
@@ -87,7 +87,7 @@ const MyFormulaEditor = ({
         }
 
         try {
-            // Tạo parser với toán tử cơ bản + ngoặc
+            // Tạo parser với cấu hình đầy đủ hỗ trợ số và toán tử cơ bản
             const parser = new Parser({
                 operators: {
                     add: true,        // +
@@ -109,8 +109,11 @@ const MyFormulaEditor = ({
             const expr = parser.parse(value);
             const detectedVars = expr.variables();
 
-            // Kiểm tra biến không hợp lệ
-            const invalidVars = detectedVars.filter(v => !variables.includes(v));
+            // Kiểm tra biến không hợp lệ (loại trừ các hằng số built-in như PI, E)
+            const builtInConstants = ['PI', 'E'];
+            const invalidVars = detectedVars.filter(v =>
+                !variables.includes(v) && !builtInConstants.includes(v)
+            );
 
             if (invalidVars.length > 0) {
                 const errorMsg = `Biến không hợp lệ: ${invalidVars.join(', ')}`;
@@ -123,7 +126,9 @@ const MyFormulaEditor = ({
             // Thử tính toán với giá trị mẫu
             const testValues = {};
             detectedVars.forEach(v => {
-                testValues[v] = 2; // Dùng 2 thay vì 1 để tránh chia cho 0
+                if (!builtInConstants.includes(v)) {
+                    testValues[v] = 5; // Dùng 5 thay vì 1 để tránh chia cho 0
+                }
             });
 
             try {
@@ -139,16 +144,26 @@ const MyFormulaEditor = ({
 
                 helpers.setError(undefined);
                 setValidationStatus('valid');
-                setUsedVariables(detectedVars);
+                setUsedVariables(detectedVars.filter(v => !builtInConstants.includes(v)));
             } catch (evalError) {
-                const errorMsg = "Công thức có lỗi tính toán (có thể chia cho 0)";
+                const errorMsg = "Công thức có lỗi tính toán (có thể chia cho 0 hoặc phép toán không hợp lệ)";
                 helpers.setError(errorMsg);
                 setValidationStatus('invalid');
                 setUsedVariables(detectedVars);
             }
 
         } catch (parseError) {
-            const errorMsg = "Cú pháp công thức không hợp lệ";
+            let errorMsg = "Cú pháp công thức không hợp lệ";
+
+            // Thêm thông tin chi tiết về lỗi nếu có thể
+            if (parseError.message) {
+                if (parseError.message.includes("Unexpected token")) {
+                    errorMsg = "Cú pháp không hợp lệ: ký tự hoặc chuỗi không được nhận dạng";
+                } else if (parseError.message.includes("Unexpected end")) {
+                    errorMsg = "Công thức chưa hoàn thành";
+                }
+            }
+
             helpers.setError(errorMsg);
             setValidationStatus('invalid');
             setUsedVariables([]);
@@ -217,9 +232,9 @@ const MyFormulaEditor = ({
         }, debounceTime);
     }, [name, setFieldTouched, setFieldValue, validateFormula, debounceTime]);
 
-    // Monaco Editor setup - chỉ gợi ý biến và toán tử cơ bản
+    // Monaco Editor setup - hỗ trợ autocomplete cho biến và số
     useEffect(() => {
-        if (!monaco || !variables.length || !isEditorReady) return;
+        if (!monaco || !isEditorReady) return;
 
         const completionProvider = monaco.languages.registerCompletionItemProvider("plaintext", {
             provideCompletionItems: (model, position) => {
@@ -231,13 +246,36 @@ const MyFormulaEditor = ({
                     endColumn: word.endColumn
                 };
 
-                const suggestions = variables.map((v) => ({
-                    label: v,
-                    kind: monaco.languages.CompletionItemKind.Variable,
-                    insertText: v,
-                    detail: "Biến có sẵn",
-                    range: range
-                }));
+                const suggestions = [];
+
+                // Thêm biến
+                variables.forEach((v) => {
+                    suggestions.push({
+                        label: v,
+                        kind: monaco.languages.CompletionItemKind.Variable,
+                        insertText: v,
+                        detail: "Biến có sẵn",
+                        range: range
+                    });
+                });
+
+                // Thêm các toán tử
+                const operators = [
+                    { label: '+', detail: 'Phép cộng' },
+                    { label: '-', detail: 'Phép trừ' },
+                    { label: '*', detail: 'Phép nhân' },
+                    { label: '/', detail: 'Phép chia' },
+                ];
+
+                operators.forEach((op) => {
+                    suggestions.push({
+                        label: op.label,
+                        kind: monaco.languages.CompletionItemKind.Operator,
+                        insertText: ` ${op.label} `,
+                        detail: op.detail,
+                        range: range
+                    });
+                });
 
                 return {suggestions};
             }
@@ -311,7 +349,7 @@ const MyFormulaEditor = ({
                 {showVariables && variables.length > 0 && (
                     <Box sx={{mb: 1, px: 2}}>
                         <Typography variant="body2" color="text.secondary" sx={{mb: 0.5}}>
-                            Biến có sẵn (Toán tử: +, -, *, /, ngoặc: ( ) [ ] {}):
+                            Biến có sẵn (Hỗ trợ: số, biến, toán tử +, -, *, /, ngoặc ( ) [ ] {}):
                         </Typography>
                         <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 0.5}}>
                             {variables.map((variable) => (
@@ -323,7 +361,24 @@ const MyFormulaEditor = ({
                                     color={usedVariables.includes(variable) ? "primary" : "default"}
                                     onClick={() => {
                                         const currentValue = field.value || "";
-                                        const newValue = currentValue + (currentValue && !currentValue.endsWith('(') && !currentValue.endsWith('[') && !currentValue.endsWith('{') ? " + " : "") + variable;
+                                        const newValue = currentValue + (currentValue && !currentValue.match(/[\+\-\*\/\(\[\{]\s*$/) ? " + " : "") + variable;
+                                        handleChange(newValue);
+                                    }}
+                                    sx={{cursor: 'pointer'}}
+                                />
+                            ))}
+
+                            {/* Thêm nút số mẫu */}
+                            {['0', '1', '10', '100'].map((number) => (
+                                <Chip
+                                    key={number}
+                                    label={number}
+                                    size="small"
+                                    variant="outlined"
+                                    color="info"
+                                    onClick={() => {
+                                        const currentValue = field.value || "";
+                                        const newValue = currentValue + number;
                                         handleChange(newValue);
                                     }}
                                     sx={{cursor: 'pointer'}}
@@ -342,7 +397,6 @@ const MyFormulaEditor = ({
                                         const currentValue = field.value || "";
                                         const openBracket = bracket.charAt(0);
                                         const closeBracket = bracket.charAt(2);
-                                        // Thêm ngoặc mở, con trỏ sẽ ở giữa để người dùng nhập
                                         const newValue = currentValue + openBracket + closeBracket;
                                         handleChange(newValue);
                                     }}
@@ -408,9 +462,10 @@ const MyFormulaEditor = ({
                 )}
 
                 {/* Success Message */}
-                {validationStatus === 'valid' && usedVariables.length > 0 && (
+                {validationStatus === 'valid' && (
                     <FormHelperText sx={{mt: 0.5, color: 'success.main'}}>
-                        Công thức hợp lệ. Sử dụng biến: {usedVariables.join(', ')}
+                        Công thức hợp lệ.
+                        {usedVariables.length > 0 && ` Sử dụng biến: ${usedVariables.join(', ')}`}
                     </FormHelperText>
                 )}
             </Box>
