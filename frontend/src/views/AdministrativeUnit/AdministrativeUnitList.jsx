@@ -78,7 +78,6 @@ function AdministrativeUnitList() {
             data={dataList}
             columns={columns}
             selection={true}
-            nonePagination={false}
             totalPages={totalPages}
             pageSize={searchObject.pageSize}
             page={searchObject.pageIndex}

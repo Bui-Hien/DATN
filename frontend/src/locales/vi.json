@@ -82,6 +82,7 @@
     "duplicate_code": "Mã đã được sử dụng!",
     "duplicate_name": "Tên đã được sử dụng!",
     "update_success": "Cập nhật thành công!",
+    "save_success": "Lưu thành công!",
     "add_success": "Thêm mới thành công!",
     "user_exist": "Tên đăng nhập đã tồn tại!",
     "change_password_success": "Đã thay đổi mật khẩu!",

@@ -31,5 +31,4 @@ public class RestAdministrativeUnitController extends GenericApi<AdministrativeU
         Page<AdministrativeUnitDto> result = ((AdministrativeUnitService) genericService).pagingTreeSearch(dto);
         return new ResponseData<>(HttpStatus.OK.value(), "Success", result);
     }
-
 }

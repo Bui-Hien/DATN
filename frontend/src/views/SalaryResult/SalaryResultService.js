@@ -17,6 +17,11 @@ export const getSalaryResultById = (id) => {
     return api.get(url);
 };
 
+export const getRecalculateSalary = (id) => {
+    let url = API_PATH + "/recalculate-salary/" + id;
+    return api.get(url);
+};
+
 export const deleteSalaryResult = (id) => {
     let url = API_PATH + "/" + id;
     return api.delete(url);

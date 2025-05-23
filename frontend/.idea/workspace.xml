@@ -5,9 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e47dca97-3d3a-416a-b068-5f4a89d0539a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/SalaryResultItemDetailServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/SalaryResultItemDetailServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/controller/RestSalaryResultController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/controller/RestSalaryResultController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/SalaryResultServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/SalaryResultServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/CommonTable.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/CommonTable.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/locales/vi.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/locales/vi.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/AdministrativeUnit/AdministrativeUnitList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/AdministrativeUnit/AdministrativeUnitList.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/SalaryResult/SalaryResultService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/SalaryResult/SalaryResultService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/SalaryResult/SalaryResultStore.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/SalaryResult/SalaryResultStore.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/SalaryResultItem/SalaryResultItemToolbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/SalaryResultItem/SalaryResultItemToolbar.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,7 +116,7 @@
       <workItem from="1747662837686" duration="17017000" />
       <workItem from="1747735871403" duration="20522000" />
       <workItem from="1747795529751" duration="33485000" />
-      <workItem from="1747881001810" duration="72120000" />
+      <workItem from="1747881001810" duration="77598000" />
     </task>
     <servers />
   </component>

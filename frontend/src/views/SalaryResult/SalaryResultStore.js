@@ -1,7 +1,8 @@
 import {makeAutoObservable} from "mobx";
 import {
-    deleteSalaryResult,
     deleteMultipleSalaryResultByIds,
+    deleteSalaryResult,
+    getRecalculateSalary,
     getSalaryResultById,
     pagingSalaryResult,
     saveSalaryResult,
@@ -69,17 +70,10 @@ export default class SalaryResultStore {
         this.searchObject.pageIndex = 1;
         await this.pagingSalaryResult();
     };
-    getSalaryResultById = async (id) => {
+    getRecalculateSalary = async (id) => {
         try {
-            if (id) {
-                const {data} = await getSalaryResultById(id);
-                this.selectedRow = {
-                    ...new SalaryResultObject(),
-                    ...data.data,
-                };
-            } else {
-                this.selectedRow = new SalaryResultObject();
-            }
+            await getRecalculateSalary(id);
+            toast.success(i18n.t("toast.update_success"));
         } catch (error) {
             console.error(error);
             if (error?.response?.data?.message) {

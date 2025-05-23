@@ -7,9 +7,13 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SearchIcon from "@mui/icons-material/Search";
 import CommonTextField from "../../common/form/CommonTextField";
 import {observer} from "mobx-react-lite";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
+import CalculateIcon from '@mui/icons-material/Calculate';
+import DeleteIcon from "@mui/icons-material/Delete";
+import LockOutlineIcon from '@mui/icons-material/LockOutline';
 
 function SalaryResultItemToolbar() {
+    const {id} = useParams();
     const navigate = useNavigate();
     const {t} = useTranslation();
     const {salaryResultItemStore, salaryResultStore} = useStore();
@@ -20,9 +24,22 @@ function SalaryResultItemToolbar() {
         handleSetSearchObject,
     } = salaryResultItemStore;
 
+    const {getRecalculateSalary} = salaryResultStore;
+
     async function handleFilter(values) {
         const newSearchObject = {
             ...values,
+            pageIndex: 1,
+        };
+        handleSetSearchObject(newSearchObject);
+        await pagingSalaryResultItem();
+    }
+
+    const handleRecalculateSalary = async () => {
+        await getRecalculateSalary(id);
+        
+        const newSearchObject = {
+            ...searchObject,
             pageIndex: 1,
         };
         handleSetSearchObject(newSearchObject);
@@ -46,6 +63,22 @@ function SalaryResultItemToolbar() {
                                         onClick={() => navigate(`/salary-result`)}
                                     >
                                         {t("Quay lại")}
+                                    </Button>
+                                    <Button
+                                        startIcon={<CalculateIcon/>}
+                                        onClick={handleRecalculateSalary}
+                                    >
+                                        {t("Tính toán lại")}
+                                    </Button>
+                                    <Button
+                                        startIcon={<LockOutlineIcon/>}
+                                    >
+                                        {t("Khóa bảng lương")}
+                                    </Button>
+                                    <Button
+                                        startIcon={<DeleteIcon/>}
+                                    >
+                                        {t("Xóa bảng lương")}
                                     </Button>
                                 </ButtonGroup>
                             </div>

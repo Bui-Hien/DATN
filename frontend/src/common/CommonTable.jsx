@@ -112,12 +112,13 @@ const CommonTable = (props) => {
                     <TableHead className="bg-gray-100">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
-                                {headerGroup.headers.map((header) => (
+                                {headerGroup.headers.map((header, index) => (
                                     <TableCell
                                         align="center"
                                         variant="head"
                                         key={header.id}
-                                        className={`${header.column.id === 'mrt-row-select' ? "" : "min-w-[150px]"} font-semibold text-sm text-gray-700 border border-gray-300 py-3`}
+
+                                        className={`${header.column.id === 'mrt-row-select' ? "min-w-[50px]" : colParent && index === 0 ? "min-w-[50px]" : "min-w-[150px]"} font-semibold text-sm text-gray-700 border border-gray-300 py-3`}
                                         style={{
                                             position: header.column.getIsPinned?.() === 'left' ? 'sticky' : undefined,
                                             left: getPinnedLeft(header.column),
@@ -145,12 +146,12 @@ const CommonTable = (props) => {
                                     selected={row.getIsSelected()}
                                     className="hover:bg-gray-50 transition-colors"
                                 >
-                                    {row.getVisibleCells().map((cell) => (
+                                    {row.getVisibleCells().map((cell, index) => (
                                         <TableCell
                                             align={cell.column.id === 'mrt-row-select' ? 'center' : 'left'}
                                             variant="body"
                                             key={cell.id}
-                                            className={`${cell.column.id === 'mrt-row-select' ? "" : "min-w-[150px]"} text-sm text-gray-800 border border-gray-300 py-2`}
+                                            className={`${cell.column.id === 'mrt-row-select' ? "min-w-[50px]" : colParent && index === 0 ? "min-w-[50px]" : "min-w-[150px]"} text-sm text-gray-800 border border-gray-300 py-2`}
                                             style={{
                                                 position: cell.column.getIsPinned?.() === 'left' ? 'sticky' : undefined,
                                                 left: getPinnedLeft(cell.column),

@@ -1,11 +1,13 @@
 package com.buihien.datn.service.impl;
 
+import com.buihien.datn.DatnConstants;
 import com.buihien.datn.domain.AdministrativeUnit;
 import com.buihien.datn.dto.AdministrativeUnitDto;
 import com.buihien.datn.dto.search.AdministrativeUnitSearchDto;
 import com.buihien.datn.generic.GenericServiceImpl;
 import com.buihien.datn.service.AdministrativeUnitService;
 import jakarta.persistence.Query;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,6 +43,58 @@ public class AdministrativeUnitServiceImpl extends GenericServiceImpl<Administra
         }
         entity.setParent(parent);
         return entity;
+    }
+
+    @Override
+    @Transactional
+    public Integer saveOrUpdateList(List<AdministrativeUnitDto> dtos) {
+        if (dtos == null || dtos.isEmpty()) {
+            return 0;
+        }
+
+        // Lọc danh sách hợp lệ
+        List<AdministrativeUnitDto> validDtos = dtos.stream().filter(this::isValidDto).toList();
+        if (validDtos.isEmpty()) return 0;
+
+        // Lấy danh sách entity hiện có
+        Map<String, AdministrativeUnit> existingUnits = repository.findAll().stream().collect(Collectors.toMap(AdministrativeUnit::getCode, Function.identity()));
+
+        // Lưu các đơn vị theo thứ tự: Tỉnh (1) → Huyện (2) → Xã (3)
+        for (int level = 1; level <= 3; level++) {
+            List<AdministrativeUnit> unitsToSave = new ArrayList<>();
+
+            for (AdministrativeUnitDto dto : validDtos) {
+                // Bỏ qua nếu không phải level hiện tại
+                if (!dto.getLevel().equals(level)) {
+                    continue;
+                }
+
+                AdministrativeUnit entity = existingUnits.getOrDefault(dto.getCode(), new AdministrativeUnit());
+                entity.setCode(dto.getCode());
+                entity.setName(dto.getName());
+                entity.setLevel(dto.getLevel());
+
+                // Gán parent nếu có
+                if (dto.getParentCode() != null && !dto.getParentCode().isEmpty()) {
+                    AdministrativeUnit parent = existingUnits.get(dto.getParentCode());
+                    if (parent != null) entity.setParent(parent);
+                }
+
+                unitsToSave.add(entity);
+                existingUnits.put(dto.getCode(), entity); // Cập nhật lại danh sách đã lưu
+            }
+
+            // Lưu danh sách đơn vị của level hiện tại
+            if (!unitsToSave.isEmpty()) {
+                repository.saveAllAndFlush(unitsToSave);
+            }
+        }
+
+        return validDtos.size();
+    }
+
+    private boolean isValidDto(AdministrativeUnitDto dto) {
+        return dto != null && dto.getCode() != null && StringUtils.hasText(dto.getCode()) && dto.getName() != null && StringUtils.hasText(dto.getName()) && dto.getLevel() != null;
     }
 
     @Override
@@ -105,9 +160,7 @@ public class AdministrativeUnitServiceImpl extends GenericServiceImpl<Administra
         sqlCount.append(whereClause);
 
         // Sắp xếp
-        sql.append(dto.getOrderBy() != null && dto.getOrderBy()
-                ? " ORDER BY entity.createdAt ASC"
-                : " ORDER BY entity.createdAt DESC");
+        sql.append(dto.getOrderBy() != null && dto.getOrderBy() ? " ORDER BY entity.createdAt ASC" : " ORDER BY entity.createdAt DESC");
 
         // Tạo truy vấn
         Query q = manager.createQuery(sql.toString(), AdministrativeUnitDto.class);
@@ -159,8 +212,7 @@ public class AdministrativeUnitServiceImpl extends GenericServiceImpl<Administra
             q.setMaxResults(pageSize);
         }
 
-        @SuppressWarnings("unchecked")
-        List<AdministrativeUnitDto> results = q.getResultList();
+        @SuppressWarnings("unchecked") List<AdministrativeUnitDto> results = q.getResultList();
         Long total = (Long) qCount.getSingleResult();
 
         return new PageImpl<>(results, PageRequest.of(pageIndex, pageSize), total);
@@ -170,27 +222,20 @@ public class AdministrativeUnitServiceImpl extends GenericServiceImpl<Administra
     public Page<AdministrativeUnitDto> pagingTreeSearch(AdministrativeUnitSearchDto dto) {
         int pageIndex = (dto.getPageIndex() == null || dto.getPageIndex() < 1) ? 0 : dto.getPageIndex() - 1;
         int pageSize = (dto.getPageSize() == null || dto.getPageSize() < 10) ? 10 : dto.getPageSize();
+        boolean isExportExcel = dto.getExportExcel() != null && dto.getExportExcel();
 
-        // Truy vấn tất cả dữ liệu theo điều kiện lọc
         StringBuilder sql = new StringBuilder("SELECT new com.buihien.datn.dto.AdministrativeUnitDto(entity, true, false) FROM AdministrativeUnit entity ");
         StringBuilder sqlCount = new StringBuilder("SELECT COUNT(entity.id) FROM AdministrativeUnit entity ");
-
-        // Join để hỗ trợ lọc cấp tỉnh/huyện/xã theo parent
-        sql.append(" LEFT JOIN entity.parent parent ");
-        sql.append(" LEFT JOIN parent.parent grandParent ");
-
-        sqlCount.append(" LEFT JOIN entity.parent parent ");
-        sqlCount.append(" LEFT JOIN parent.parent grandParent ");
-
         StringBuilder whereClause = new StringBuilder(" WHERE (1=1) ");
 
+        // Điều kiện lọc
         if (dto.getVoided() == null || !dto.getVoided()) {
             whereClause.append(" AND (entity.voided = false OR entity.voided IS NULL) ");
         } else {
             whereClause.append(" AND entity.voided = true ");
         }
 
-        if (dto.getKeyword() != null && StringUtils.hasText(dto.getKeyword())) {
+        if (StringUtils.hasText(dto.getKeyword())) {
             whereClause.append(" AND (LOWER(entity.name) LIKE LOWER(:text) OR LOWER(entity.code) LIKE LOWER(:text)) ");
         }
 
@@ -202,19 +247,6 @@ public class AdministrativeUnitServiceImpl extends GenericServiceImpl<Administra
             whereClause.append(" AND entity.parent.id = :parentId ");
         }
 
-        // Phân cấp địa lý
-        if (dto.getProvinceId() != null && dto.getDistrictId() == null && dto.getWardId() == null) {
-            whereClause.append(" AND (entity.id = :provinceId OR parent.id = :provinceId OR grandParent.id = :provinceId) ");
-        }
-
-        if (dto.getProvinceId() != null && dto.getDistrictId() != null && dto.getWardId() == null) {
-            whereClause.append(" AND (entity.id = :districtId OR parent.id = :districtId) ");
-        }
-
-        if (dto.getProvinceId() != null && dto.getDistrictId() != null && dto.getWardId() != null) {
-            whereClause.append(" AND entity.id = :wardId ");
-        }
-
         if (dto.getFromDate() != null) {
             whereClause.append(" AND entity.createdAt >= :fromDate ");
         }
@@ -223,21 +255,15 @@ public class AdministrativeUnitServiceImpl extends GenericServiceImpl<Administra
             whereClause.append(" AND entity.createdAt <= :toDate ");
         }
 
-        // Gộp where vào câu truy vấn
         sql.append(whereClause);
         sqlCount.append(whereClause);
+        sql.append(dto.getOrderBy() != null && dto.getOrderBy() ? " ORDER BY entity.code DESC " : " ORDER BY entity.code ASC ");
 
-        // Sắp xếp
-        sql.append(dto.getOrderBy() != null && dto.getOrderBy()
-                ? " ORDER BY entity.createdAt ASC"
-                : " ORDER BY entity.createdAt DESC");
-
-        // Tạo truy vấn
         Query q = manager.createQuery(sql.toString(), AdministrativeUnitDto.class);
         Query qCount = manager.createQuery(sqlCount.toString());
 
-        // Set parameters
-        if (dto.getKeyword() != null && StringUtils.hasText(dto.getKeyword())) {
+        // Set tham số
+        if (StringUtils.hasText(dto.getKeyword())) {
             q.setParameter("text", "%" + dto.getKeyword().toLowerCase() + "%");
             qCount.setParameter("text", "%" + dto.getKeyword().toLowerCase() + "%");
         }
@@ -252,21 +278,6 @@ public class AdministrativeUnitServiceImpl extends GenericServiceImpl<Administra
             qCount.setParameter("parentId", dto.getParentId());
         }
 
-        if (dto.getProvinceId() != null && dto.getDistrictId() == null && dto.getWardId() == null) {
-            q.setParameter("provinceId", dto.getProvinceId());
-            qCount.setParameter("provinceId", dto.getProvinceId());
-        }
-
-        if (dto.getProvinceId() != null && dto.getDistrictId() != null && dto.getWardId() == null) {
-            q.setParameter("districtId", dto.getDistrictId());
-            qCount.setParameter("districtId", dto.getDistrictId());
-        }
-
-        if (dto.getProvinceId() != null && dto.getDistrictId() != null && dto.getWardId() != null) {
-            q.setParameter("wardId", dto.getWardId());
-            qCount.setParameter("wardId", dto.getWardId());
-        }
-
         if (dto.getFromDate() != null) {
             q.setParameter("fromDate", dto.getFromDate());
             qCount.setParameter("fromDate", dto.getFromDate());
@@ -277,56 +288,45 @@ public class AdministrativeUnitServiceImpl extends GenericServiceImpl<Administra
             qCount.setParameter("toDate", dto.getToDate());
         }
 
-        // Lấy tổng số bản ghi
-        Long total = (Long) qCount.getSingleResult();
-
-        // Lấy tất cả kết quả (không phân trang ở database)
+        // Lấy danh sách phẳng
         @SuppressWarnings("unchecked")
-        List<AdministrativeUnitDto> allUnits = q.getResultList();
+        List<AdministrativeUnitDto> flatList = q.getResultList();
 
-        // Xây dựng cấu trúc cây từ danh sách phẳng
-        List<AdministrativeUnitDto> treeResults = buildTree(allUnits);
+        // Dựng cây
+        List<AdministrativeUnitDto> treeResults = buildTree(flatList);
 
-        // Phân trang thủ công
+        // Trả toàn bộ cây nếu export excel
+        if (isExportExcel) {
+            return new PageImpl<>(treeResults);
+        }
+
+        // Phân trang thủ công trên các node gốc
         List<AdministrativeUnitDto> pagedResults = manualPaging(treeResults, pageIndex, pageSize);
 
-        return new PageImpl<>(pagedResults, PageRequest.of(pageIndex, pageSize), total);
+        return new PageImpl<>(pagedResults, PageRequest.of(pageIndex, pageSize), treeResults.size());
     }
 
-    private List<AdministrativeUnitDto> buildTree(List<AdministrativeUnitDto> allUnits) {
-        if (allUnits == null || allUnits.isEmpty()) {
-            return new ArrayList<>();
+    private List<AdministrativeUnitDto> buildTree(List<AdministrativeUnitDto> units) {
+        Map<UUID, AdministrativeUnitDto> map = new HashMap<>();
+        List<AdministrativeUnitDto> roots = new ArrayList<>();
+
+        for (AdministrativeUnitDto dto : units) {
+            map.put(dto.getId(), dto);
         }
 
-        // Tạo map để truy cập nhanh theo ID
-        Map<UUID, AdministrativeUnitDto> unitMap = new HashMap<>();
-        for (AdministrativeUnitDto unit : allUnits) {
-            if (unit.getId() != null) {
-                unitMap.put(unit.getId(), unit);
-            }
-        }
-
-        // Danh sách các node gốc
-        List<AdministrativeUnitDto> rootUnits = new ArrayList<>();
-
-        // Xác định các node gốc và xây dựng cây
-        for (AdministrativeUnitDto unit : allUnits) {
-            // Nếu không có parent hoặc parent không nằm trong kết quả => là node gốc
-            if (unit.getParentId() == null || !unitMap.containsKey(unit.getParentId())) {
-                rootUnits.add(unit);
-            } else {
-                // Không phải node gốc, thêm vào parent tương ứng
-                AdministrativeUnitDto parent = unitMap.get(unit.getParentId());
-                if (parent != null) {
-                    if (parent.getSubRows() == null) {
-                        parent.setSubRows(new ArrayList<>());
-                    }
-                    parent.getSubRows().add(unit);
+        for (AdministrativeUnitDto dto : units) {
+            if (dto.getParentId() != null && map.containsKey(dto.getParentId())) {
+                AdministrativeUnitDto parent = map.get(dto.getParentId());
+                if (parent.getSubRows() == null) {
+                    parent.setSubRows(new ArrayList<>());
                 }
+                parent.getSubRows().add(dto);
+            } else {
+                roots.add(dto);
             }
         }
 
-        return rootUnits;
+        return roots;
     }
 
     private List<AdministrativeUnitDto> manualPaging(List<AdministrativeUnitDto> treeResults, int pageIndex, int pageSize) {
@@ -337,11 +337,12 @@ public class AdministrativeUnitServiceImpl extends GenericServiceImpl<Administra
         int startIndex = pageIndex * pageSize;
         int endIndex = Math.min(startIndex + pageSize, treeResults.size());
 
-        // Nếu start index vượt quá kích thước của danh sách, trả về list rỗng
         if (startIndex >= treeResults.size()) {
             return new ArrayList<>();
         }
 
         return treeResults.subList(startIndex, endIndex);
     }
+
+
 }
