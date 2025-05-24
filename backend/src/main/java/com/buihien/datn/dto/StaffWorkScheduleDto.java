@@ -5,6 +5,7 @@ import com.buihien.datn.domain.StaffWorkSchedule;
 import com.buihien.datn.dto.validator.ValidEnumValue;
 
 import java.util.Date;
+import java.util.List;
 
 public class StaffWorkScheduleDto extends AuditableDto {
     @ValidEnumValue(enumClass = DatnConstants.ShiftWorkType.class, message = "Loại ca làm việc không hợp lệ")

@@ -1,8 +1,6 @@
+const {getTimeSchedule} = require("./LocalFunction");
 const SYSTEM_ROLE = {
-    ROLE_ADMIN: "ROLE_ADMIN",
-    ROLE_USER: "ROLE_USER",
-    ROLE_MANAGER: "ROLE_MANAGER",
-    ROLE_HR: "ROLE_HR",
+    ROLE_ADMIN: "ROLE_ADMIN", ROLE_USER: "ROLE_USER", ROLE_MANAGER: "ROLE_MANAGER", ROLE_HR: "ROLE_HR",
 };
 const EducationLevel = {
     PHD: {value: 1, name: "Tiến sĩ"},
@@ -31,9 +29,7 @@ const AdministrativeUnitLevel = {
     },
 };
 const DocumentItemRequired = {
-    PROVINCE: {value: true, name: "Bắt buộc"},
-    DISTRICT: {value: false, name: "Không bắt buộc"},
-    getListData() {
+    PROVINCE: {value: true, name: "Bắt buộc"}, DISTRICT: {value: false, name: "Không bắt buộc"}, getListData() {
         return Object.keys(this)
             .filter(key => typeof this[key] === 'object' && this[key] !== null && 'value' in this[key])
             .map(key => this[key]);
@@ -41,10 +37,7 @@ const DocumentItemRequired = {
 };
 
 const Gender = {
-    MALE: {value: 1, name: "Nam"},
-    FEMALE: {value: 2, name: "Nữ"},
-    OTHER: {value: 3, name: "Khác"},
-    getListData() {
+    MALE: {value: 1, name: "Nam"}, FEMALE: {value: 2, name: "Nữ"}, OTHER: {value: 3, name: "Khác"}, getListData() {
         return Object.keys(this)
             .filter(key => typeof this[key] === 'object' && this[key] !== null && 'value' in this[key])
             .map(key => this[key]);
@@ -126,21 +119,12 @@ const SalaryItemType = {
 };
 const SalaryTemplateItemSystem = {
     ACTUAL_NUMBER_OF_WORKING_DAYS: {
-        name: "Số ngày công thực tế",
-        code: "SO_NGAY_CONG_THUC_TE",
-        salaryItemType: SalaryItemType.SYSTEM.value
-    },
-    STANDARD_NUMBER_OF_WORKING_DAYS: {
-        name: "Số ngày công tiêu chuẩn",
-        code: "SO_NGAY_CONG_TIEU_CHUAN",
-        salaryItemType: SalaryItemType.SYSTEM.value
-    },
-    BASIC_SALARY: {
-        name: "Lương cơ bản",
-        code: "LUONG_CO_BAN",
-        salaryItemType: SalaryItemType.SYSTEM.value
-    },
-    getListData() {
+        name: "Số ngày công thực tế", code: "SO_NGAY_CONG_THUC_TE", salaryItemType: SalaryItemType.SYSTEM.value
+    }, STANDARD_NUMBER_OF_WORKING_DAYS: {
+        name: "Số ngày công tiêu chuẩn", code: "SO_NGAY_CONG_TIEU_CHUAN", salaryItemType: SalaryItemType.SYSTEM.value
+    }, BASIC_SALARY: {
+        name: "Lương cơ bản", code: "LUONG_CO_BAN", salaryItemType: SalaryItemType.SYSTEM.value
+    }, getListData() {
         return Object.keys(this)
             .filter((key) => typeof this[key] === "object" && this[key] !== null && key !== "getListData")
             .map((key) => this[key]);
@@ -148,9 +132,7 @@ const SalaryTemplateItemSystem = {
 }
 
 const SalaryPeriodStatus = {
-    DRAFT: {value: 1, name: "Nháp"},
-    APPROVED: {value: 2, name: "Đã duyệt"},
-    FINALIZED: {value: 3, name: "Đã chốt"},
+    DRAFT: {value: 1, name: "Nháp"}, APPROVED: {value: 2, name: "Đã duyệt"}, FINALIZED: {value: 3, name: "Đã chốt"},
 
     getListData() {
         return Object.keys(this)
@@ -159,6 +141,51 @@ const SalaryPeriodStatus = {
     },
 
 };
+
+const ShiftWorkType = {
+    MORNING: {
+        value: 1,
+        name: "Ca sáng",
+        calculatedWorkingDay: 0.5,
+        startTime: getTimeSchedule(8, 30),
+        endTime: getTimeSchedule(12, 0)
+    }, AFTERNOON: {
+        value: 2,
+        name: "Ca chiều",
+        calculatedWorkingDay: 0.5,
+        startTime: getTimeSchedule(13, 30),
+        endTime: getTimeSchedule(17, 30)
+    }, FULL_DAY: {
+        value: 3,
+        name: "Ca nguyên ngày",
+        calculatedWorkingDay: 1.0,
+        startTime: getTimeSchedule(8, 30),
+        endTime: getTimeSchedule(17, 30)
+    },
+
+    getListData() {
+        return Object.keys(this)
+            .filter(key => typeof this[key] === 'object' && 'value' in this[key])
+            .map(key => this[key]);
+    },
+
+};
+const Weekdays = {
+    MONDAY: {value: 1, name: "Thứ 2"},
+    TUESDAY: {value: 2, name: "Thứ 3"},
+    WEDNESDAY: {value: 3, name: "Thứ 4"},
+    THURSDAY: {value: 4, name: "Thứ 5"},
+    FRIDAY: {value: 5, name: "Thứ 6"},
+    SATURDAY: {value: 6, name: "Thứ 7"},
+    SUNDAY: {value: 7, name: "Chủ nhật"},
+
+    getListData() {
+        return Object.keys(this)
+            .filter(key => typeof this[key] === 'object' && this[key] !== null && 'value' in this[key])
+            .map(key => this[key]);
+    }
+};
+
 module.exports = Object.freeze({
     SystemRole: SYSTEM_ROLE,
     EducationLevel: EducationLevel,
@@ -172,5 +199,7 @@ module.exports = Object.freeze({
     ContractType: ContractType,
     SalaryItemType: SalaryItemType,
     SalaryTemplateItemSystem: SalaryTemplateItemSystem,
-    SalaryPeriodStatus: SalaryPeriodStatus
+    SalaryPeriodStatus: SalaryPeriodStatus,
+    ShiftWorkType: ShiftWorkType,
+    Weekdays: Weekdays
 });

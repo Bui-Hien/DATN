@@ -160,7 +160,9 @@ public class AdministrativeUnitServiceImpl extends GenericServiceImpl<Administra
         sqlCount.append(whereClause);
 
         // Sắp xếp
-        sql.append(dto.getOrderBy() != null && dto.getOrderBy() ? " ORDER BY entity.createdAt ASC" : " ORDER BY entity.createdAt DESC");
+        sql.append(dto.getOrderBy() != null && dto.getOrderBy()
+                ? " ORDER BY entity.level DESC, entity.code DESC "
+                : " ORDER BY entity.level ASC, entity.code ASC ");
 
         // Tạo truy vấn
         Query q = manager.createQuery(sql.toString(), AdministrativeUnitDto.class);
@@ -257,8 +259,9 @@ public class AdministrativeUnitServiceImpl extends GenericServiceImpl<Administra
 
         sql.append(whereClause);
         sqlCount.append(whereClause);
-        sql.append(dto.getOrderBy() != null && dto.getOrderBy() ? " ORDER BY entity.code DESC " : " ORDER BY entity.code ASC ");
-
+        sql.append(dto.getOrderBy() != null && dto.getOrderBy()
+                ? " ORDER BY entity.level DESC, entity.code DESC "
+                : " ORDER BY entity.level ASC, entity.code ASC ");
         Query q = manager.createQuery(sql.toString(), AdministrativeUnitDto.class);
         Query qCount = manager.createQuery(sqlCount.toString());
 

@@ -1,11 +1,18 @@
 import {makeAutoObservable} from "mobx";
-import {deleteMultipleStaffByIds, deleteStaff, getStaffById, pagingStaff, saveStaff,} from "./StaffService";
+import {
+    deleteMultipleStaffWorkScheduleByIds,
+    deleteStaffWorkSchedule,
+    getStaffWorkScheduleById,
+    pagingStaffWorkSchedule,
+    saveListStaffWorkSchedule,
+    saveStaffWorkSchedule,
+} from "./StaffWorkScheduleService";
 import {toast} from "react-toastify";
 import i18n from "i18next";
 import {SearchObject} from "./SearchObject";
-import {StaffObject} from "./Staff";
+import {StaffWorkScheduleObject} from "./StaffWorkSchedule";
 
-export default class StaffStore {
+export default class StaffWorkScheduleStore {
     searchObject = JSON.parse(JSON.stringify(new SearchObject()));
 
     totalElements = 0;
@@ -14,7 +21,8 @@ export default class StaffStore {
     openConfirmDeletePopup = false;
     openConfirmDeleteListPopup = false;
     openCreateEditPopup = false;
-    selectedRow = new StaffObject();
+    openCreateEditListPopup = false;
+    selectedRow = new StaffWorkScheduleObject();
     selectedDataList = [];
     isOpenFilter = false;
 
@@ -35,14 +43,16 @@ export default class StaffStore {
         this.isOpenFilter = false;
     };
 
-    pagingStaff = async () => {
+    pagingStaffWorkSchedule = async () => {
         try {
-            const newSearch = {
+            const newSearchObject = {
                 ...this.searchObject,
-                departmentId: this.searchObject?.department?.id,
-                department: null,
+                ownerId: this.searchObject.owner?.id,
+                owner: null,
+                departmentId: this.searchObject.department?.id,
+                department: null
             }
-            const response = await pagingStaff(newSearch);
+            const response = await pagingStaffWorkSchedule(newSearchObject);
             const result = response.data;
             this.dataList = result.data.content || [];
             this.totalElements = result.data.totalElements || 0;
@@ -60,25 +70,24 @@ export default class StaffStore {
 
     setPageIndex = async (page) => {
         this.searchObject.pageIndex = page;
-        await this.pagingStaff();
+        await this.pagingStaffWorkSchedule();
     };
 
     setPageSize = async (size) => {
         this.searchObject.pageSize = size;
         this.searchObject.pageIndex = 1;
-        await this.pagingStaff();
+        await this.pagingStaffWorkSchedule();
     };
 
     handleOpenCreateEdit = async (id) => {
         try {
             if (id) {
-                const {data} = await getStaffById(id);
+                const {data} = await getStaffWorkScheduleById(id);
                 this.selectedRow = {
-                    ...new StaffObject(),
-                    ...data.data,
+                    ...new StaffWorkScheduleObject(), ...data.data,
                 };
             } else {
-                this.selectedRow = new StaffObject();
+                this.selectedRow = new StaffWorkScheduleObject();
             }
             this.openCreateEditPopup = true;
         } catch (error) {
@@ -91,30 +100,12 @@ export default class StaffStore {
         }
     };
 
-    getStaffById = async (id) => {
-        try {
-            if (id) {
-                const {data} = await getStaffById(id);
-                this.selectedRow = {
-                    ...new StaffObject(),
-                    ...data.data,
-                };
-            } else {
-                this.selectedRow = new StaffObject();
-            }
-        } catch (error) {
-            console.error(error);
-            if (error?.response?.data?.message) {
-                toast.error(error?.response?.data?.message);
-            } else {
-                toast.error(i18n.t("toast.error"));
-            }
-        }
-    };
+
     handleClose = () => {
         this.openConfirmDeletePopup = false;
         this.openCreateEditPopup = false;
         this.openConfirmDeleteListPopup = false;
+        this.openCreateEditListPopup = false;
     };
 
     handleDelete = (row) => {
@@ -128,9 +119,9 @@ export default class StaffStore {
 
     handleConfirmDelete = async () => {
         try {
-            const {data} = await deleteStaff(this.selectedRow.id);
+            const {data} = await deleteStaffWorkSchedule(this.selectedRow.id);
             toast.success(i18n.t("toast.delete_success"));
-            await this.pagingStaff();
+            await this.pagingStaffWorkSchedule();
             this.handleClose();
             return data;
         } catch (error) {
@@ -146,10 +137,10 @@ export default class StaffStore {
     handleConfirmDeleteMultiple = async () => {
         try {
             const ids = this.selectedDataList.map((item) => item.id);
-            await deleteMultipleStaffByIds(ids);
+            await deleteMultipleStaffWorkScheduleByIds(ids);
             this.selectedDataList = [];
             toast.success(i18n.t("toast.delete_success"));
-            await this.pagingStaff();
+            await this.pagingStaffWorkSchedule();
             this.handleClose();
         } catch (error) {
             console.log(error);
@@ -165,12 +156,33 @@ export default class StaffStore {
         this.selectedDataList = dataList;
     };
 
-    saveStaff = async (data) => {
+    saveStaffWorkSchedule = async (data) => {
         try {
-            const response = await saveStaff(data);
+            await saveStaffWorkSchedule(data);
             toast.success(i18n.t("toast.save_success"));
             this.handleClose();
-            return response.data.data;
+            await this.pagingStaffWorkSchedule();
+        } catch (error) {
+            console.error(error);
+            if (error?.response?.data?.message) {
+                toast.error(error?.response?.data?.message);
+            } else {
+                toast.error(i18n.t("toast.error"));
+            }
+        }
+    };
+
+    handleOpenCreateEditListPopup = () => {
+        this.openCreateEditListPopup = true;
+    };
+
+
+    saveListStaffWorkSchedule = async (data) => {
+        try {
+            await saveListStaffWorkSchedule(data);
+            toast.success(i18n.t("toast.save_success"));
+            this.handleClose();
+            await this.pagingStaffWorkSchedule();
         } catch (error) {
             console.error(error);
             if (error?.response?.data?.message) {
@@ -184,6 +196,7 @@ export default class StaffStore {
     handleSetSearchObject = (searchObject) => {
         this.searchObject = {...searchObject};
     };
+
     handleCloseFilter = () => {
         this.isOpenFilter = false;
     };

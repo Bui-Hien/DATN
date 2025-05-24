@@ -7,9 +7,9 @@ import {Button, ButtonGroup} from "@mui/material";
 import CommonTextField from "../../common/form/CommonTextField";
 import AddIcon from "@mui/icons-material/Add";
 import CommonPagingAutocompleteV2 from "../../common/form/CommonPagingAutocompleteV2";
-import {pagingPosition} from "../Position/PositionService";
 import CommonCheckBox from "../../common/form/CommonCheckBox";
-import {removeVietnameseTones} from "../../LocalFunction"; // (nếu có để lấy danh sách nhân viên)
+import {removeVietnameseTones} from "../../LocalFunction";
+import {pagingStaff} from "../Staff/StaffService"; // (nếu có để lấy danh sách nhân viên)
 
 function PositionSection() {
     const {t} = useTranslation();
@@ -116,7 +116,7 @@ const PositionItem = memo(({index, nameSpace, remove}) => {
             <td className="border border-gray-300">
                 <CommonPagingAutocompleteV2
                     name={withNameSpace("staff")}
-                    api={pagingPosition}
+                    api={pagingStaff}
                     getOptionLabel={(option) =>
                         option?.staffCode && option?.displayName
                             ? `${option.staffCode} - ${option.displayName}`

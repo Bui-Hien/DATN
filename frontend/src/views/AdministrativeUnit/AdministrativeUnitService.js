@@ -32,3 +32,20 @@ export const deleteMultipleAdministrativeUnitByIds = (obj) => {
     return api.post(url, obj);
 };
 
+export const exportExcelAdministrativeUnit = (searchObject) => {
+    const url = API_PATH + "/export-excel";
+    return api.post(url, searchObject, {
+        responseType: "blob",
+    });
+};
+
+export const importExcelAdministrativeUnit = (file) => {
+    const url = API_PATH + "/import-excel";
+    const formData = new FormData();
+    formData.append("file", file);
+    return api.post(url, formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    });
+};

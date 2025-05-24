@@ -1,8 +1,8 @@
 import {makeAutoObservable} from "mobx";
 import {
     deleteAdministrativeUnit,
-    deleteMultipleAdministrativeUnitByIds,
-    getAdministrativeUnitById,
+    deleteMultipleAdministrativeUnitByIds, exportExcelAdministrativeUnit,
+    getAdministrativeUnitById, importExcelAdministrativeUnit,
     pagingTreeAdministrativeUnit,
     saveAdministrativeUnit,
 } from "./AdministrativeUnitService";
@@ -10,6 +10,7 @@ import {toast} from "react-toastify";
 import i18n from "i18next";
 import {SearchObject} from "./SearchObject";
 import {AdministrativeUnitObject} from "./AdministrativeUnit";
+import {saveAs} from "file-saver";
 
 export default class AdministrativeUnitStore {
     searchObject = JSON.parse(JSON.stringify(new SearchObject()));
@@ -169,6 +170,54 @@ export default class AdministrativeUnitStore {
             } else {
                 toast.error(i18n.t("toast.error"));
             }
+        }
+    };
+    handleExportExcelAdministrativeUnit = async () => {
+        debugger
+        if (this.totalElements > 0) {
+            try {
+                const res = await exportExcelAdministrativeUnit({...this.searchObject});
+                if (res && res.data) {
+                    const blob = new Blob([res.data], {
+                        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    });
+
+                    saveAs(blob, "DuLieuDonViHanhChinh.xlsx");
+                    toast.success(i18n.t("toast.successExport"));
+                } else {
+                    toast.error(i18n.t("toast.errorExport"));
+                }
+            } catch (error) {
+                console.error("Export error:", error);
+                toast.error(i18n.t("toast.errorExport"));
+            }
+        } else {
+            toast.warning(i18n.t("toast.noData"));
+        }
+    };
+
+    handleImportAdministrativeUnit = async (event) => {
+        const fileInput = event.target; // Lưu lại trước
+        const file = fileInput.files[0];
+
+        try {
+            await importExcelAdministrativeUnit(file)
+            toast.success(i18n.t("toast.successImport"));
+            this.searchObject = {
+                ...this.searchObject,
+                pageIndex: 1
+            }
+            await this.pagingTreeAdministrativeUnit()
+        } catch (error) {
+            console.error(error);
+            if (error?.response?.data?.message) {
+                toast.error(error?.response?.data?.message);
+            } else {
+                toast.error(i18n.t("toast.successExport"));
+            }
+        } finally {
+            this.handleClose();
+            fileInput.value = null;
         }
     };
 

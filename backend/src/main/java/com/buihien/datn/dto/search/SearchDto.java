@@ -3,6 +3,7 @@ package com.buihien.datn.dto.search;
 import com.buihien.datn.util.DateTimeUtil;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.UUID;
 
 public class SearchDto {
@@ -11,8 +12,8 @@ public class SearchDto {
     public Integer pageIndex;
     public Integer pageSize;
     public String keyword;
-    public LocalDateTime fromDate;
-    public LocalDateTime toDate;
+    public Date fromDate;
+    public Date toDate;
     public Boolean voided;
     public Boolean orderBy; //mặc định là DESC của trường createdAt
     public UUID roleId;
@@ -62,25 +63,25 @@ public class SearchDto {
         this.keyword = keyword;
     }
 
-    public LocalDateTime getFromDate() {
+    public Date getFromDate() {
         if (fromDate == null) {
             return null;
         }
         return DateTimeUtil.getStartOfDay(fromDate);
     }
 
-    public void setFromDate(LocalDateTime fromDate) {
+    public void setFromDate(Date fromDate) {
         this.fromDate = fromDate;
     }
 
-    public LocalDateTime getToDate() {
+    public Date getToDate() {
         if (toDate == null) {
             return null;
         }
         return DateTimeUtil.getEndOfDay(toDate);
     }
 
-    public void setToDate(LocalDateTime toDate) {
+    public void setToDate(Date toDate) {
         this.toDate = toDate;
     }
 

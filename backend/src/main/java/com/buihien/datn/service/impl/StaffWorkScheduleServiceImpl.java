@@ -3,7 +3,9 @@ package com.buihien.datn.service.impl;
 import com.buihien.datn.DatnConstants;
 import com.buihien.datn.domain.Staff;
 import com.buihien.datn.domain.StaffWorkSchedule;
+import com.buihien.datn.dto.StaffDto;
 import com.buihien.datn.dto.StaffWorkScheduleDto;
+import com.buihien.datn.dto.StaffWorkScheduleListDto;
 import com.buihien.datn.dto.search.StaffWorkScheduleSearchDto;
 import com.buihien.datn.exception.InvalidDataException;
 import com.buihien.datn.exception.ResourceNotFoundException;
@@ -14,6 +16,7 @@ import com.buihien.datn.service.ExtractCurrentUserService;
 import com.buihien.datn.service.StaffWorkScheduleService;
 import com.buihien.datn.util.DateTimeUtil;
 import jakarta.persistence.Query;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +26,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+
+import static com.buihien.datn.util.DateTimeUtil.getEndOfDay;
+import static com.buihien.datn.util.DateTimeUtil.getStartOfDay;
 
 @Service
 public class StaffWorkScheduleServiceImpl extends GenericServiceImpl<StaffWorkSchedule, StaffWorkScheduleDto, StaffWorkScheduleSearchDto> implements StaffWorkScheduleService {
@@ -49,13 +52,6 @@ public class StaffWorkScheduleServiceImpl extends GenericServiceImpl<StaffWorkSc
         if (dto.getId() != null) {
             entity = repository.findById(dto.getId()).orElse(null);
         }
-        if (entity == null) {
-            entity = new StaffWorkSchedule();
-        }
-        if (entity.getIsLocked() != null && entity.getIsLocked()) {
-            throw new InvalidDataException("Không thể sửa ca làm việc đã bị khóa");
-        }
-        entity.setShiftWorkType(dto.getShiftWorkType());
         Staff staff = null;
         if (dto.getStaff() != null && dto.getStaff().getId() != null) {
             staff = staffRepository.findById(dto.getStaff().getId()).orElse(null);
@@ -63,15 +59,25 @@ public class StaffWorkScheduleServiceImpl extends GenericServiceImpl<StaffWorkSc
         if (staff == null) {
             throw new ResourceNotFoundException("Nhân viên không tồn tại");
         }
+
+        Date startOfDay = getStartOfDay(dto.getWorkingDate());
+        Date endOfDay = getEndOfDay(dto.getWorkingDate());
+        List<StaffWorkSchedule> schedules = staffWorkScheduleRepository
+                .findByShiftWorkTypeAndStaffAndWorkingDate(dto.getShiftWorkType(), staff.getId(), startOfDay, endOfDay);
+        if (schedules != null && !schedules.isEmpty()) {
+            entity = schedules.get(0);
+        }
+        if (entity == null) {
+            entity = new StaffWorkSchedule();
+        }
+
+        if (entity.getIsLocked() != null && entity.getIsLocked()) {
+            throw new InvalidDataException("Không thể sửa ca làm việc đã bị khóa");
+        }
         entity.setStaff(staff);
+        entity.setShiftWorkType(dto.getShiftWorkType());
         entity.setWorkingDate(dto.getWorkingDate());
-        Staff coordinator = null;
-        if (dto.getCoordinator() != null && dto.getCoordinator().getId() != null) {
-            coordinator = staffRepository.findById(dto.getCoordinator().getId()).orElse(null);
-        }
-        if (coordinator == null) {
-            throw new ResourceNotFoundException("Người phân ca không tồn tại");
-        }
+        Staff coordinator = extractCurrentUserService.extractCurrentStaff();
         entity.setCoordinator(coordinator);
         return entity;
     }
@@ -96,7 +102,7 @@ public class StaffWorkScheduleServiceImpl extends GenericServiceImpl<StaffWorkSc
         }
 
         if (dto.getKeyword() != null && StringUtils.hasText(dto.getKeyword())) {
-            whereClause.append(" AND (LOWER(entity.staff.displayName) LIKE LOWER(:text) ");
+            whereClause.append(" AND (LOWER(entity.staff.displayName) LIKE LOWER(:text) OR LOWER(entity.staff.staffCode) LIKE LOWER(:text)");
         }
         if (dto.getOwnerId() != null) {
             whereClause.append(" AND entity.staff.id = :ownerId ");
@@ -295,5 +301,94 @@ public class StaffWorkScheduleServiceImpl extends GenericServiceImpl<StaffWorkSc
         }
     }
 
+    @Override
+    @Transactional
+    public Integer saveList(StaffWorkScheduleListDto dto) {
+        if (dto == null) {
+            throw new InvalidDataException("Dữ liệu phân ca không được để trống");
+        }
+
+        if (dto.getStaffs() == null || dto.getStaffs().isEmpty()) {
+            throw new InvalidDataException("Chưa chọn nhân viên để phân ca");
+        }
+
+        if (dto.getShiftWorkTypeList() == null || dto.getShiftWorkTypeList().isEmpty()) {
+            throw new InvalidDataException("Chưa chọn loại ca để phân");
+        }
+
+        if (dto.getFromWorkingDate() == null) {
+            throw new InvalidDataException("Ngày bắt đầu làm việc không được để trống");
+        }
+
+        if (dto.getToWorkingDate() == null) {
+            throw new InvalidDataException("Ngày kết thúc làm việc không được để trống");
+        }
+
+        if (dto.getFromWorkingDate().after(dto.getToWorkingDate())) {
+            throw new InvalidDataException("Ngày bắt đầu phải trước hoặc bằng ngày kết thúc");
+        }
+
+        if (dto.getWeekdays() == null || dto.getWeekdays().isEmpty()) {
+            throw new InvalidDataException("Chưa chọn các ngày trong tuần áp dụng");
+        }
+
+
+        Date fromDate = dto.getFromWorkingDate();
+        Date toDate = dto.getToWorkingDate();
+        List<Integer> weekdays = dto.getWeekdays();
+        List<Integer> shiftWorkTypeList = dto.getShiftWorkTypeList();
+        List<StaffDto> staffDtos = dto.getStaffs();
+
+        // Lặp qua từng ngày từ fromDate đến toDate
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(fromDate);
+
+        //Người phân ca
+        Staff coordinator = extractCurrentUserService.extractCurrentStaff();
+
+        List<StaffWorkSchedule> staffWorkScheduleList = new ArrayList<>();
+        while (!calendar.getTime().after(toDate)) {
+            Date currentDate = calendar.getTime();
+            int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+            int convertedDay = convertJavaDayOfWeek(dayOfWeek); // Convert Java Sunday=1 -> ISO Monday=1
+
+            if (weekdays.contains(convertedDay)) {
+                for (StaffDto staffDto : staffDtos) {
+                    Staff staff = staffRepository.findById(staffDto.getId()).orElse(null);
+                    if (staff == null) continue;
+
+                    for (Integer shiftType : shiftWorkTypeList) {
+                        StaffWorkSchedule schedule = null;
+                        Date startOfDay = getStartOfDay(currentDate);
+                        Date endOfDay = getEndOfDay(currentDate);
+
+                        List<StaffWorkSchedule> schedules = staffWorkScheduleRepository
+                                .findByShiftWorkTypeAndStaffAndWorkingDate(shiftType, staff.getId(), startOfDay, endOfDay);
+                        if (schedules != null && !schedules.isEmpty()) {
+                            schedule = schedules.get(0);
+                        }
+                        if (schedule == null) {
+                            schedule = new StaffWorkSchedule();
+                        }
+
+                        schedule.setWorkingDate(currentDate);
+                        schedule.setStaff(staff);
+                        schedule.setShiftWorkType(shiftType);
+                        schedule.setCoordinator(coordinator);
+
+                        staffWorkScheduleList.add(schedule);
+                    }
+                }
+            }
+
+            calendar.add(Calendar.DATE, 1); // Sang ngày tiếp theo
+        }
+        staffWorkScheduleList = repository.saveAll(staffWorkScheduleList);
+        return staffWorkScheduleList.size();
+    }
+
+    private int convertJavaDayOfWeek(int javaDayOfWeek) {
+        return javaDayOfWeek == Calendar.SUNDAY ? 7 : javaDayOfWeek - 1;
+    }
 
 }

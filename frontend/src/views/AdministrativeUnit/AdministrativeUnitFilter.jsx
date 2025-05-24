@@ -33,7 +33,7 @@ function AdministrativeUnitFilter() {
     return (<Collapse in={isOpenFilter} className="filterPopup">
         <div className={"gap-2 grid grid-cols-12"}>
             <div className="grid grid-cols-12 gap-4 col-span-12">
-                <div className="sm:col-span-12 md:col-span-4 lg:col-span-3">
+                <div className="col-span-12 md:col-span-4 lg:col-span-3">
                     <CommonSelectInput
                         label={"Cấp độ"}
                         name={"level"}
@@ -41,7 +41,7 @@ function AdministrativeUnitFilter() {
                         options={AdministrativeUnitLevel.getListData()}
                     />
                 </div>
-                <div className="sm:col-span-12 md:col-span-4 lg:col-span-3">
+                <div className="col-span-12 md:col-span-4 lg:col-span-3">
                     <CommonPagingAutocompleteV2
                         label={"Tỉnh/Thành phố"}
                         name={"province"}
@@ -54,7 +54,7 @@ function AdministrativeUnitFilter() {
                         api={ApiPagingAdministrativeUnit}
                     />
                 </div>
-                <div className="sm:col-span-12 md:col-span-4 lg:col-span-3">
+                <div className="col-span-12 md:col-span-4 lg:col-span-3">
                     <CommonPagingAutocompleteV2
                         label={"Quận/Huyện"}
                         name={"district"}
@@ -69,7 +69,7 @@ function AdministrativeUnitFilter() {
                         disabled={!values?.province?.id}
                     />
                 </div>
-                <div className="sm:col-span-12 md:col-span-4 lg:col-span-3">
+                <div className="col-span-12 md:col-span-4 lg:col-span-3">
                     <CommonPagingAutocompleteV2
                         label={"Xã/Phường"}
                         name={"ward"}

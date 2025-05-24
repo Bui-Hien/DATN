@@ -1,4 +1,4 @@
-import React, {memo, useState} from "react";
+import React, {memo} from "react";
 import {Form, Formik} from "formik";
 import {useTranslation} from "react-i18next";
 import {useStore} from "../../stores";
@@ -11,7 +11,6 @@ import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from "@mui/icons-material/Close";
 import SalaryTemplateItemSection from "./SalaryTemplateItemSection";
 import {removeVietnameseTones} from "../../LocalFunction";
-import FormulaEditor from "../../common/form/FormulaEditor";
 
 function SalaryTemplateForm(props) {
     const {t} = useTranslation();

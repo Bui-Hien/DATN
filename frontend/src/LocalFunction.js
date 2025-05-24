@@ -1,9 +1,15 @@
 import moment from "moment";
 import React from "react";
 
-// export function getDate(date) {
-//     return new Date(date).getDate();
-// }
+export function getTimeSchedule(hour, minute) {
+    const date = new Date();
+    date.setHours(hour);
+    date.setMinutes(minute);
+    date.setSeconds(0);
+    date.setMilliseconds(0);
+    return date;
+}
+
 export function removeVietnameseTones(str) {
     return str
         .normalize("NFD")
@@ -16,7 +22,7 @@ export function removeVietnameseTones(str) {
 
 export function getDate(date, titleNoDate = '', stringFormate = 'DD/MM/YYYY') {
     return (date && moment(date).isValid()) ? moment(date).format(stringFormate) : titleNoDate;
-};
+}
 
 export function getMonth(date) {
     return new Date(date).getMonth();
@@ -267,17 +273,17 @@ export function formatValue(displayValue, displayValueType) {
 
 export function getFileType(filename) {
     const extension = filename.split('.').pop().toLowerCase();
-    if (extension == "png"
-        || extension == "jpeg"
-        || extension == "gif"
-        || extension == "bmp"
-        || extension == "pdf"
-        || extension == "csv"
-        || extension == "xslx"
-        || extension == "docx"
-        || extension == "mp4"
-        || extension == "webm"
-        || extension == "mp3"
+    if (extension === "png"
+        || extension === "jpeg"
+        || extension === "gif"
+        || extension === "bmp"
+        || extension === "pdf"
+        || extension === "csv"
+        || extension === "xslx"
+        || extension === "docx"
+        || extension === "mp4"
+        || extension === "webm"
+        || extension === "mp3"
     )
         return extension;
     return null;
@@ -320,7 +326,7 @@ export function getTime(value, format = "HH:mm") {
 }
 
 export const formatNumber = (value) => {
-    if (value == null || isNaN(value)) return "0";
+    if (value === null || isNaN(value)) return "0";
     const num = parseFloat(value);
     return num % 1 === 0 ? num.toFixed(0) : num.toFixed(2);
 };

@@ -35,6 +35,7 @@ public class AdministrativeUnitDto extends AuditableDto {
             this.level = entity.getLevel();
             if (entity.getParent() != null) {
                 this.parentId = entity.getParent().getId();
+                this.parentCode = entity.getParent().getCode();
             }
 
             if (isGetParent && entity.getParent() != null) {
@@ -65,25 +66,28 @@ public class AdministrativeUnitDto extends AuditableDto {
     public String getName() {
         return name;
     }
+
     @ExcelColumnSetter(index = 1)
     public void setName(String name) {
         this.name = name;
     }
+
     @ExcelColumnGetter(index = 2, title = "Mã cấp độ(*)")
     public Integer getLevel() {
         return level;
     }
+
     @ExcelColumnSetter(index = 2)
     public void setLevel(Integer level) {
         this.level = level;
     }
 
-    @ExcelColumnGetter(index = 4, title = "Mã đơn vị quản lý")
+    @ExcelColumnGetter(index = 3, title = "Mã đơn vị quản lý")
     public String getParentCode() {
         return parentCode;
     }
 
-    @ExcelColumnSetter(index = 4)
+    @ExcelColumnSetter(index = 3)
     public void setParentCode(String parentCode) {
         this.parentCode = parentCode;
     }

@@ -6,8 +6,15 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import {Button, ButtonGroup, Collapse} from "@mui/material";
 import RotateLeftIcon from '@mui/icons-material/RotateLeft';
 import {SearchObject} from "./SearchObject";
+import {pagingDepartment} from "../Department/DepartmentService";
+import CommonPagingAutocompleteV2 from "../../common/form/CommonPagingAutocompleteV2";
+import CommonDateTimePicker from "../../common/form/CommonDateTimePicker";
+import {EducationLevel, EmployeeStatus, Gender, MaritalStatus, StaffPhase} from "../../LocalConstants";
+import CommonSelectInput from "../../common/form/CommonSelectInput";
+import {useTranslation} from "react-i18next";
 
 function StaffFilter() {
+    const {t} = useTranslation();
     const {staffStore} = useStore();
     const {
         isOpenFilter,
@@ -15,7 +22,7 @@ function StaffFilter() {
         pagingStaff,
         handleSetSearchObject,
     } = staffStore;
-    const {resetForm, setFieldValue, values} = useFormikContext();
+    const {resetForm} = useFormikContext();
 
     async function handleResetFilter() {
         const newSearchObject = {
@@ -29,18 +36,72 @@ function StaffFilter() {
     return (<Collapse in={isOpenFilter} className="filterPopup">
         <div className={"gap-2 grid grid-cols-12"}>
             <div className="grid grid-cols-12 gap-4 col-span-12">
-                <div className="sm:col-span-12 md:col-span-4 lg:col-span-3">
-                    {/*<CommonPagingAutocompleteV2*/}
-                    {/*    label={"Tỉnh/Thành phố"}*/}
-                    {/*    name={"province"}*/}
-                    {/*    searchObject={{level: AdministrativeUnitLevel.PROVINCE.value}}*/}
-                    {/*    handleChange={(_, value) => {*/}
-                    {/*        setFieldValue("province", value);*/}
-                    {/*        setFieldValue("district", null);*/}
-                    {/*        setFieldValue("ward", null);*/}
-                    {/*    }}*/}
-                    {/*    api={ApiPagingAdministrativeUnit}*/}
-                    {/*/>*/}
+                <div className="col-span-12 md:col-span-4 lg:col-span-3">
+                    <CommonDateTimePicker
+                        label={t("Ngày bắt đầu tuyển dụng")}
+                        name="fromRecruitmentDate"
+                    />
+                </div>
+                <div className="col-span-12 md:col-span-4 lg:col-span-3">
+                    <CommonDateTimePicker
+                        label={t("Ngày kết thúc tuyển dụng")}
+                        name="toRecruitmentDate"
+                    />
+                </div>
+                <div className="col-span-12 md:col-span-4 lg:col-span-3">
+                    <CommonDateTimePicker
+                        label={t("Ngày bắt đầu chính thức")}
+                        name="fromStartDate"
+                    />
+                </div>
+                <div className="col-span-12 md:col-span-4 lg:col-span-3">
+                    <CommonDateTimePicker
+                        label={t("Ngày kết thúc chính thức")}
+                        name="toStartDate"
+                    />
+                </div>
+                <div className="col-span-12 md:col-span-4 lg:col-span-3">
+                    <CommonSelectInput
+                        label={t("Trạng thái nhân viên")}
+                        name="employeeStatus"
+                        options={EmployeeStatus.getListData()}
+                    />
+                </div>
+                <div className="col-span-12 md:col-span-4 lg:col-span-3">
+                    <CommonSelectInput
+                        label={t("Loại nhân viên")}
+                        name="staffPhase"
+                        options={StaffPhase.getListData()}
+                    />
+                </div>
+                <div className="col-span-12 md:col-span-4 lg:col-span-3">
+                    <CommonSelectInput
+                        label={t("Giới tính")}
+                        name="gender"
+                        options={Gender.getListData()}
+                        required
+                    />
+                </div>
+                <div className="col-span-12 md:col-span-4 lg:col-span-3">
+                    <CommonSelectInput
+                        label={t("Tình trạng hôn nhân")}
+                        name="maritalStatus"
+                        options={MaritalStatus.getListData()}
+                    />
+                </div>
+                <div className="col-span-12 md:col-span-4 lg:col-span-3">
+                    <CommonSelectInput
+                        label={t("Trình độ học vấn")}
+                        name="educationLevel"
+                        options={EducationLevel.getListData()}
+                    />
+                </div>
+                <div className="col-span-12 md:col-span-4 lg:col-span-3">
+                    <CommonPagingAutocompleteV2
+                        label={t("Phòng ban làm việc")}
+                        name={"department"}
+                        api={pagingDepartment}
+                    />
                 </div>
             </div>
 

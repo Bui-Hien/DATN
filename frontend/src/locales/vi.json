@@ -88,7 +88,11 @@
     "change_password_success": "Đã thay đổi mật khẩu!",
     "change_password_failure": "Có lỗi khi thay đổi mật khẩu!",
     "timekeeping_success": "Đã điểm danh!",
-    "load_fail": "Có lỗi xảy ra khi tải dữ liệu, vui lòng thử lại sau"
+    "load_fail": "Có lỗi xảy ra khi tải dữ liệu, vui lòng thử lại sau",
+    "successExport": "Xuất tệp Excel thành công!",
+    "errorExport": "Xuất tệp Excel thất bại. Vui lòng thử lại.",
+    "successImport": "Nhập tệp Excel thành công!",
+    "errorImport": "Nhập tệp Excel thất bại. Vui lòng kiểm tra định dạng tệp hoặc dữ liệu."
   },
   "confirm_dialog": {
     "createUser": {

@@ -14,7 +14,7 @@ public class Staff extends Person {
     @Column(name = "recruitment_date")
     private Date recruitmentDate; // Ngày tuyển dụng
     @Column(name = "start_date")
-    private Date startDate; // Ngày bắt đầu công việc
+    private Date startDate; // Ngày bắt đầu chính thức
     @Column(name = "apprentice_days")
     private Integer apprenticeDays; // Số ngày học việc/thử việc
     @OneToMany(mappedBy = "staff", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)

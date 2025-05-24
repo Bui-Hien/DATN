@@ -16,15 +16,15 @@ import java.util.List;
 public class StaffDto extends PersonDto {
     private String staffCode;// Mã nhân viên
     private Date recruitmentDate; // Ngày tuyển dụng
-    private Date startDate; // Ngày bắt đầu công việc
+    private Date startDate; // Ngày bắt đầu chính thức
     private Integer apprenticeDays; // Số ngày học việc/thử việc
     private List<StaffLabourAgreementDto> agreements;// Hợp đồng
     @ValidEnumValue(enumClass = DatnConstants.EmployeeStatus.class, message = "Trạng thái nhân viên không hợp lệ")
     private Integer employeeStatus; //DatnConstants.EmployeeStatus
     private DocumentTemplateDto documentTemplate; // mẫu hồ sơ được dùng
     private List<StaffDocumentItemDto> staffDocumentItems;
-    @ValidEnumValue(enumClass = DatnConstants.StaffPhase.class, message = "Tình trạng nhân viên không hợp lệ")
-    private Integer staffPhase; // Tình trạng nhân viên. Chi tiết: DatnConstants.StaffPhase
+    @ValidEnumValue(enumClass = DatnConstants.StaffPhase.class, message = "Loại nhân viên không hợp lệ")
+    private Integer staffPhase; // Loại nhân viên. Chi tiết: DatnConstants.StaffPhase
     private Boolean requireAttendance; //Nhân viên có cần chấm công không không
     private Boolean allowExternalIpTimekeeping; // Cho phép chấm công ngoài
     private SalaryTemplateDto salaryTemplate; //Mẫu bảng lương nhân viên sử dụng dùng để tính lương

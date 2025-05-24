@@ -9,7 +9,7 @@ public class DepartmentDto extends BaseObjectDto {
     private DepartmentDto parent; // Phòng ban cha
     private UUID parentId; // ID phòng ban cha
     private List<DepartmentDto> subRows; // Danh sách phòng ban con
-    private PositionDto positionManager; // Vị trí quản lý
+    private PositionDto positionManager; // Người phụ trách phòng ban
     private List<PositionDto> positions; //
 
     public DepartmentDto() {

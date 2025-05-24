@@ -13,4 +13,5 @@ import java.util.UUID;
 public interface PositionRepository extends JpaRepository<Position, UUID> {
     @Query("SELECT p FROM Position p WHERE p.code = :code")
     Optional<Position> findByCode(@Param("code") String code);
+
 }

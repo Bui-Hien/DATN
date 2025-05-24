@@ -98,16 +98,16 @@ function DepartmentForm() {
                                     <div className="col-span-12 md:col-span-6 xl:col-span-4">
                                         <CommonSelectInputV2
                                             name="positionManager"
-                                            label="Quản lý phòng ban"
+                                            label="Người phụ trách phòng ban"
                                             options={values?.positions}
                                             getOptionLabel={(option) => {
-                                                const positionName = option?.name;
+                                                const positionCode = option?.code;
                                                 const staffName = option?.staff?.displayName;
 
-                                                if (positionName && staffName) {
-                                                    return `${positionName} - ${staffName}`;
+                                                if (positionCode && staffName) {
+                                                    return `${positionCode} - ${staffName}`;
                                                 } else {
-                                                    return positionName || staffName || "";
+                                                    return positionCode || staffName || "";
                                                 }
                                             }}
                                         />

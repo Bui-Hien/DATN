@@ -6,6 +6,7 @@ import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import GroupIcon from '@mui/icons-material/Group';
 import EventNoteIcon from '@mui/icons-material/EventNote';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import ConstantList from "./appConfig";
 
 const iconStyle = "!size-6 !text-white"; // 👈 style dùng chung
 
@@ -53,8 +54,8 @@ export const navigations = [
         auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER],
         children: [
             {
-                name: i18next.t("White list"),
-                path: "/schedule/department-ip",
+                name: i18next.t("Phân ca làm việc"),
+                path: "/staff-work-schedule",
                 isVisible: true,
             },
         ]

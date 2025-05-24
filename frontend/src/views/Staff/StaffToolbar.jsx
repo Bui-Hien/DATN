@@ -11,7 +11,7 @@ import {observer} from "mobx-react-lite";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import StaffFilter from "./StaffFilter";
 
-function StaffToolbar() {
+function StaffToolbar({isAction = true}) {
     const {staffStore} = useStore();
     const {t} = useTranslation();
 
@@ -40,25 +40,27 @@ function StaffToolbar() {
                 {/* Left buttons */}
                 <div className="flex space-x-2">
                     <div className="flex justify-end">
-                        <ButtonGroup
-                            color="container"
-                            aria-label="outlined primary button group"
-                        >
-                            <Button
-                                onClick={() => handleOpenCreateEdit(null)}
-                                startIcon={<AddIcon/>}
+                        {isAction && (
+                            <ButtonGroup
+                                color="container"
+                                aria-label="outlined primary button group"
                             >
-                                {t("general.button.add")}
-                            </Button>
-                            <Button
-                                type="button"
-                                onClick={handleDeleteList}
-                                startIcon={<DeleteIcon/>}
-                                disabled={selectedDataList?.length <= 0}
-                            >
-                                {t("general.button.delete") || "Xóa"}
-                            </Button>
-                        </ButtonGroup>
+                                <Button
+                                    onClick={() => handleOpenCreateEdit(null)}
+                                    startIcon={<AddIcon/>}
+                                >
+                                    {t("general.button.add")}
+                                </Button>
+                                <Button
+                                    type="button"
+                                    onClick={handleDeleteList}
+                                    startIcon={<DeleteIcon/>}
+                                    disabled={selectedDataList?.length <= 0}
+                                >
+                                    {t("general.button.delete") || "Xóa"}
+                                </Button>
+                            </ButtonGroup>
+                        )}
                     </div>
                 </div>
 

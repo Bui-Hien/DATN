@@ -74,6 +74,23 @@ public class DateTimeUtil {
         return date.toLocalDate().atTime(LocalTime.MAX);
     }
 
+    // Lấy thời điểm bắt đầu của ngày (00:00:00)
+    public static Date getStartOfDay(Date date) {
+        LocalDateTime localDateTime = Instant.ofEpochMilli(date.getTime())
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate()
+                .atStartOfDay();
+        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    // Lấy thời điểm kết thúc của ngày (23:59:59.999999999)
+    public static Date getEndOfDay(Date date) {
+        LocalDateTime localDateTime = Instant.ofEpochMilli(date.getTime())
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate()
+                .atTime(LocalTime.MAX);
+        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+    }
     // Lấy năm của một đối tượng LocalDateTime
     public static int getYear(LocalDateTime date) {
         return date.getYear();

@@ -234,14 +234,45 @@ public class StaffServiceImpl extends GenericServiceImpl<Staff, StaffDto, StaffS
         }
 
         if (dto.getKeyword() != null && StringUtils.hasText(dto.getKeyword())) {
-            whereClause.append(" AND (LOWER(entity.name) LIKE LOWER(:text) OR LOWER(entity.code) LIKE LOWER(:text)) ");
+            whereClause.append(" AND (LOWER(entity.displayName) LIKE LOWER(:text) OR LOWER(entity.staffCode) LIKE LOWER(:text)) ");
+        }
+        //Khoảng thời gian tuyển dụng
+        if (dto.getFromRecruitmentDate() != null) {
+            whereClause.append(" AND entity.recruitmentDate >= :fromRecruitmentDate ");
+        }
+        if (dto.getToRecruitmentDate() != null) {
+            whereClause.append(" AND entity.recruitmentDate <= :toRecruitmentDate ");
+        }
+        //Khoảng thời lên chính thức
+        if (dto.getFromStartDate() != null) {
+            whereClause.append(" AND entity.startDate >= :fromStartDate ");
+        }
+        if (dto.getToStartDate() != null) {
+            whereClause.append(" AND entity.startDate <= :toStartDate ");
         }
 
-        if (dto.getFromDate() != null) {
-            whereClause.append(" AND entity.createdAt >= :fromDate ");
+        //Trạng thái nhân viên
+        if (dto.getEmployeeStatus() != null) {
+            whereClause.append(" AND entity.employeeStatus = :employeeStatus ");
         }
-        if (dto.getToDate() != null) {
-            whereClause.append(" AND entity.createdAt <= :toDate ");
+        //Loại nhân viên
+        if (dto.getStaffPhase() != null) {
+            whereClause.append(" AND entity.staffPhase = :staffPhase ");
+        }
+        //Giới tính
+        if (dto.getGender() != null) {
+            whereClause.append(" AND entity.gender = :gender ");
+        }
+        //Tình trạng hôn nhân
+        if (dto.getMaritalStatus() != null) {
+            whereClause.append(" AND entity.maritalStatus = :maritalStatus ");
+        }
+        //Trình độ học vấn
+        if (dto.getEducationLevel() != null) {
+            whereClause.append(" AND entity.educationLevel = :educationLevel ");
+        }
+        if (dto.getDepartmentId() != null) {
+            whereClause.append(" AND EXISTS (SELECT 1 FROM Position p WHERE p.staff.id = entity.id AND p.isMain is true AND p.department.id = :departmentId) ");
         }
 
         sql.append(whereClause);
@@ -253,18 +284,56 @@ public class StaffServiceImpl extends GenericServiceImpl<Staff, StaffDto, StaffS
         Query qCount = manager.createQuery(sqlCount.toString());
 
         if (dto.getKeyword() != null && StringUtils.hasText(dto.getKeyword())) {
-            q.setParameter("text", '%' + dto.getKeyword() + '%');
-            qCount.setParameter("text", '%' + dto.getKeyword() + '%');
+            q.setParameter("text", '%' + dto.getKeyword().toLowerCase() + '%');
+            qCount.setParameter("text", '%' + dto.getKeyword().toLowerCase() + '%');
         }
 
-        if (dto.getFromDate() != null) {
-            q.setParameter("fromDate", dto.getFromDate());
-            qCount.setParameter("fromDate", dto.getFromDate());
+        if (dto.getFromRecruitmentDate() != null) {
+            q.setParameter("fromRecruitmentDate", dto.getFromRecruitmentDate());
+            qCount.setParameter("fromRecruitmentDate", dto.getFromRecruitmentDate());
         }
-        if (dto.getToDate() != null) {
-            q.setParameter("toDate", dto.getToDate());
-            qCount.setParameter("toDate", dto.getToDate());
+        if (dto.getToRecruitmentDate() != null) {
+            q.setParameter("toRecruitmentDate", dto.getToRecruitmentDate());
+            qCount.setParameter("toRecruitmentDate", dto.getToRecruitmentDate());
         }
+
+        if (dto.getFromStartDate() != null) {
+            q.setParameter("fromStartDate", dto.getFromStartDate());
+            qCount.setParameter("fromStartDate", dto.getFromStartDate());
+        }
+        if (dto.getToStartDate() != null) {
+            q.setParameter("toStartDate", dto.getToStartDate());
+            qCount.setParameter("toStartDate", dto.getToStartDate());
+        }
+
+        if (dto.getEmployeeStatus() != null) {
+            q.setParameter("employeeStatus", dto.getEmployeeStatus());
+            qCount.setParameter("employeeStatus", dto.getEmployeeStatus());
+        }
+
+        if (dto.getStaffPhase() != null) {
+            q.setParameter("staffPhase", dto.getStaffPhase());
+            qCount.setParameter("staffPhase", dto.getStaffPhase());
+        }
+
+        if (dto.getGender() != null) {
+            q.setParameter("gender", dto.getGender());
+            qCount.setParameter("gender", dto.getGender());
+        }
+
+        if (dto.getMaritalStatus() != null) {
+            q.setParameter("maritalStatus", dto.getMaritalStatus());
+            qCount.setParameter("maritalStatus", dto.getMaritalStatus());
+        }
+        if (dto.getEducationLevel() != null) {
+            q.setParameter("educationLevel", dto.getEducationLevel());
+            qCount.setParameter("educationLevel", dto.getEducationLevel());
+        }
+        if (dto.getDepartmentId() != null) {
+            q.setParameter("departmentId", dto.getDepartmentId());
+            qCount.setParameter("departmentId", dto.getDepartmentId());
+        }
+
         if (!isExportExcel) {
             q.setFirstResult(pageIndex * pageSize);
             q.setMaxResults(pageSize);

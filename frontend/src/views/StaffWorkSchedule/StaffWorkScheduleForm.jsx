@@ -5,43 +5,34 @@ import {useStore} from "../../stores";
 import * as Yup from "yup";
 import CommonPopupV2 from "../../common/CommonPopupV2";
 import {Button, DialogActions, DialogContent} from "@mui/material";
-import CommonTextField from "../../common/form/CommonTextField";
 import {observer} from "mobx-react-lite";
 import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from "@mui/icons-material/Close";
+import {ShiftWorkType} from "../../LocalConstants";
 import CommonDateTimePicker from "../../common/form/CommonDateTimePicker";
-import CommonPagingAutocompleteV2 from "../../common/form/CommonPagingAutocompleteV2";
-import {pagingFamilyRelationship} from "../FamilyRelationship/FamilyRelationshipService";
-import {pagingProfession} from "../Profession/ProfessionService";
+import CommonSelectInput from "../../common/form/CommonSelectInput";
+import ChooseSelectedStaff from "../../common/CommonSelectedStaff/ChooseSelectedStaff";
 
-function PersonFamilyRelationshipForm(props) {
+function StaffWorkScheduleForm(props) {
     const {t} = useTranslation();
-    const {personFamilyRelationshipStore, staffStore} = useStore();
+    const {staffWorkScheduleStore} = useStore();
 
     const {
         handleClose,
-        savePersonFamilyRelationship,
+        saveStaffWorkSchedule,
         selectedRow,
         openCreateEditPopup,
-    } = personFamilyRelationshipStore;
-
+    } = staffWorkScheduleStore;
 
     const validationSchema = Yup.object({
-        familyRelationship: Yup.object().nullable().required(t("validation.required")),
-        fullName: Yup.string().nullable().required(t("validation.required")),
-        address: Yup.string().nullable(),
-        birthDate: Yup.date().nullable(),
-        profession: Yup.object().nullable(),
+        shiftWorkType: Yup.number().required(t("validation.required")),
+        staff: Yup.object().required(t("validation.required")),
+        workingDate: Yup.date().required(t("validation.required")),
     });
 
 
     async function handleSaveForm(values) {
-        if (!staffStore.selectedRow?.id) return
-        const newValues = {
-            ...values,
-            person: staffStore.selectedRow
-        }
-        await savePersonFamilyRelationship(newValues);
+        await saveStaffWorkSchedule(values);
     }
 
     return (
@@ -50,7 +41,7 @@ function PersonFamilyRelationshipForm(props) {
             scroll={"body"}
             open={openCreateEditPopup}
             noDialogContent
-            title={(selectedRow?.id ? t("general.button.edit") : t("general.button.add")) + ' ' + t("Quan hệ nhân thân")}
+            title={(selectedRow?.id ? t("general.button.edit") : t("general.button.add")) + ' ' + t("Ca làm việc")}
             onClosePopup={handleClose}
             isCreate={!selectedRow?.id}
         >
@@ -66,38 +57,24 @@ function PersonFamilyRelationshipForm(props) {
                             <DialogContent className="p-6">
                                 <div className={"grid grid-cols-12 gap-2"}>
                                     <div className="col-span-12">
-                                        <CommonTextField
-                                            label="Họ và tên"
-                                            name="fullName"
-                                            required/>
+                                        <ChooseSelectedStaff
+                                            name={"staff"}
+                                            multiline={false}
+                                        />
+                                    </div>
+                                    <div className="col-span-12">
+                                        <CommonSelectInput
+                                            label={t("Ca làm việc")}
+                                            name="shiftWorkType"
+                                            options={ShiftWorkType.getListData()}
+                                            required
+                                        />
                                     </div>
                                     <div className="col-span-12">
                                         <CommonDateTimePicker
-                                            label={t("Ngày sinh")}
-                                            name="birthDate"
-                                            disableFuture
-                                        />
-                                    </div>
-                                    <div className="col-span-12">
-                                        <CommonPagingAutocompleteV2
-                                            label={t("Loại quan hệ")}
-                                            name="familyRelationship"
-                                            api={pagingFamilyRelationship}
-                                        />
-                                    </div>
-                                    <div className="col-span-12">
-                                        <CommonPagingAutocompleteV2
-                                            label="Nghề nghiệp"
-                                            name="profession"
-                                            api={pagingProfession}
-                                        />
-                                    </div>
-                                    <div className="col-span-12">
-                                        <CommonTextField
-                                            label="Địa chỉ"
-                                            name="address"
-                                            multiline
-                                            rows={3}
+                                            label={t("Ngày làm việc")}
+                                            name="workingDate"
+                                            required
                                         />
                                     </div>
                                 </div>
@@ -136,4 +113,4 @@ function PersonFamilyRelationshipForm(props) {
     );
 }
 
-export default memo(observer(PersonFamilyRelationshipForm));
+export default memo(observer(StaffWorkScheduleForm));

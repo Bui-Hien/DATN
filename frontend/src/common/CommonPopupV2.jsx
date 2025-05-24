@@ -6,8 +6,8 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import {styled} from '@mui/material/styles';
-import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 const StyledDialog = styled(Dialog)(({theme}) => ({
     '& .MuiDialogContent-root': {
@@ -54,7 +54,7 @@ export default function CommonPopupV2({
                 >
                     <div className="">
                         {(!noIcon && isCreate) && (
-                            <AddIcon/>
+                            <AddCircleOutlineIcon/>
                         )}
                         {(!noIcon && isEdit)
                             && (
