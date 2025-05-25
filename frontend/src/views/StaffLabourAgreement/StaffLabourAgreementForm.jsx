@@ -87,6 +87,8 @@ function StaffLabourAgreementForm() {
                                         label={t("Số hợp đồng")}
                                         name="labourAgreementNumber"
                                         required
+                                        disabled={staffStore.isProfile}
+                                        readOnly={staffStore.isProfile}
                                     />
                                 </div>
                                 <div className="col-span-12 md:col-span-4">
@@ -94,6 +96,8 @@ function StaffLabourAgreementForm() {
                                         label={t("Loại hợp đồng")}
                                         name="contractType"
                                         options={ContractType.getListData()}
+                                        disabled={staffStore.isProfile}
+                                        readOnly={staffStore.isProfile}
                                     />
                                 </div>
                                 <div className="col-span-12 md:col-span-4">
@@ -101,44 +105,58 @@ function StaffLabourAgreementForm() {
                                         label={t("Ngày ký")}
                                         name="startDate"
                                         disableFuture
+                                        disabled={staffStore.isProfile}
+                                        readOnly={staffStore.isProfile}
                                     />
                                 </div>
                                 <div className="col-span-12 md:col-span-4">
                                     <CommonNumberInput
                                         label={t("Số tháng hợp đồng")}
                                         name="durationMonths"
+                                        disabled={staffStore.isProfile}
+                                        readOnly={staffStore.isProfile}
                                     />
                                 </div>
                                 <div className="col-span-12 md:col-span-4">
                                     <CommonNumberInput
                                         label={t("Số giờ làm việc tối thiểu trong ngày")}
                                         name="workingHour"
-                                        required/>
+                                        required
+                                        disabled={staffStore.isProfile}
+                                        readOnly={staffStore.isProfile}
+                                    />
                                 </div>
                                 <div className="col-span-12 md:col-span-4">
                                     <CommonNumberInput
                                         label={t("Số giờ làm việc tối thiểu trong tháng")}
                                         name="workingHourWeekMin"
-                                        required/>
+                                        required
+                                        disabled={staffStore.isProfile}
+                                        readOnly={staffStore.isProfile}
+                                    />
                                 </div>
                                 <div className="col-span-12 md:col-span-4">
                                     <CommonNumberInput
                                         label={t("Lương cơ bản")}
                                         name="salary"
+                                        disabled={staffStore.isProfile}
+                                        readOnly={staffStore.isProfile}
                                         required/>
                                 </div>
                                 <div className="col-span-12 md:col-span-4">
                                     <CommonDateTimePicker
                                         label={t("Ngày hết hạn")}
                                         name="signedDate"
-                                    />
+                                        disabled={staffStore.isProfile}
+                                        readOnly={staffStore.isProfile}/>
                                 </div>
                                 <div className="col-span-12 md:col-span-4">
                                     <CommonSelectInput
                                         label={t("Trạng thái hợp đồng")}
                                         name="agreementStatus"
                                         options={StaffLabourAgreementStatus.getListData()}
-                                        required/>
+                                        disabled={staffStore.isProfile}
+                                        readOnly={staffStore.isProfile} required/>
                                 </div>
                             </div>
                         </DialogContent>
@@ -150,21 +168,23 @@ function StaffLabourAgreementForm() {
                                     color="secondary"
                                     disabled={isSubmitting}
                                     onClick={handleClose}
-                                    className="rounded-lg px-4 py-2 !mr-2 !bg-red-500"
+                                    className={`rounded-lg px-4 py-2 ${!staffStore.isProfile && " !mr-2 "}  !bg-red-500`}
                                     startIcon={<CloseIcon/>}
                                 >
                                     {t("general.button.close")}
                                 </Button>
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    type="submit"
-                                    disabled={isSubmitting}
-                                    className="rounded-lg px-4 py-2"
-                                    startIcon={<SaveIcon/>}
-                                >
-                                    {t("general.button.save")}
-                                </Button>
+                                {!staffStore.isProfile && (
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        type="submit"
+                                        disabled={isSubmitting}
+                                        className="rounded-lg px-4 py-2"
+                                        startIcon={<SaveIcon/>}
+                                    >
+                                        {t("general.button.save")}
+                                    </Button>
+                                )}
                             </div>
                         </DialogActions>
                     </Form>

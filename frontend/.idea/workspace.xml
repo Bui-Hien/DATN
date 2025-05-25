@@ -5,60 +5,48 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e47dca97-3d3a-416a-b068-5f4a89d0539a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/controller/RestStaffWorkScheduleController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/StaffWorkScheduleListDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/CommonSelectedStaff/ChooseSelectedStaff.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/CommonSelectedStaff/CommonSelectedStaffList.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/StaffWorkSchedule/SearchObject.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/StaffWorkSchedule/StaffWorkSchedule.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/StaffWorkSchedule/StaffWorkScheduleFilter.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/StaffWorkSchedule/StaffWorkScheduleForm.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/StaffWorkSchedule/StaffWorkScheduleIndex.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/StaffWorkSchedule/StaffWorkScheduleList.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/StaffWorkSchedule/StaffWorkScheduleList/StaffWorkScheduleFormList.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/StaffWorkSchedule/StaffWorkScheduleList/StaffWorkScheduleListObject.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/StaffWorkSchedule/StaffWorkScheduleList/StaffWorkScheduleListTable.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/StaffWorkSchedule/StaffWorkScheduleRoutes.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/StaffWorkSchedule/StaffWorkScheduleService.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/StaffWorkSchedule/StaffWorkScheduleStore.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/StaffWorkSchedule/StaffWorkScheduleToolbar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/domain/Staff.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/domain/Staff.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/AdministrativeUnitDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/AdministrativeUnitDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/DepartmentDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/DepartmentDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/StaffDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/StaffDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/StaffWorkScheduleSummaryDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/StaffWorkScheduleSummary/StaffWorkScheduleSummaryFilter.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/StaffWorkScheduleSummary/StaffWorkScheduleSummaryIndex.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/StaffWorkScheduleSummary/StaffWorkScheduleSummaryList.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/StaffWorkScheduleSummary/StaffWorkScheduleSummaryRoutes.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/StaffWorkScheduleSummary/StaffWorkScheduleSummaryStore.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/StaffWorkScheduleSummary/StaffWorkScheduleSummaryToolbar.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/TimeSheetDetail/TimeSheetDetailFilter.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/TimeSheetDetail/TimeSheetDetailForm.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/TimeSheetDetail/TimeSheetDetailIndex.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/TimeSheetDetail/TimeSheetDetailList.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/TimeSheetDetail/TimeSheetDetailRoutes.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/TimeSheetDetail/TimeSheetDetailToolbar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/DatnConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/DatnConstants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/controller/RestStaffWorkScheduleController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/controller/RestStaffWorkScheduleController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/StaffWorkScheduleDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/StaffWorkScheduleDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/search/SearchDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/search/SearchDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/search/StaffSearchDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/search/StaffSearchDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/repository/PositionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/repository/PositionRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/search/StaffWorkScheduleSearchDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/search/StaffWorkScheduleSearchDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/repository/StaffWorkScheduleRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/repository/StaffWorkScheduleRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/AdministrativeUnitServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/AdministrativeUnitServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/StaffWorkScheduleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/StaffWorkScheduleService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/StaffServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/StaffServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/StaffWorkScheduleServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/StaffWorkScheduleServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/util/DateTimeUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/util/DateTimeUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/LocalConstants.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/LocalConstants.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/LocalFunction.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/LocalFunction.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/RootRoutes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/RootRoutes.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/CommonPopupV2.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/CommonPopupV2.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/locales/vi.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/locales/vi.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/CommonSelectedStaff/ChooseSelectedStaff.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/CommonSelectedStaff/ChooseSelectedStaff.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/CommonTable.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/CommonTable.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/navigations.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/navigations.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/stores.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/AdministrativeUnit/AdministrativeUnitFilter.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/AdministrativeUnit/AdministrativeUnitFilter.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/AdministrativeUnit/AdministrativeUnitService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/AdministrativeUnit/AdministrativeUnitService.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/AdministrativeUnit/AdministrativeUnitStore.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/AdministrativeUnit/AdministrativeUnitStore.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/AdministrativeUnit/AdministrativeUnitToolbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/AdministrativeUnit/AdministrativeUnitToolbar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/Department/DepartmentForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Department/DepartmentForm.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/Department/PositionSection.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Department/PositionSection.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/PersonFamilyRelationship/PersonFamilyRelationshipForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/PersonFamilyRelationship/PersonFamilyRelationshipForm.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/SalaryTemplate/SalaryTemplateForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/SalaryTemplate/SalaryTemplateForm.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/SalaryTemplate/SalaryTemplateItemSection.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/SalaryTemplate/SalaryTemplateItemSection.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/Staff/SearchObject.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Staff/SearchObject.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/Staff/StaffFilter.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Staff/StaffFilter.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/SalaryResultItem/SalaryResultItemList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/SalaryResultItem/SalaryResultItemList.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/Staff/ProfileStaff.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Staff/ProfileStaff.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/Staff/StaffRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Staff/StaffRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/Staff/StaffService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Staff/StaffService.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/Staff/StaffStore.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Staff/StaffStore.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/Staff/StaffToolbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Staff/StaffToolbar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/Staff/Tab/PersonalInformation.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Staff/Tab/PersonalInformation.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/StaffLabourAgreement/StaffLabourAgreementForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/StaffLabourAgreement/StaffLabourAgreementForm.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/StaffLabourAgreement/StaffLabourAgreementList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/StaffLabourAgreement/StaffLabourAgreementList.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/StaffLabourAgreement/StaffLabourAgreementToolbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/StaffLabourAgreement/StaffLabourAgreementToolbar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/StaffWorkSchedule/SearchObject.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/StaffWorkSchedule/SearchObject.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/StaffWorkSchedule/StaffWorkSchedule.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/StaffWorkSchedule/StaffWorkSchedule.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/StaffWorkSchedule/StaffWorkScheduleService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/StaffWorkSchedule/StaffWorkScheduleService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/StaffWorkSchedule/StaffWorkScheduleStore.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/StaffWorkSchedule/StaffWorkScheduleStore.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +81,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/workspace/DATN/frontend/src/views/StaffWorkSchedule/StaffWorkScheduleList",
+    "last_opened_file_path": "C:/workspace/DATN/frontend/src/views/StaffWorkScheduleSummary",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -107,18 +95,18 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\workspace\DATN\frontend\src\views\StaffWorkScheduleSummary" />
+      <recent name="C:\workspace\DATN\frontend\src\views" />
       <recent name="C:\workspace\DATN\frontend\src\views\StaffWorkSchedule\StaffWorkScheduleList" />
       <recent name="C:\workspace\DATN\frontend\src\views\StaffWorkSchedule" />
-      <recent name="C:\workspace\DATN\frontend\src\views" />
       <recent name="C:\workspace\DATN\frontend\src\common\CommonSelectedStaff" />
-      <recent name="C:\workspace\DATN\frontend\src\views\SalaryResult\SalaryResultItemDetail" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\workspace\DATN\frontend\src\views\TimeSheetDetail" />
+      <recent name="C:\workspace\DATN\frontend\src\views\StaffWorkSchedule" />
       <recent name="C:\workspace\DATN\frontend\src\views\StaffWorkSchedule\StaffWorkScheduleList" />
       <recent name="C:\workspace\DATN\frontend\src\views" />
       <recent name="C:\workspace\DATN\frontend\src\views\SalaryResult" />
-      <recent name="C:\workspace\DATN\frontend\src\views\Certificate" />
-      <recent name="C:\workspace\DATN\frontend\src\views\StaffDocumentItem" />
     </key>
   </component>
   <component name="RunManager">
@@ -162,7 +150,7 @@
       <workItem from="1747735871403" duration="20522000" />
       <workItem from="1747795529751" duration="33485000" />
       <workItem from="1747881001810" duration="78542000" />
-      <workItem from="1748056958999" duration="24309000" />
+      <workItem from="1748056958999" duration="45824000" />
     </task>
     <servers />
   </component>

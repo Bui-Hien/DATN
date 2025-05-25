@@ -7,12 +7,13 @@ import ReligionRoutes from "./views/Religion/ReligionRoutes";
 import AdministrativeUnitRoutes from "./views/AdministrativeUnit/AdministrativeUnitRoutes";
 import DocumentTemplateRoutes from "./views/DocumentTemplate/DocumentTemplateRoutes";
 import DepartmentRoutes from "./views/Department/DepartmentRoutes";
-import DepartmentIpRoutes from "./views/DepartmentIp/DepartmentIpRoutes";
 import StaffRoutes from "./views/Staff/StaffRoutes";
 import SalaryTemplateRoutes from "./views/SalaryTemplate/SalaryTemplateRoutes";
 import SalaryPeriodRoutes from "./views/SalaryPeriod/SalaryPeriodRoutes";
 import SalaryResultRoutes from "./views/SalaryResult/SalaryResultRoutes";
+import TimeSheetDetailRoutes from "./views/TimeSheetDetail/TimeSheetDetailRoutes";
 import StaffWorkScheduleRoutes from "./views/StaffWorkSchedule/StaffWorkScheduleRoutes";
+import StaffWorkScheduleSummaryRoutes from "./views/StaffWorkScheduleSummary/StaffWorkScheduleSummaryRoutes";
 
 const routes = [
     //Danh mục chung
@@ -32,7 +33,8 @@ const routes = [
 
     //Chấm công
     ...StaffWorkScheduleRoutes,
-
+    ...TimeSheetDetailRoutes,
+    ...StaffWorkScheduleSummaryRoutes,
     //Lương
     ...SalaryTemplateRoutes,
     ...SalaryPeriodRoutes,

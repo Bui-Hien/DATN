@@ -8,28 +8,32 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import SearchIcon from "@mui/icons-material/Search";
 import CommonTextField from "../../common/form/CommonTextField";
 import {observer} from "mobx-react-lite";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import StaffWorkScheduleFilter from "./TimeSheetDetailFilter";
 
-function StaffLabourAgreementToolbar() {
-    const {staffLabourAgreementStore, staffStore} = useStore();
+function TimeSheetDetailToolbar() {
+    const {staffWorkScheduleStore} = useStore();
     const {t} = useTranslation();
 
     const {
         handleDeleteList,
-        pagingStaffLabourAgreement,
+        pagingStaffWorkSchedule,
         handleOpenCreateEdit,
         searchObject,
         selectedDataList,
         handleSetSearchObject,
-    } = staffLabourAgreementStore;
+        handleTogglePopupFilter,
+        isOpenFilter,
+    } = staffWorkScheduleStore;
 
     async function handleFilter(values) {
         const newSearchObject = {
             ...values,
-            ownerId: staffStore.selectedRow?.id,
             pageIndex: 1,
+            timeSheetDetail: true
         };
         handleSetSearchObject(newSearchObject);
-        await pagingStaffLabourAgreement();
+        await pagingStaffWorkSchedule();
     }
 
     return (
@@ -40,27 +44,25 @@ function StaffLabourAgreementToolbar() {
                         {/* Left buttons */}
                         <div className="flex space-x-2">
                             <div className="flex justify-end">
-                                {!staffStore.isProfile && (
-                                    <ButtonGroup
-                                        color="container"
-                                        aria-label="outlined primary button group"
+                                <ButtonGroup
+                                    color="container"
+                                    aria-label="outlined primary button group"
+                                >
+                                    <Button
+                                        onClick={() => handleOpenCreateEdit(null)}
+                                        startIcon={<AddIcon/>}
                                     >
-                                        <Button
-                                            onClick={() => handleOpenCreateEdit(null)}
-                                            startIcon={<AddIcon/>}
-                                        >
-                                            {t("general.button.add")}
-                                        </Button>
-                                        <Button
-                                            type="button"
-                                            onClick={handleDeleteList}
-                                            startIcon={<DeleteIcon/>}
-                                            disabled={selectedDataList?.length <= 0}
-                                        >
-                                            {t("general.button.delete") || "Xóa"}
-                                        </Button>
-                                    </ButtonGroup>
-                                )}
+                                        {t("general.button.add")}
+                                    </Button>
+                                    <Button
+                                        type="button"
+                                        onClick={handleDeleteList}
+                                        startIcon={<DeleteIcon/>}
+                                        disabled={selectedDataList?.length <= 0}
+                                    >
+                                        {t("general.button.delete") || "Xóa"}
+                                    </Button>
+                                </ButtonGroup>
                             </div>
                         </div>
 
@@ -83,14 +85,24 @@ function StaffLabourAgreementToolbar() {
                                     >
                                         {t("general.button.search") || "Tìm kiếm"}
                                     </Button>
+                                    <Button
+                                        className="whitespace-nowrap"
+                                        onClick={handleTogglePopupFilter}
+                                        startIcon={<FilterListIcon
+                                            className={`w-5 h-5 transform transition-transform duration-300 ${isOpenFilter ? "rotate-180" : ""}`}
+                                        />}
+                                    >
+                                        {t("general.button.filter") || "Bộ lọc"}
+                                    </Button>
                                 </ButtonGroup>
                             </div>
                         </div>
                     </div>
+                    <StaffWorkScheduleFilter/>
                 </Form>
             )}
         </Formik>
     );
 }
 
-export default memo(observer(StaffLabourAgreementToolbar));
+export default memo(observer(TimeSheetDetailToolbar));

@@ -21,6 +21,7 @@ function ChooseSelectedStaff(props) {
         isOnlyChoose = false,
         multiline = false,
         className = "",
+        required = false
     }
         = props;
     const {
@@ -59,7 +60,7 @@ function ChooseSelectedStaff(props) {
                                         ? `${option.staffCode} - ${option.displayName}`
                                         : option?.staffCode || option?.displayName || ""
                                 }
-                                required
+                                required={required}
                                 disabled
                             />
                         </div>

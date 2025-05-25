@@ -16,6 +16,10 @@ export const getStaffById = (id) => {
     let url = API_PATH + "/" + id;
     return api.get(url);
 };
+export const getCurrentStaff = () => {
+    let url = API_PATH + "/current-staff";
+    return api.get(url);
+};
 
 export const deleteStaff = (id) => {
     let url = API_PATH + "/" + id;

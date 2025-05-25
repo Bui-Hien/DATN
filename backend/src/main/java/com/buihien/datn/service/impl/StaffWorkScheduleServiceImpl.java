@@ -3,9 +3,7 @@ package com.buihien.datn.service.impl;
 import com.buihien.datn.DatnConstants;
 import com.buihien.datn.domain.Staff;
 import com.buihien.datn.domain.StaffWorkSchedule;
-import com.buihien.datn.dto.StaffDto;
-import com.buihien.datn.dto.StaffWorkScheduleDto;
-import com.buihien.datn.dto.StaffWorkScheduleListDto;
+import com.buihien.datn.dto.*;
 import com.buihien.datn.dto.search.StaffWorkScheduleSearchDto;
 import com.buihien.datn.exception.InvalidDataException;
 import com.buihien.datn.exception.ResourceNotFoundException;
@@ -27,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.buihien.datn.util.DateTimeUtil.getEndOfDay;
 import static com.buihien.datn.util.DateTimeUtil.getStartOfDay;
@@ -79,6 +78,8 @@ public class StaffWorkScheduleServiceImpl extends GenericServiceImpl<StaffWorkSc
         entity.setWorkingDate(dto.getWorkingDate());
         Staff coordinator = extractCurrentUserService.extractCurrentStaff();
         entity.setCoordinator(coordinator);
+        entity.setShiftWorkStatus(DatnConstants.ShiftWorkStatus.CREATED.getValue());
+
         return entity;
     }
 
@@ -122,7 +123,9 @@ public class StaffWorkScheduleServiceImpl extends GenericServiceImpl<StaffWorkSc
         if (dto.getToDate() != null) {
             whereClause.append(" AND entity.workingDate <= :toDate ");
         }
-
+        if (dto.getTimeSheetDetail() != null && dto.getTimeSheetDetail()) {
+            whereClause.append(" AND entity.shiftWorkStatus != :shiftWorkStatus");
+        }
         sql.append(whereClause);
         sqlCount.append(whereClause);
 
@@ -163,6 +166,12 @@ public class StaffWorkScheduleServiceImpl extends GenericServiceImpl<StaffWorkSc
             q.setParameter("toDate", dto.getToDate());
             qCount.setParameter("toDate", dto.getToDate());
         }
+        if (dto.getTimeSheetDetail() != null && dto.getTimeSheetDetail()) {
+            int shiftWorkStatus = DatnConstants.ShiftWorkStatus.CREATED.getValue();
+            q.setParameter("shiftWorkStatus", shiftWorkStatus);
+            qCount.setParameter("shiftWorkStatus", shiftWorkStatus);
+        }
+
         if (!isExportExcel) {
             q.setFirstResult(pageIndex * pageSize);
             q.setMaxResults(pageSize);
@@ -209,29 +218,29 @@ public class StaffWorkScheduleServiceImpl extends GenericServiceImpl<StaffWorkSc
     }
 
     @Override
-    public void markAttendance(UUID staffWorkScheduleId, boolean isCheckIn) {
-        logger.info("Đang chấm công, {}", isCheckIn ? "check-in" : "check-out");
-
+    public StaffWorkScheduleDto markAttendance(StaffWorkScheduleDto dto) {
         // Kiểm tra ID ca làm việc không được để trống
-        if (staffWorkScheduleId == null) {
+        if (dto == null || dto.getId() == null) {
             throw new InvalidDataException("Ca làm việc không được để trống");
         }
 
         // Tìm ca làm việc theo ID
         StaffWorkSchedule schedule = staffWorkScheduleRepository
-                .findById(staffWorkScheduleId).orElseThrow(() -> {
-                    logger.warn("Không tìm thấy ca làm việc với ID: {}", staffWorkScheduleId);
+                .findById(dto.getId()).orElseThrow(() -> {
+                    logger.warn("Không tìm thấy ca làm việc với ID: {}", dto.getId());
                     return new ResourceNotFoundException("Không tìm thấy ca làm việc");
                 });
 
-        // Kiểm tra quyền của người dùng
-        Staff currentStaff = extractCurrentUserService.extractCurrentStaff();
-        if (currentStaff == null) {
-            throw new InvalidDataException("Người chấm công không hợp lệ");
-        }
+
         boolean hasRole = extractCurrentUserService.hasAnyRole(
                 List.of(DatnConstants.ROLE_ADMIN, DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_MANAGER)
         );
+
+        // Kiểm tra quyền của người dùng
+        Staff currentStaff = extractCurrentUserService.extractCurrentStaff();
+        if (currentStaff == null && !hasRole) {
+            throw new InvalidDataException("Người chấm công không hợp lệ");
+        }
         if (hasRole || currentStaff.getId().equals(schedule.getStaff().getId())) {
             Date now = new Date(); // Lấy thời gian hiện tại của hệ thống
             // Kiểm tra nếu là admin, thì cho phép chấm công cho ngày trong quá khứ
@@ -241,29 +250,32 @@ public class StaffWorkScheduleServiceImpl extends GenericServiceImpl<StaffWorkSc
                     throw new InvalidDataException("Thời gian chấm công không hợp lệ");
                 }
             }
-
-            // Kiểm tra xem thời gian hiện tại có nằm trong khoảng thời gian làm việc không
-            if (schedule.getWorkingDate() != null && !DateTimeUtil.isSameDay(schedule.getWorkingDate(), now)) {
-                throw new InvalidDataException("Thời gian chấm công không hợp lệ");
-            }
             // Nếu ca làm việc đã bị khóa thì không cho phép chấm công
             if (Boolean.TRUE.equals(schedule.getIsLocked())) {
                 throw new InvalidDataException("Ca làm việc đã bị khóa, không thể chấm công");
             }
 
-            // Ghi nhận thời gian chấm công (vào hoặc ra)
-            if (isCheckIn) {
-                schedule.setCheckIn(now);
-                logger.info("Đã chấm công giờ vào: {}", now);
+            if (hasRole) {
+                schedule.setCheckIn(dto.getCheckIn());
+                schedule.setCheckOut(dto.getCheckOut());
             } else {
-                schedule.setCheckOut(now);
-                logger.info("Đã chấm công giờ ra: {}", now);
+                if (schedule.getCheckIn() == null && schedule.getCheckOut() == null) {
+                    schedule.setCheckIn(now);
+                    logger.info("Đã chấm công giờ vào: {}", now);
+                } else {
+                    schedule.setCheckOut(now);
+                    logger.info("Đã chấm công giờ ra: {}", now);
+                }
             }
 
             // Xác định trạng thái ca làm việc dựa trên giờ vào và ra
             if (schedule.getCheckIn() != null && schedule.getCheckOut() != null) {
                 // Lấy thông tin loại ca làm việc
                 DatnConstants.ShiftWorkType shiftWorkType = DatnConstants.ShiftWorkType.getShiftWorkType(schedule.getShiftWorkType());
+                if (shiftWorkType == null) {
+                    throw new InvalidDataException("Ca làm việc không tồn tại");
+                }
+
                 Date expectedStart = shiftWorkType.getStartTime();
                 Date expectedEnd = shiftWorkType.getEndTime();
 
@@ -291,11 +303,12 @@ public class StaffWorkScheduleServiceImpl extends GenericServiceImpl<StaffWorkSc
                 schedule.setShiftWorkStatus(DatnConstants.ShiftWorkStatus.CHECKED_IN.getValue());
             } else {
                 // Chưa chấm công
-                schedule.setShiftWorkStatus(DatnConstants.ShiftWorkStatus.NOT_STARTED.getValue());
+                schedule.setShiftWorkStatus(DatnConstants.ShiftWorkStatus.CREATED.getValue());
             }
 
             // Lưu lại kết quả chấm công
-            staffWorkScheduleRepository.save(schedule);
+            schedule = staffWorkScheduleRepository.save(schedule);
+            return new StaffWorkScheduleDto(schedule, true);
         } else {
             throw new InvalidDataException("Người chấm công không có quyền thực hiện thao tác này");
         }
@@ -375,7 +388,9 @@ public class StaffWorkScheduleServiceImpl extends GenericServiceImpl<StaffWorkSc
                         schedule.setStaff(staff);
                         schedule.setShiftWorkType(shiftType);
                         schedule.setCoordinator(coordinator);
-
+                        if (schedule.getShiftWorkStatus()==null){
+                            schedule.setShiftWorkStatus(DatnConstants.ShiftWorkStatus.CREATED.getValue());
+                        }
                         staffWorkScheduleList.add(schedule);
                     }
                 }
@@ -386,6 +401,77 @@ public class StaffWorkScheduleServiceImpl extends GenericServiceImpl<StaffWorkSc
         staffWorkScheduleList = repository.saveAll(staffWorkScheduleList);
         return staffWorkScheduleList.size();
     }
+
+    @Override
+    public List<StaffWorkScheduleDto> getListByStaffAndWorkingDate(StaffWorkScheduleSearchDto dto) {
+        if (dto == null || dto.getStaffId() == null) {
+            throw new InvalidDataException("Chưa chọn nhân viên để chấm công");
+        }
+
+        if (dto.getWorkingDate() == null) {
+            throw new InvalidDataException("Ngày làm việc không được để trống");
+        }
+
+        Date startOfDay = getStartOfDay(dto.getWorkingDate());
+        Date endOfDay = getEndOfDay(dto.getWorkingDate());
+
+        List<StaffWorkSchedule> schedules = staffWorkScheduleRepository
+                .findStaffWorkScheduleByStaffAndWorkingDate(dto.getStaffId(), startOfDay, endOfDay);
+        List<StaffWorkScheduleDto> staffWorkScheduleDtoList = new ArrayList<>();
+        for (StaffWorkSchedule item : schedules) {
+            staffWorkScheduleDtoList.add(new StaffWorkScheduleDto(item, true));
+        }
+        return staffWorkScheduleDtoList;
+    }
+
+    @Override
+    public Page<StaffWorkScheduleSummaryDto> getScheduleSummary(StaffWorkScheduleSearchDto dto) {
+        dto.setExportExcel(true);
+
+        if (dto.getPageIndex() == null) dto.setPageIndex(0);
+        else dto.setPageIndex(dto.getPageIndex() - 1);
+        if (dto.getPageSize() == null) dto.setPageSize(10);
+
+        List<StaffWorkScheduleDto> schedules = this.pagingSearch(dto).getContent();
+
+        Map<UUID, List<StaffWorkScheduleDto>> groupedByStaff = schedules.stream()
+                .filter(s -> s.getStaff() != null && s.getStaff().getId() != null)
+                .collect(Collectors.groupingBy(s -> s.getStaff().getId()));
+
+        List<StaffWorkScheduleSummaryDto> result = new ArrayList<>();
+
+        for (Map.Entry<UUID, List<StaffWorkScheduleDto>> entry : groupedByStaff.entrySet()) {
+            List<StaffWorkScheduleDto> staffSchedules = entry.getValue();
+            if (staffSchedules.isEmpty()) continue;
+
+            // Sort từng lịch làm việc theo ngày
+            staffSchedules.sort(Comparator.comparing(StaffWorkScheduleDto::getWorkingDate));
+
+            StaffDto staffDto = staffSchedules.get(0).getStaff();
+            result.add(new StaffWorkScheduleSummaryDto(staffDto, staffSchedules));
+        }
+
+        // Sort theo tên nhân viên
+        result.sort(Comparator.comparing(summary -> summary.getStaff().getStaffCode(), Comparator.nullsLast(String::compareToIgnoreCase)));
+
+        int pageIndex = dto.getPageIndex();
+        int pageSize = dto.getPageSize();
+        List<StaffWorkScheduleSummaryDto> pagedResults = manualPaging(result, pageIndex, pageSize);
+        long total = result.size();
+
+        return new PageImpl<>(pagedResults, PageRequest.of(pageIndex, pageSize), total);
+    }
+
+    private List<StaffWorkScheduleSummaryDto> manualPaging(List<StaffWorkScheduleSummaryDto> list, int pageIndex, int pageSize) {
+        if (list == null || list.isEmpty()) return new ArrayList<>();
+
+        int startIndex = pageIndex * pageSize;
+        if (startIndex >= list.size()) return new ArrayList<>();
+
+        int endIndex = Math.min(startIndex + pageSize, list.size());
+        return list.subList(startIndex, endIndex);
+    }
+
 
     private int convertJavaDayOfWeek(int javaDayOfWeek) {
         return javaDayOfWeek == Calendar.SUNDAY ? 7 : javaDayOfWeek - 1;

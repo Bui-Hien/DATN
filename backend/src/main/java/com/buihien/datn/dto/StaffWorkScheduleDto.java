@@ -27,14 +27,20 @@ public class StaffWorkScheduleDto extends AuditableDto {
         if (entity != null) {
             this.shiftWorkType = entity.getShiftWorkType();
             if (entity.getStaff() != null) {
-                this.staff = new StaffDto(entity.getStaff(), false);
+                this.staff = new StaffDto();
+                this.staff.setId(entity.getStaff().getId());
+                this.staff.setStaffCode(entity.getStaff().getStaffCode());
+                this.staff.setDisplayName(entity.getStaff().getDisplayName());
             }
             this.workingDate = entity.getWorkingDate();
             this.checkIn = entity.getCheckIn();
             this.checkOut = entity.getCheckOut();
             this.shiftWorkStatus = entity.getShiftWorkStatus();
             if (entity.getCoordinator() != null) {
-                this.coordinator = new StaffDto(entity.getCoordinator(), false);
+                this.coordinator = new StaffDto();
+                this.coordinator.setId(entity.getCoordinator().getId());
+                this.coordinator.setStaffCode(entity.getCoordinator().getStaffCode());
+                this.coordinator.setDisplayName(entity.getCoordinator().getDisplayName());
             }
             this.isLocked = entity.getIsLocked();
             if (isGetFull) {

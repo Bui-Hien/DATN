@@ -1,5 +1,5 @@
 import {makeAutoObservable} from "mobx";
-import {deleteMultipleStaffByIds, deleteStaff, getStaffById, pagingStaff, saveStaff,} from "./StaffService";
+import {deleteMultipleStaffByIds, deleteStaff,getCurrentStaff,  getStaffById, pagingStaff, saveStaff,} from "./StaffService";
 import {toast} from "react-toastify";
 import i18n from "i18next";
 import {SearchObject} from "./SearchObject";
@@ -17,6 +17,7 @@ export default class StaffStore {
     selectedRow = new StaffObject();
     selectedDataList = [];
     isOpenFilter = false;
+    isProfile = false;
 
     constructor() {
         makeAutoObservable(this);
@@ -34,7 +35,9 @@ export default class StaffStore {
         this.selectedDataList = [];
         this.isOpenFilter = false;
     };
-
+    handleSetIsProfile = () => {
+        this.isProfile = true;
+    }
     pagingStaff = async () => {
         try {
             const newSearch = {
@@ -81,6 +84,22 @@ export default class StaffStore {
                 this.selectedRow = new StaffObject();
             }
             this.openCreateEditPopup = true;
+        } catch (error) {
+            console.error(error);
+            if (error?.response?.data?.message) {
+                toast.error(error?.response?.data?.message);
+            } else {
+                toast.error(i18n.t("toast.error"));
+            }
+        }
+    };
+    getCurrentStaff = async () => {
+        try {
+            const {data} = await getCurrentStaff();
+            this.selectedRow = {
+                ...new StaffObject(),
+                ...data.data,
+            };
         } catch (error) {
             console.error(error);
             if (error?.response?.data?.message) {

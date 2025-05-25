@@ -1,6 +1,18 @@
 import moment from "moment";
 import React from "react";
 
+export function isSameDate(date1, date2) {
+    if (date1 === null || date2 === null || date1 === undefined || date2 === undefined) return false;
+    const d1 = new Date(date1);
+    const d2 = new Date(date2);
+
+    return (
+        d1.getFullYear() === d2.getFullYear() &&
+        d1.getMonth() === d2.getMonth() &&
+        d1.getDate() === d2.getDate()
+    );
+}
+
 export function getTimeSchedule(hour, minute) {
     const date = new Date();
     date.setHours(hour);

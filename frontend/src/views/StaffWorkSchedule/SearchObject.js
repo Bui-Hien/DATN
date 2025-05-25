@@ -14,5 +14,6 @@ export class SearchObject {
         this.exportExcel = false;
         this.departmentId = null;
         this.shiftWorkStatus = null;
+        this.timeSheetDetail = false;
     }
 }

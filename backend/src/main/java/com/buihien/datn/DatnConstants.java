@@ -411,7 +411,7 @@ public class DatnConstants {
     }
 
     public enum ShiftWorkStatus {
-        NOT_STARTED(1, "Chưa đến ca"),
+        CREATED(1, "Khởi tạo"),
         CHECKED_IN(2, "Đã check in"),
         INSUFFICIENT_HOURS(3, "Đi làm thiếu giờ"),
         WORKED_FULL_HOURS(4, "Đi làm đủ giờ"),
@@ -497,8 +497,7 @@ public class DatnConstants {
         }
 
         public static String getNameByValue(Integer value) {
-            if (value == null) return null;
-            for (TokenType item : TokenType.values()) {
+            for (LogMessageQueueStatus item : LogMessageQueueStatus.values()) {
                 if (item.getValue().equals(value)) {
                     return item.getName();
                 }
@@ -527,7 +526,6 @@ public class DatnConstants {
         }
 
         public static String getNameByValue(Integer value) {
-            if (value == null) return null;
             for (TokenType item : TokenType.values()) {
                 if (item.getValue().equals(value)) {
                     return item.getName();

@@ -1,8 +1,8 @@
 import {makeAutoObservable} from "mobx";
 import {
     deleteMultipleStaffWorkScheduleByIds,
-    deleteStaffWorkSchedule,
-    getStaffWorkScheduleById,
+    deleteStaffWorkSchedule, getListByStaffAndWorkingDate,
+    getStaffWorkScheduleById, markAttendance,
     pagingStaffWorkSchedule,
     saveListStaffWorkSchedule,
     saveStaffWorkSchedule,
@@ -24,6 +24,7 @@ export default class StaffWorkScheduleStore {
     openCreateEditListPopup = false;
     selectedRow = new StaffWorkScheduleObject();
     selectedDataList = [];
+    listByStaffAndWorkingDate = [];
     isOpenFilter = false;
 
     constructor() {
@@ -41,6 +42,7 @@ export default class StaffWorkScheduleStore {
         this.openConfirmDeleteListPopup = false;
         this.selectedDataList = [];
         this.isOpenFilter = false;
+        this.listByStaffAndWorkingDate = [];
     };
 
     pagingStaffWorkSchedule = async () => {
@@ -172,6 +174,35 @@ export default class StaffWorkScheduleStore {
         }
     };
 
+    getListByStaffAndWorkingDate = async (obj) => {
+        try {
+            const {data} = await getListByStaffAndWorkingDate(obj);
+            this.listByStaffAndWorkingDate = data.data || [];
+        } catch (error) {
+            console.error(error);
+            if (error?.response?.data?.message) {
+                toast.error(error?.response?.data?.message);
+            } else {
+                toast.error(i18n.t("toast.error"));
+            }
+        }
+    };
+
+    markAttendance = async (data) => {
+        try {
+            await markAttendance(data);
+            toast.success(i18n.t("toast.save_success"));
+            this.handleClose();
+            await this.pagingStaffWorkSchedule();
+        } catch (error) {
+            console.error(error);
+            if (error?.response?.data?.message) {
+                toast.error(error?.response?.data?.message);
+            } else {
+                toast.error(i18n.t("toast.error"));
+            }
+        }
+    };
     handleOpenCreateEditListPopup = () => {
         this.openCreateEditListPopup = true;
     };

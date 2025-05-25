@@ -18,6 +18,12 @@ const StaffRoutes = [
         component: ViewProfileStaffComponent,
         auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER],
     },
+    {
+        path: ConstantList.ROOT_PATH + "profile",
+        exact: true,
+        component: ViewProfileStaffComponent,
+        auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER],
+    },
 ];
 
 export default StaffRoutes;

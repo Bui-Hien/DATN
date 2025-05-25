@@ -6,7 +6,8 @@ import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import GroupIcon from '@mui/icons-material/Group';
 import EventNoteIcon from '@mui/icons-material/EventNote';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import ConstantList from "./appConfig";
+import DomainAddIcon from '@mui/icons-material/DomainAdd';
+import PersonIcon from '@mui/icons-material/Person';
 
 const iconStyle = "!size-6 !text-white"; // 👈 style dùng chung
 
@@ -20,6 +21,29 @@ export const navigations = [
             {
                 name: i18next.t("Phòng ban"),
                 path: "/organization/department",
+                isVisible: true,
+            },
+        ]
+    },
+    {
+        name: i18next.t("Tuyển dụng"),
+        icon: <DomainAddIcon className={iconStyle}/>,
+        isVisible: true,
+        auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER],
+        children: [
+            {
+                name: i18next.t("Yêu cầu tuyển dụng"),
+                path: "/staff",
+                isVisible: true,
+            },
+            {
+                name: i18next.t("Kế hoạch tuyển dụng"),
+                path: "/document-template",
+                isVisible: true,
+            },
+            {
+                name: i18next.t("Hồ so ứng viên"),
+                path: "/family-relationship",
                 isVisible: true,
             },
         ]
@@ -58,8 +82,19 @@ export const navigations = [
                 path: "/staff-work-schedule",
                 isVisible: true,
             },
+            {
+                name: i18next.t("Chấm công"),
+                path: "/time-sheet-detail",
+                isVisible: true,
+            },
+            // {
+            //     name: i18next.t("Thống kê công"),
+            //     path: "/staff-work-schedule-summary",
+            //     isVisible: true,
+            // },
         ]
     },
+
     {
         name: i18next.t("Lương"),
         icon: <AttachMoneyIcon className={iconStyle}/>,
@@ -84,11 +119,34 @@ export const navigations = [
         ]
     },
     {
+        name: i18next.t("Cá nhân"),
+        icon: <PersonIcon className={iconStyle}/>,
+        isVisible: true,
+        auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER, SystemRole.ROLE_USER],
+        children: [
+            {
+                name: i18next.t("Hồ sơ cá nhân"),
+                path: "/profile",
+                isVisible: true,
+            },
+            {
+                name: i18next.t("Lịch làm việc"),
+                path: "staff-month-schedule-calendar",
+                isVisible: true,
+            },
+        ]
+    },
+    {
         name: i18next.t("Danh mục chung"),
         icon: <ListAltIcon className={iconStyle}/>,
         isVisible: true,
         auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER],
         children: [
+            {
+                name: i18next.t("Quản trị tài khoản"),
+                path: "/administration/country",
+                isVisible: true,
+            },
             {
                 name: i18next.t("Quốc gia"),
                 path: "/administration/country",

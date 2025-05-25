@@ -34,14 +34,18 @@ function SalaryResultItemList() {
         dataList.length > 0 &&
         Array.isArray(dataList[0]?.salaryResultItemDetails)
     ) {
-        columns = dataList[0].salaryResultItemDetails.map(itemDetail => ({
-            accessorKey: itemDetail?.salaryTemplateItem?.code || "",
-            header: itemDetail?.salaryTemplateItem?.name || "",
-            Cell: ({row}) => {
-                const value = row.getValue(itemDetail.salaryTemplateItem.code);
-                return <span>{formatVNDMoney(value)}</span>;
-            }
-        }));
+        columns = dataList[0].salaryResultItemDetails.map((itemDetail, index) => {
+            const code = itemDetail?.salaryTemplateItem?.code || `col_${index}`;
+            return {
+                accessorKey: code,
+                header: itemDetail?.salaryTemplateItem?.name || `Cột ${index + 1}`,
+                Cell: ({row}) => {
+                    const value = row.getValue(code);
+                    return <span>{formatVNDMoney(value)}</span>;
+                }
+            };
+        });
+
     }
 
     const finalColumns = [...baseColumns, ...columns];

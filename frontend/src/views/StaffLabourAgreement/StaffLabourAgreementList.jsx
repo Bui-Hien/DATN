@@ -8,10 +8,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import CommonTable from "../../common/CommonTable";
 import {getDate} from "../../LocalFunction";
 import {StaffLabourAgreementStatus} from "../../LocalConstants";
-
+import VisibilityIcon from '@mui/icons-material/Visibility';
 function StaffLabourAgreementList() {
     const {t} = useTranslation();
-    const {staffLabourAgreementStore} = useStore();
+    const {staffLabourAgreementStore, staffStore} = useStore();
 
     const {
         handleOpenCreateEdit,
@@ -25,6 +25,8 @@ function StaffLabourAgreementList() {
         handleSelectListDelete
     } = staffLabourAgreementStore;
 
+    const {isProfile} = staffStore;
+
 
     const columns = [
         {
@@ -32,21 +34,33 @@ function StaffLabourAgreementList() {
             header: t("Hành động"),
             Cell: ({row}) => (
                 <div className="flex flex-middle justify-center">
-                    <Tooltip
-                        className={"cursor-pointer"}
-                        title={t("Cập nhật thông tin")}
-                        placement="top">
-                        <EditIcon
-                            onClick={() => handleOpenCreateEdit(row.original.id)}
-                        />
-                    </Tooltip>
+                    {!isProfile && (
+                        <Tooltip
+                            className={"cursor-pointer"}
+                            title={t("Cập nhật thông tin")}
+                            placement="top">
+                            <EditIcon
+                                onClick={() => handleOpenCreateEdit(row.original.id)}
+                            />
+                        </Tooltip>
+                    )}
+                    {!isProfile && (
+                        <Tooltip title={t("Xóa")} placement="top">
+                            <DeleteIcon
+                                className="cursor-pointer ml-4"
+                                onClick={() => handleDelete(row.original)}
+                            />
+                        </Tooltip>
+                    )}
+                    {isProfile && (
+                        <Tooltip title={t("Xem chi tiết")} placement="top">
+                            <VisibilityIcon
+                                className="cursor-pointer ml-4"
+                                onClick={() => handleOpenCreateEdit(row.original.id)}
+                            />
+                        </Tooltip>
+                    )}
 
-                    <Tooltip title={t("Xóa")} placement="top">
-                        <DeleteIcon
-                            className="cursor-pointer ml-4"
-                            onClick={() => handleDelete(row.original)}
-                        />
-                    </Tooltip>
                 </div>
             ),
         },
@@ -114,7 +128,7 @@ function StaffLabourAgreementList() {
         <CommonTable
             data={dataList}
             columns={columns}
-            selection={true}
+            selection={!isProfile}
             nonePagination={false}
             totalPages={totalPages}
             pageSize={searchObject.pageSize}

@@ -16,6 +16,20 @@ export const pagingStaffWorkSchedule = (searchObject) => {
     return api.post(url, searchObject);
 };
 
+export const getScheduleSummary = (searchObject) => {
+    var url = API_PATH + "/get-staff-work-schedule-summary";
+    return api.post(url, searchObject);
+};
+
+export const getListByStaffAndWorkingDate = (obj) => {
+    let url = API_PATH + "/get-list-staff-work-schedule";
+    return api.post(url, obj);
+};
+
+export const markAttendance = (obj) => {
+    let url = API_PATH + "/mark-attendance";
+    return api.post(url, obj);
+};
 export const getStaffWorkScheduleById = (id) => {
     let url = API_PATH + "/" + id;
     return api.get(url);

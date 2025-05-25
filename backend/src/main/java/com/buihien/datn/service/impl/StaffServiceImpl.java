@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -430,5 +432,24 @@ public class StaffServiceImpl extends GenericServiceImpl<Staff, StaffDto, StaffS
 
         //trả về thông tin nhân viêns
         return new StaffDto(entity, false);
+    }
+
+    @Override
+    public StaffDto getCurrentStaff() {
+        User currentUser = this.getCurrentUser(); // Lấy user hiện tại
+        if (currentUser != null && currentUser.getId() != null) {
+            // Giả sử bạn có một phương thức để tìm staff dựa trên userId
+            Staff staff = staffRepository.findByUserId(currentUser.getId());
+            return new StaffDto(staff, true);
+        }
+        return null;
+    }
+
+    private User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof User) {
+            return (User) authentication.getPrincipal();
+        }
+        throw new SecurityException("You are not logged in");
     }
 }

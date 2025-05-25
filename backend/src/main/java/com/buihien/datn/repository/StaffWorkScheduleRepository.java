@@ -16,9 +16,11 @@ public interface StaffWorkScheduleRepository extends JpaRepository<StaffWorkSche
     @Query("SELECT s FROM StaffWorkSchedule s WHERE s.workingDate BETWEEN :fromDate AND :toDate AND s.staff.id IN :staffIds")
     List<StaffWorkSchedule> findByWorkingDateBetweenAndStaffIds(@Param("fromDate") Date fromDate, @Param("toDate") Date toDate, @Param("staffIds") List<UUID> staffIds);
 
+    //dếm só công được tính
     @Query("SELECT new com.buihien.datn.dto.CalculatedWorkingDay.ShiftWorkTypeCount(s.shiftWorkType, COUNT(s)) " +
             "FROM StaffWorkSchedule s " +
-            "WHERE s.staff.id = :staffId " +
+            "WHERE s.shiftWorkStatus = 4 " +
+            "AND s.staff.id = :staffId " +
             "AND s.workingDate BETWEEN :startDate AND :endDate " +
             "GROUP BY s.shiftWorkType")
     List<ShiftWorkTypeCount> countShiftWorkTypeByStaffInDateRange(@Param("staffId") UUID staffId,
@@ -33,5 +35,10 @@ public interface StaffWorkScheduleRepository extends JpaRepository<StaffWorkSche
             @Param("endOfDay") Date endOfDay
     );
 
-
+    @Query("SELECT s FROM StaffWorkSchedule s WHERE s.staff.id = :staffId AND s.workingDate BETWEEN :startOfDay AND :endOfDay")
+    List<StaffWorkSchedule> findStaffWorkScheduleByStaffAndWorkingDate(
+            @Param("staffId") UUID staffId,
+            @Param("startOfDay") Date startOfDay,
+            @Param("endOfDay") Date endOfDay
+    );
 }

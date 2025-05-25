@@ -69,7 +69,11 @@ const CommonTable = (props) => {
         paginationDisplayMode: 'pages',
         enableExpanding: colParent,
     });
-
+    useEffect(() => {
+        if (selection) {
+            table.resetRowSelection();
+        }
+    }, [data]);
     useEffect(() => {
         if (selection) {
             const selectedRows = table.getSelectedRowModel().rows.map(

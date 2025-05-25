@@ -23,6 +23,7 @@ import SalaryPeriodStore from "./views/SalaryPeriod/SalaryPeriodStore";
 import SalaryResultStore from "./views/SalaryResult/SalaryResultStore";
 import SalaryResultItemStore from "./views/SalaryResultItem/SalaryResultItemStore";
 import StaffWorkScheduleStore from "./views/StaffWorkSchedule/StaffWorkScheduleStore";
+import StaffWorkScheduleSummaryStore from "./views/StaffWorkScheduleSummary/StaffWorkScheduleSummaryStore";
 
 export const store = {
     loginStore: new LoginStore(),
@@ -50,6 +51,7 @@ export const store = {
     //Chấm công
     departmentIpStore: new DepartmentIpStore(),
     staffWorkScheduleStore: new StaffWorkScheduleStore(),
+    staffWorkScheduleSummaryStore: new StaffWorkScheduleSummaryStore(),
     //Tuyển dụng
     candidateWorkingExperienceStore: new CandidateWorkingExperienceStore(),
 

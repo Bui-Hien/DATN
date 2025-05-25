@@ -2,7 +2,7 @@ import React, {memo, useEffect} from "react";
 import {observer} from "mobx-react-lite";
 import TabAccordion from "../../../common/Accordion/TabAccordion";
 import Avatar from "@mui/material/Avatar";
-import {API_ENDPOINT} from "../../../appConfig";
+import {API_ENDPOINT, HOME_PAGE} from "../../../appConfig";
 import FileUploadWithPreview from "../../../common/UploadFile/FileUploadWithPreview";
 import BackupIcon from '@mui/icons-material/Backup';
 import {Button} from "@mui/material";
@@ -33,7 +33,7 @@ import CommonCheckBox from "../../../common/form/CommonCheckBox";
 import CloseIcon from "@mui/icons-material/Close";
 import SaveIcon from "@mui/icons-material/Save";
 import {pagingSalaryTemplate} from "../../SalaryTemplate/SalaryTemplateService";
-
+import KeyIcon from '@mui/icons-material/Key';
 function PersonalInformation() {
     const {id} = useParams();
     const navigate = useNavigate();
@@ -44,7 +44,9 @@ function PersonalInformation() {
     const {
         saveStaff,
         selectedRow,
-        getStaffById
+        getStaffById,
+        isProfile,
+        getCurrentStaff
     } = staffStore;
 
     const validationSchema = Yup.object({
@@ -70,6 +72,12 @@ function PersonalInformation() {
         if (!id) return;
         getStaffById(id);
     }, [id]);
+
+    useEffect(() => {
+        if (isProfile) {
+            getCurrentStaff();
+        }
+    }, [])
 
     async function handleSaveForm(values) {
         await saveStaff(values);
@@ -370,7 +378,8 @@ function PersonalInformation() {
                                             <CommonTextField
                                                 label={t("Mã nhân viên")}
                                                 name="staffCode"
-                                                readOnly
+                                                disabled={isProfile}
+                                                readOnly={isProfile}
                                             />
                                         </div>
                                         <div className="col-span-12 md:col-span-4  xl:col-span-3">
@@ -378,6 +387,8 @@ function PersonalInformation() {
                                                 label={t("Ngày tuyển dụng")}
                                                 name="recruitmentDate"
                                                 disableFuture
+                                                disabled={isProfile}
+                                                readOnly={isProfile}
                                             />
                                         </div>
                                         <div className="col-span-12 md:col-span-4  xl:col-span-3">
@@ -385,6 +396,8 @@ function PersonalInformation() {
                                                 label={t("Ngày bắt đầu chính thức")}
                                                 name="startDate"
                                                 disableFuture
+                                                disabled={isProfile}
+                                                readOnly={isProfile}
                                             />
                                         </div>
                                         <div className="col-span-12 md:col-span-4  xl:col-span-3">
@@ -392,7 +405,8 @@ function PersonalInformation() {
                                                 label={t("Ngày bắt đầu chính thức")}
                                                 name="apprenticeDays"
                                                 value={calculateDateDifference(values?.recruitmentDate, values?.startDate)}
-                                                readOnly
+                                                disabled={isProfile}
+                                                readOnly={isProfile}
                                             />
                                         </div>
                                         <div className="col-span-12 md:col-span-4  xl:col-span-3">
@@ -400,6 +414,8 @@ function PersonalInformation() {
                                                 label={t("Trạng thái nhân viên")}
                                                 name="employeeStatus"
                                                 options={EmployeeStatus.getListData()}
+                                                disabled={isProfile}
+                                                readOnly={isProfile}
                                             />
                                         </div>
                                         <div className="col-span-12 md:col-span-4  xl:col-span-3">
@@ -407,6 +423,8 @@ function PersonalInformation() {
                                                 label={t("Mẫu hồ sơ nhân viên")}
                                                 name="documentTemplate"
                                                 api={pagingDocumentTemplate}
+                                                disabled={isProfile}
+                                                readOnly={isProfile}
                                             />
                                         </div>
                                         <div className="col-span-12 md:col-span-4  xl:col-span-3">
@@ -414,18 +432,24 @@ function PersonalInformation() {
                                                 label={t("Loại nhân viên")}
                                                 name="staffPhase"
                                                 options={StaffPhase.getListData()}
+                                                disabled={isProfile}
+                                                readOnly={isProfile}
                                             />
                                         </div>
                                         <div className="col-span-12 md:col-span-4 xl:col-span-3">
                                             <CommonCheckBox
                                                 label={t("Bắt buộc chấm công")}
                                                 name="requireAttendance"
+                                                disabled={isProfile}
+                                                readOnly={isProfile}
                                             />
                                         </div>
                                         <div className="col-span-12 md:col-span-4 xl:col-span-3">
                                             <CommonCheckBox
                                                 label={t("Cho phép chấm công ngoài văn phòng")}
                                                 name="allowExternalIpTimekeeping"
+                                                disabled={isProfile}
+                                                readOnly={isProfile}
                                             />
                                         </div>
                                         <div className="col-span-12 md:col-span-4  xl:col-span-3">
@@ -433,6 +457,8 @@ function PersonalInformation() {
                                                 label={t("Mẫu bảng lương")}
                                                 name="salaryTemplate"
                                                 api={pagingSalaryTemplate}
+                                                disabled={isProfile}
+                                                readOnly={isProfile}
                                             />
                                         </div>
                                     </div>
@@ -441,16 +467,34 @@ function PersonalInformation() {
                         </div>
                         <div className="w-full sticky bottom-0 bg-white border-t mt-4 py-3 z-10">
                             <div className="flex justify-end w-full">
-                                <Button
-                                    variant="outlined"
-                                    color="secondary"
-                                    disabled={isSubmitting}
-                                    onClick={() => navigate(`/staff`)}
-                                    className="rounded-lg px-4 py-2 !mr-2 !bg-red-500"
-                                    startIcon={<CloseIcon/>}
-                                >
-                                    {t("general.button.close")}
-                                </Button>
+                                {isProfile ? (
+                                    <Button
+                                        variant="outlined"
+                                        color="secondary"
+                                        disabled={isSubmitting}
+                                        onClick={() => {
+                                            navigate(`/staff`)
+                                        }}
+                                        className="rounded-lg px-4 py-2 !mr-2 !bg-red-500"
+                                        startIcon={<KeyIcon/>}
+                                    >
+                                        {t("general.button.resetPassWord")}
+                                    </Button>
+
+                                ) : (
+                                    <Button
+                                        variant="outlined"
+                                        color="secondary"
+                                        disabled={isSubmitting}
+                                        onClick={() => {
+                                            navigate(`/staff`)
+                                        }}
+                                        className="rounded-lg px-4 py-2 !mr-2 !bg-red-500"
+                                        startIcon={<CloseIcon/>}
+                                    >
+                                        {t("general.button.close")}
+                                    </Button>
+                                )}
                                 <Button
                                     variant="contained"
                                     color="primary"

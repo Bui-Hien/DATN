@@ -186,6 +186,19 @@ const Weekdays = {
     }
 };
 
+const ShiftWorkStatus = {
+    CREATED: {value: 1, name: "Khởi tạo"},
+    CHECKED_IN: {value: 2, name: "Đã check in"},
+    INSUFFICIENT_HOURS: {value: 3, name: "Đi làm đủ giờ"},
+    WORKED_FULL_HOURS: {value: 4, name: "Đi làm đủ giờ"},
+    ABSENT: {value: 5, name: "Nghỉ"},
+    getListData() {
+        return Object.keys(this)
+            .filter(key => typeof this[key] === 'object' && this[key] !== null && 'value' in this[key])
+            .map(key => this[key]);
+    }
+};
+
 module.exports = Object.freeze({
     SystemRole: SYSTEM_ROLE,
     EducationLevel: EducationLevel,
@@ -201,5 +214,6 @@ module.exports = Object.freeze({
     SalaryTemplateItemSystem: SalaryTemplateItemSystem,
     SalaryPeriodStatus: SalaryPeriodStatus,
     ShiftWorkType: ShiftWorkType,
-    Weekdays: Weekdays
+    Weekdays: Weekdays,
+    ShiftWorkStatus: ShiftWorkStatus
 });
