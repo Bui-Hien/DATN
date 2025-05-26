@@ -415,7 +415,8 @@ public class DatnConstants {
         CHECKED_IN(2, "Đã check in"),
         INSUFFICIENT_HOURS(3, "Đi làm thiếu giờ"),
         WORKED_FULL_HOURS(4, "Đi làm đủ giờ"),
-        ABSENT(5, "Nghỉ");
+        ABSENT(5, "Nghỉ"),
+        NOT_YET_DUE(6, "Chưa đến ngày làm việc");
 
         private final Integer value;
         private final String name;

@@ -59,6 +59,8 @@ public abstract class AuditableEntity implements Serializable {
             this.createdBy = entity.getCreatedBy();
             this.updatedBy = entity.getUpdatedBy();
             this.voided = entity.getVoided();
+        } else {
+            this.id = UUID.randomUUID();
         }
     }
 

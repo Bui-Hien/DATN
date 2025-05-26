@@ -1,18 +1,14 @@
 package com.buihien.datn.dto;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
-//mỗi nhân viên trả về 1 list List<StaffWorkScheduleDto>
 public class StaffWorkScheduleSummaryDto {
     StaffDto staff;
-    List<StaffWorkScheduleDto> staffWorkSchedules;
+    private Map<Date, List<StaffWorkScheduleDto>> staffWorkSchedules;
 
     public StaffWorkScheduleSummaryDto() {
-    }
-
-    public StaffWorkScheduleSummaryDto(StaffDto staff, List<StaffWorkScheduleDto> staffWorkSchedules) {
-        this.staff = staff;
-        this.staffWorkSchedules = staffWorkSchedules;
     }
 
     public StaffDto getStaff() {
@@ -23,11 +19,11 @@ public class StaffWorkScheduleSummaryDto {
         this.staff = staff;
     }
 
-    public List<StaffWorkScheduleDto> getStaffWorkSchedules() {
+    public Map<Date, List<StaffWorkScheduleDto>> getStaffWorkSchedules() {
         return staffWorkSchedules;
     }
 
-    public void setStaffWorkSchedules(List<StaffWorkScheduleDto> staffWorkSchedules) {
+    public void setStaffWorkSchedules(Map<Date, List<StaffWorkScheduleDto>> staffWorkSchedules) {
         this.staffWorkSchedules = staffWorkSchedules;
     }
 }

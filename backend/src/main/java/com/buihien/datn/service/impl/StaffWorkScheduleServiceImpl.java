@@ -388,7 +388,7 @@ public class StaffWorkScheduleServiceImpl extends GenericServiceImpl<StaffWorkSc
                         schedule.setStaff(staff);
                         schedule.setShiftWorkType(shiftType);
                         schedule.setCoordinator(coordinator);
-                        if (schedule.getShiftWorkStatus()==null){
+                        if (schedule.getShiftWorkStatus() == null) {
                             schedule.setShiftWorkStatus(DatnConstants.ShiftWorkStatus.CREATED.getValue());
                         }
                         staffWorkScheduleList.add(schedule);
@@ -426,50 +426,120 @@ public class StaffWorkScheduleServiceImpl extends GenericServiceImpl<StaffWorkSc
 
     @Override
     public Page<StaffWorkScheduleSummaryDto> getScheduleSummary(StaffWorkScheduleSearchDto dto) {
-        dto.setExportExcel(true);
+        StringBuilder sql = new StringBuilder("SELECT new com.buihien.datn.dto.StaffWorkScheduleDto(entity, false) FROM StaffWorkSchedule entity WHERE (1=1) ");
+        StringBuilder whereClause = new StringBuilder();
 
-        if (dto.getPageIndex() == null) dto.setPageIndex(0);
-        else dto.setPageIndex(dto.getPageIndex() - 1);
-        if (dto.getPageSize() == null) dto.setPageSize(10);
-
-        List<StaffWorkScheduleDto> schedules = this.pagingSearch(dto).getContent();
-
-        Map<UUID, List<StaffWorkScheduleDto>> groupedByStaff = schedules.stream()
-                .filter(s -> s.getStaff() != null && s.getStaff().getId() != null)
-                .collect(Collectors.groupingBy(s -> s.getStaff().getId()));
-
-        List<StaffWorkScheduleSummaryDto> result = new ArrayList<>();
-
-        for (Map.Entry<UUID, List<StaffWorkScheduleDto>> entry : groupedByStaff.entrySet()) {
-            List<StaffWorkScheduleDto> staffSchedules = entry.getValue();
-            if (staffSchedules.isEmpty()) continue;
-
-            // Sort từng lịch làm việc theo ngày
-            staffSchedules.sort(Comparator.comparing(StaffWorkScheduleDto::getWorkingDate));
-
-            StaffDto staffDto = staffSchedules.get(0).getStaff();
-            result.add(new StaffWorkScheduleSummaryDto(staffDto, staffSchedules));
+        if (dto.getVoided() == null || !dto.getVoided()) {
+            whereClause.append(" AND (entity.voided = false OR entity.voided IS NULL) ");
+        } else {
+            whereClause.append(" AND entity.voided = true ");
         }
 
-        // Sort theo tên nhân viên
-        result.sort(Comparator.comparing(summary -> summary.getStaff().getStaffCode(), Comparator.nullsLast(String::compareToIgnoreCase)));
+        if (StringUtils.hasText(dto.getKeyword())) {
+            whereClause.append(" AND (LOWER(entity.staff.displayName) LIKE LOWER(:text) OR LOWER(entity.staff.staffCode) LIKE LOWER(:text)) ");
+        }
+        if (dto.getOwnerId() != null) {
+            whereClause.append(" AND entity.staff.id = :ownerId ");
+        }
+        if (dto.getShiftWorkStatus() != null) {
+            whereClause.append(" AND entity.coordinator.id = :coordinatorId ");
+            whereClause.append(" AND entity.shiftWorkStatus = :shiftWorkStatus ");
+        }
+        if (dto.getShiftWorkType() != null) {
+            whereClause.append(" AND entity.shiftWorkType = :shiftWorkType ");
+        }
+        if (dto.getFromDate() != null) {
+            whereClause.append(" AND entity.workingDate >= :fromDate ");
+        }
+        if (dto.getToDate() != null) {
+            whereClause.append(" AND entity.workingDate <= :toDate ");
+        }
+        if (dto.getTimeSheetDetail() != null && dto.getTimeSheetDetail()) {
+            whereClause.append(" AND entity.shiftWorkStatus != :excludedShiftWorkStatus ");
+        }
 
-        int pageIndex = dto.getPageIndex();
+        sql.append(whereClause);
+        sql.append(dto.getOrderBy() != null && dto.getOrderBy() ? " ORDER BY entity.workingDate ASC" : " ORDER BY entity.workingDate DESC");
+
+        Query q = manager.createQuery(sql.toString(), StaffWorkScheduleDto.class);
+
+        if (StringUtils.hasText(dto.getKeyword())) {
+            q.setParameter("text", "%" + dto.getKeyword() + "%");
+        }
+        if (dto.getOwnerId() != null) {
+            q.setParameter("ownerId", dto.getOwnerId());
+        }
+        if (dto.getShiftWorkStatus() != null) {
+            q.setParameter("coordinatorId", dto.getShiftWorkStatus());
+            q.setParameter("shiftWorkStatus", dto.getShiftWorkStatus());
+        }
+        if (dto.getShiftWorkType() != null) {
+            q.setParameter("shiftWorkType", dto.getShiftWorkType());
+        }
+        if (dto.getFromDate() != null) {
+            q.setParameter("fromDate", dto.getFromDate());
+        }
+        if (dto.getToDate() != null) {
+            q.setParameter("toDate", dto.getToDate());
+        }
+        if (dto.getTimeSheetDetail() != null && dto.getTimeSheetDetail()) {
+            q.setParameter("excludedShiftWorkStatus", DatnConstants.ShiftWorkStatus.CREATED.getValue());
+        }
+
+        List<StaffWorkScheduleDto> allSchedules = q.getResultList();
+        List<StaffWorkScheduleSummaryDto> result = new ArrayList<>();
+
+        // Bước 1: Gom nhóm theo staff
+        Map<UUID, List<StaffWorkScheduleDto>> staffGrouped = allSchedules.stream()
+                .collect(Collectors.groupingBy(s -> s.getStaff().getId()));
+
+        for (Map.Entry<UUID, List<StaffWorkScheduleDto>> staffEntry : staffGrouped.entrySet()) {
+            StaffWorkScheduleSummaryDto summaryDto = new StaffWorkScheduleSummaryDto();
+            StaffDto staff = staffEntry.getValue().get(0).getStaff(); // Lấy thông tin staff
+            summaryDto.setStaff(staff);
+
+            // Bước 2: Gom nhóm theo workingDate (đã loại giờ/phút/giây)
+            Map<Date, List<StaffWorkScheduleDto>> dateGrouped = staffEntry.getValue().stream()
+                    .peek(item -> {
+                        // Xóa thông tin staff
+                        item.setStaff(null);
+
+                        // Lấy thời điểm hiện tại (bắt đầu ngày hôm nay)
+                        Date todayStart = getStartOfDay(new Date());
+                        Date workingDate = getStartOfDay(item.getWorkingDate());
+
+                        if (workingDate.after(todayStart)) {
+                            // Nếu ngày làm việc là tương lai
+                            item.setShiftWorkStatus(DatnConstants.ShiftWorkStatus.NOT_YET_DUE.getValue());
+                        } else if (workingDate.before(todayStart) && DatnConstants.ShiftWorkStatus.CREATED.getValue().equals(item.getShiftWorkStatus())) {
+                            // Nếu ngày làm việc là quá khứ và đang ở trạng thái CREATED
+                            item.setShiftWorkStatus(DatnConstants.ShiftWorkStatus.ABSENT.getValue());
+                        }
+                    })
+                    .collect(Collectors.groupingBy(
+                            item -> getStartOfDay(item.getWorkingDate()),
+                            TreeMap::new, // <== Dùng TreeMap để đảm bảo thứ tự tăng dần theo ngày
+                            Collectors.toList()
+                    ));
+
+            summaryDto.setStaffWorkSchedules(dateGrouped);
+            result.add(summaryDto);
+
+        }
+
+        // Paging thủ công
+        int pageIndex = 0;
+        if (dto.getPageIndex() != null && dto.getPageIndex() > 0) {
+            pageIndex = dto.getPageIndex() - 1;
+        }
         int pageSize = dto.getPageSize();
-        List<StaffWorkScheduleSummaryDto> pagedResults = manualPaging(result, pageIndex, pageSize);
-        long total = result.size();
+        int total = result.size();
 
-        return new PageImpl<>(pagedResults, PageRequest.of(pageIndex, pageSize), total);
-    }
+        int fromIndex = Math.min(pageIndex * pageSize, total);
+        int toIndex = Math.min(fromIndex + pageSize, total);
+        List<StaffWorkScheduleSummaryDto> pagedList = result.subList(fromIndex, toIndex);
 
-    private List<StaffWorkScheduleSummaryDto> manualPaging(List<StaffWorkScheduleSummaryDto> list, int pageIndex, int pageSize) {
-        if (list == null || list.isEmpty()) return new ArrayList<>();
-
-        int startIndex = pageIndex * pageSize;
-        if (startIndex >= list.size()) return new ArrayList<>();
-
-        int endIndex = Math.min(startIndex + pageSize, list.size());
-        return list.subList(startIndex, endIndex);
+        return new PageImpl<>(pagedList, PageRequest.of(pageIndex + 1, pageSize), total);
     }
 
 

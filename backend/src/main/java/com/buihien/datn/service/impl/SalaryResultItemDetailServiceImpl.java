@@ -54,8 +54,7 @@ public class SalaryResultItemDetailServiceImpl extends GenericServiceImpl<Salary
 
     @Override
     public void handleSetUpSalaryResultItemDetailByStaff(SalaryResultItem salaryResultItem, SalaryTemplate salaryTemplate) {
-        logger.info("Bắt đầu xử lý setup salary result item detail cho staff ID: {}",
-                salaryResultItem != null && salaryResultItem.getStaff() != null ? salaryResultItem.getStaff().getId() : "null");
+        logger.info("Bắt đầu xử lý setup salary result item detail cho staff ID: {}", salaryResultItem != null && salaryResultItem.getStaff() != null ? salaryResultItem.getStaff().getId() : "null");
         // 1. Kiểm tra đầu vào
         if (salaryResultItem == null || salaryResultItem.getSalaryResult() == null || salaryResultItem.getSalaryResult().getSalaryPeriod() == null) {
             throw new ResourceNotFoundException("Kỳ lương không tồn tại");
@@ -78,9 +77,7 @@ public class SalaryResultItemDetailServiceImpl extends GenericServiceImpl<Salary
         logger.info("Số lượng template items: {}", salaryTemplate.getTemplateItems().size());
 
         // Sắp xếp template items theo displayOrder để đảm bảo thứ tự xử lý đúng
-        List<SalaryTemplateItem> sortedItems = salaryTemplate.getTemplateItems().stream()
-                .sorted(Comparator.comparingInt(SalaryTemplateItem::getDisplayOrder))
-                .collect(Collectors.toList());
+        List<SalaryTemplateItem> sortedItems = salaryTemplate.getTemplateItems().stream().sorted(Comparator.comparingInt(SalaryTemplateItem::getDisplayOrder)).collect(Collectors.toList());
 
         for (SalaryTemplateItem item : sortedItems) {
             SalaryResultItemDetail detail = salaryResultItemDetailRepository.findBySalaryResultItemIdAndSalaryTemplateItemId(salaryResultItem.getId(), item.getId());
@@ -152,8 +149,7 @@ public class SalaryResultItemDetailServiceImpl extends GenericServiceImpl<Salary
 
         // 5. Gán lại danh sách chi tiết lương
         salaryResultItem.setSalaryResultItemDetails(new HashSet<>(detailMap.values()));
-        logger.info("Hoàn thành xử lý setup salary result item detail cho staff ID: {}",
-                salaryResultItem.getStaff().getId());
+        logger.info("Hoàn thành xử lý setup salary result item detail cho staff ID: {}", salaryResultItem.getStaff().getId());
     }
 
     // Lấy giá trị SYSTEM từ dữ liệu liên quan (hợp đồng, kỳ lương...)
@@ -165,16 +161,15 @@ public class SalaryResultItemDetailServiceImpl extends GenericServiceImpl<Salary
 
         try {
             if (DatnConstants.SalaryTemplateItemSystem.BASIC_SALARY.getCode().equals(code)) {
-                List<StaffLabourAgreement> agreements =
-                        staffLabourAgreementRepository.findByStaffIdAndAgreementStatus(staffId, DatnConstants.StaffLabourAgreementStatus.SIGNED.getValue());
-                Double value = (agreements != null && !agreements.isEmpty()) ?
-                        (agreements.get(0).getSalary() != null ? agreements.get(0).getSalary() : 0.0) : 0.0;
+                List<StaffLabourAgreement> agreements = staffLabourAgreementRepository.findByStaffIdAndAgreementStatus(staffId, DatnConstants.StaffLabourAgreementStatus.SIGNED.getValue());
+                Double value = (agreements != null && !agreements.isEmpty()) ? (agreements.get(0).getSalary() != null ? agreements.get(0).getSalary() : 0.0) : 0.0;
                 logger.debug("BASIC_SALARY = {}", value);
                 return value;
             } else if (DatnConstants.SalaryTemplateItemSystem.ACTUAL_NUMBER_OF_WORKING_DAYS.getCode().equals(code)) {
                 Date fromDate = salaryResultItem.getSalaryResult().getSalaryPeriod().getStartDate();
                 Date toDate = salaryResultItem.getSalaryResult().getSalaryPeriod().getEndDate();
-                Double value = calculateWorkingDays(staffId, fromDate, toDate);
+                //số công được tính nhiều là là số ngày công được quy định trong tháng
+                Double value = Math.min(salaryResultItem.getSalaryResult().getSalaryPeriod().getEstimatedWorkingDays(), calculateWorkingDays(staffId, fromDate, toDate));
                 logger.debug("ACTUAL_NUMBER_OF_WORKING_DAYS = {}", value);
                 return value;
             } else if (DatnConstants.SalaryTemplateItemSystem.STANDARD_NUMBER_OF_WORKING_DAYS.getCode().equals(code)) {
@@ -240,9 +235,7 @@ public class SalaryResultItemDetailServiceImpl extends GenericServiceImpl<Salary
             Set<String> dependencies = extractVariables(formula);
 
             // Chỉ giữ lại các dependency thuộc formulaMap (chưa được tính toán)
-            Set<String> formulaDependencies = dependencies.stream()
-                    .filter(dep -> formulaMap.containsKey(dep))
-                    .collect(Collectors.toSet());
+            Set<String> formulaDependencies = dependencies.stream().filter(dep -> formulaMap.containsKey(dep)).collect(Collectors.toSet());
 
             dependencyGraph.put(formulaCode, formulaDependencies);
             inDegree.put(formulaCode, formulaDependencies.size());
@@ -327,11 +320,7 @@ public class SalaryResultItemDetailServiceImpl extends GenericServiceImpl<Salary
 
     // Kiểm tra từ khóa toán học
     private boolean isReservedWord(String word) {
-        Set<String> reservedWords = Set.of(
-                "sin", "cos", "tan", "asin", "acos", "atan", "sinh", "cosh", "tanh",
-                "log", "ln", "exp", "sqrt", "abs", "ceil", "floor", "round", "max", "min",
-                "PI", "E", "true", "false"
-        );
+        Set<String> reservedWords = Set.of("sin", "cos", "tan", "asin", "acos", "atan", "sinh", "cosh", "tanh", "log", "ln", "exp", "sqrt", "abs", "ceil", "floor", "round", "max", "min", "PI", "E", "true", "false");
         return reservedWords.contains(word.toLowerCase());
     }
 
@@ -347,17 +336,14 @@ public class SalaryResultItemDetailServiceImpl extends GenericServiceImpl<Salary
         // Kiểm tra tất cả biến có giá trị
         for (String var : variables) {
             if (!variableValues.containsKey(var)) {
-                logger.error("Missing variable '{}' in expression '{}'. Available variables: {}",
-                        var, expr, variableValues.keySet());
+                logger.error("Missing variable '{}' in expression '{}'. Available variables: {}", var, expr, variableValues.keySet());
                 throw new InvalidDataException("Thiếu giá trị cho biến '" + var + "' trong công thức: " + expr);
             }
             logger.debug("Variable '{}' = {}", var, variableValues.get(var));
         }
 
         try {
-            Expression e = new ExpressionBuilder(expr)
-                    .variables(variables)
-                    .build();
+            Expression e = new ExpressionBuilder(expr).variables(variables).build();
 
             for (String var : variables) {
                 Double value = variableValues.get(var);
@@ -398,8 +384,7 @@ public class SalaryResultItemDetailServiceImpl extends GenericServiceImpl<Salary
             fullDay = fullDay * DatnConstants.ShiftWorkType.FULL_DAY.getCalculatedWorkingDay();
 
             double total = morning + afternoon + fullDay;
-            logger.debug("Working days calculation: morning={}, afternoon={}, fullDay={}, total={}",
-                    morning, afternoon, fullDay, total);
+            logger.debug("Working days calculation: morning={}, afternoon={}, fullDay={}, total={}", morning, afternoon, fullDay, total);
 
             return total;
         } catch (Exception e) {
