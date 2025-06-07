@@ -53,6 +53,12 @@ public class RestStaffWorkScheduleController extends GenericApi<StaffWorkSchedul
         return new ResponseData<>(HttpStatus.OK.value(), "Các ca làm việc trong ngày của nhân viên", response);
     }
 
+    @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN, DatnConstants.ROLE_USER})
+    @PostMapping("/get-staff-work-schedule-by-search")
+    public ResponseData<StaffWorkScheduleDto> getByStaffAndWorkingDateAndShiftWorkType(@Valid @RequestBody StaffWorkScheduleSearchDto dto) {
+        StaffWorkScheduleDto response = ((StaffWorkScheduleService) genericService).getByStaffAndWorkingDateAndShiftWorkType(dto);
+        return new ResponseData<>(HttpStatus.OK.value(), "Các ca làm việc trong ngày của nhân viên", response);
+    }
 
     @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN, DatnConstants.ROLE_USER})
     @PostMapping("/get-staff-work-schedule-summary")

@@ -87,11 +87,11 @@ export const navigations = [
                 path: "/time-sheet-detail",
                 isVisible: true,
             },
-            // {
-            //     name: i18next.t("Thống kê công"),
-            //     path: "/staff-work-schedule-summary",
-            //     isVisible: true,
-            // },
+            {
+                name: i18next.t("Thống kê công"),
+                path: "/staff-work-schedule-summary",
+                isVisible: true,
+            },
         ]
     },
 

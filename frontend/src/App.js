@@ -15,12 +15,15 @@ function AppWrapper() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isLoading, setIsLoading] = useState(true); // Thêm loading state
 
-    const { authStore } = useStore();
-    const { getCurrentUser } = authStore;
+    const {authStore} = useStore();
+    const {getCurrentUser} = authStore;
 
     const initAuth = useCallback(async () => {
         try {
-            const user = await getCurrentUser();
+            let user = null;
+            if (location.pathname !== LOGIN_PAGE) {
+                user = await getCurrentUser();
+            }
             if (!user && location.pathname !== LOGIN_PAGE) {
                 navigate(LOGIN_PAGE);
                 setIsAuthenticated(false);
@@ -44,19 +47,19 @@ function AppWrapper() {
 
     // Hiển thị loading khi đang xác thực
     if (isLoading) {
-        return <Loading />;
+        return <Loading/>;
     }
 
     // Nếu chưa authenticated và không phải login page
     if (!isAuthenticated && location.pathname !== LOGIN_PAGE) {
-        return <Loading />;
+        return <Loading/>;
     }
 
     return (
-        <Suspense fallback={<Loading />}>
+        <Suspense fallback={<Loading/>}>
             <Routes>
-                <Route path={LOGIN_PAGE} element={<LoginIndex />} />
-                <Route path="/*" element={<AppLayout routes={routes} />} />
+                <Route path={LOGIN_PAGE} element={<LoginIndex/>}/>
+                <Route path="/*" element={<AppLayout routes={routes}/>}/>
             </Routes>
         </Suspense>
     );

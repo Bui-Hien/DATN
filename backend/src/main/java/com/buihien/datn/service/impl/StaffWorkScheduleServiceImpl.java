@@ -542,6 +542,23 @@ public class StaffWorkScheduleServiceImpl extends GenericServiceImpl<StaffWorkSc
         return new PageImpl<>(pagedList, PageRequest.of(pageIndex + 1, pageSize), total);
     }
 
+    @Override
+    public StaffWorkScheduleDto getByStaffAndWorkingDateAndShiftWorkType(StaffWorkScheduleSearchDto dto) {
+        if (dto == null || dto.getWorkingDate() == null || dto.getStaffId() == null || dto.getShiftWorkType() == null) {
+            throw new InvalidDataException("Không đủ dữ liệụ để tìm kiếm ca làm việc");
+        }
+        Date startOfDay = getStartOfDay(dto.getWorkingDate());
+        Date endOfDay = getEndOfDay(dto.getWorkingDate());
+
+        List<StaffWorkSchedule> staffWorkScheduleList = staffWorkScheduleRepository
+                .findByShiftWorkTypeAndStaffAndWorkingDate(dto.getShiftWorkType(), dto.getStaffId(), startOfDay, endOfDay);
+        if (staffWorkScheduleList != null && !staffWorkScheduleList.isEmpty()) {
+            return new StaffWorkScheduleDto(staffWorkScheduleList.get(0), true);
+        }
+        throw new InvalidDataException("Không tìm thấy ca làm việc");
+
+    }
+
 
     private int convertJavaDayOfWeek(int javaDayOfWeek) {
         return javaDayOfWeek == Calendar.SUNDAY ? 7 : javaDayOfWeek - 1;

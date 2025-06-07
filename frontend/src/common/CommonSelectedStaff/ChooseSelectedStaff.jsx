@@ -21,7 +21,8 @@ function ChooseSelectedStaff(props) {
         isOnlyChoose = false,
         multiline = false,
         className = "",
-        required = false
+        required = false,
+        disabled = false,
     }
         = props;
     const {
@@ -30,7 +31,9 @@ function ChooseSelectedStaff(props) {
     } = staffStore;
 
     useEffect(() => {
-        pagingStaff();
+        if (open){
+            pagingStaff();
+        }
         return resetStore
     }, [open]);
 
@@ -66,6 +69,7 @@ function ChooseSelectedStaff(props) {
                         </div>
                         <div className="flex items-end">
                             <Button
+                                disabled={disabled}
                                 onClick={() => setOpen(true)}
                                 startIcon={<TouchAppIcon/>}
                             >

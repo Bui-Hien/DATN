@@ -33,6 +33,8 @@ public interface StaffWorkScheduleRepository extends JpaRepository<StaffWorkSche
             @Param("staffId") UUID staffId,
             @Param("startOfDay") Date startOfDay,
             @Param("endOfDay") Date endOfDay
+
+
     );
 
     @Query("SELECT s FROM StaffWorkSchedule s WHERE s.staff.id = :staffId AND s.workingDate BETWEEN :startOfDay AND :endOfDay")

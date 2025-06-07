@@ -1,15 +1,11 @@
 package com.buihien.datn.service.impl;
 
-import com.buihien.datn.domain.Position;
 import com.buihien.datn.domain.RecruitmentRequest;
-import com.buihien.datn.domain.RecruitmentRequestItem;
 import com.buihien.datn.domain.Staff;
 import com.buihien.datn.dto.RecruitmentRequestDto;
-import com.buihien.datn.dto.RecruitmentRequestItemDto;
 import com.buihien.datn.dto.search.SearchDto;
 import com.buihien.datn.generic.GenericServiceImpl;
 import com.buihien.datn.repository.PositionRepository;
-import com.buihien.datn.repository.RecruitmentRequestItemRepository;
 import com.buihien.datn.repository.StaffRepository;
 import com.buihien.datn.service.RecruitmentRequestService;
 import jakarta.persistence.Query;
@@ -19,19 +15,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.HashSet;
-
 @Service
 public class RecruitmentRequestServiceImpl extends GenericServiceImpl<RecruitmentRequest, RecruitmentRequestDto, SearchDto> implements RecruitmentRequestService {
     private final StaffRepository staffRepository;
-    private final RecruitmentRequestItemRepository recruitmentRequestItemRepository;
-    private final PositionRepository positionRepository;
 
-    public RecruitmentRequestServiceImpl(StaffRepository staffRepository, RecruitmentRequestItemRepository recruitmentRequestItemRepository, PositionRepository positionRepository) {
+    public RecruitmentRequestServiceImpl(StaffRepository staffRepository, PositionRepository positionRepository) {
         super();
         this.staffRepository = staffRepository;
-        this.recruitmentRequestItemRepository = recruitmentRequestItemRepository;
-        this.positionRepository = positionRepository;
     }
 
     @Override
@@ -52,7 +42,6 @@ public class RecruitmentRequestServiceImpl extends GenericServiceImpl<Recruitmen
         entity.setCode(dto.getCode());
         entity.setDescription(dto.getDescription());
 
-        entity.setRecruitmentRequestStatus(dto.getRecruitmentRequestStatus());
         Staff proposer = null;
         if (dto.getProposer() != null && dto.getProposer().getId() != null) {
             proposer = staffRepository.findById(dto.getProposer().getId()).orElse(null);
@@ -60,39 +49,13 @@ public class RecruitmentRequestServiceImpl extends GenericServiceImpl<Recruitmen
         entity.setProposer(proposer);
         entity.setProposalDate(dto.getProposalDate());
 
-        //Duyệt yêu cầu là 1 api riêng tự động lấy người duyệt và phải đủ quyền
-        //Thới gian duyệt cũng tự động lấy
 
-        if (entity.getRecruitmentRequestItems() == null) {
-            entity.setRecruitmentRequestItems(new HashSet<>());
-        }
-        entity.getRecruitmentRequestItems().clear();
-        if (dto.getRecruitmentRequestItems() != null && !dto.getRecruitmentRequestItems().isEmpty()) {
-            for (RecruitmentRequestItemDto item : dto.getRecruitmentRequestItems()) {
-                RecruitmentRequestItem recruitmentRequestItem = null;
-                if (item.getId() != null) {
-                    recruitmentRequestItem = recruitmentRequestItemRepository.findById(item.getId()).orElse(null);
-                }
-                if (recruitmentRequestItem == null) {
-                    recruitmentRequestItem = new RecruitmentRequestItem();
-                }
-                recruitmentRequestItem.setRecruitmentRequest(entity);
-
-                Position position = null;
-                if (item.getPosition() != null && item.getPosition().getId() != null) {
-                    position = positionRepository.findById(item.getPosition().getId()).orElse(null);
-                }
-                recruitmentRequestItem.setPosition(position);
-                recruitmentRequestItem.setGender(item.getGender());
-                recruitmentRequestItem.setYearOfExperience(item.getYearOfExperience());
-                recruitmentRequestItem.setMinimumAge(item.getMinimumAge());
-                recruitmentRequestItem.setMaximumAge(item.getMaximumAge());
-                recruitmentRequestItem.setMinimumIncome(item.getMinimumIncome());
-                recruitmentRequestItem.setMaximumIncome(item.getMaximumIncome());
-                recruitmentRequestItem.setDescription(item.getDescription());
-                recruitmentRequestItem.setRequest(item.getRequest());
-            }
-        }
+//                Position position = null;
+//                if (dto.getPosition() != null && item.getPosition().getId() != null) {
+//                    position = positionRepository.findById(item.getPosition().getId()).orElse(null);
+//                recruitmentRequestItem.setDescription(item.getDescription());
+//                recruitmentRequestItem.setRequest(item.getRequest());
+//        }
         return entity;
     }
 

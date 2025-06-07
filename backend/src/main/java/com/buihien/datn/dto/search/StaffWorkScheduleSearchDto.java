@@ -15,7 +15,7 @@ public class StaffWorkScheduleSearchDto extends SearchDto {
     private Integer shiftWorkStatus; // Trạng thái ca làm việc. Chi tiết: DatnConstants.ShiftWorkStatus
     private UUID coordinatorId; // Người phân ca làm việc
     private UUID staffId;
-    private Date workingDate;
+        private Date workingDate;
     private Boolean timeSheetDetail;
 
     public StaffWorkScheduleSearchDto() {

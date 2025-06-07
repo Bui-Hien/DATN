@@ -37,8 +37,6 @@ public class CandidateServiceImpl extends GenericServiceImpl<Candidate, Candidat
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private RecruitmentPlanRepository recruitmentPlanRepository;
-    @Autowired
     private PositionRepository positionRepository;
     @Autowired
     private StaffRepository staffRepository;
@@ -106,39 +104,13 @@ public class CandidateServiceImpl extends GenericServiceImpl<Candidate, Candidat
         entity.setHeight(dto.getHeight());
         entity.setWeight(dto.getWeight());
 
-        // ----- Thông tin riêng của Candidate -----
-        RecruitmentPlan recruitmentPlan = null;
-        if (dto.getRecruitmentPlan() != null && dto.getRecruitmentPlan().getId() != null) {
-            recruitmentPlan = recruitmentPlanRepository.findById(dto.getRecruitmentPlan().getId()).orElse(null);
-        }
-        entity.setRecruitmentPlan(recruitmentPlan);
 
         Position position = null;
         if (dto.getPosition() != null && dto.getPosition().getId() != null) {
             position = positionRepository.findById(dto.getPosition().getId()).orElse(null);
         }
-        // Kiểm tra vị trí ứng tuyển có hợp lệ không (phải nằm trong kế hoạch tuyển dụng)
-        if (position != null) {
-            if (recruitmentPlan == null || recruitmentPlan.getRecruitmentRequest() == null || recruitmentPlan.getRecruitmentRequest().getRecruitmentRequestItems() == null) {
-                throw new ResourceNotFoundException("Vị trí ứng tuyển không hợp lệ");
-            }
-
-            boolean validPosition = false;
-            for (RecruitmentRequestItem item : recruitmentPlan.getRecruitmentRequest().getRecruitmentRequestItems()) {
-                if (item.getPosition() != null && item.getPosition().getId() != null && item.getPosition().getId().equals(position.getId())) {
-                    validPosition = true;
-                    break;
-                }
-            }
-
-            if (!validPosition) {
-                throw new ResourceNotFoundException("Vị trí ứng tuyển không nằm trong kế hoạch tuyển dụng");
-            }
-
             entity.setPosition(position);
-
-        }
-        entity.setSubmissionDate(dto.getSubmissionDate());
+            entity.setSubmissionDate(dto.getSubmissionDate());
         entity.setInterviewDate(dto.getInterviewDate());
         entity.setDesiredPay(dto.getDesiredPay());
         entity.setPossibleWorkingDate(dto.getPossibleWorkingDate());

@@ -19,7 +19,7 @@ import java.util.UUID;
 
 @Service
 public class FileDescriptionServiceImpl implements FileDescriptionService {
-    private static final Logger logger = LoggerFactory.getLogger(GenericServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(FileDescriptionServiceImpl.class);
     private static final String UPLOAD_DIR = System.getProperty("user.dir") + "/uploads/";
     @Autowired
     protected JpaRepository<FileDescription, UUID> repository;

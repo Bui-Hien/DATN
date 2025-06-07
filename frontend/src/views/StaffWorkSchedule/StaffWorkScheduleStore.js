@@ -1,7 +1,7 @@
 import {makeAutoObservable} from "mobx";
 import {
     deleteMultipleStaffWorkScheduleByIds,
-    deleteStaffWorkSchedule, getListByStaffAndWorkingDate,
+    deleteStaffWorkSchedule, getByStaffAndWorkingDateAndShiftWorkType, getListByStaffAndWorkingDate,
     getStaffWorkScheduleById, markAttendance,
     pagingStaffWorkSchedule,
     saveListStaffWorkSchedule,
@@ -85,6 +85,26 @@ export default class StaffWorkScheduleStore {
         try {
             if (id) {
                 const {data} = await getStaffWorkScheduleById(id);
+                this.selectedRow = {
+                    ...new StaffWorkScheduleObject(), ...data.data,
+                };
+            } else {
+                this.selectedRow = new StaffWorkScheduleObject();
+            }
+            this.openCreateEditPopup = true;
+        } catch (error) {
+            console.error(error);
+            if (error?.response?.data?.message) {
+                toast.error(error?.response?.data?.message);
+            } else {
+                toast.error(i18n.t("toast.error"));
+            }
+        }
+    };
+    handleGetByStaffAndWorkingDateAndShiftWorkType = async (obj) => {
+        try {
+            if (obj) {
+                const {data} = await getByStaffAndWorkingDateAndShiftWorkType(obj);
                 this.selectedRow = {
                     ...new StaffWorkScheduleObject(), ...data.data,
                 };
@@ -235,4 +255,11 @@ export default class StaffWorkScheduleStore {
     handleTogglePopupFilter = () => {
         this.isOpenFilter = !this.isOpenFilter;
     };
+
+    handleSetSelectedRow = (row) => {
+        this.selectedRow = {
+            ...this.selectedRow,
+            ...row
+        };
+    }
 }

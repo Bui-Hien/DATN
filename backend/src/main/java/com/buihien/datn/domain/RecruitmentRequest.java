@@ -3,14 +3,11 @@ package com.buihien.datn.domain;
 import jakarta.persistence.*;
 
 import java.util.Date;
-import java.util.Set;
 
 // yeu cau tuyen dung
 @Table(name = "tbl_recruitment_request")
 @Entity
 public class RecruitmentRequest extends BaseObject {
-    private Integer recruitmentRequestStatus; // trang thái: DatnConstants.RecruitmentRequestStatus
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "proposer_id")
     private Staff proposer; // Người đề xuất
@@ -18,41 +15,17 @@ public class RecruitmentRequest extends BaseObject {
     @Column(name = "proposal_date")
     private Date proposalDate; // Ngày đề xuất
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "approver_id")
-    private Staff approver; // Người duyệt
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "position_id")
+    private Position position; //Vị trí cần tuyển
 
-    @Column(name = "approval_date")
-    private Date approvalDate; // Thời gian duyệt
-
-    @OneToMany(mappedBy = "recruitmentRequest", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<RecruitmentRequestItem> recruitmentRequestItems; // Các vị trí cần tuyển trong yêu cầu
+    //Mô tả, yêu cầu công việc
+    @Column(name = "description", columnDefinition = "MEDIUMTEXT")
+    private String description; // mo ta cong viec
+    @Column(name = "request", columnDefinition = "MEDIUMTEXT")
+    private String request; // yeu cau
 
     public RecruitmentRequest() {
-    }
-
-    public Date getApprovalDate() {
-        return approvalDate;
-    }
-
-    public void setApprovalDate(Date approvalDate) {
-        this.approvalDate = approvalDate;
-    }
-
-    public Staff getApprover() {
-        return approver;
-    }
-
-    public void setApprover(Staff approver) {
-        this.approver = approver;
-    }
-
-    public Date getProposalDate() {
-        return proposalDate;
-    }
-
-    public void setProposalDate(Date proposalDate) {
-        this.proposalDate = proposalDate;
     }
 
     public Staff getProposer() {
@@ -63,19 +36,37 @@ public class RecruitmentRequest extends BaseObject {
         this.proposer = proposer;
     }
 
-    public Integer getRecruitmentRequestStatus() {
-        return recruitmentRequestStatus;
+    public Date getProposalDate() {
+        return proposalDate;
     }
 
-    public void setRecruitmentRequestStatus(Integer recruitmentRequestStatus) {
-        this.recruitmentRequestStatus = recruitmentRequestStatus;
+    public void setProposalDate(Date proposalDate) {
+        this.proposalDate = proposalDate;
     }
 
-    public Set<RecruitmentRequestItem> getRecruitmentRequestItems() {
-        return recruitmentRequestItems;
+    public Position getPosition() {
+        return position;
     }
 
-    public void setRecruitmentRequestItems(Set<RecruitmentRequestItem> recruitmentRequestItems) {
-        this.recruitmentRequestItems = recruitmentRequestItems;
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getRequest() {
+        return request;
+    }
+
+    public void setRequest(String request) {
+        this.request = request;
     }
 }

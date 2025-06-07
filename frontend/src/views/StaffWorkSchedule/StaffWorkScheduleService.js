@@ -30,6 +30,11 @@ export const markAttendance = (obj) => {
     let url = API_PATH + "/mark-attendance";
     return api.post(url, obj);
 };
+export const getByStaffAndWorkingDateAndShiftWorkType = (obj) => {
+    let url = API_PATH + "/get-staff-work-schedule-by-search";
+    return api.post(url, obj);
+};
+
 export const getStaffWorkScheduleById = (id) => {
     let url = API_PATH + "/" + id;
     return api.get(url);

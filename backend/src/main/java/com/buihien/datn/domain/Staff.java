@@ -27,7 +27,7 @@ public class Staff extends Person {
     @OneToMany(mappedBy = "staff", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<StaffDocumentItem> staffDocumentItems;
     @Column(name = "staff_phase")
-    private Integer staffPhase; // Tình trạng nhân viên. Chi tiết: DatnConstants.StaffPhase
+    private Integer staffPhase; // Loại nhân viên. Chi tiết: DatnConstants.StaffPhase
     @Column(name = "require_attendance")
     private Boolean requireAttendance; //Nhân viên có cần chấm công không không
     @Column(name = "allow_external_ip_timekeeping")

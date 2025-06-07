@@ -15,10 +15,6 @@ public class Candidate extends Person {
     private String candidateCode; // ma ung vien
 
     @ManyToOne
-    @JoinColumn(name = "recruitment_plan_id")
-    private RecruitmentPlan recruitmentPlan; // kế hoạch tuyển dụng ứng viên
-
-    @ManyToOne
     @JoinColumn(name = "position_id")
     private Position position; // Vị trí ứng tuyển trong phòng ban ứng tuyển)
 
@@ -38,10 +34,6 @@ public class Candidate extends Person {
     @JoinColumn(name = "introducer_id")
     private Staff introducer; // Nhân viên giới thiệu ứng viên
 
-    // tab 5 - Kinh nghiệm làm việc
-    @OneToMany(mappedBy = "candidate", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<CandidateWorkingExperience> candidateWorkingExperience; // Kinh nghiệm làm việc
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "staff_id")
     private Staff staff;
@@ -50,7 +42,12 @@ public class Candidate extends Person {
     private Integer candidateStatus; //Xem status: DatnConstants.CandidateStatus
 
     @OneToOne
+    @JoinColumn(name = "curriculum_vitae_id")
     private FileDescription curriculumVitae; // cv của ứng viên
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "recruitment_request_id")
+    private RecruitmentRequest recruitmentRequest; //yêu cầu tuyển dụng nào
 
     public Candidate() {
     }
@@ -61,14 +58,6 @@ public class Candidate extends Person {
 
     public void setCandidateCode(String candidateCode) {
         this.candidateCode = candidateCode;
-    }
-
-    public RecruitmentPlan getRecruitmentPlan() {
-        return recruitmentPlan;
-    }
-
-    public void setRecruitmentPlan(RecruitmentPlan recruitmentPlan) {
-        this.recruitmentPlan = recruitmentPlan;
     }
 
     public Position getPosition() {
@@ -125,14 +114,6 @@ public class Candidate extends Person {
 
     public void setIntroducer(Staff introducer) {
         this.introducer = introducer;
-    }
-
-    public Set<CandidateWorkingExperience> getCandidateWorkingExperience() {
-        return candidateWorkingExperience;
-    }
-
-    public void setCandidateWorkingExperience(Set<CandidateWorkingExperience> candidateWorkingExperience) {
-        this.candidateWorkingExperience = candidateWorkingExperience;
     }
 
     public Staff getStaff() {

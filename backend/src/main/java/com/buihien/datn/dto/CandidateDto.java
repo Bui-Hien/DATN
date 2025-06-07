@@ -2,7 +2,6 @@ package com.buihien.datn.dto;
 
 import com.buihien.datn.DatnConstants;
 import com.buihien.datn.domain.Candidate;
-import com.buihien.datn.domain.CandidateWorkingExperience;
 import com.buihien.datn.dto.validator.ValidEnumValue;
 import jakarta.validation.Valid;
 
@@ -13,7 +12,6 @@ import java.util.List;
 @Valid
 public class CandidateDto extends PersonDto {
     private String candidateCode; // ma ung vien
-    private RecruitmentPlanDto recruitmentPlan;
     private PositionDto position; // Vị trí ứng tuyển trong phòng ban ứng tuyển)
     private Date submissionDate; // Ngày nop ho so
     private Date interviewDate; // Ngày phong van
@@ -21,7 +19,6 @@ public class CandidateDto extends PersonDto {
     private Date possibleWorkingDate; // Ngày co the lam việc
     private Date onboardDate; // Ngày ứng viên nhận việc
     private StaffDto introducer; // Nhân viên giới thiệu ứng viên
-    private List<CandidateWorkingExperienceDto> candidateWorkingExperience; // Kinh nghiệm làm việc
     private StaffDto staff;
     @ValidEnumValue(enumClass = DatnConstants.CandidateStatus.class, message = "Trạng thái ứng viên không hợp lệ")
     private Integer candidateStatus; //Xem status: DatnConstants.CandidateStatus
@@ -35,7 +32,6 @@ public class CandidateDto extends PersonDto {
         super(entity, isGetFull);
         if (entity != null) {
             this.candidateCode = entity.getCandidateCode();
-            this.recruitmentPlan = new RecruitmentPlanDto(entity.getRecruitmentPlan(), false);
             this.position = new PositionDto(entity.getPosition(), true, true);
             this.submissionDate = entity.getSubmissionDate();
             this.interviewDate = entity.getInterviewDate();
@@ -49,13 +45,6 @@ public class CandidateDto extends PersonDto {
                 this.curriculumVitae = new FileDescriptionDto(entity.getCurriculumVitae());
             }
             if (isGetFull) {
-                if (entity.getCandidateWorkingExperience() != null && !entity.getCandidateWorkingExperience().isEmpty()) {
-                    this.candidateWorkingExperience = new ArrayList<>();
-                    for (CandidateWorkingExperience dto : entity.getCandidateWorkingExperience()) {
-                        CandidateWorkingExperienceDto candidateWorkingExperienceDto = new CandidateWorkingExperienceDto(dto, false);
-                        this.candidateWorkingExperience.add(candidateWorkingExperienceDto);
-                    }
-                }
             }
         }
     }
@@ -66,14 +55,6 @@ public class CandidateDto extends PersonDto {
 
     public void setCandidateCode(String candidateCode) {
         this.candidateCode = candidateCode;
-    }
-
-    public RecruitmentPlanDto getRecruitmentPlan() {
-        return recruitmentPlan;
-    }
-
-    public void setRecruitmentPlan(RecruitmentPlanDto recruitmentPlan) {
-        this.recruitmentPlan = recruitmentPlan;
     }
 
     public PositionDto getPosition() {
@@ -130,14 +111,6 @@ public class CandidateDto extends PersonDto {
 
     public void setIntroducer(StaffDto introducer) {
         this.introducer = introducer;
-    }
-
-    public List<CandidateWorkingExperienceDto> getCandidateWorkingExperience() {
-        return candidateWorkingExperience;
-    }
-
-    public void setCandidateWorkingExperience(List<CandidateWorkingExperienceDto> candidateWorkingExperience) {
-        this.candidateWorkingExperience = candidateWorkingExperience;
     }
 
     public StaffDto getStaff() {

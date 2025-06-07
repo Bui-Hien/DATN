@@ -5,48 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e47dca97-3d3a-416a-b068-5f4a89d0539a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/StaffWorkScheduleSummaryDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/StaffWorkScheduleSummary/StaffWorkScheduleSummaryFilter.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/StaffWorkScheduleSummary/StaffWorkScheduleSummaryIndex.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/StaffWorkScheduleSummary/StaffWorkScheduleSummaryList.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/StaffWorkScheduleSummary/StaffWorkScheduleSummaryRoutes.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/StaffWorkScheduleSummary/StaffWorkScheduleSummaryStore.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/StaffWorkScheduleSummary/StaffWorkScheduleSummaryToolbar.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/TimeSheetDetail/TimeSheetDetailFilter.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/TimeSheetDetail/TimeSheetDetailForm.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/TimeSheetDetail/TimeSheetDetailIndex.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/TimeSheetDetail/TimeSheetDetailList.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/TimeSheetDetail/TimeSheetDetailRoutes.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/TimeSheetDetail/TimeSheetDetailToolbar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/DatnConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/DatnConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/controller/RestStaffWorkScheduleController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/controller/RestStaffWorkScheduleController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/StaffWorkScheduleDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/StaffWorkScheduleDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/search/StaffWorkScheduleSearchDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/dto/search/StaffWorkScheduleSearchDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/repository/StaffWorkScheduleRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/repository/StaffWorkScheduleRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/StaffWorkScheduleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/StaffWorkScheduleService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/StaffServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/StaffServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AI/model_trainer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AI/predictor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AI/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../AI/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AI/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../AI/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AI/src/preprocess.py" beforeDir="false" afterPath="$PROJECT_DIR$/../AI/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AI/src/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/../AI/data_processor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/FileDescriptionServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/FileDescriptionServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/StaffWorkScheduleServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/buihien/datn/service/impl/StaffWorkScheduleServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/LocalConstants.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/LocalConstants.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/LocalFunction.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/LocalFunction.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/RootRoutes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/RootRoutes.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/common/CommonSelectedStaff/ChooseSelectedStaff.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/CommonSelectedStaff/ChooseSelectedStaff.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/CommonTable.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/CommonTable.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/navigations.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/navigations.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/SalaryResultItem/SalaryResultItemList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/SalaryResultItem/SalaryResultItemList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/Staff/ProfileStaff.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Staff/ProfileStaff.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/Staff/StaffRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Staff/StaffRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/Staff/StaffService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Staff/StaffService.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/Staff/StaffStore.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Staff/StaffStore.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/Staff/Tab/PersonalInformation.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Staff/Tab/PersonalInformation.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/StaffLabourAgreement/StaffLabourAgreementForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/StaffLabourAgreement/StaffLabourAgreementForm.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/StaffLabourAgreement/StaffLabourAgreementList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/StaffLabourAgreement/StaffLabourAgreementList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/StaffLabourAgreement/StaffLabourAgreementToolbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/StaffLabourAgreement/StaffLabourAgreementToolbar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/StaffWorkSchedule/SearchObject.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/StaffWorkSchedule/SearchObject.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/StaffWorkSchedule/StaffWorkSchedule.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/StaffWorkSchedule/StaffWorkSchedule.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/StaffWorkSchedule/StaffWorkScheduleService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/StaffWorkSchedule/StaffWorkScheduleService.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/StaffWorkSchedule/StaffWorkScheduleStore.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/StaffWorkSchedule/StaffWorkScheduleStore.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/StaffWorkScheduleSummary/StaffWorkScheduleSummaryIndex.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/StaffWorkScheduleSummary/StaffWorkScheduleSummaryIndex.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/StaffWorkScheduleSummary/StaffWorkScheduleSummaryStore.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/StaffWorkScheduleSummary/StaffWorkScheduleSummaryStore.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/TimeSheetDetail/TimeSheetDetailForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/TimeSheetDetail/TimeSheetDetailForm.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,23 +53,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/workspace/DATN/frontend/src/views/StaffWorkScheduleSummary",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "yarn",
-    "npm.start.executor": "Run",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2024.3.1.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/workspace/DATN/frontend/src/views/StaffWorkScheduleSummary&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
+    &quot;npm.start.executor&quot;: &quot;Debug&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\WebStorm 2024.3.1.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\workspace\DATN\frontend\src\views\StaffWorkScheduleSummary" />
@@ -150,7 +127,16 @@
       <workItem from="1747735871403" duration="20522000" />
       <workItem from="1747795529751" duration="33485000" />
       <workItem from="1747881001810" duration="78542000" />
-      <workItem from="1748056958999" duration="45824000" />
+      <workItem from="1748056958999" duration="46157000" />
+      <workItem from="1748145598194" duration="309000" />
+      <workItem from="1748150379413" duration="607000" />
+      <workItem from="1748180944870" duration="681000" />
+      <workItem from="1748184605497" duration="1364000" />
+      <workItem from="1748192576312" duration="599000" />
+      <workItem from="1748269303013" duration="1376000" />
+      <workItem from="1748287856011" duration="1793000" />
+      <workItem from="1748359406269" duration="1679000" />
+      <workItem from="1748372884582" duration="6309000" />
     </task>
     <servers />
   </component>
