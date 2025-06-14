@@ -25,9 +25,6 @@ public class PersonDto extends AuditableDto {
     protected String idNumberIssueBy;
     protected Date idNumberIssueDate;
     protected String email;
-    protected CountryDto nationality;
-    protected EthnicsDto ethnics;
-    protected ReligionDto religion;
     @ValidEnumValue(enumClass = DatnConstants.MaritalStatus.class, message = "Tình trạng hôn nhân không hợp lệ")
     protected Integer maritalStatus;
     protected String taxCode;
@@ -37,11 +34,7 @@ public class PersonDto extends AuditableDto {
     protected Double height;
     protected Double weight;
     protected FileDescriptionDto avatar;
-    protected PersonAddressDto permanentResidence; //thường chú
-    protected PersonAddressDto temporaryResidence;// Tạm chú
-    protected List<PersonFamilyRelationshipDto> familyRelationships;
     protected List<CertificateDto> certificates;
-    protected List<PersonBankAccountDto> personBankAccounts;
 
     public PersonDto() {
     }
@@ -68,17 +61,6 @@ public class PersonDto extends AuditableDto {
             if (entity.getAvatar() != null) {
                 this.avatar = new FileDescriptionDto(entity.getAvatar());
             }
-            if (entity.getNationality() != null) {
-                this.nationality = new CountryDto(entity.getNationality());
-            }
-
-            if (entity.getEthnics() != null) {
-                this.ethnics = new EthnicsDto(entity.getEthnics());
-            }
-
-            if (entity.getReligion() != null) {
-                this.religion = new ReligionDto(entity.getReligion());
-            }
 
             if (entity.getUser() != null && isGetFull) {
                 this.user = new UserDto(entity.getUser(), false); // Tránh vòng lặp đệ quy
@@ -86,34 +68,12 @@ public class PersonDto extends AuditableDto {
 
             this.educationLevel = entity.getEducationLevel();
 
-            if (entity.getPermanentResidence() != null) {
-                this.permanentResidence = new PersonAddressDto(entity.getPermanentResidence());
-            }
-            if (entity.getTemporaryResidence() != null) {
-                this.temporaryResidence = new PersonAddressDto(entity.getTemporaryResidence());
-            }
             if (isGetFull) {
-                if (entity.getFamilyRelationships() != null && !entity.getFamilyRelationships().isEmpty()) {
-                    this.familyRelationships = new ArrayList<>();
-                    for (PersonFamilyRelationship personFamilyRelationship : entity.getFamilyRelationships()) {
-                        PersonFamilyRelationshipDto dto = new PersonFamilyRelationshipDto(personFamilyRelationship, false);
-                        this.familyRelationships.add(dto);
-                    }
-                }
-
-
                 if (entity.getCertificates() != null && !entity.getCertificates().isEmpty()) {
                     this.certificates = new ArrayList<>();
                     for (Certificate certificate : entity.getCertificates()) {
                         CertificateDto dto = new CertificateDto(certificate, false);
                         this.certificates.add(dto);
-                    }
-                }
-                if (entity.getPersonBankAccounts() != null && !entity.getPersonBankAccounts().isEmpty()) {
-                    this.personBankAccounts = new ArrayList<>();
-                    for (PersonBankAccount personBankAccount : entity.getPersonBankAccounts()) {
-                        PersonBankAccountDto dto = new PersonBankAccountDto(personBankAccount, false);
-                        this.personBankAccounts.add(dto);
                     }
                 }
             }
@@ -208,30 +168,6 @@ public class PersonDto extends AuditableDto {
         this.email = email;
     }
 
-    public CountryDto getNationality() {
-        return nationality;
-    }
-
-    public void setNationality(CountryDto nationality) {
-        this.nationality = nationality;
-    }
-
-    public EthnicsDto getEthnics() {
-        return ethnics;
-    }
-
-    public void setEthnics(EthnicsDto ethnics) {
-        this.ethnics = ethnics;
-    }
-
-    public ReligionDto getReligion() {
-        return religion;
-    }
-
-    public void setReligion(ReligionDto religion) {
-        this.religion = religion;
-    }
-
     public Integer getMaritalStatus() {
         return maritalStatus;
     }
@@ -288,43 +224,11 @@ public class PersonDto extends AuditableDto {
         this.avatar = avatar;
     }
 
-    public List<PersonFamilyRelationshipDto> getFamilyRelationships() {
-        return familyRelationships;
-    }
-
-    public void setFamilyRelationships(List<PersonFamilyRelationshipDto> familyRelationships) {
-        this.familyRelationships = familyRelationships;
-    }
-
-    public PersonAddressDto getPermanentResidence() {
-        return permanentResidence;
-    }
-
-    public void setPermanentResidence(PersonAddressDto permanentResidence) {
-        this.permanentResidence = permanentResidence;
-    }
-
-    public PersonAddressDto getTemporaryResidence() {
-        return temporaryResidence;
-    }
-
-    public void setTemporaryResidence(PersonAddressDto temporaryResidence) {
-        this.temporaryResidence = temporaryResidence;
-    }
-
     public List<CertificateDto> getCertificates() {
         return certificates;
     }
 
     public void setCertificates(List<CertificateDto> certificates) {
         this.certificates = certificates;
-    }
-
-    public List<PersonBankAccountDto> getPersonBankAccounts() {
-        return personBankAccounts;
-    }
-
-    public void setPersonBankAccounts(List<PersonBankAccountDto> personBankAccounts) {
-        this.personBankAccounts = personBankAccounts;
     }
 }

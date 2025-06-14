@@ -4,7 +4,7 @@ export class StaffWorkScheduleObject {
         this.shiftWorkType = null;
         this.staff = null;
         this.workingDate = null;
-        this.checkIn = new Date();
+        this.checkIn = null;
         this.checkOut = null;
         this.shiftWorkStatus = null;
         this.coordinator = null;

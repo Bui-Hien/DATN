@@ -1,7 +1,7 @@
 package com.buihien.datn.repository;
 
 import com.buihien.datn.domain.StaffWorkSchedule;
-import com.buihien.datn.dto.CalculatedWorkingDay.ShiftWorkTypeCount;
+import com.buihien.datn.dto.calculatedworkingday.ShiftWorkTypeCount;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,7 +17,7 @@ public interface StaffWorkScheduleRepository extends JpaRepository<StaffWorkSche
     List<StaffWorkSchedule> findByWorkingDateBetweenAndStaffIds(@Param("fromDate") Date fromDate, @Param("toDate") Date toDate, @Param("staffIds") List<UUID> staffIds);
 
     //dếm só công được tính
-    @Query("SELECT new com.buihien.datn.dto.CalculatedWorkingDay.ShiftWorkTypeCount(s.shiftWorkType, COUNT(s)) " +
+    @Query("SELECT new com.buihien.datn.dto.calculatedworkingday.ShiftWorkTypeCount(s.shiftWorkType, COUNT(s)) " +
             "FROM StaffWorkSchedule s " +
             "WHERE s.shiftWorkStatus = 4 " +
             "AND s.staff.id = :staffId " +

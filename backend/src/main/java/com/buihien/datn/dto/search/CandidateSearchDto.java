@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Valid
 public class CandidateSearchDto extends SearchDto {
-    private UUID recruitmentPlanId;// kế hoạch tuyển dụng ứng viên
+    private UUID recruitmentRequestId;//
     private UUID positionId;// Vị trí ứng tuyển trong phòng ban ứng tuyển)
     private UUID introducerId;// Nhân viên giới thiệu ứng viên
     @ValidEnumValue(enumClass = DatnConstants.CandidateStatus.class, message = "Trạng thái ứng viên không hợp lệ")
@@ -17,12 +17,12 @@ public class CandidateSearchDto extends SearchDto {
     public CandidateSearchDto() {
     }
 
-    public UUID getRecruitmentPlanId() {
-        return recruitmentPlanId;
+    public UUID getRecruitmentRequestId() {
+        return recruitmentRequestId;
     }
 
-    public void setRecruitmentPlanId(UUID recruitmentPlanId) {
-        this.recruitmentPlanId = recruitmentPlanId;
+    public void setRecruitmentRequestId(UUID recruitmentRequestId) {
+        this.recruitmentRequestId = recruitmentRequestId;
     }
 
     public UUID getPositionId() {

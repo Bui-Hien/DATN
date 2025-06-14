@@ -43,7 +43,7 @@ public class GenericApi<DTO extends AuditableDto, S extends SearchDto> {
         this.genericService = genericService;
     }
 
-    @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN})
+    @Secured({DatnConstants.ROLE_MANAGER, DatnConstants.ROLE_ADMIN})
     @PostMapping("/save-or-update")
     public ResponseData<DTO> saveOrUpdate(@Valid @RequestBody DTO dto) {
         DTO result = genericService.saveOrUpdate(dto);
@@ -54,7 +54,7 @@ public class GenericApi<DTO extends AuditableDto, S extends SearchDto> {
         );
     }
 
-    @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN})
+    @Secured({DatnConstants.ROLE_MANAGER, DatnConstants.ROLE_ADMIN})
     @PostMapping("/save-all")
     public ResponseData<Integer> saveOrUpdateAll(@Valid @RequestBody List<DTO> dtoList) {
         if (dtoList == null || dtoList.isEmpty()) {
@@ -65,28 +65,28 @@ public class GenericApi<DTO extends AuditableDto, S extends SearchDto> {
         return new ResponseData<>(HttpStatus.OK.value(), "Successfully saved list", savedCount);
     }
 
-    @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN})
+    @Secured({DatnConstants.ROLE_MANAGER, DatnConstants.ROLE_ADMIN})
     @DeleteMapping("/{id}")
     public ResponseData<?> deleteById(@PathVariable UUID id) {
         genericService.deleteById(id);
         return new ResponseData<>(HttpStatus.NO_CONTENT.value(), "Delete success by id " + id);
     }
 
-    @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN})
+    @Secured({DatnConstants.ROLE_MANAGER, DatnConstants.ROLE_ADMIN})
     @PostMapping("/delete-multiple")
     public ResponseData<Integer> deleteMultipleByIds(@RequestBody @NotEmpty List<@NotNull UUID> ids) {
         int deletedCount = genericService.deleteMultiple(ids);
         return new ResponseData<>(HttpStatus.NO_CONTENT.value(), "Successfully deleted " + ids);
     }
 
-    @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN})
+    @Secured({DatnConstants.ROLE_MANAGER, DatnConstants.ROLE_ADMIN})
     @GetMapping("/{id}")
     public ResponseData<DTO> getById(@PathVariable UUID id) {
         DTO result = genericService.getById(id); // nếu không tồn tại sẽ throw ResourceNotFoundException
         return new ResponseData<>(HttpStatus.OK.value(), "Get success by id " + id, result);
     }
 
-    @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN})
+    @Secured({DatnConstants.ROLE_MANAGER, DatnConstants.ROLE_ADMIN})
     @GetMapping("/paging")
     public ResponseData<Page<DTO>> paging(@RequestParam(defaultValue = "10") @Min(1) int pageSize,
                                           @RequestParam(defaultValue = "0") @Min(0) int pageIndex) {
@@ -94,14 +94,14 @@ public class GenericApi<DTO extends AuditableDto, S extends SearchDto> {
         return new ResponseData<>(HttpStatus.OK.value(), "Success", result);
     }
 
-    @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN})
+    @Secured({DatnConstants.ROLE_MANAGER, DatnConstants.ROLE_ADMIN})
     @PostMapping("/paging-search")
     public ResponseData<Page<DTO>> pagingSearch(@Valid @RequestBody S dto) {
         Page<DTO> result = genericService.pagingSearch(dto);
         return new ResponseData<>(HttpStatus.OK.value(), "Success", result);
     }
 
-    @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN})
+    @Secured({DatnConstants.ROLE_MANAGER, DatnConstants.ROLE_ADMIN})
     @PostMapping("/export-excel")
     public ResponseEntity<?> exportExcel(HttpServletResponse response, @Valid @RequestBody S search) throws IOException {
         Instant startExport = Instant.now();
@@ -141,7 +141,7 @@ public class GenericApi<DTO extends AuditableDto, S extends SearchDto> {
         }
     }
 
-    @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN})
+    @Secured({DatnConstants.ROLE_MANAGER, DatnConstants.ROLE_ADMIN})
     @PostMapping("/import-excel")
     public ResponseEntity<?> importExcel(@RequestParam("file") MultipartFile file) throws IOException {
         if (file.isEmpty()) {

@@ -92,7 +92,7 @@ const shouldComponentUpdate = (nextProps, currentProps) => {
     return (
         nextProps.name !== currentProps.name ||
         nextProps.value !== currentProps.value ||
-        nextProps.onChange !== currentProps.onChange ||
+        nextProps.handleChange !== currentProps.handleChange ||
         nextProps.label !== currentProps.label ||
         nextProps.required !== currentProps.required ||
         nextProps.requiredLabel !== currentProps.requiredLabel ||

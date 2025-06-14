@@ -1,9 +1,7 @@
 package com.buihien.datn.dto;
 
 import com.buihien.datn.DatnConstants;
-import com.buihien.datn.domain.SalaryTemplate;
 import com.buihien.datn.domain.Staff;
-import com.buihien.datn.domain.StaffDocumentItem;
 import com.buihien.datn.domain.StaffLabourAgreement;
 import com.buihien.datn.dto.validator.ValidEnumValue;
 import jakarta.validation.Valid;
@@ -21,8 +19,6 @@ public class StaffDto extends PersonDto {
     private List<StaffLabourAgreementDto> agreements;// Hợp đồng
     @ValidEnumValue(enumClass = DatnConstants.EmployeeStatus.class, message = "Trạng thái nhân viên không hợp lệ")
     private Integer employeeStatus; //DatnConstants.EmployeeStatus
-    private DocumentTemplateDto documentTemplate; // mẫu hồ sơ được dùng
-    private List<StaffDocumentItemDto> staffDocumentItems;
     @ValidEnumValue(enumClass = DatnConstants.StaffPhase.class, message = "Loại nhân viên không hợp lệ")
     private Integer staffPhase; // Loại nhân viên. Chi tiết: DatnConstants.StaffPhase
     private Boolean requireAttendance; //Nhân viên có cần chấm công không không
@@ -43,9 +39,6 @@ public class StaffDto extends PersonDto {
             this.staffPhase = entity.getStaffPhase();
             this.requireAttendance = entity.getRequireAttendance();
             this.allowExternalIpTimekeeping = entity.getAllowExternalIpTimekeeping();
-            if (entity.getDocumentTemplate() != null) {
-                this.documentTemplate = new DocumentTemplateDto(entity.getDocumentTemplate(), false);
-            }
             if (entity.getSalaryTemplate() != null) {
                 this.salaryTemplate = new SalaryTemplateDto(entity.getSalaryTemplate(), false);
             }
@@ -54,12 +47,6 @@ public class StaffDto extends PersonDto {
                     this.agreements = new ArrayList<>();
                     for (StaffLabourAgreement item : entity.getAgreements()) {
                         this.agreements.add(new StaffLabourAgreementDto(item, false));
-                    }
-                }
-                if (entity.getStaffDocumentItems() != null && !entity.getStaffDocumentItems().isEmpty()) {
-                    this.staffDocumentItems = new ArrayList<>();
-                    for (StaffDocumentItem item : entity.getStaffDocumentItems()) {
-                        this.staffDocumentItems.add(new StaffDocumentItemDto(item, false));
                     }
                 }
             }
@@ -112,22 +99,6 @@ public class StaffDto extends PersonDto {
 
     public void setEmployeeStatus(Integer employeeStatus) {
         this.employeeStatus = employeeStatus;
-    }
-
-    public DocumentTemplateDto getDocumentTemplate() {
-        return documentTemplate;
-    }
-
-    public void setDocumentTemplate(DocumentTemplateDto documentTemplate) {
-        this.documentTemplate = documentTemplate;
-    }
-
-    public List<StaffDocumentItemDto> getStaffDocumentItems() {
-        return staffDocumentItems;
-    }
-
-    public void setStaffDocumentItems(List<StaffDocumentItemDto> staffDocumentItems) {
-        this.staffDocumentItems = staffDocumentItems;
     }
 
     public Integer getStaffPhase() {

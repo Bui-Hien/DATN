@@ -93,16 +93,18 @@ public class UserServiceImpl extends GenericServiceImpl<User, UserDto, SearchDto
         }
         if (entity == null) {
             entity = new User();
+        }
+        if (dto.getPassword() != null || dto.getConfirmPassword() != null) {
             if (!StringUtils.hasText(dto.getPassword())) {
-                throw new InvalidDataException("Password is required");
+                throw new InvalidDataException("Mật khẩu là bắt buộc");
             }
             entity.setPassword(passwordEncoder.encode(dto.getPassword()));
             if (!dto.getPassword().equals(dto.getConfirmPassword())) {
-                throw new InvalidDataException("Passwords do not match with confirm password");
+                throw new InvalidDataException("Mật khẩu xác nhận không khớp");
             }
         }
         entity.setUsername(dto.getUsername());
-        entity.setEmail(dto.getEmail());
+        entity.setEmail("user_" + UUID.randomUUID().toString().substring(0, 8) + "@example.com");
         if (dto.getPerson() != null) {
             Person person = null;
             if (dto.getPerson().getId() != null) {

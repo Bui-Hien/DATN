@@ -24,7 +24,7 @@ public class RestSalaryResultController extends GenericApi<SalaryResultDto, Sear
         super(SalaryResultDto.class, genericService);
     }
 
-    @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN})
+    @Secured({DatnConstants.ROLE_MANAGER, DatnConstants.ROLE_ADMIN})
     @GetMapping("/recalculate-salary/{id}")
     public ResponseData<Boolean> recalculateSalary(@PathVariable UUID id) {
         Boolean result = ((SalaryResultService) genericService).getRecalculateSalary(id);

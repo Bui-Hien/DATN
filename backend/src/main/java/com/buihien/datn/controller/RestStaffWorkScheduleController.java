@@ -3,7 +3,7 @@ package com.buihien.datn.controller;
 import com.buihien.datn.DatnConstants;
 import com.buihien.datn.dto.StaffWorkScheduleDto;
 import com.buihien.datn.dto.StaffWorkScheduleListDto;
-import com.buihien.datn.dto.StaffWorkScheduleSummaryDto;
+import com.buihien.datn.dto.StaffMonthScheduleCalendarDto;
 import com.buihien.datn.dto.search.StaffWorkScheduleSearchDto;
 import com.buihien.datn.generic.GenericApi;
 import com.buihien.datn.generic.GenericService;
@@ -31,7 +31,7 @@ public class RestStaffWorkScheduleController extends GenericApi<StaffWorkSchedul
         super(StaffWorkScheduleDto.class, genericService);
     }
 
-    @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN})
+    @Secured({DatnConstants.ROLE_MANAGER, DatnConstants.ROLE_ADMIN})
     @PostMapping("/save-list")
     public ResponseData<Integer> saveStaffWorkScheduleList(@Valid @RequestBody StaffWorkScheduleListDto dto) {
         Integer savedCount = ((StaffWorkScheduleService) genericService).saveList(dto);
@@ -39,31 +39,25 @@ public class RestStaffWorkScheduleController extends GenericApi<StaffWorkSchedul
         return new ResponseData<>(HttpStatus.OK.value(), "Successfully saved list", savedCount);
     }
 
-    @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN, DatnConstants.ROLE_USER})
+    @Secured({DatnConstants.ROLE_MANAGER, DatnConstants.ROLE_ADMIN, DatnConstants.ROLE_USER})
     @PostMapping("/mark-attendance")
     public ResponseData<StaffWorkScheduleDto> markAttendance(@Valid @RequestBody StaffWorkScheduleDto dto) {
         StaffWorkScheduleDto result = ((StaffWorkScheduleService) genericService).markAttendance(dto);
         return new ResponseData<>(HttpStatus.OK.value(), "Chấm công thành công", result);
     }
 
-    @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN, DatnConstants.ROLE_USER})
+    @Secured({DatnConstants.ROLE_MANAGER, DatnConstants.ROLE_ADMIN, DatnConstants.ROLE_USER})
     @PostMapping("/get-list-staff-work-schedule")
     public ResponseData<List<StaffWorkScheduleDto>> getListByStaffAndWorkingDate(@Valid @RequestBody StaffWorkScheduleSearchDto dto) {
         List<StaffWorkScheduleDto> response = ((StaffWorkScheduleService) genericService).getListByStaffAndWorkingDate(dto);
         return new ResponseData<>(HttpStatus.OK.value(), "Các ca làm việc trong ngày của nhân viên", response);
     }
 
-    @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN, DatnConstants.ROLE_USER})
-    @PostMapping("/get-staff-work-schedule-by-search")
-    public ResponseData<StaffWorkScheduleDto> getByStaffAndWorkingDateAndShiftWorkType(@Valid @RequestBody StaffWorkScheduleSearchDto dto) {
-        StaffWorkScheduleDto response = ((StaffWorkScheduleService) genericService).getByStaffAndWorkingDateAndShiftWorkType(dto);
-        return new ResponseData<>(HttpStatus.OK.value(), "Các ca làm việc trong ngày của nhân viên", response);
-    }
 
-    @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN, DatnConstants.ROLE_USER})
-    @PostMapping("/get-staff-work-schedule-summary")
-    public ResponseData<Page<StaffWorkScheduleSummaryDto>> getScheduleSummary(@Valid @RequestBody StaffWorkScheduleSearchDto dto) {
-        Page<StaffWorkScheduleSummaryDto> response = ((StaffWorkScheduleService) genericService).getScheduleSummary(dto);
+    @Secured({DatnConstants.ROLE_MANAGER, DatnConstants.ROLE_ADMIN, DatnConstants.ROLE_USER})
+    @PostMapping("/staff-month-schedule-calendar")
+    public ResponseData<Page<StaffMonthScheduleCalendarDto>> getStaffMonthScheduleCalendar(@Valid @RequestBody StaffWorkScheduleSearchDto dto) {
+        Page<StaffMonthScheduleCalendarDto> response = ((StaffWorkScheduleService) genericService).getStaffMonthScheduleCalendar(dto);
         return new ResponseData<>(HttpStatus.OK.value(), "Thống kê công của nhân viên theo search object", response);
     }
 }

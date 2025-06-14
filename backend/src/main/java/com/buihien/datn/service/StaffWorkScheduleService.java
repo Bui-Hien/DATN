@@ -1,11 +1,10 @@
 package com.buihien.datn.service;
 
+import com.buihien.datn.dto.StaffMonthScheduleCalendarDto;
 import com.buihien.datn.dto.StaffWorkScheduleDto;
 import com.buihien.datn.dto.StaffWorkScheduleListDto;
-import com.buihien.datn.dto.StaffWorkScheduleSummaryDto;
 import com.buihien.datn.dto.search.StaffWorkScheduleSearchDto;
 import com.buihien.datn.generic.GenericService;
-import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 
 import java.util.Date;
@@ -21,7 +20,7 @@ public interface StaffWorkScheduleService extends GenericService<StaffWorkSchedu
 
     List<StaffWorkScheduleDto> getListByStaffAndWorkingDate(StaffWorkScheduleSearchDto dto);
 
-    Page<StaffWorkScheduleSummaryDto> getScheduleSummary(StaffWorkScheduleSearchDto dto);
+    Page<StaffMonthScheduleCalendarDto> getStaffMonthScheduleCalendar(StaffWorkScheduleSearchDto dto);
 
     StaffWorkScheduleDto getByStaffAndWorkingDateAndShiftWorkType(StaffWorkScheduleSearchDto dto);
 }

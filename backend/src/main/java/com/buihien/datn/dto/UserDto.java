@@ -11,7 +11,7 @@ public class UserDto extends AuditableDto {
     private String password;
     private String confirmPassword;
     private String email;
-    private List<UserRoleDto> roles;
+    private List<RoleDto> roles;
     private PersonDto person;
 
     public UserDto() {
@@ -29,8 +29,8 @@ public class UserDto extends AuditableDto {
                 }
                 if (entity.getRoles() != null && !entity.getRoles().isEmpty()) {
                     this.roles = new ArrayList<>();
-                    for (UserRole role : entity.getRoles()) {
-                        this.roles.add(new UserRoleDto(role));
+                    for (UserRole userRole : entity.getRoles()) {
+                        this.roles.add(new RoleDto(userRole.getRole()));
                     }
                 }
             }
@@ -73,11 +73,11 @@ public class UserDto extends AuditableDto {
         this.email = email;
     }
 
-    public List<UserRoleDto> getRoles() {
+    public List<RoleDto> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<UserRoleDto> roles) {
+    public void setRoles(List<RoleDto> roles) {
         this.roles = roles;
     }
 

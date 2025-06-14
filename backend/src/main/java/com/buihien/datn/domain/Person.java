@@ -41,19 +41,6 @@ public class Person extends AuditableEntity {
 
     @Column(name = "email")
     protected String email; // Địa chỉ email
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "country_id")
-    protected Country nationality; // Quốc tịch (liên kết đến bảng Country)
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "ethnics_id")
-    protected Ethnics ethnics; // Dân tộc (liên kết đến bảng Ethnics)
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "religion_id")
-    protected Religion religion; // Tôn giáo (liên kết đến bảng Religion)
-
     @Column(name = "marital_status")
     protected Integer maritalStatus; // DatnConstants.MaritalStatus
 
@@ -76,23 +63,8 @@ public class Person extends AuditableEntity {
     @JoinColumn(name = "avatar_id")
     protected FileDescription avatar;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "permanent_residence_id")
-    protected PersonAddress permanentResidence; //thường chú
-
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "temporary_residence_id")
-    protected PersonAddress temporaryResidence;// Tạm chú
-
-    @OneToMany(mappedBy = "person", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    protected Set<PersonFamilyRelationship> familyRelationships;// Quan hệ gia đình
-
     @OneToMany(mappedBy = "person", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     protected Set<Certificate> certificates; // Chứng chỉ
-
-    @OneToMany(mappedBy = "person", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    protected Set<PersonBankAccount> personBankAccounts; // các tài khoản ngân hàng của nhân viên
-
     public Person() {
     }
 
@@ -184,30 +156,6 @@ public class Person extends AuditableEntity {
         this.email = email;
     }
 
-    public Country getNationality() {
-        return nationality;
-    }
-
-    public void setNationality(Country nationality) {
-        this.nationality = nationality;
-    }
-
-    public Ethnics getEthnics() {
-        return ethnics;
-    }
-
-    public void setEthnics(Ethnics ethnics) {
-        this.ethnics = ethnics;
-    }
-
-    public Religion getReligion() {
-        return religion;
-    }
-
-    public void setReligion(Religion religion) {
-        this.religion = religion;
-    }
-
     public Integer getMaritalStatus() {
         return maritalStatus;
     }
@@ -264,30 +212,6 @@ public class Person extends AuditableEntity {
         this.avatar = avatar;
     }
 
-    public Set<PersonFamilyRelationship> getFamilyRelationships() {
-        return familyRelationships;
-    }
-
-    public void setFamilyRelationships(Set<PersonFamilyRelationship> familyRelationships) {
-        this.familyRelationships = familyRelationships;
-    }
-
-    public PersonAddress getPermanentResidence() {
-        return permanentResidence;
-    }
-
-    public void setPermanentResidence(PersonAddress permanentResidence) {
-        this.permanentResidence = permanentResidence;
-    }
-
-    public PersonAddress getTemporaryResidence() {
-        return temporaryResidence;
-    }
-
-    public void setTemporaryResidence(PersonAddress temporaryResidence) {
-        this.temporaryResidence = temporaryResidence;
-    }
-
     public Set<Certificate> getCertificates() {
         return certificates;
     }
@@ -296,11 +220,4 @@ public class Person extends AuditableEntity {
         this.certificates = certificates;
     }
 
-    public Set<PersonBankAccount> getPersonBankAccounts() {
-        return personBankAccounts;
-    }
-
-    public void setPersonBankAccounts(Set<PersonBankAccount> personBankAccounts) {
-        this.personBankAccounts = personBankAccounts;
-    }
 }

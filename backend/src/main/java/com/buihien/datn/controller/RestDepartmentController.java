@@ -24,7 +24,7 @@ public class RestDepartmentController extends GenericApi<DepartmentDto, SearchDt
         super(DepartmentDto.class, genericService);
     }
 
-    @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN})
+    @Secured({DatnConstants.ROLE_MANAGER, DatnConstants.ROLE_ADMIN})
     @PostMapping("/paging-tree-search")
     public ResponseData<Page<DepartmentDto>> pagingTreeSearch(@Valid @RequestBody SearchDto dto) {
         Page<DepartmentDto> result = ((DepartmentService) genericService).pagingTreeSearch(dto);

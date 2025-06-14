@@ -64,12 +64,12 @@ function SalaryResultItemToolbar() {
                                     >
                                         {t("Quay lại")}
                                     </Button>
-                                    <Button
-                                        startIcon={<CalculateIcon/>}
-                                        onClick={handleRecalculateSalary}
-                                    >
-                                        {t("Tính toán lại")}
-                                    </Button>
+                                    {/*<Button*/}
+                                    {/*    startIcon={<CalculateIcon/>}*/}
+                                    {/*    onClick={handleRecalculateSalary}*/}
+                                    {/*>*/}
+                                    {/*    {t("Tính toán lại")}*/}
+                                    {/*</Button>*/}
                                     <Button
                                         startIcon={<LockOutlineIcon/>}
                                     >

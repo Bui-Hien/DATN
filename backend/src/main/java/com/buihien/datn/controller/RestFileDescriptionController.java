@@ -25,7 +25,7 @@ public class RestFileDescriptionController {
     @Autowired
     private FileDescriptionService fileDescriptionService;
 
-    @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN})
+    @Secured({DatnConstants.ROLE_MANAGER, DatnConstants.ROLE_ADMIN})
     @PostMapping(value = "/save-file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseData<FileDescriptionDto> saveFile(@RequestParam("file") MultipartFile file) {
         FileDescriptionDto result = fileDescriptionService.saveFile(file);
@@ -33,14 +33,14 @@ public class RestFileDescriptionController {
     }
 
 
-    @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN})
+    @Secured({DatnConstants.ROLE_MANAGER, DatnConstants.ROLE_ADMIN})
     @DeleteMapping("/{id}")
     public ResponseData<?> deleteById(@PathVariable UUID id) {
         fileDescriptionService.deleteById(id);
         return new ResponseData<>(HttpStatus.NO_CONTENT.value(), "Delete success by id " + id);
     }
 
-    @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN})
+    @Secured({DatnConstants.ROLE_MANAGER, DatnConstants.ROLE_ADMIN})
     @GetMapping("/{id}")
     public ResponseData<FileDescriptionDto> getById(@PathVariable UUID id) {
         FileDescriptionDto result = fileDescriptionService.getById(id); // nếu không tồn tại sẽ throw ResourceNotFoundException

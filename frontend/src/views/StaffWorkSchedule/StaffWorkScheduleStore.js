@@ -1,11 +1,15 @@
 import {makeAutoObservable} from "mobx";
 import {
     deleteMultipleStaffWorkScheduleByIds,
-    deleteStaffWorkSchedule, getByStaffAndWorkingDateAndShiftWorkType, getListByStaffAndWorkingDate,
-    getStaffWorkScheduleById, markAttendance,
+    deleteStaffWorkSchedule,
+    getByStaffAndWorkingDateAndShiftWorkType,
+    getListByStaffAndWorkingDate,
+    getStaffWorkScheduleById,
+    markAttendance,
     pagingStaffWorkSchedule,
     saveListStaffWorkSchedule,
     saveStaffWorkSchedule,
+    getStaffMonthScheduleCalendar
 } from "./StaffWorkScheduleService";
 import {toast} from "react-toastify";
 import i18n from "i18next";
@@ -26,6 +30,8 @@ export default class StaffWorkScheduleStore {
     selectedDataList = [];
     listByStaffAndWorkingDate = [];
     isOpenFilter = false;
+    openShiftStatistics = false;
+    staffMonthScheduleCalendar = [];
 
     constructor() {
         makeAutoObservable(this);
@@ -43,6 +49,8 @@ export default class StaffWorkScheduleStore {
         this.selectedDataList = [];
         this.isOpenFilter = false;
         this.listByStaffAndWorkingDate = [];
+        this.openShiftStatistics = false;
+        this.staffMonthScheduleCalendar = [];
     };
 
     pagingStaffWorkSchedule = async () => {
@@ -60,6 +68,26 @@ export default class StaffWorkScheduleStore {
             this.totalElements = result.data.totalElements || 0;
             this.totalPages = result.data.totalPages || 0;
             console.log(this.dataList)
+        } catch (error) {
+            console.error(error);
+            if (error?.response?.data?.message) {
+                toast.error(error?.response?.data?.message);
+            } else {
+                toast.error(i18n.t("toast.error"));
+            }
+        }
+    };
+
+    pagingStaffMonthScheduleCalendar = async () => {
+        try {
+            const newSearchObject = {
+                ...this.searchObject,
+                ownerId: this.searchObject.owner?.id,
+                owner: null,
+            }
+            const response = await getStaffMonthScheduleCalendar(newSearchObject);
+            const result = response.data;
+            this.staffMonthScheduleCalendar = result.data.content || [];
         } catch (error) {
             console.error(error);
             if (error?.response?.data?.message) {
@@ -128,6 +156,7 @@ export default class StaffWorkScheduleStore {
         this.openCreateEditPopup = false;
         this.openConfirmDeleteListPopup = false;
         this.openCreateEditListPopup = false;
+        this.openShiftStatistics = false;
     };
 
     handleDelete = (row) => {
@@ -227,7 +256,6 @@ export default class StaffWorkScheduleStore {
         this.openCreateEditListPopup = true;
     };
 
-
     saveListStaffWorkSchedule = async (data) => {
         try {
             await saveListStaffWorkSchedule(data);
@@ -262,4 +290,25 @@ export default class StaffWorkScheduleStore {
             ...row
         };
     }
+    handleOpenShiftStatistic = async (id) => {
+        try {
+            if (id) {
+                const {data} = await getStaffWorkScheduleById(id);
+                this.selectedRow = {
+                    ...new StaffWorkScheduleObject(), ...data.data,
+                };
+            } else {
+                this.selectedRow = new StaffWorkScheduleObject();
+            }
+            this.openShiftStatistics = true;
+        } catch (error) {
+            console.error(error);
+            if (error?.response?.data?.message) {
+                toast.error(error?.response?.data?.message);
+            } else {
+                toast.error(i18n.t("toast.error"));
+            }
+        }
+    }
+
 }

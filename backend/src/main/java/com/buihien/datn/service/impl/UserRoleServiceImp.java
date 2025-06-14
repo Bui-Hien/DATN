@@ -30,10 +30,10 @@ public class UserRoleServiceImp implements UserRoleService {
         }
         entity.getRoles().clear();
         if (dto.getRoles() != null && !dto.getRoles().isEmpty()) {
-            for (UserRoleDto item : dto.getRoles()) {
+            for (RoleDto item : dto.getRoles()) {
                 Role role = null;
-                if (item.getRole().getId() != null) {
-                    role = roleRepository.findById(item.getRole().getId()).orElse(null);
+                if (item.getId() != null) {
+                    role = roleRepository.findById(item.getId()).orElse(null);
                 }
                 if (role == null) {
                     throw new InvalidDataException("Quyền không tồn tại");

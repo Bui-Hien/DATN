@@ -7,7 +7,7 @@ import com.buihien.datn.generic.GenericService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/api/public/role")
+@RequestMapping("/api/role")
 @RestController
 public class RestRoleController extends GenericApi<RoleDto, SearchDto> {
 

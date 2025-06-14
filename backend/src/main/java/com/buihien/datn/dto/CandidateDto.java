@@ -5,9 +5,7 @@ import com.buihien.datn.domain.Candidate;
 import com.buihien.datn.dto.validator.ValidEnumValue;
 import jakarta.validation.Valid;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Valid
 public class CandidateDto extends PersonDto {
@@ -22,7 +20,8 @@ public class CandidateDto extends PersonDto {
     private StaffDto staff;
     @ValidEnumValue(enumClass = DatnConstants.CandidateStatus.class, message = "Trạng thái ứng viên không hợp lệ")
     private Integer candidateStatus; //Xem status: DatnConstants.CandidateStatus
-    private FileDescriptionDto curriculumVitae; // cv của ứng viên
+    private String workExperience; // kinh nghiem của ứng viên
+    private RecruitmentRequestDto recruitmentRequest; //yêu cầu tuyển dụng nào
 
     public CandidateDto() {
         super();
@@ -41,8 +40,9 @@ public class CandidateDto extends PersonDto {
             this.introducer = new StaffDto(entity.getIntroducer(), false);
             this.staff = new StaffDto(entity.getStaff(), false);
             this.candidateStatus = entity.getCandidateStatus();
-            if (entity.getCurriculumVitae() != null) {
-                this.curriculumVitae = new FileDescriptionDto(entity.getCurriculumVitae());
+            this.workExperience = entity.getWorkExperience();
+            if (entity.getRecruitmentRequest() != null) {
+                this.recruitmentRequest = new RecruitmentRequestDto(entity.getRecruitmentRequest(), false);
             }
             if (isGetFull) {
             }
@@ -129,11 +129,19 @@ public class CandidateDto extends PersonDto {
         this.candidateStatus = candidateStatus;
     }
 
-    public FileDescriptionDto getCurriculumVitae() {
-        return curriculumVitae;
+    public String getWorkExperience() {
+        return workExperience;
     }
 
-    public void setCurriculumVitae(FileDescriptionDto curriculumVitae) {
-        this.curriculumVitae = curriculumVitae;
+    public void setWorkExperience(String workExperience) {
+        this.workExperience = workExperience;
+    }
+
+    public RecruitmentRequestDto getRecruitmentRequest() {
+        return recruitmentRequest;
+    }
+
+    public void setRecruitmentRequest(RecruitmentRequestDto recruitmentRequest) {
+        this.recruitmentRequest = recruitmentRequest;
     }
 }

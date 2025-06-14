@@ -1,18 +1,19 @@
 import * as Yup from "yup";
 import {Form, Formik} from "formik";
 import {Button, Card, CardContent, Grid, Typography} from "@mui/material";
-import {useStore} from "../../stores";
 import {HOME_PAGE} from "../../appConfig";
 import {useNavigate} from "react-router-dom";
 import CommonTextField from "../../common/form/CommonTextField";
 import i18next from "i18next";
 import React, {useEffect} from "react";
 import {observer} from "mobx-react-lite";
+import {useStore} from "../../stores";
 
 export default observer(function LoginIndex() {
     const {loginStore} = useStore();
-    const {loginObject, resetStore, handleLogin} = loginStore;
     const navigate = useNavigate();
+
+    const {loginObject, resetStore, handleLogin} = loginStore;
 
     const validationSchema = Yup.object({
         username: Yup.string().required(i18next.t("validate.required")).nullable(),
@@ -42,12 +43,12 @@ export default observer(function LoginIndex() {
                         <Card className="w-96 shadow-lg">
                             <CardContent>
                                 <Typography variant="h5" className="text-center mb-4 font-bold">
-                                    {i18next.t("Login.title")}
+                                    {i18next.t("login.title")}
                                 </Typography>
                                 <Grid container spacing={2}>
                                     <Grid item xs={12}>
                                         <CommonTextField
-                                            label={i18next.t("Login.userName")}
+                                            label={i18next.t("login.userName")}
                                             fullWidth
                                             name="username"
                                             required
@@ -55,7 +56,7 @@ export default observer(function LoginIndex() {
                                     </Grid>
                                     <Grid item xs={12}>
                                         <CommonTextField
-                                            label={i18next.t("Login.password")}
+                                            label={i18next.t("login.password")}
                                             type="password"
                                             fullWidth
                                             name="password"
@@ -66,7 +67,7 @@ export default observer(function LoginIndex() {
                                         <Button type="submit" variant="contained" color="primary" fullWidth
                                                 disabled={isSubmitting}
                                         >
-                                            {i18next.t("Login.submit")}
+                                            {i18next.t("login.submit")}
                                         </Button>
                                     </Grid>
                                 </Grid>

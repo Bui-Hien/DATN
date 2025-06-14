@@ -99,7 +99,6 @@ function StaffList() {
                 return <span>{value}</span>;
             }
         },
-
     ];
 
     return (

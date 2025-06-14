@@ -1,6 +1,5 @@
 package com.buihien.datn.service.impl;
 
-import com.buihien.datn.domain.Token;
 import com.buihien.datn.domain.User;
 import com.buihien.datn.dto.auth.ChangePasswordDto;
 import com.buihien.datn.dto.auth.SignInDto;
@@ -8,15 +7,14 @@ import com.buihien.datn.dto.auth.TokenResponseDto;
 import com.buihien.datn.exception.ConflictDataException;
 import com.buihien.datn.exception.InvalidDataException;
 import com.buihien.datn.exception.ResourceNotFoundException;
-import com.buihien.datn.messageQueue.MessageQueueService;
-import com.buihien.datn.service.*;
+import com.buihien.datn.service.AuthenticationService;
+import com.buihien.datn.service.JwtService;
+import com.buihien.datn.service.UserService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.micrometer.common.util.StringUtils;
-import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,10 +25,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-import static com.buihien.datn.DatnConstants.TokenType.*;
+import static com.buihien.datn.DatnConstants.TokenType.REFRESH_TOKEN;
+import static com.buihien.datn.DatnConstants.TokenType.RESET_TOKEN;
 import static org.springframework.http.HttpHeaders.REFERER;
 
 @Service
@@ -43,15 +41,9 @@ public class AuthenticationServiceImp implements AuthenticationService {
     private UserService userService;
     @Autowired
     private JwtService jwtService;
-    @Autowired
-    private TokenService tokenService;
 
     @Value("${maxFailedLoginAttempts}")
     private int maxFailedLoginAttempts;
-
-    @Autowired
-    @Qualifier("forgotPasswordQueueService")
-    private MessageQueueService<Token> forgotPasswordQueueService;
 
     @Override
     public TokenResponseDto accessToken(SignInDto signInRequest) {
@@ -88,9 +80,6 @@ public class AuthenticationServiceImp implements AuthenticationService {
         String accessToken = jwtService.generateToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
 
-        Token token = new Token(user, accessToken, refreshToken);
-        tokenService.saveOrUpdateAccessRefresh(token);
-
         return new TokenResponseDto(accessToken, refreshToken);
 
     }
@@ -111,9 +100,6 @@ public class AuthenticationServiceImp implements AuthenticationService {
             }
 
             String accessToken = jwtService.generateToken(user);
-            Token token = new Token(user, accessToken, refreshToken);
-            tokenService.saveOrUpdateAccessRefresh(token);
-
             return new TokenResponseDto(accessToken, refreshToken);
         } catch (ExpiredJwtException e) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Refresh token expired");
@@ -131,7 +117,6 @@ public class AuthenticationServiceImp implements AuthenticationService {
             throw new InvalidDataException("Token must be not blank");
         }
         jwtService.extractUsername(refreshToken, REFRESH_TOKEN.getValue());
-        tokenService.deleteTokenRefresh(refreshToken);
     }
 
     @Override
@@ -140,14 +125,6 @@ public class AuthenticationServiceImp implements AuthenticationService {
 
         User user = userService.getByUsername(username);
         String resetToken = jwtService.generateResetToken(user);
-        //Khi quên password thi xóa hết token đi để người dùng đăng nhập lại
-        tokenService.deleteToken(user.getUsername());
-        Token token = new Token(user);
-        token.setResetToken(resetToken);
-
-        tokenService.saveRestSetToken(token);
-        forgotPasswordQueueService.sendMessage(token);
-        tokenService.deleteToken(resetToken);
     }
 
     @Override
@@ -161,13 +138,6 @@ public class AuthenticationServiceImp implements AuthenticationService {
         }
         String userName = jwtService.extractUsername(request.getSecretKey(), RESET_TOKEN.getValue());
         var user = userService.getByUsername(userName);
-
-        Token token = tokenService.getTokenByUsername(user.getUsername());
-        if (!request.getSecretKey().equals(token.getResetToken())) {
-            throw new InvalidDataException("Reset token does not match");
-        }
-        token.setResetToken(null);
-        tokenService.saveRestSetToken(token);
 
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setLastLoginFailures(null);
@@ -191,7 +161,6 @@ public class AuthenticationServiceImp implements AuthenticationService {
         if (!request.getPassword().equals(request.getConfirmPassword())) {
             throw new InvalidDataException("New passwords do not match");
         }
-        tokenService.deleteToken(user.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setLastLoginFailures(null);
         user.setVoided(false);

@@ -22,11 +22,12 @@ import java.util.UUID;
 public class RestUserController extends GenericApi<UserDto, SearchDto> {
     @Autowired
     private UserService userService;
+
     public RestUserController(GenericService<UserDto, SearchDto> genericService) {
         super(UserDto.class, genericService);
     }
 
-    @Secured({DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_ADMIN})
+    @Secured({DatnConstants.ROLE_MANAGER, DatnConstants.ROLE_ADMIN})
     @GetMapping("/get-current-user")
     public ResponseData<UserDto> getCurrentUser() {
         UserDto result = userService.getCurrentUser();

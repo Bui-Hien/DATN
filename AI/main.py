@@ -31,19 +31,24 @@ def predict_single():
     """Predict cho single input"""
     predictor = JobCVPredictor(Config.MODEL_PATH, Config.EMBEDDING_MODEL)
 
-    jd = """Bằng cử nhân về khoa học máy tính, Kỹ thuật phần mềm hoặc lĩnh vực liên quan. 
-    Hơn 3 năm kinh nghiệm phát triển back-end Java. Trải nghiệm thực tế vững chắc với Spring Boot và lõi Java. 
-    Thành thạo viết và tối ưu hóa các truy vấn SQL (MySQL, PostgreSQL hoặc tương tự). 
-    Có kinh nghiệm với Eclipse RCP hoặc sẵn sàng học hỏi và làm việc trong khuôn khổ dựa trên máy tính để bàn. 
-    Làm quen với kiến trúc RESTful API và microservice. Kỹ năng giải quyết vấn đề mạnh mẽ và khả năng gỡ lỗi. 
-    Kỹ năng giao tiếp tốt bằng tiếng Anh (đọc và viết)."""
+    jd = """Là sinh viên đã/sắp tốt nghiệp chuyên ngành Công nghệ thông tin, Toán tin, Khoa học máy tính, Kỹ thuật phần mềm,...
+        Nắm vững kiến thức cơ bản trong các ngôn ngữ/nền tảng sau
+        (BE) Java/NodeJS/Python/Golang
+        (FE) HTML, CSS, JS
+        Ưu tiên ứng viên có khả năng giao tiếp tiếng Anh tốt (tương đương IELTS 6.0 trở lên, TOEIC 650 trở lên); và GPA: 7/10 hoặc 3/4
+        Có thể tham gia đào tạo/làm việc Full-time từ thứ 2 - thứ 6
+        Ham học hỏi, nhiệt huyết"""
 
-    cv = input("Nhập CV: ")
+    while True:
+        cv = input("\nNhập CV (hoặc gõ 'exit' để thoát): ")
+        if cv.lower() == "exit":
+            print("Đã thoát.")
+            break
 
-    prediction, confidence = predictor.predict(jd, cv)
+        prediction, confidence = predictor.predict(jd, cv)
 
-    print(f"Kết quả khớp: {'Khớp' if prediction == 1 else 'Không khớp'}")
-    print(f"Độ tin cậy: {confidence:.2%}")
+        print(f"Kết quả khớp: {'Khớp' if prediction == 1 else 'Không khớp'}")
+        print(f"Độ tin cậy: {confidence:.2%}")
 
 
 if __name__ == "__main__":

@@ -187,18 +187,72 @@ const Weekdays = {
 };
 
 const ShiftWorkStatus = {
-    CREATED: {value: 1, name: "Khởi tạo"},
-    CHECKED_IN: {value: 2, name: "Đã check in"},
-    INSUFFICIENT_HOURS: {value: 3, name: "Đi làm đủ giờ"},
-    WORKED_FULL_HOURS: {value: 4, name: "Đi làm đủ giờ"},
-    ABSENT: {value: 5, name: "Nghỉ"},
+    CREATED: {
+        value: 1,
+        name: "Chưa tới ngày làm việc",
+        color: "#6c757d" // Gray
+    },
+    CHECKED_IN: {
+        value: 2,
+        name: "Đã check in",
+        color: "#17a2b8" // Teal/Info
+    },
+    INSUFFICIENT_HOURS: {
+        value: 3,
+        name: "Đi làm không đủ giờ",
+        color: "#ffc107" // Warning/Yellow
+    },
+    WORKED_FULL_HOURS: {
+        value: 4,
+        name: "Đi làm đủ giờ",
+        color: "#28a745" // Green/Success
+    },
+    ABSENT: {
+        value: 5,
+        name: "Nghỉ",
+        color: "#dc3545" // Red/Danger
+    },
     getListData() {
         return Object.keys(this)
             .filter(key => typeof this[key] === 'object' && this[key] !== null && 'value' in this[key])
             .map(key => this[key]);
     }
 };
+const Months = {
+    JANUARY: {value: 1, name: "Tháng 1"},
+    FEBRUARY: {value: 2, name: "Tháng 2"},
+    MARCH: {value: 3, name: "Tháng 3"},
+    APRIL: {value: 4, name: "Tháng 4"},
+    MAY: {value: 5, name: "Tháng 5"},
+    JUNE: {value: 6, name: "Tháng 6"},
+    JULY: {value: 7, name: "Tháng 7"},
+    AUGUST: {value: 8, name: "Tháng 8"},
+    SEPTEMBER: {value: 9, name: "Tháng 9"},
+    OCTOBER: {value: 10, name: "Tháng 10"},
+    NOVEMBER: {value: 11, name: "Tháng 11"},
+    DECEMBER: {value: 12, name: "Tháng 12"},
 
+    getListData() {
+        return Object.keys(this)
+            .filter(key => typeof this[key] === 'object' && this[key] !== null && 'value' in this[key])
+            .map(key => this[key]);
+    }
+};
+const CandidateStatus = {
+    ALL: {value: 0, name: "Tất cả"},
+    CREATED: {value: 1, name: "Mới ứng tuyển"},
+    PRE_SCREENED: {value: 2, name: "Đã qua sơ lọc"},
+    FAILED_SCREENING: {value: 3, name: "Trượt sơ lọc"},
+    INTERVIEWED: {value: 4, name: "Qua phỏng vấn"},
+    FAILED_INTERVIEWED: {value: 5, name: "Trượt phỏng vấn"},
+    HIRED: {value: 6, name: "Đã nhận việc"},
+    DECLINED: {value: 7, name: "Từ chối nhận việc"},
+    getListData() {
+        return Object.keys(this)
+            .filter(key => typeof this[key] === 'object' && this[key] !== null && 'value' in this[key])
+            .map(key => this[key]);
+    }
+};
 module.exports = Object.freeze({
     SystemRole: SYSTEM_ROLE,
     EducationLevel: EducationLevel,
@@ -215,5 +269,7 @@ module.exports = Object.freeze({
     SalaryPeriodStatus: SalaryPeriodStatus,
     ShiftWorkType: ShiftWorkType,
     Weekdays: Weekdays,
-    ShiftWorkStatus: ShiftWorkStatus
+    ShiftWorkStatus: ShiftWorkStatus,
+    Months: Months,
+    CandidateStatus: CandidateStatus
 });

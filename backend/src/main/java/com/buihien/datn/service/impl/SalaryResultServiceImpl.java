@@ -47,10 +47,10 @@ public class SalaryResultServiceImpl extends GenericServiceImpl<SalaryResult, Sa
         boolean isCreated = false;
         if (dto.getId() != null) {
             entity = repository.findById(dto.getId()).orElse(null);
-            isCreated = true;
         }
         if (entity == null) {
             entity = new SalaryResult();
+            isCreated = true;
         }
         entity.setName(dto.getName());
         SalaryPeriod salaryPeriod = null;

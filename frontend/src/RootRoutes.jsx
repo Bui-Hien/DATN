@@ -13,7 +13,10 @@ import SalaryPeriodRoutes from "./views/SalaryPeriod/SalaryPeriodRoutes";
 import SalaryResultRoutes from "./views/SalaryResult/SalaryResultRoutes";
 import TimeSheetDetailRoutes from "./views/TimeSheetDetail/TimeSheetDetailRoutes";
 import StaffWorkScheduleRoutes from "./views/StaffWorkSchedule/StaffWorkScheduleRoutes";
-import StaffWorkScheduleSummaryRoutes from "./views/StaffWorkScheduleSummary/StaffWorkScheduleSummaryRoutes";
+import StaffMonthScheduleCalendarRoutes from "./views/StaffMonthScheduleCalendar/StaffMonthScheduleCalendarRoutes";
+import UserRoutes from "./views/User/UserRoutes";
+import RecruitmentRequestRoutes from "./views/RecruitmentRequest/RecruitmentRequestRoutes";
+import CandidateRoutes from "./views/Candidate/CandidateRoutes";
 
 const routes = [
     //Danh mục chung
@@ -34,11 +37,17 @@ const routes = [
     //Chấm công
     ...StaffWorkScheduleRoutes,
     ...TimeSheetDetailRoutes,
-    ...StaffWorkScheduleSummaryRoutes,
+    ...StaffMonthScheduleCalendarRoutes,
     //Lương
     ...SalaryTemplateRoutes,
     ...SalaryPeriodRoutes,
-    ...SalaryResultRoutes
+    ...SalaryResultRoutes,
+    //Quản lý người dùng
+    ...UserRoutes,
+
+    //tuyển dụng
+    ...RecruitmentRequestRoutes,
+    ...CandidateRoutes
 ];
 
 export default routes;

@@ -3,7 +3,10 @@ package com.buihien.datn.service.impl;
 import com.buihien.datn.DatnConstants;
 import com.buihien.datn.domain.Staff;
 import com.buihien.datn.domain.StaffWorkSchedule;
-import com.buihien.datn.dto.*;
+import com.buihien.datn.dto.StaffDto;
+import com.buihien.datn.dto.StaffMonthScheduleCalendarDto;
+import com.buihien.datn.dto.StaffWorkScheduleDto;
+import com.buihien.datn.dto.StaffWorkScheduleListDto;
 import com.buihien.datn.dto.search.StaffWorkScheduleSearchDto;
 import com.buihien.datn.exception.InvalidDataException;
 import com.buihien.datn.exception.ResourceNotFoundException;
@@ -233,7 +236,7 @@ public class StaffWorkScheduleServiceImpl extends GenericServiceImpl<StaffWorkSc
 
 
         boolean hasRole = extractCurrentUserService.hasAnyRole(
-                List.of(DatnConstants.ROLE_ADMIN, DatnConstants.ROLE_SUPER_ADMIN, DatnConstants.ROLE_MANAGER)
+                List.of(DatnConstants.ROLE_ADMIN, DatnConstants.ROLE_MANAGER)
         );
 
         // Kiểm tra quyền của người dùng
@@ -425,7 +428,7 @@ public class StaffWorkScheduleServiceImpl extends GenericServiceImpl<StaffWorkSc
     }
 
     @Override
-    public Page<StaffWorkScheduleSummaryDto> getScheduleSummary(StaffWorkScheduleSearchDto dto) {
+    public Page<StaffMonthScheduleCalendarDto> getStaffMonthScheduleCalendar(StaffWorkScheduleSearchDto dto) {
         StringBuilder sql = new StringBuilder("SELECT new com.buihien.datn.dto.StaffWorkScheduleDto(entity, false) FROM StaffWorkSchedule entity WHERE (1=1) ");
         StringBuilder whereClause = new StringBuilder();
 
@@ -487,14 +490,14 @@ public class StaffWorkScheduleServiceImpl extends GenericServiceImpl<StaffWorkSc
         }
 
         List<StaffWorkScheduleDto> allSchedules = q.getResultList();
-        List<StaffWorkScheduleSummaryDto> result = new ArrayList<>();
+        List<StaffMonthScheduleCalendarDto> result = new ArrayList<>();
 
         // Bước 1: Gom nhóm theo staff
         Map<UUID, List<StaffWorkScheduleDto>> staffGrouped = allSchedules.stream()
                 .collect(Collectors.groupingBy(s -> s.getStaff().getId()));
 
         for (Map.Entry<UUID, List<StaffWorkScheduleDto>> staffEntry : staffGrouped.entrySet()) {
-            StaffWorkScheduleSummaryDto summaryDto = new StaffWorkScheduleSummaryDto();
+            StaffMonthScheduleCalendarDto summaryDto = new StaffMonthScheduleCalendarDto();
             StaffDto staff = staffEntry.getValue().get(0).getStaff(); // Lấy thông tin staff
             summaryDto.setStaff(staff);
 
@@ -537,7 +540,7 @@ public class StaffWorkScheduleServiceImpl extends GenericServiceImpl<StaffWorkSc
 
         int fromIndex = Math.min(pageIndex * pageSize, total);
         int toIndex = Math.min(fromIndex + pageSize, total);
-        List<StaffWorkScheduleSummaryDto> pagedList = result.subList(fromIndex, toIndex);
+        List<StaffMonthScheduleCalendarDto> pagedList = result.subList(fromIndex, toIndex);
 
         return new PageImpl<>(pagedList, PageRequest.of(pageIndex + 1, pageSize), total);
     }

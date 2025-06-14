@@ -1,14 +1,17 @@
 package com.buihien.datn.service.impl;
 
-import com.buihien.datn.DatnConstants;
-import com.buihien.datn.domain.*;
-import com.buihien.datn.dto.PersonAddressDto;
+import com.buihien.datn.domain.FileDescription;
+import com.buihien.datn.domain.SalaryTemplate;
+import com.buihien.datn.domain.Staff;
+import com.buihien.datn.domain.User;
 import com.buihien.datn.dto.StaffDto;
 import com.buihien.datn.dto.search.StaffSearchDto;
 import com.buihien.datn.generic.GenericServiceImpl;
-import com.buihien.datn.repository.*;
+import com.buihien.datn.repository.CandidateRepository;
+import com.buihien.datn.repository.SalaryTemplateRepository;
+import com.buihien.datn.repository.StaffRepository;
+import com.buihien.datn.repository.UserRepository;
 import com.buihien.datn.service.FileDescriptionService;
-import com.buihien.datn.service.StaffDocumentItemService;
 import com.buihien.datn.service.StaffService;
 import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -31,23 +33,9 @@ public class StaffServiceImpl extends GenericServiceImpl<Staff, StaffDto, StaffS
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private ReligionRepository religionRepository;
-    @Autowired
-    private EthnicsRepository ethnicsRepository;
-    @Autowired
-    private CountryRepository countryRepository;
-    @Autowired
-    private DocumentTemplateRepository documentTemplateRepository;
-    @Autowired
-    private StaffDocumentItemService staffDocumentItemService;
-    @Autowired
     private StaffRepository staffRepository;
     @Autowired
     private CandidateRepository candidateRepository;
-    @Autowired
-    private PersonAddressRepository personAddressRepository;
-    @Autowired
-    private AdministrativeUnitRepository administrativeUnitRepository;
     @Autowired
     private FileDescriptionService fileDescriptionService;
     @Autowired
@@ -81,23 +69,6 @@ public class StaffServiceImpl extends GenericServiceImpl<Staff, StaffDto, StaffS
         entity.setIdNumberIssueDate(dto.getIdNumberIssueDate());
         entity.setEmail(dto.getEmail());
 
-        Country nationality = null;
-        if (dto.getNationality() != null && dto.getNationality().getId() != null) {
-            nationality = countryRepository.findById(dto.getNationality().getId()).orElse(null);
-        }
-        entity.setNationality(nationality);
-
-        Ethnics ethnics = null;
-        if (dto.getEthnics() != null && dto.getEthnics().getId() != null) {
-            ethnics = ethnicsRepository.findById(dto.getEthnics().getId()).orElse(null);
-        }
-        entity.setEthnics(ethnics);
-
-        Religion religion = null;
-        if (dto.getReligion() != null && dto.getReligion().getId() != null) {
-            religion = religionRepository.findById(dto.getReligion().getId()).orElse(null);
-        }
-        entity.setReligion(religion);
         entity.setMaritalStatus(dto.getMaritalStatus());
         entity.setTaxCode(dto.getTaxCode());
 
@@ -111,72 +82,6 @@ public class StaffServiceImpl extends GenericServiceImpl<Staff, StaffDto, StaffS
         entity.setHeight(dto.getHeight());
         entity.setWeight(dto.getWeight());
 
-
-        //thường chú
-        if (dto.getPermanentResidence() != null) {
-            PersonAddress permanentResidence = null;
-            if (dto.getPermanentResidence().getId() != null) {
-                permanentResidence = personAddressRepository.findById(dto.getPermanentResidence().getId()).orElse(null);
-            }
-            if (permanentResidence == null) {
-                permanentResidence = new PersonAddress();
-            }
-            permanentResidence.setAddressDetail(dto.getPermanentResidence().getAddressDetail());
-
-            AdministrativeUnit province = null;
-            if (dto.getPermanentResidence().getProvince() != null && dto.getPermanentResidence().getProvince().getId() != null) {
-                province = administrativeUnitRepository.findById(dto.getPermanentResidence().getProvince().getId()).orElse(null);
-            }
-            permanentResidence.setProvince(province);
-
-            AdministrativeUnit district = null;
-            if (dto.getPermanentResidence().getDistrict() != null && dto.getPermanentResidence().getDistrict().getId() != null) {
-                district = administrativeUnitRepository.findById(dto.getPermanentResidence().getDistrict().getId()).orElse(null);
-            }
-            permanentResidence.setDistrict(district);
-
-            AdministrativeUnit ward = null;
-            if (dto.getPermanentResidence().getWard() != null && dto.getPermanentResidence().getWard().getId() != null) {
-                ward = administrativeUnitRepository.findById(dto.getPermanentResidence().getWard().getId()).orElse(null);
-            }
-            permanentResidence.setWard(ward);
-            entity.setPermanentResidence(permanentResidence);
-        } else {
-            entity.setPermanentResidence(null);
-        }
-
-        //Tạm chú
-        if (dto.getTemporaryResidence() != null) {
-            PersonAddress temporaryResidence = null;
-            if (dto.getPermanentResidence().getId() != null) {
-                temporaryResidence = personAddressRepository.findById(dto.getTemporaryResidence().getId()).orElse(null);
-            }
-            if (temporaryResidence == null) {
-                temporaryResidence = new PersonAddress();
-            }
-            temporaryResidence.setAddressDetail(dto.getTemporaryResidence().getAddressDetail());
-
-            AdministrativeUnit province = null;
-            if (dto.getTemporaryResidence().getProvince() != null && dto.getTemporaryResidence().getProvince().getId() != null) {
-                province = administrativeUnitRepository.findById(dto.getTemporaryResidence().getProvince().getId()).orElse(null);
-            }
-            temporaryResidence.setProvince(province);
-
-            AdministrativeUnit district = null;
-            if (dto.getTemporaryResidence().getDistrict() != null && dto.getTemporaryResidence().getDistrict().getId() != null) {
-                district = administrativeUnitRepository.findById(dto.getTemporaryResidence().getDistrict().getId()).orElse(null);
-            }
-            temporaryResidence.setDistrict(district);
-
-            AdministrativeUnit ward = null;
-            if (dto.getTemporaryResidence().getWard() != null && dto.getTemporaryResidence().getWard().getId() != null) {
-                ward = administrativeUnitRepository.findById(dto.getTemporaryResidence().getWard().getId()).orElse(null);
-            }
-            temporaryResidence.setWard(ward);
-            entity.setTemporaryResidence(temporaryResidence);
-        } else {
-            entity.setTemporaryResidence(null);
-        }
 
         FileDescription newAvatar = null;
         if (dto.getAvatar() != null && dto.getAvatar().getId() != null) {
@@ -199,11 +104,6 @@ public class StaffServiceImpl extends GenericServiceImpl<Staff, StaffDto, StaffS
         entity.setApprenticeDays(dto.getApprenticeDays());
         entity.setEmployeeStatus(dto.getEmployeeStatus());
 
-        DocumentTemplate documentTemplate = null;
-        if (dto.getDocumentTemplate() != null && dto.getDocumentTemplate().getId() != null) {
-            documentTemplate = documentTemplateRepository.findById(dto.getDocumentTemplate().getId()).orElse(null);
-        }
-        entity.setDocumentTemplate(documentTemplate);
         entity.setStaffPhase(dto.getStaffPhase());
         entity.setRequireAttendance(dto.getRequireAttendance());
         entity.setAllowExternalIpTimekeeping(dto.getAllowExternalIpTimekeeping());
@@ -345,7 +245,8 @@ public class StaffServiceImpl extends GenericServiceImpl<Staff, StaffDto, StaffS
         return new PageImpl<>(q.getResultList());
     }
 
-    private String generateStaffCode() {
+    @Override
+    public String generateStaffCode() {
         LocalDate now = LocalDate.now();
         String year = String.format("%02d", now.getYear() % 100);
         String month = String.format("%02d", now.getMonthValue());
@@ -373,74 +274,22 @@ public class StaffServiceImpl extends GenericServiceImpl<Staff, StaffDto, StaffS
     }
 
     @Override
-    public StaffDto convertCandidateToStaff(Candidate candidate) {
-
-        Staff entity = new Staff();
-        entity.setStaffCode(this.generateStaffCode());
-
-        // ----- Thông tin kế thừa từ Person -----
-        entity.setFirstName(candidate.getFirstName());
-        entity.setLastName(candidate.getLastName());
-        entity.setDisplayName(candidate.getDisplayName());
-        entity.setBirthDate(candidate.getBirthDate());
-        entity.setBirthPlace(candidate.getBirthPlace());
-        entity.setGender(candidate.getGender());
-        entity.setPhoneNumber(candidate.getPhoneNumber());
-        entity.setIdNumber(candidate.getIdNumber());
-        entity.setIdNumberIssueBy(candidate.getIdNumberIssueBy());
-        entity.setIdNumberIssueDate(candidate.getIdNumberIssueDate());
-        entity.setEmail(candidate.getEmail());
-
-        Country nationality = null;
-        if (candidate.getNationality() != null && candidate.getNationality().getId() != null) {
-            nationality = countryRepository.findById(candidate.getNationality().getId()).orElse(null);
-        }
-        entity.setNationality(nationality);
-
-        Ethnics ethnics = null;
-        if (candidate.getEthnics() != null && candidate.getEthnics().getId() != null) {
-            ethnics = ethnicsRepository.findById(candidate.getEthnics().getId()).orElse(null);
-        }
-        entity.setEthnics(ethnics);
-
-        Religion religion = null;
-        if (candidate.getReligion() != null && candidate.getReligion().getId() != null) {
-            religion = religionRepository.findById(candidate.getReligion().getId()).orElse(null);
-        }
-        entity.setReligion(religion);
-        entity.setMaritalStatus(candidate.getMaritalStatus());
-        entity.setTaxCode(candidate.getTaxCode());
-
-        User user = null;
-        if (candidate.getUser() != null && candidate.getUser().getId() != null) {
-            user = userRepository.findById(candidate.getUser().getId()).orElse(null);
-        }
-        entity.setUser(user);
-
-
-        entity.setEducationLevel(candidate.getEducationLevel());
-        entity.setHeight(candidate.getHeight());
-        entity.setWeight(candidate.getWeight());
-
-        // ----- Thông tin riêng của Nhân viên -----
-        entity.setRecruitmentDate(new Date());
-        entity = repository.saveAndFlush(entity);
-        //map ứng viên với nhân viên
-        candidate.setStaff(entity);
-        candidate.setCandidateStatus(DatnConstants.CandidateStatus.HIRED.getValue());
-        candidateRepository.save(candidate);
-
-        //trả về thông tin nhân viêns
-        return new StaffDto(entity, false);
-    }
-
-    @Override
     public StaffDto getCurrentStaff() {
         User currentUser = this.getCurrentUser(); // Lấy user hiện tại
         if (currentUser != null && currentUser.getId() != null) {
             // Giả sử bạn có một phương thức để tìm staff dựa trên userId
             Staff staff = staffRepository.findByUserId(currentUser.getId());
             return new StaffDto(staff, true);
+        }
+        return null;
+    }
+
+    @Override
+    public Staff getCurrentStaffEntity() {
+        User currentUser = this.getCurrentUser(); // Lấy user hiện tại
+        if (currentUser != null && currentUser.getId() != null) {
+            // Giả sử bạn có một phương thức để tìm staff dựa trên userId
+            return staffRepository.findByUserId(currentUser.getId());
         }
         return null;
     }

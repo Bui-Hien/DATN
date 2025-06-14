@@ -37,9 +37,9 @@ function StaffCreateForm(props) {
         // displayName: Yup.string()
         //     .trim()
         //     .required(t("validation.required")),
-        nationality: Yup.object()
-            .nullable()
-            .required(t("validation.required")),
+        // nationality: Yup.object()
+        //     .nullable()
+        //     .required(t("validation.required")),
         gender: Yup.number()
             .nullable()
             .required(t("validation.required")),
@@ -123,14 +123,14 @@ function StaffCreateForm(props) {
                                             required
                                         />
                                     </div>
-                                    <div className="col-span-12 md:col-span-6">
-                                        <CommonPagingAutocompleteV2
-                                            label={t("Quốc tịch")}
-                                            name="nationality"
-                                            api={pagingCountry}
-                                            required
-                                        />
-                                    </div>
+                                    {/*<div className="col-span-12 md:col-span-6">*/}
+                                    {/*    <CommonPagingAutocompleteV2*/}
+                                    {/*        label={t("Quốc tịch")}*/}
+                                    {/*        name="nationality"*/}
+                                    {/*        api={pagingCountry}*/}
+                                    {/*        required*/}
+                                    {/*    />*/}
+                                    {/*</div>*/}
 
                                 </div>
                             </DialogContent>

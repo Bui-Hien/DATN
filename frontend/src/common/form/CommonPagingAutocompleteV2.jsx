@@ -221,7 +221,6 @@ function MyPagingAutocomplete({
                         className={`${classes.autoHeight} ${readOnly ? "read-only" : ""}`}
                         error={meta && meta.touched && meta.error}
                         helperText={meta && meta.touched && meta.error ? meta.error : ""}
-                        required={required}
                     />
                 </>
             )}

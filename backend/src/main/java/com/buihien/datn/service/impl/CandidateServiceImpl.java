@@ -3,37 +3,34 @@ package com.buihien.datn.service.impl;
 import com.buihien.datn.DatnConstants;
 import com.buihien.datn.domain.*;
 import com.buihien.datn.dto.CandidateDto;
+import com.buihien.datn.dto.candidateupdatestatus.CandidateStatusDto;
+import com.buihien.datn.dto.candidateupdatestatus.CandidateStatusItemDto;
 import com.buihien.datn.dto.search.CandidateSearchDto;
-import com.buihien.datn.exception.ResourceNotFoundException;
 import com.buihien.datn.generic.GenericServiceImpl;
 import com.buihien.datn.repository.*;
 import com.buihien.datn.service.CandidateService;
-import com.buihien.datn.service.FileDescriptionService;
+import com.buihien.datn.service.StaffService;
 import jakarta.persistence.Query;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class CandidateServiceImpl extends GenericServiceImpl<Candidate, CandidateDto, CandidateSearchDto> implements CandidateService {
     private static final Logger logger = LoggerFactory.getLogger(CandidateServiceImpl.class);
-    @Autowired
-    private CountryRepository countryRepository;
-    @Autowired
-    private EthnicsRepository ethnicsRepository;
-    @Autowired
-    private ReligionRepository religionRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -41,9 +38,14 @@ public class CandidateServiceImpl extends GenericServiceImpl<Candidate, Candidat
     @Autowired
     private StaffRepository staffRepository;
     @Autowired
-    private FileDescriptionService fileDescriptionService;
+    private StaffService staffService;
     @Autowired
     private CandidateRepository candidateRepository;
+    @Autowired
+    private RecruitmentRequestRepository recruitmentRequestRepository;
+    @Autowired
+    private RestTemplate restTemplate;
+
 
     @Override
     protected CandidateDto convertToDto(Candidate entity) {
@@ -61,7 +63,7 @@ public class CandidateServiceImpl extends GenericServiceImpl<Candidate, Candidat
             entity.setCandidateCode(this.generateCandidateCode());
             entity.setCandidateStatus(DatnConstants.CandidateStatus.CREATED.getValue());
         }
-// ----- Thông tin kế thừa từ Person -----
+        // ----- Thông tin kế thừa từ Person -----
         entity.setFirstName(dto.getFirstName());
         entity.setLastName(dto.getLastName());
         entity.setDisplayName(dto.getDisplayName());
@@ -74,23 +76,6 @@ public class CandidateServiceImpl extends GenericServiceImpl<Candidate, Candidat
         entity.setIdNumberIssueDate(dto.getIdNumberIssueDate());
         entity.setEmail(dto.getEmail());
 
-        Country nationality = null;
-        if (dto.getNationality() != null && dto.getNationality().getId() != null) {
-            nationality = countryRepository.findById(dto.getNationality().getId()).orElse(null);
-        }
-        entity.setNationality(nationality);
-
-        Ethnics ethnics = null;
-        if (dto.getEthnics() != null && dto.getEthnics().getId() != null) {
-            ethnics = ethnicsRepository.findById(dto.getEthnics().getId()).orElse(null);
-        }
-        entity.setEthnics(ethnics);
-
-        Religion religion = null;
-        if (dto.getReligion() != null && dto.getReligion().getId() != null) {
-            religion = religionRepository.findById(dto.getReligion().getId()).orElse(null);
-        }
-        entity.setReligion(religion);
         entity.setMaritalStatus(dto.getMaritalStatus());
         entity.setTaxCode(dto.getTaxCode());
 
@@ -109,8 +94,8 @@ public class CandidateServiceImpl extends GenericServiceImpl<Candidate, Candidat
         if (dto.getPosition() != null && dto.getPosition().getId() != null) {
             position = positionRepository.findById(dto.getPosition().getId()).orElse(null);
         }
-            entity.setPosition(position);
-            entity.setSubmissionDate(dto.getSubmissionDate());
+        entity.setPosition(position);
+        entity.setSubmissionDate(dto.getSubmissionDate());
         entity.setInterviewDate(dto.getInterviewDate());
         entity.setDesiredPay(dto.getDesiredPay());
         entity.setPossibleWorkingDate(dto.getPossibleWorkingDate());
@@ -127,69 +112,16 @@ public class CandidateServiceImpl extends GenericServiceImpl<Candidate, Candidat
         }
         entity.setStaff(staff);
 
-        FileDescription newFile = null;
-        if (dto.getCurriculumVitae() != null && dto.getCurriculumVitae().getId() != null) {
-            newFile = fileDescriptionService.getEntityById(dto.getCurriculumVitae().getId());
+        entity.setWorkExperience(dto.getWorkExperience());
+
+        RecruitmentRequest recruitmentRequest = null;
+        if (dto.getRecruitmentRequest() != null && dto.getRecruitmentRequest().getId() != null) {
+            recruitmentRequest = recruitmentRequestRepository.findById(dto.getRecruitmentRequest().getId()).orElse(null);
         }
+        entity.setRecruitmentRequest(recruitmentRequest);
 
-        FileDescription oldFile = entity.getCurriculumVitae();
-
-        if (oldFile != null && oldFile.getId() != null) {
-            // Nếu file mới khác file cũ thì xóa file cũ
-            if (newFile == null || !oldFile.getId().equals(newFile.getId())) {
-                fileDescriptionService.deleteById(oldFile.getId());
-            }
-        }
-
-        // Gán file mới (có thể null)
-        entity.setCurriculumVitae(newFile);
         return entity;
     }
-
-    @Override
-    public Boolean deleteById(UUID id) {
-        logger.info("Attempting to delete entity with ID: {}", id);
-
-        Candidate entity = repository.findById(id).orElse(null);
-        if (entity == null) {
-            logger.warn("Entity not found for deletion with ID: {}", id);
-            throw new ResourceNotFoundException("Entity not found for deletion with ID: " + id);
-        }
-
-        // Xoá file CV nếu có
-        FileDescription cv = entity.getCurriculumVitae();
-        if (cv != null && cv.getId() != null) {
-            fileDescriptionService.deleteById(cv.getId());
-        }
-
-        repository.deleteById(id);
-        logger.info("Successfully deleted entity and related file with ID: {}", id);
-        return true;
-    }
-
-
-    @Override
-    public int deleteMultiple(List<UUID> ids) {
-        logger.info("Attempting to delete multiple entities with IDs: {}", ids);
-
-        if (ids == null || ids.isEmpty()) {
-            logger.warn("Empty ID list provided. No entities to delete.");
-            throw new ResourceNotFoundException("Empty ID list provided. No entities to delete.");
-        }
-
-        List<Candidate> entities = repository.findAllById(ids);
-        for (Candidate entity : entities) {
-            FileDescription cv = entity.getCurriculumVitae();
-            if (cv != null && cv.getId() != null) {
-                fileDescriptionService.deleteById(cv.getId());
-            }
-        }
-
-        repository.deleteAllById(ids);
-        logger.info("Successfully deleted {} entities and their CV files", ids.size());
-        return ids.size();
-    }
-
 
     @Override
     public Page<CandidateDto> pagingSearch(CandidateSearchDto dto) {
@@ -200,7 +132,7 @@ public class CandidateServiceImpl extends GenericServiceImpl<Candidate, Candidat
 
 
         StringBuilder sqlCount = new StringBuilder("SELECT COUNT(entity.id) FROM Candidate entity WHERE (1=1) ");
-        StringBuilder sql = new StringBuilder("SELECT new com.buihien.datn.dto.CandidateDto(entity) FROM Candidate entity WHERE (1=1) ");
+        StringBuilder sql = new StringBuilder("SELECT new com.buihien.datn.dto.CandidateDto(entity, false) FROM Candidate entity WHERE (1=1) ");
 
         StringBuilder whereClause = new StringBuilder();
 
@@ -211,9 +143,21 @@ public class CandidateServiceImpl extends GenericServiceImpl<Candidate, Candidat
         }
 
         if (dto.getKeyword() != null && StringUtils.hasText(dto.getKeyword())) {
-            whereClause.append(" AND (LOWER(entity.name) LIKE LOWER(:text) OR LOWER(entity.code) LIKE LOWER(:text)) ");
+            whereClause.append(" AND (LOWER(entity.displayName) LIKE LOWER(:text) OR LOWER(entity.candidateCode) LIKE LOWER(:text)) ");
         }
 
+        if (dto.getRecruitmentRequestId() != null) {
+            whereClause.append(" AND entity.recruitmentRequest.id = :recruitmentRequestId ");
+        }
+        if (dto.getPositionId() != null) {
+            whereClause.append(" AND entity.position.id = :positionId ");
+        }
+        if (dto.getIntroducerId() != null) {
+            whereClause.append(" AND entity.introducer.id = :introducerId ");
+        }
+        if (dto.getCandidateStatus() != null) {
+            whereClause.append(" AND entity.candidateStatus = :candidateStatus ");
+        }
         if (dto.getFromDate() != null) {
             whereClause.append(" AND entity.createdAt >= :fromDate ");
         }
@@ -233,7 +177,22 @@ public class CandidateServiceImpl extends GenericServiceImpl<Candidate, Candidat
             q.setParameter("text", '%' + dto.getKeyword() + '%');
             qCount.setParameter("text", '%' + dto.getKeyword() + '%');
         }
-
+        if (dto.getRecruitmentRequestId() != null) {
+            q.setParameter("recruitmentRequestId", dto.getRecruitmentRequestId());
+            qCount.setParameter("recruitmentRequestId", dto.getRecruitmentRequestId());
+        }
+        if (dto.getPositionId() != null) {
+            q.setParameter("positionId", dto.getPositionId());
+            qCount.setParameter("positionId", dto.getPositionId());
+        }
+        if (dto.getIntroducerId() != null) {
+            q.setParameter("introducerId", dto.getIntroducerId());
+            qCount.setParameter("introducerId", dto.getIntroducerId());
+        }
+        if (dto.getCandidateStatus() != null) {
+            q.setParameter("candidateStatus", dto.getCandidateStatus());
+            qCount.setParameter("candidateStatus", dto.getCandidateStatus());
+        }
         if (dto.getFromDate() != null) {
             q.setParameter("fromDate", dto.getFromDate());
             qCount.setParameter("fromDate", dto.getFromDate());
@@ -277,5 +236,120 @@ public class CandidateServiceImpl extends GenericServiceImpl<Candidate, Candidat
         // Dùng 4 chữ số cho phần số
         String sequence = String.format("%04d", nextNumber);
         return prefix + sequence;
+    }
+
+    @Override
+    @Transactional
+    public Integer updateStatus(CandidateStatusDto status) {
+        if (status == null || status.getCandidates() == null || status.getCandidates().isEmpty() || status.getCandidateStatus() == null) {
+            return 0;
+        }
+        List<Candidate> candidatesEntity = new ArrayList<>();
+        for (UUID candidateId : status.getCandidates()) {
+            Candidate candidate = repository.findById(candidateId).orElse(null);
+            if (candidate == null) continue;
+            candidate.setCandidateStatus(status.getCandidateStatus());
+            candidatesEntity.add(candidate);
+        }
+        if (status.getCandidateStatus().equals(DatnConstants.CandidateStatus.HIRED.getValue())) {
+            for (Candidate candidate : candidatesEntity) {
+                this.convertCandidateToStaff(candidate);
+            }
+        }
+        candidatesEntity = repository.saveAll(candidatesEntity);
+        return candidatesEntity.size();
+    }
+
+    @Override
+    public Integer preScreened(CandidateStatusDto dto) {
+        String targetUrl = "http://other-service/api/endpoint";
+
+        //sửa lý data
+        List<CandidateStatusItemDto> request = new ArrayList<>();
+        for (UUID candidateId : dto.getCandidates()) {
+            Candidate candidate = repository.findById(candidateId).orElse(null);
+            if (candidate == null || candidate.getWorkExperience() == null || candidate.getRecruitmentRequest() == null || candidate.getRecruitmentRequest().getRequest() == null)
+                continue;
+            CandidateStatusItemDto statusItem = new CandidateStatusItemDto();
+            statusItem.setId(candidateId);
+            statusItem.setWorkExperience(candidate.getWorkExperience());
+            statusItem.setRequest(candidate.getRecruitmentRequest().getRequest());
+            request.add(statusItem);
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<List<CandidateStatusItemDto>> requestEntity = new HttpEntity<>(request, headers);
+
+        ResponseEntity<List<CandidateStatusItemDto>> response = restTemplate.exchange(
+                targetUrl,
+                HttpMethod.POST,
+                requestEntity,
+                new ParameterizedTypeReference<>() {
+                }
+        );
+
+        if (response.getBody() != null) {
+            List<CandidateStatusItemDto> responseBody = response.getBody();
+            if (responseBody != null && !responseBody.isEmpty()) {
+                List<Candidate> candidatesEntity = new ArrayList<>();
+                for (CandidateStatusItemDto item : responseBody) {
+                    Candidate candidate = repository.findById(item.getId()).orElse(null);
+                    if (candidate == null) continue;
+                    if (item.getIsPass()) {
+                        candidate.setCandidateStatus(DatnConstants.CandidateStatus.PRE_SCREENED.getValue());
+                    } else {
+                        candidate.setCandidateStatus(DatnConstants.CandidateStatus.FAILED_SCREENING.getValue());
+                    }
+                    candidatesEntity.add(candidate);
+                }
+                candidatesEntity = repository.saveAll(candidatesEntity);
+                return candidatesEntity.size();
+            }
+        }
+        return 0;
+    }
+
+    private void convertCandidateToStaff(Candidate candidate) {
+
+        Staff entity = new Staff();
+        entity.setStaffCode(staffService.generateStaffCode());
+
+        // ----- Thông tin kế thừa từ Person -----
+        entity.setFirstName(candidate.getFirstName());
+        entity.setLastName(candidate.getLastName());
+        entity.setDisplayName(candidate.getDisplayName());
+        entity.setBirthDate(candidate.getBirthDate());
+        entity.setBirthPlace(candidate.getBirthPlace());
+        entity.setGender(candidate.getGender());
+        entity.setPhoneNumber(candidate.getPhoneNumber());
+        entity.setIdNumber(candidate.getIdNumber());
+        entity.setIdNumberIssueBy(candidate.getIdNumberIssueBy());
+        entity.setIdNumberIssueDate(candidate.getIdNumberIssueDate());
+        entity.setEmail(candidate.getEmail());
+
+        entity.setMaritalStatus(candidate.getMaritalStatus());
+        entity.setTaxCode(candidate.getTaxCode());
+
+        User user = null;
+        if (candidate.getUser() != null && candidate.getUser().getId() != null) {
+            user = userRepository.findById(candidate.getUser().getId()).orElse(null);
+        }
+        entity.setUser(user);
+
+
+        entity.setEducationLevel(candidate.getEducationLevel());
+        entity.setHeight(candidate.getHeight());
+        entity.setWeight(candidate.getWeight());
+
+        // ----- Thông tin riêng của Nhân viên -----
+        entity.setRecruitmentDate(new Date());
+        entity = staffRepository.saveAndFlush(entity);
+        //map ứng viên với nhân viên
+        candidate.setStaff(entity);
+        candidate.setCandidateStatus(DatnConstants.CandidateStatus.HIRED.getValue());
+        candidateRepository.save(candidate);
+
     }
 }

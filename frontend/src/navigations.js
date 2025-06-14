@@ -33,17 +33,12 @@ export const navigations = [
         children: [
             {
                 name: i18next.t("Yêu cầu tuyển dụng"),
-                path: "/staff",
-                isVisible: true,
-            },
-            {
-                name: i18next.t("Kế hoạch tuyển dụng"),
-                path: "/document-template",
+                path: "/recruitment-request",
                 isVisible: true,
             },
             {
                 name: i18next.t("Hồ so ứng viên"),
-                path: "/family-relationship",
+                path: "/candidate",
                 isVisible: true,
             },
         ]
@@ -59,16 +54,16 @@ export const navigations = [
                 path: "/staff",
                 isVisible: true,
             },
-            {
-                name: i18next.t("Mẫu hồ sơ chung"),
-                path: "/document-template",
-                isVisible: true,
-            },
-            {
-                name: i18next.t("Quan hệ nhân thân"),
-                path: "/family-relationship",
-                isVisible: true,
-            },
+            // {
+            //     name: i18next.t("Mẫu hồ sơ chung"),
+            //     path: "/document-template",
+            //     isVisible: true,
+            // },
+            // {
+            //     name: i18next.t("Quan hệ nhân thân"),
+            //     path: "/family-relationship",
+            //     isVisible: true,
+            // },
         ]
     },
     {
@@ -85,11 +80,6 @@ export const navigations = [
             {
                 name: i18next.t("Chấm công"),
                 path: "/time-sheet-detail",
-                isVisible: true,
-            },
-            {
-                name: i18next.t("Thống kê công"),
-                path: "/staff-work-schedule-summary",
                 isVisible: true,
             },
         ]
@@ -122,7 +112,7 @@ export const navigations = [
         name: i18next.t("Cá nhân"),
         icon: <PersonIcon className={iconStyle}/>,
         isVisible: true,
-        auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER, SystemRole.ROLE_USER],
+        auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER, SystemRole.ROLE_USER, SystemRole.ROLE_HR],
         children: [
             {
                 name: i18next.t("Hồ sơ cá nhân"),
@@ -131,7 +121,7 @@ export const navigations = [
             },
             {
                 name: i18next.t("Lịch làm việc"),
-                path: "staff-month-schedule-calendar",
+                path: "/staff-month-schedule-calendar",
                 isVisible: true,
             },
         ]
@@ -140,43 +130,13 @@ export const navigations = [
         name: i18next.t("Danh mục chung"),
         icon: <ListAltIcon className={iconStyle}/>,
         isVisible: true,
-        auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER],
+        auth: [SystemRole.ROLE_ADMIN],
         children: [
             {
                 name: i18next.t("Quản trị tài khoản"),
-                path: "/administration/country",
+                path: "/system-user",
                 isVisible: true,
             },
-            {
-                name: i18next.t("Quốc gia"),
-                path: "/administration/country",
-                isVisible: true,
-            },
-            {
-                name: i18next.t("Ngân hàng"),
-                path: "/administration/bank",
-                isVisible: true,
-            },
-            {
-                name: i18next.t("Dân tộc"),
-                path: "/administration/ethnics",
-                isVisible: true,
-            },
-            {
-                name: i18next.t("Nghề nghiệp"),
-                path: "/administration/profession",
-                isVisible: true,
-            },
-            {
-                name: i18next.t("Tôn giáo"),
-                path: "/administration/religion",
-                isVisible: true,
-            },
-            {
-                name: i18next.t("Đơn vị hành chính"),
-                path: "/administration/administrative-unit",
-                isVisible: true,
-            }
         ]
     }
 ]

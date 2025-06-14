@@ -23,10 +23,13 @@ public class Candidate extends Person {
 
     @Column(name = "interview_date")
     private Date interviewDate; // Ngày phong van
+
     @Column(name = "desired_pay")
     private Double desiredPay; // muc luong mong muon
+
     @Column(name = "possible_working_date")
     private Date possibleWorkingDate; // Ngày co the lam việc
+
     @Column(name = "onboard_date")
     private Date onboardDate; // Ngày ứng viên nhận việc
 
@@ -41,9 +44,8 @@ public class Candidate extends Person {
     @Column(name = "candidate_status")
     private Integer candidateStatus; //Xem status: DatnConstants.CandidateStatus
 
-    @OneToOne
-    @JoinColumn(name = "curriculum_vitae_id")
-    private FileDescription curriculumVitae; // cv của ứng viên
+    @Column(name = "work_experience", columnDefinition = "MEDIUMTEXT")
+    private String workExperience; // kinh nghiem của ứng viên
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recruitment_request_id")
@@ -52,76 +54,20 @@ public class Candidate extends Person {
     public Candidate() {
     }
 
-    public String getCandidateCode() {
-        return candidateCode;
+    public RecruitmentRequest getRecruitmentRequest() {
+        return recruitmentRequest;
     }
 
-    public void setCandidateCode(String candidateCode) {
-        this.candidateCode = candidateCode;
+    public void setRecruitmentRequest(RecruitmentRequest recruitmentRequest) {
+        this.recruitmentRequest = recruitmentRequest;
     }
 
-    public Position getPosition() {
-        return position;
+    public String getWorkExperience() {
+        return workExperience;
     }
 
-    public void setPosition(Position position) {
-        this.position = position;
-    }
-
-    public Date getSubmissionDate() {
-        return submissionDate;
-    }
-
-    public void setSubmissionDate(Date submissionDate) {
-        this.submissionDate = submissionDate;
-    }
-
-    public Date getInterviewDate() {
-        return interviewDate;
-    }
-
-    public void setInterviewDate(Date interviewDate) {
-        this.interviewDate = interviewDate;
-    }
-
-    public Double getDesiredPay() {
-        return desiredPay;
-    }
-
-    public void setDesiredPay(Double desiredPay) {
-        this.desiredPay = desiredPay;
-    }
-
-    public Date getPossibleWorkingDate() {
-        return possibleWorkingDate;
-    }
-
-    public void setPossibleWorkingDate(Date possibleWorkingDate) {
-        this.possibleWorkingDate = possibleWorkingDate;
-    }
-
-    public Date getOnboardDate() {
-        return onboardDate;
-    }
-
-    public void setOnboardDate(Date onboardDate) {
-        this.onboardDate = onboardDate;
-    }
-
-    public Staff getIntroducer() {
-        return introducer;
-    }
-
-    public void setIntroducer(Staff introducer) {
-        this.introducer = introducer;
-    }
-
-    public Staff getStaff() {
-        return staff;
-    }
-
-    public void setStaff(Staff staff) {
-        this.staff = staff;
+    public void setWorkExperience(String workExperience) {
+        this.workExperience = workExperience;
     }
 
     public Integer getCandidateStatus() {
@@ -132,11 +78,75 @@ public class Candidate extends Person {
         this.candidateStatus = candidateStatus;
     }
 
-    public FileDescription getCurriculumVitae() {
-        return curriculumVitae;
+    public Staff getStaff() {
+        return staff;
     }
 
-    public void setCurriculumVitae(FileDescription curriculumVitae) {
-        this.curriculumVitae = curriculumVitae;
+    public void setStaff(Staff staff) {
+        this.staff = staff;
+    }
+
+    public Staff getIntroducer() {
+        return introducer;
+    }
+
+    public void setIntroducer(Staff introducer) {
+        this.introducer = introducer;
+    }
+
+    public Date getOnboardDate() {
+        return onboardDate;
+    }
+
+    public void setOnboardDate(Date onboardDate) {
+        this.onboardDate = onboardDate;
+    }
+
+    public Date getPossibleWorkingDate() {
+        return possibleWorkingDate;
+    }
+
+    public void setPossibleWorkingDate(Date possibleWorkingDate) {
+        this.possibleWorkingDate = possibleWorkingDate;
+    }
+
+    public Double getDesiredPay() {
+        return desiredPay;
+    }
+
+    public void setDesiredPay(Double desiredPay) {
+        this.desiredPay = desiredPay;
+    }
+
+    public Date getInterviewDate() {
+        return interviewDate;
+    }
+
+    public void setInterviewDate(Date interviewDate) {
+        this.interviewDate = interviewDate;
+    }
+
+    public Date getSubmissionDate() {
+        return submissionDate;
+    }
+
+    public void setSubmissionDate(Date submissionDate) {
+        this.submissionDate = submissionDate;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    public String getCandidateCode() {
+        return candidateCode;
+    }
+
+    public void setCandidateCode(String candidateCode) {
+        this.candidateCode = candidateCode;
     }
 }

@@ -2,7 +2,7 @@ package com.buihien.datn.service.impl;
 
 import com.buihien.datn.DatnConstants;
 import com.buihien.datn.domain.*;
-import com.buihien.datn.dto.CalculatedWorkingDay.ShiftWorkTypeCount;
+import com.buihien.datn.dto.calculatedworkingday.ShiftWorkTypeCount;
 import com.buihien.datn.dto.SalaryResultItemDetailDto;
 import com.buihien.datn.dto.search.SearchDto;
 import com.buihien.datn.exception.InvalidDataException;

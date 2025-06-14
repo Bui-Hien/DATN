@@ -7,7 +7,7 @@ spring:
   application:
     name: datn
   datasource:
-    url: jdbc:mysql://localhost:3333/datn?createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3333/datn_new?createDatabaseIfNotExist=true
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -53,3 +53,5 @@ message:
     forgot-password-threads: 2
     forgot-password-max-threads: 5
     retry-max-times: 3
+
+

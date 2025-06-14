@@ -1,14 +1,14 @@
 package com.buihien.datn.dto;
 
 import com.buihien.datn.domain.RecruitmentRequest;
-import jakarta.validation.Valid;
 
 import java.util.Date;
 
-@Valid
 public class RecruitmentRequestDto extends BaseObjectDto {
     private StaffDto proposer; // Người đề xuất
     private Date proposalDate; // Ngày đề xuất
+    private PositionDto position; //Vị trí cần tuyển
+    private String request; // yeu cau
 
     public RecruitmentRequestDto() {
     }
@@ -18,9 +18,11 @@ public class RecruitmentRequestDto extends BaseObjectDto {
         if (entity != null) {
             this.proposer = new StaffDto(entity.getProposer(), false);
             this.proposalDate = entity.getProposalDate();
+            this.position = new PositionDto(entity.getPosition(), false, false);
+            this.request = entity.getRequest();
 
             if (isGetFull) {
-
+                //todo
             }
         }
     }
@@ -39,5 +41,21 @@ public class RecruitmentRequestDto extends BaseObjectDto {
 
     public void setProposalDate(Date proposalDate) {
         this.proposalDate = proposalDate;
+    }
+
+    public PositionDto getPosition() {
+        return position;
+    }
+
+    public void setPosition(PositionDto position) {
+        this.position = position;
+    }
+
+    public String getRequest() {
+        return request;
+    }
+
+    public void setRequest(String request) {
+        this.request = request;
     }
 }

@@ -20,7 +20,7 @@ export default class AuthStore {
 
             // Gán roles là danh sách name
             this.roles = Array.isArray(data.data.roles)
-                ? data.data.roles.map(r => r?.role?.name).filter(Boolean)
+                ? data.data.roles.map(r => r?.name).filter(Boolean)
                 : [];
             return this.currentUser;
         } catch (error) {

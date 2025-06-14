@@ -6,16 +6,9 @@ import java.util.Date;
 
 public class DatnConstants {
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
-    public static final String ROLE_SUPER_ADMIN = "ROLE_SUPER_ADMIN";
     public static final String ROLE_USER = "ROLE_USER";
     public static final String ROLE_MANAGER = "ROLE_MANAGER";
     public static final String ROLE_HR = "ROLE_HR"; // Quản lý nhân sự
-    public static final String ROLE_ACCOUNTANT = "ROLE_ACCOUNTANT"; // Kế toán
-    public static final String ROLE_PROJECT_MANAGER = "ROLE_PROJECT_MANAGER"; // Quản lý dự án
-    public static final String ROLE_EMPLOYEE = "ROLE_EMPLOYEE"; // Nhân viên
-    public static final String ROLE_AUDITOR = "ROLE_AUDITOR"; // Kiểm toán
-    public static final String ROLE_SUPPORT = "ROLE_SUPPORT"; // Hỗ trợ kỹ thuật
-    public static final String ROLE_IT = "ROLE_IT"; // Quản trị hệ thống
 
     public enum Platform {
 
@@ -377,11 +370,13 @@ public class DatnConstants {
     }
 
     public enum CandidateStatus {
-        CREATED(1, "Khởi tạo"),
+        CREATED(1, "Mới ứng tuyển"),
         PRE_SCREENED(2, "Đã qua sơ lọc"),
-        INTERVIEWED(3, "Qua phỏng vấn"),
-        HIRED(4, "Đã nhận việc"),
-        DECLINED(5, "Từ chối nhận việc");
+        FAILED_SCREENING(3, "Trượt sơ lọc"),
+        INTERVIEWED(4, "Qua phỏng vấn"),
+        FAILED_INTERVIEWED(5, "Trượt phỏng vấn"),
+        HIRED(6, "Đã nhận việc"),
+        DECLINED(7, "Từ chối nhận việc");
 
         private final Integer value;
         private final String name;
@@ -468,65 +463,6 @@ public class DatnConstants {
 
         public static String getNameByValue(Integer value) {
             if (value == null) return null;
-            for (TokenType item : TokenType.values()) {
-                if (item.getValue().equals(value)) {
-                    return item.getName();
-                }
-            }
-            return null;
-        }
-    }
-
-    public enum LogMessageQueueStatus {
-        SUCCESS(1, "Thành công"),
-        FAILED(2, "Thất bại");
-
-        private final Integer value;
-        private final String name;
-
-        LogMessageQueueStatus(Integer value, String name) {
-            this.value = value;
-            this.name = name;
-        }
-
-        public Integer getValue() {
-            return value;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public static String getNameByValue(Integer value) {
-            for (LogMessageQueueStatus item : LogMessageQueueStatus.values()) {
-                if (item.getValue().equals(value)) {
-                    return item.getName();
-                }
-            }
-            return null;
-        }
-    }
-
-    public enum LogMessageQueueTypes {
-        FORGOT_PASSWORD(1, "Quên mật khẩu");
-
-        private final Integer value;
-        private final String name;
-
-        LogMessageQueueTypes(Integer value, String name) {
-            this.value = value;
-            this.name = name;
-        }
-
-        public Integer getValue() {
-            return value;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public static String getNameByValue(Integer value) {
             for (TokenType item : TokenType.values()) {
                 if (item.getValue().equals(value)) {
                     return item.getName();

@@ -11,7 +11,6 @@ import AdministrativeUnitStore from "./views/AdministrativeUnit/AdministrativeUn
 import DocumentTemplateStore from "./views/DocumentTemplate/DocumentTemplateStore";
 import DepartmentStore from "./views/Department/DepartmentStore";
 import DepartmentIpStore from "./views/DepartmentIp/DepartmentIpStore";
-import CandidateWorkingExperienceStore from "./views/CandidateWorkingExperience/CandidateWorkingExperienceStore";
 import StaffStore from "./views/Staff/StaffStore";
 import PersonFamilyRelationshipStore from "./views/PersonFamilyRelationship/PersonFamilyRelationshipStore";
 import StaffDocumentItemStore from "./views/StaffDocumentItem/StaffDocumentItemStore";
@@ -23,7 +22,9 @@ import SalaryPeriodStore from "./views/SalaryPeriod/SalaryPeriodStore";
 import SalaryResultStore from "./views/SalaryResult/SalaryResultStore";
 import SalaryResultItemStore from "./views/SalaryResultItem/SalaryResultItemStore";
 import StaffWorkScheduleStore from "./views/StaffWorkSchedule/StaffWorkScheduleStore";
-import StaffWorkScheduleSummaryStore from "./views/StaffWorkScheduleSummary/StaffWorkScheduleSummaryStore";
+import UserStore from "./views/User/UserStore";
+import RecruitmentRequestStore from "./views/RecruitmentRequest/RecruitmentRequestStore";
+import CandidateStore from "./views/Candidate/CandidateStore";
 
 export const store = {
     loginStore: new LoginStore(),
@@ -51,15 +52,19 @@ export const store = {
     //Chấm công
     departmentIpStore: new DepartmentIpStore(),
     staffWorkScheduleStore: new StaffWorkScheduleStore(),
-    staffWorkScheduleSummaryStore: new StaffWorkScheduleSummaryStore(),
+
     //Tuyển dụng
-    candidateWorkingExperienceStore: new CandidateWorkingExperienceStore(),
+    recruitmentRequestStore: new RecruitmentRequestStore(),
+    candidateStore: new CandidateStore(),
 
     //Lương
     salaryTemplateStore: new SalaryTemplateStore(),
     salaryPeriodStore: new SalaryPeriodStore(),
     salaryResultStore: new SalaryResultStore(),
-    salaryResultItemStore: new SalaryResultItemStore()
+    salaryResultItemStore: new SalaryResultItemStore(),
+
+    //Quản lý người dùng
+    userStore: new UserStore(),
 };
 
 export const StoreContext = createContext(store);

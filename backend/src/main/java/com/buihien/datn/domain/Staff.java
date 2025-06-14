@@ -21,11 +21,6 @@ public class Staff extends Person {
     private Set<StaffLabourAgreement> agreements;// Hợp đồng
     @Column(name = "employee_status")
     private Integer employeeStatus; //DatnConstants.EmployeeStatus
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "document_template_id")
-    private DocumentTemplate documentTemplate; // mẫu hồ sơ được dùng
-    @OneToMany(mappedBy = "staff", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<StaffDocumentItem> staffDocumentItems;
     @Column(name = "staff_phase")
     private Integer staffPhase; // Loại nhân viên. Chi tiết: DatnConstants.StaffPhase
     @Column(name = "require_attendance")
@@ -85,22 +80,6 @@ public class Staff extends Person {
 
     public void setEmployeeStatus(Integer employeeStatus) {
         this.employeeStatus = employeeStatus;
-    }
-
-    public DocumentTemplate getDocumentTemplate() {
-        return documentTemplate;
-    }
-
-    public void setDocumentTemplate(DocumentTemplate documentTemplate) {
-        this.documentTemplate = documentTemplate;
-    }
-
-    public Set<StaffDocumentItem> getStaffDocumentItems() {
-        return staffDocumentItems;
-    }
-
-    public void setStaffDocumentItems(Set<StaffDocumentItem> staffDocumentItems) {
-        this.staffDocumentItems = staffDocumentItems;
     }
 
     public Integer getStaffPhase() {

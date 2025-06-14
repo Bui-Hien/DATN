@@ -16,8 +16,8 @@ export const pagingStaffWorkSchedule = (searchObject) => {
     return api.post(url, searchObject);
 };
 
-export const getScheduleSummary = (searchObject) => {
-    var url = API_PATH + "/get-staff-work-schedule-summary";
+export const getStaffMonthScheduleCalendar = (searchObject) => {
+    var url = API_PATH + "/staff-month-schedule-calendar";
     return api.post(url, searchObject);
 };
 

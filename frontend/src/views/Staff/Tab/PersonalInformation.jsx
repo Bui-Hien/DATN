@@ -56,9 +56,6 @@ function PersonalInformation() {
         lastName: Yup.string()
             .trim()
             .required(t("validation.required")),
-        nationality: Yup.object()
-            .nullable()
-            .required(t("validation.required")),
         gender: Yup.number()
             .nullable()
             .required(t("validation.required")),
@@ -211,27 +208,6 @@ function PersonalInformation() {
                                                 />
                                             </div>
                                             <div className="col-span-12 md:col-span-6  xl:col-span-4">
-                                                <CommonPagingAutocompleteV2
-                                                    label={t("Quốc tịch")}
-                                                    name="nationality"
-                                                    api={pagingCountry}
-                                                />
-                                            </div>
-                                            <div className="col-span-12 md:col-span-6  xl:col-span-4">
-                                                <CommonPagingAutocompleteV2
-                                                    label={t("Dân tộc")}
-                                                    name="ethnics"
-                                                    api={pagingEthnics}
-                                                />
-                                            </div>
-                                            <div className="col-span-12 md:col-span-6  xl:col-span-4">
-                                                <CommonPagingAutocompleteV2
-                                                    label={t("Tôn giáo")}
-                                                    name="religion"
-                                                    api={pagingReligion}
-                                                />
-                                            </div>
-                                            <div className="col-span-12 md:col-span-6  xl:col-span-4">
                                                 <CommonSelectInput
                                                     label={t("Trình độ học vấn")}
                                                     name="educationLevel"
@@ -265,106 +241,6 @@ function PersonalInformation() {
                                                     label={t("Cân nặng")}
                                                     name="weight"
                                                     type="number"
-                                                />
-                                            </div>
-                                            <div className="col-span-12 md:col-span-3 xl:col-span-3">
-                                                <CommonPagingAutocompleteV2
-                                                    label={t("Tỉnh thường trú")}
-                                                    name="permanentResidence.province"
-                                                    searchObject={{
-                                                        level: AdministrativeUnitLevel.PROVINCE.value,
-                                                    }}
-                                                    handleChange={(_, value) => {
-                                                        setFieldValue("permanentResidence.province", value);
-                                                        setFieldValue("permanentResidence.district", null);
-                                                        setFieldValue("permanentResidence.ward", null);
-                                                    }}
-                                                    api={pagingAdministrativeUnit}
-                                                />
-                                            </div>
-                                            <div className="col-span-12 md:col-span-3 xl:col-span-3">
-                                                <CommonPagingAutocompleteV2
-                                                    label={t("Huyện thường trú")}
-                                                    name="permanentResidence.district"
-                                                    searchObject={{
-                                                        level: AdministrativeUnitLevel.DISTRICT.value,
-                                                        provinceId: values?.permanentResidence?.province?.id,
-                                                    }}
-                                                    handleChange={(_, value) => {
-                                                        setFieldValue("permanentResidence.district", value);
-                                                        setFieldValue("permanentResidence.ward", null);
-                                                    }}
-                                                    api={pagingAdministrativeUnit}
-                                                    disabled={!values?.permanentResidence?.province?.id}
-                                                />
-                                            </div>
-                                            <div className="col-span-12 md:col-span-3 xl:col-span-3">
-                                                <CommonPagingAutocompleteV2
-                                                    label={t("Xã thường trú")}
-                                                    name="permanentResidence.ward"
-                                                    searchObject={{
-                                                        level: AdministrativeUnitLevel.WARD.value,
-                                                        districtId: values?.permanentResidence?.district?.id,
-                                                    }}
-                                                    api={pagingAdministrativeUnit}
-                                                    disabled={!values?.permanentResidence?.district?.id}
-                                                />
-                                            </div>
-                                            <div className="col-span-12 md:col-span-3 xl:col-span-3">
-                                                <CommonTextField
-                                                    label={t("Địa chỉ chi tiết")}
-                                                    name="permanentResidence.addressDetail"
-                                                />
-                                            </div>
-
-                                            {/* --- Địa chỉ tạm trú với đầy đủ logic tương tự --- */}
-                                            <div className="col-span-12 md:col-span-3 xl:col-span-3">
-                                                <CommonPagingAutocompleteV2
-                                                    label={t("Tỉnh tạm trú")}
-                                                    name="temporaryResidence.province"
-                                                    searchObject={{
-                                                        level: AdministrativeUnitLevel.PROVINCE.value,
-                                                    }}
-                                                    handleChange={(_, value) => {
-                                                        setFieldValue("temporaryResidence.province", value);
-                                                        setFieldValue("temporaryResidence.district", null);
-                                                        setFieldValue("temporaryResidence.ward", null);
-                                                    }}
-                                                    api={pagingAdministrativeUnit}
-                                                />
-                                            </div>
-                                            <div className="col-span-12 md:col-span-3 xl:col-span-3">
-                                                <CommonPagingAutocompleteV2
-                                                    label={t("Huyện tạm trú")}
-                                                    name="temporaryResidence.district"
-                                                    searchObject={{
-                                                        level: AdministrativeUnitLevel.DISTRICT.value,
-                                                        provinceId: values?.temporaryResidence?.province?.id,
-                                                    }}
-                                                    handleChange={(_, value) => {
-                                                        setFieldValue("temporaryResidence.district", value);
-                                                        setFieldValue("temporaryResidence.ward", null);
-                                                    }}
-                                                    api={pagingAdministrativeUnit}
-                                                    disabled={!values?.temporaryResidence?.province?.id}
-                                                />
-                                            </div>
-                                            <div className="col-span-12 md:col-span-3 xl:col-span-3">
-                                                <CommonPagingAutocompleteV2
-                                                    label={t("Xã tạm trú")}
-                                                    name="temporaryResidence.ward"
-                                                    searchObject={{
-                                                        level: AdministrativeUnitLevel.WARD.value,
-                                                        districtId: values?.temporaryResidence?.district?.id,
-                                                    }}
-                                                    api={pagingAdministrativeUnit}
-                                                    disabled={!values?.temporaryResidence?.district?.id}
-                                                />
-                                            </div>
-                                            <div className="col-span-12 md:col-span-3 xl:col-span-3">
-                                                <CommonTextField
-                                                    label={t("Địa chỉ chi tiết")}
-                                                    name="temporaryResidence.addressDetail"
                                                 />
                                             </div>
                                         </div>
@@ -418,15 +294,15 @@ function PersonalInformation() {
                                                 readOnly={isProfile}
                                             />
                                         </div>
-                                        <div className="col-span-12 md:col-span-4  xl:col-span-3">
-                                            <CommonPagingAutocompleteV2
-                                                label={t("Mẫu hồ sơ nhân viên")}
-                                                name="documentTemplate"
-                                                api={pagingDocumentTemplate}
-                                                disabled={isProfile}
-                                                readOnly={isProfile}
-                                            />
-                                        </div>
+                                        {/*<div className="col-span-12 md:col-span-4  xl:col-span-3">*/}
+                                        {/*    <CommonPagingAutocompleteV2*/}
+                                        {/*        label={t("Mẫu hồ sơ nhân viên")}*/}
+                                        {/*        name="documentTemplate"*/}
+                                        {/*        api={pagingDocumentTemplate}*/}
+                                        {/*        disabled={isProfile}*/}
+                                        {/*        readOnly={isProfile}*/}
+                                        {/*    />*/}
+                                        {/*</div>*/}
                                         <div className="col-span-12 md:col-span-4  xl:col-span-3">
                                             <CommonSelectInput
                                                 label={t("Loại nhân viên")}

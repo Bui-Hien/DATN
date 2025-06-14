@@ -115,7 +115,7 @@ public class GlobalExceptionHandler {
         Throwable rootCause = getRootCause(e);
         if (rootCause instanceof SQLIntegrityConstraintViolationException ||
                 (rootCause != null && rootCause.getMessage().contains("a foreign key constraint fails"))) {
-            errorResponse.setMessage("Không thể xóa bản ghi vì dữ liệu đang được sử dụng ở nơi khác.");
+            errorResponse.setMessage("Dữ liệu đã được dùng.");
 
         }
         return errorResponse;

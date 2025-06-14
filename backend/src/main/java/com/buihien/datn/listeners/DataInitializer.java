@@ -21,12 +21,6 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) {
         setupDateService.setupRoles();
-        setupDateService.setupNationality();
-        setupDateService.setupEthnics();
-        setupDateService.setupReligion();
-        setupDateService.setupProfession();
-        setupDateService.setupFamilyRelationship();
-        setupDateService.setupBank();
-        log.info("Server started on " + port);
+         log.info("Server started on " + port);
     }
 }

@@ -11,7 +11,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
+import {Navigate, Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import ChevronRight from "@mui/icons-material/ChevronRight";
 import {Tooltip} from "@mui/material";
@@ -21,6 +21,7 @@ import PropTypes from "prop-types";
 import {observer} from "mobx-react-lite";
 import {navigations} from "../../navigations";
 import NotFound from "./NotFound";
+import {HOME_PAGE} from "../../appConfig";
 
 
 const COLORS = {
@@ -173,7 +174,7 @@ function AppLayout({routes}) {
                         <MenuIcon/>
                     </IconButton>
                     <Typography variant="h6" noWrap component="div">
-                        Mini variant drawer
+                        TLU
                     </Typography>
                 </Toolbar>
             </AppBar>
@@ -232,6 +233,7 @@ function AppLayout({routes}) {
                             }
                             return null;
                         })}
+                        <Route path="/" element={<Navigate to={HOME_PAGE} replace />} />
                         <Route path="*" element={<NotFound/>}/>
                     </Routes>
                 </Box>

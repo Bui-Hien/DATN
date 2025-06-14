@@ -118,22 +118,6 @@ export function getLastDateOfWeek() {
     return new Date(firstDateOfWeek.setDate(firstDateOfWeek.getDate() + 6));
 }
 
-
-// export function equalComparisonDate(date1, date2, type) {
-//     let newDate1 = date1;
-//     let newDate2 = date2;
-//     if (!type) {
-//         newDate1 = new Date(getFullYear(newDate1), getMonth(newDate1), getDate(newDate1)).getTime();
-//         newDate2 = new Date(getFullYear(newDate2), getMonth(newDate2), getDate(newDate2)).getTime();
-//     }
-
-//     if (type === 'month') {
-//         newDate1 = new Date(getFullYear(newDate1), getMonth(newDate1)).getTime();
-//         newDate2 = new Date(getFullYear(newDate2), getMonth(newDate2)).getTime();
-//     }
-//     return newDate1 === newDate2
-// }
-
 export function equalComparisonDate(date1, date2, type) {
     // Ensure both dates are Date objects
     const newDate1 = typeof date1 === 'number' ? new Date(date1) : new Date(date1);
@@ -376,3 +360,28 @@ export const calculateDateDifference = (date1, date2) => {
 
     return diffDays;
 }
+
+export const getStartMonth = (date = new Date()) => {
+    return new Date(date.getFullYear(), date.getMonth(), 1, 0, 0, 0, 0);
+};
+
+export const getEndMonth = (date = new Date()) => {
+    return new Date(date.getFullYear(), date.getMonth() + 1, 0, 23, 59, 59, 999);
+};
+
+export const Years = (() => {
+    const currentYear = new Date().getFullYear();
+    const yearEnum = {};
+
+    for (let year = 2020; year <= currentYear; year++) {
+        yearEnum[`Y${year}`] = {value: year, name: year};
+    }
+
+    yearEnum.getListData = function () {
+        return Object.keys(this)
+            .filter(key => typeof this[key] === 'object' && 'value' in this[key])
+            .map(key => this[key]);
+    };
+
+    return yearEnum;
+})();

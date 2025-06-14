@@ -6,21 +6,16 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
-import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
 import PersonalInformation from "./PersonalInformation";
-import PersonFamilyRelationshipIndex from "../../PersonFamilyRelationship/PersonFamilyRelationshipIndex";
 import CommonBreadcrumb from "../../../common/CommonBreadcrumb";
 import i18next from "i18next";
 import {useStore} from "../../../stores";
 import {observer} from "mobx-react-lite";
-import StaffDocumentItemIndex from "../../StaffDocumentItem/StaffDocumentItemIndex";
 import SchoolIcon from '@mui/icons-material/School';
-import PersonBankAccountIndex from "../../PersonBankAccount/PersonBankAccountIndex";
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
-import FolderIcon from '@mui/icons-material/Folder';
 import CertificateIndex from "../../Certificate/CertificateIndex";
 import StaffLabourAgreementIndex from "../../StaffLabourAgreement/StaffLabourAgreementIndex";
 import AssignmentIcon from '@mui/icons-material/Assignment';
+
 // Component hiển thị từng tab panel
 function CustomTabPanel(props) {
     const {children, value, index, ...other} = props;
@@ -67,26 +62,26 @@ function ProfileStaffTabs() {
             icon: <AssignmentIndIcon fontSize="small"/>,
             component: <PersonalInformation/>,
         },
-        {
-            title: "Quan hệ nhân thân",
-            icon: <FamilyRestroomIcon fontSize="small"/>,
-            component: <PersonFamilyRelationshipIndex/>,
-        },
+        // {
+        //     title: "Quan hệ nhân thân",
+        //     icon: <FamilyRestroomIcon fontSize="small"/>,
+        //     component: <PersonFamilyRelationshipIndex/>,
+        // },
         {
             title: "Chứng chỉ",
             icon: <SchoolIcon fontSize="small"/>,
             component: <CertificateIndex/>,
         },
-        {
-            title: "Tài khoản cá nhân",
-            icon: <AccountBalanceIcon fontSize="small"/>,
-            component: <PersonBankAccountIndex/>,
-        },
-        {
-            title: "Hồ sơ cá nhân",
-            icon: <FolderIcon fontSize="small"/>,
-            component: <StaffDocumentItemIndex/>,
-        },
+        // {
+        //     title: "Tài khoản cá nhân",
+        //     icon: <AccountBalanceIcon fontSize="small"/>,
+        //     component: <PersonBankAccountIndex/>,
+        // },
+        // {
+        //     title: "Hồ sơ cá nhân",
+        //     icon: <FolderIcon fontSize="small"/>,
+        //     component: <StaffDocumentItemIndex/>,
+        // },
         {
             title: "Hợp đồng",
             icon: <AssignmentIcon fontSize="small"/>,
