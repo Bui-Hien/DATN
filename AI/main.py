@@ -59,3 +59,5 @@ if __name__ == "__main__":
         print(results['classification_report'])
     else:
         predict_single()
+# python main.py train
+# python main.py
