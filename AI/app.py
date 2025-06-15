@@ -1,29 +1,49 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from predictor import JobCVPredictor
 from config import Config
 
-# Khởi tạo Flask app
 app = Flask(__name__)
 
-# Khởi tạo predictor (chỉ load model một lần khi app start)
+# Cho phép CORS từ tất cả origin (có thể cấu hình cụ thể hơn nếu cần)
+CORS(app)
+
+# Khởi tạo predictor
 predictor = JobCVPredictor(Config.MODEL_PATH, Config.EMBEDDING_MODEL)
 
-@app.route("/api/predict", methods=["POST"])
-def predict():
-    data = request.get_json()
+@app.route("/api/pre-screened", methods=["POST"])
+def predict_batch():
+    try:
+        data = request.get_json()
 
-    jd = data.get("job_description")
-    cv = data.get("candidate_cv")
+        if not isinstance(data, list):
+            return jsonify({"error": "Payload phải là một danh sách object"}), 400
 
-    if not jd or not cv:
-        return jsonify({"error": "Thiếu job_description hoặc candidate_cv"}), 400
+        results = []
 
-    # Dự đoán
-    prediction, confidence = predictor.predict(jd, cv)
+        for item in data:
+            candidate_id = item.get("id")
+            job_description = item.get("request")
+            candidate_cv = item.get("workExperience")
 
-    return jsonify({
-        "match": int(prediction),  # ép kiểu từ numpy.int64 sang int
-    })
+            if not candidate_id or not job_description or not candidate_cv:
+                continue
+
+            prediction, confidence = predictor.predict(job_description, candidate_cv)
+
+            results.append({
+                "id": candidate_id,
+                "isPass": True if prediction == 1 else False,
+                "confidence": confidence,
+                "request": job_description,
+                "workExperience": candidate_cv,
+            })
+
+        return jsonify(results), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # Chạy trên cổng 5001 và cho phép truy cập từ bên ngoài (Java có thể gọi tới)
+    app.run(host="0.0.0.0", port=5000, debug=True)

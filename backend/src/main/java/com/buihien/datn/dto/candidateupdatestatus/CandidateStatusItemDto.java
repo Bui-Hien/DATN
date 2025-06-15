@@ -7,6 +7,7 @@ public class CandidateStatusItemDto {
     private String workExperience; // kinh nghiem của ứng viên
     private String request; // yeu cau
     private Boolean isPass;
+    private Float confidence;
 
     public CandidateStatusItemDto() {
     }
@@ -41,5 +42,13 @@ public class CandidateStatusItemDto {
 
     public void setRequest(String request) {
         this.request = request;
+    }
+
+    public Float getConfidence() {
+        return confidence;
+    }
+
+    public void setConfidence(Float confidence) {
+        this.confidence = confidence;
     }
 }

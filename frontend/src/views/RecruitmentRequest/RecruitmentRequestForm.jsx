@@ -57,11 +57,11 @@ function RecruitmentRequestForm(props) {
 
     return (
         <CommonPopupV2
-            size="sm"
+            size="md"
             scroll={"body"}
             open={openCreateEditPopup}
             noDialogContent
-            title={(selectedRow?.id ? t("general.button.edit") : t("general.button.add")) + ' ' + t("Kỳ lương")}
+            title={(selectedRow?.id ? t("general.button.edit") : t("general.button.add")) + ' ' + t("Yêu cầu tuyển dụng")}
             onClosePopup={handleClose}
             isCreate={!selectedRow?.id}
         >
@@ -76,7 +76,7 @@ function RecruitmentRequestForm(props) {
                         <Form autoComplete="off">
                             <DialogContent className="p-6">
                                 <div className={"grid grid-cols-12 gap-2"}>
-                                    <div className="col-span-12">
+                                    <div className="col-span-12 md:col-span-6">
                                         <CommonTextField
                                             label="Tên yêu cầu tuyển dụng"
                                             name="name"
@@ -89,7 +89,7 @@ function RecruitmentRequestForm(props) {
                                             required
                                         />
                                     </div>
-                                    <div className="col-span-12">
+                                    <div className="col-span-12 md:col-span-6">
                                         <CommonTextField
                                             label="Mã yêu cầu tuyển dụng"
                                             name="code"
@@ -100,7 +100,7 @@ function RecruitmentRequestForm(props) {
                                             }}
                                             required/>
                                     </div>
-                                    <div className="col-span-12">
+                                    <div className="col-span-12 md:col-span-6">
                                         <CommonPagingAutocompleteV2
                                             label="Vị trí ứng tuyển"
                                             name="position"
@@ -121,7 +121,7 @@ function RecruitmentRequestForm(props) {
                                             label="Yêu cầu công việc"
                                             name="request"
                                             multiline
-                                            rows={3}
+                                            rows={5}
                                             required
                                         />
                                     </div>

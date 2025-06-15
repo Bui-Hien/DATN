@@ -262,53 +262,72 @@ public class CandidateServiceImpl extends GenericServiceImpl<Candidate, Candidat
 
     @Override
     public Integer preScreened(CandidateStatusDto dto) {
-        String targetUrl = "http://other-service/api/endpoint";
+        String targetUrl = "http://127.0.0.1:5000/api/pre-screened";
 
-        //sửa lý data
-        List<CandidateStatusItemDto> request = new ArrayList<>();
+        List<CandidateStatusItemDto> requestPayload = new ArrayList<>();
+
+        // Chuẩn bị dữ liệu gửi sang Flask
         for (UUID candidateId : dto.getCandidates()) {
             Candidate candidate = repository.findById(candidateId).orElse(null);
-            if (candidate == null || candidate.getWorkExperience() == null || candidate.getRecruitmentRequest() == null || candidate.getRecruitmentRequest().getRequest() == null)
-                continue;
-            CandidateStatusItemDto statusItem = new CandidateStatusItemDto();
-            statusItem.setId(candidateId);
-            statusItem.setWorkExperience(candidate.getWorkExperience());
-            statusItem.setRequest(candidate.getRecruitmentRequest().getRequest());
-            request.add(statusItem);
+            if (candidate == null) continue;
+            if (candidate.getWorkExperience() == null) continue;
+            if (candidate.getRecruitmentRequest() == null) continue;
+            if (candidate.getRecruitmentRequest().getRequest() == null) continue;
+
+            CandidateStatusItemDto item = new CandidateStatusItemDto();
+            item.setId(candidate.getId());
+            item.setWorkExperience(candidate.getWorkExperience());
+            item.setRequest(candidate.getRecruitmentRequest().getRequest());
+            requestPayload.add(item);
         }
 
+        if (requestPayload.isEmpty()) {
+            return 0;
+        }
+
+        // Gửi request sang Flask
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<List<CandidateStatusItemDto>> requestEntity = new HttpEntity<>(requestPayload, headers);
 
-        HttpEntity<List<CandidateStatusItemDto>> requestEntity = new HttpEntity<>(request, headers);
-
-        ResponseEntity<List<CandidateStatusItemDto>> response = restTemplate.exchange(
-                targetUrl,
-                HttpMethod.POST,
-                requestEntity,
-                new ParameterizedTypeReference<>() {
-                }
-        );
-
-        if (response.getBody() != null) {
-            List<CandidateStatusItemDto> responseBody = response.getBody();
-            if (responseBody != null && !responseBody.isEmpty()) {
-                List<Candidate> candidatesEntity = new ArrayList<>();
-                for (CandidateStatusItemDto item : responseBody) {
-                    Candidate candidate = repository.findById(item.getId()).orElse(null);
-                    if (candidate == null) continue;
-                    if (item.getIsPass()) {
-                        candidate.setCandidateStatus(DatnConstants.CandidateStatus.PRE_SCREENED.getValue());
-                    } else {
-                        candidate.setCandidateStatus(DatnConstants.CandidateStatus.FAILED_SCREENING.getValue());
-                    }
-                    candidatesEntity.add(candidate);
-                }
-                candidatesEntity = repository.saveAll(candidatesEntity);
-                return candidatesEntity.size();
-            }
+        ResponseEntity<List<CandidateStatusItemDto>> response;
+        try {
+            response = restTemplate.exchange(
+                    targetUrl,
+                    HttpMethod.POST,
+                    requestEntity,
+                    new ParameterizedTypeReference<>() {}
+            );
+        } catch (Exception e) {
+            System.err.println("Lỗi gọi Flask API: " + e.getMessage());
+            return 0;
         }
-        return 0;
+
+        List<CandidateStatusItemDto> responseBody = response.getBody();
+        if (responseBody == null || responseBody.isEmpty()) {
+            return 0;
+        }
+
+        // Cập nhật trạng thái ứng viên dựa trên kết quả từ Flask
+        List<Candidate> candidatesToUpdate = new ArrayList<>();
+        for (CandidateStatusItemDto item : responseBody) {
+            Candidate candidate = repository.findById(item.getId()).orElse(null);
+            if (candidate == null) continue;
+
+            if (Boolean.TRUE.equals(item.getIsPass())) {
+                candidate.setCandidateStatus(DatnConstants.CandidateStatus.PRE_SCREENED.getValue());
+            } else {
+                candidate.setCandidateStatus(DatnConstants.CandidateStatus.FAILED_SCREENING.getValue());
+            }
+
+            candidatesToUpdate.add(candidate);
+        }
+
+        if (!candidatesToUpdate.isEmpty()) {
+            repository.saveAll(candidatesToUpdate);
+        }
+
+        return candidatesToUpdate.size();
     }
 
     private void convertCandidateToStaff(Candidate candidate) {

@@ -31,12 +31,12 @@ function CandidateForm() {
     } = candidateStore;
 
     const validationSchema = Yup.object({
-        firstName: Yup.string().trim().required(t("validation.required")),
-        lastName: Yup.string().trim().required(t("validation.required")),
+        firstName: Yup.string().trim().nullable().required(t("validation.required")),
+        lastName: Yup.string().trim().nullable().required(t("validation.required")),
         gender: Yup.number().nullable().required(t("validation.required")),
-        email: Yup.string().trim().email(t("validation.invalid_email")).required(t("validation.required")),
-        workExperience: Yup.string().trim().required(t("validation.required")),
-
+        email: Yup.string().trim().nullable().email(t("validation.invalid_email")).required(t("validation.required")),
+        workExperience: Yup.string().trim().nullable().required(t("validation.required")),
+        recruitmentRequest: Yup.object().nullable().required(t("validation.required")),
     });
 
     useEffect(() => {
@@ -229,6 +229,7 @@ function CandidateForm() {
                                                 setFieldValue("recruitmentRequest", value);
                                                 setFieldValue("position", value?.position);
                                             }}
+                                            required
                                         />
                                     </div>
                                     <div className="col-span-12 md:col-span-3 xl:col-span-4">
@@ -244,7 +245,7 @@ function CandidateForm() {
                                             label="Kinh nghiệm làm việc"
                                             name="workExperience"
                                             multiline
-                                            rows={3}
+                                            rows={5}
                                             required
                                         />
                                     </div>

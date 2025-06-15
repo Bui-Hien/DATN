@@ -184,7 +184,7 @@ export default class CandidateStore {
             await preScreened(newValue);
             this.selectedDataList = [];
             toast.success(i18n.t("toast.update_success"));
-            await this.pagingCandidate();
+            await this.setCurrentTab(CandidateStatus.PRE_SCREENED.value);
             this.handleClose();
         } catch (error) {
             console.log(error);

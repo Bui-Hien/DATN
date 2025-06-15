@@ -17,7 +17,6 @@ export class SearchObject {
     recruitmentRequest = null;
     position = null;
     introducer = null;
-    candidateStatus = null;
 
     constructor() {
     }
