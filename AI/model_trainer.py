@@ -67,7 +67,8 @@ class ModelTrainer:
         model_data = {
             'model': self.model,
             'scaler': data_processor.scaler,
-            'best_params': self.best_params
+            'best_params': self.best_params,
+            'vectorizer': data_processor.vectorizer,  # <-- THÊM DÒNG NÀY
         }
         joblib.dump(model_data, filepath)
         logger.info(f"Model saved to {filepath}")
