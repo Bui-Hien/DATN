@@ -1,5 +1,7 @@
-import moment from "moment";
+import moment from 'moment-timezone';
 import React from "react";
+
+moment.tz.setDefault("Asia/Ho_Chi_Minh");
 
 export function isSameDate(date1, date2) {
     if (date1 === null || date2 === null || date1 === undefined || date2 === undefined) return false;
@@ -33,9 +35,10 @@ export function removeVietnameseTones(str) {
 }
 
 export function getDate(date, titleNoDate = '', stringFormate = 'DD/MM/YYYY') {
-    return (date && moment(date).isValid()) ? moment(date).format(stringFormate) : titleNoDate;
+    return (date && moment.tz(date, "Asia/Ho_Chi_Minh").isValid())
+        ? moment.tz(date, "Asia/Ho_Chi_Minh").format(stringFormate)
+        : titleNoDate;
 }
-
 export function getMonth(date) {
     return new Date(date).getMonth();
 }
@@ -53,8 +56,9 @@ export function getMinutes(date) {
 }
 
 export function formatDate(stringFormat = 'DD/MM/YYYY', date) {
-    return date ? moment(date).format(stringFormat) : ''
+    return date ? moment.tz(date, "Asia/Ho_Chi_Minh").format(stringFormat) : '';
 }
+
 
 export function getVietnameseWeekday(dateInput) {
     if (!dateInput) return "";
@@ -292,8 +296,11 @@ export function bytesToKB(bytes) {
 }
 
 export function getDateTime(date, titleNoDate = '', stringFormate = 'DD/MM/YYYY HH:mm') {
-    return (date && moment(date).isValid()) ? moment(date).format(stringFormate) : titleNoDate;
-};
+    return (date && moment.tz(date, "Asia/Ho_Chi_Minh").isValid())
+        ? moment.tz(date, "Asia/Ho_Chi_Minh").format(stringFormate)
+        : titleNoDate;
+}
+
 export const checkSearchObject = (oldValue, newValue) => {
     if ("pageIndex" in newValue && "pageSize" in newValue) {
         oldValue = {...newValue, pageSize: oldValue.pageSize, pageIndex: 1};
@@ -318,7 +325,9 @@ export const getFormData = (object) => {
 };
 
 export function getTime(value, format = "HH:mm") {
-    return value && moment(value).isValid() ? moment(value).format(format) : "";
+    return value && moment.tz(value, "Asia/Ho_Chi_Minh").isValid()
+        ? moment.tz(value, "Asia/Ho_Chi_Minh").format(format)
+        : "";
 }
 
 export const formatNumber = (value) => {

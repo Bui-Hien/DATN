@@ -9,7 +9,7 @@ import {
     pagingStaffWorkSchedule,
     saveListStaffWorkSchedule,
     saveStaffWorkSchedule,
-    getStaffMonthScheduleCalendar
+    getStaffMonthScheduleCalendar, deleteMarkAttendanceById, deleteMultipleMarkAttendanceByIds
 } from "./StaffWorkScheduleService";
 import {toast} from "react-toastify";
 import i18n from "i18next";
@@ -32,6 +32,7 @@ export default class StaffWorkScheduleStore {
     isOpenFilter = false;
     openShiftStatistics = false;
     staffMonthScheduleCalendar = [];
+    timeSheetDetail = false
 
     constructor() {
         makeAutoObservable(this);
@@ -51,8 +52,12 @@ export default class StaffWorkScheduleStore {
         this.listByStaffAndWorkingDate = [];
         this.openShiftStatistics = false;
         this.staffMonthScheduleCalendar = [];
+        this.timeSheetDetail = false;
     };
 
+    handleSetTimeSheetDetail = () => {
+        this.timeSheetDetail = true;
+    }
     pagingStaffWorkSchedule = async () => {
         try {
             const newSearchObject = {
@@ -133,13 +138,15 @@ export default class StaffWorkScheduleStore {
         try {
             if (obj) {
                 const {data} = await getByStaffAndWorkingDateAndShiftWorkType(obj);
-                this.selectedRow = {
-                    ...new StaffWorkScheduleObject(), ...data.data,
+                return {
+                    ...new StaffWorkScheduleObject(),
+                    ...data.data,
+                    checkIn: data?.data?.checkIn || new Date(),
+                    checkOut: data?.data?.checkIn ? new Date() : null
                 };
-            } else {
-                this.selectedRow = new StaffWorkScheduleObject();
+
             }
-            this.openCreateEditPopup = true;
+            return null;
         } catch (error) {
             console.error(error);
             if (error?.response?.data?.message) {
@@ -147,6 +154,7 @@ export default class StaffWorkScheduleStore {
             } else {
                 toast.error(i18n.t("toast.error"));
             }
+            return null;
         }
     };
 
@@ -170,11 +178,18 @@ export default class StaffWorkScheduleStore {
 
     handleConfirmDelete = async () => {
         try {
-            const {data} = await deleteStaffWorkSchedule(this.selectedRow.id);
+            let response = null;
+            if (this.timeSheetDetail) {
+                const {data} = await deleteMarkAttendanceById(this.selectedRow.id);
+                response = data;
+            } else {
+                const {data} = await deleteStaffWorkSchedule(this.selectedRow.id);
+                response = data;
+            }
             toast.success(i18n.t("toast.delete_success"));
             await this.pagingStaffWorkSchedule();
             this.handleClose();
-            return data;
+            return response;
         } catch (error) {
             console.log(error);
             if (error?.response?.data?.message) {
@@ -188,7 +203,11 @@ export default class StaffWorkScheduleStore {
     handleConfirmDeleteMultiple = async () => {
         try {
             const ids = this.selectedDataList.map((item) => item.id);
-            await deleteMultipleStaffWorkScheduleByIds(ids);
+            if (this.timeSheetDetail) {
+                await deleteMultipleMarkAttendanceByIds(ids);
+            } else {
+                await deleteMultipleStaffWorkScheduleByIds(ids);
+            }
             this.selectedDataList = [];
             toast.success(i18n.t("toast.delete_success"));
             await this.pagingStaffWorkSchedule();

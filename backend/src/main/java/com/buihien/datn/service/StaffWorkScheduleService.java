@@ -7,13 +7,10 @@ import com.buihien.datn.dto.search.StaffWorkScheduleSearchDto;
 import com.buihien.datn.generic.GenericService;
 import org.springframework.data.domain.Page;
 
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 public interface StaffWorkScheduleService extends GenericService<StaffWorkScheduleDto, StaffWorkScheduleSearchDto> {
-    void lockListScheduleByFromDateToDateAndListStaffIds(Date fromDate, Date toDate, List<UUID> staffIds);
-
     StaffWorkScheduleDto markAttendance(StaffWorkScheduleDto dto);
 
     Integer saveList(StaffWorkScheduleListDto dto);
@@ -22,5 +19,10 @@ public interface StaffWorkScheduleService extends GenericService<StaffWorkSchedu
 
     Page<StaffMonthScheduleCalendarDto> getStaffMonthScheduleCalendar(StaffWorkScheduleSearchDto dto);
 
+    Boolean deleteMarkAttendanceById(UUID id);
+
+    int deleteMultipleMarkAttendance(List<UUID> ids);
+
     StaffWorkScheduleDto getByStaffAndWorkingDateAndShiftWorkType(StaffWorkScheduleSearchDto dto);
+
 }

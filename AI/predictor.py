@@ -1,11 +1,13 @@
 import os
 import joblib
 import numpy as np
+import pandas as pd
 from typing import Tuple, List
 import logging
 from data_processor import DataProcessor
 
 logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
 
 class JobCVPredictor:
@@ -22,9 +24,11 @@ class JobCVPredictor:
 
             # Tạo DataProcessor nhưng nạp lại scaler & các thành phần đã huấn luyện
             self.data_processor = DataProcessor(embedding_model)
-            self.data_processor.scaler = self.model_data['scaler']
 
-            # Nếu bạn có vectorizer hoặc bất kỳ encoder nào đã fit từ trước
+            # Nạp scaler đã huấn luyện
+            self.data_processor.scaler = self.model_data.get('scaler', None)
+
+            # Nạp vectorizer nếu có
             if 'vectorizer' in self.model_data:
                 self.data_processor.vectorizer = self.model_data['vectorizer']
 
@@ -35,24 +39,17 @@ class JobCVPredictor:
     def predict(self, job_description: str, candidate_cv: str) -> Tuple[int, float]:
         """Dự đoán JD-CV matching và trả về nhãn + độ tin cậy"""
 
-        # Mã hóa văn bản
-        jd_embedding = self.data_processor.encode_texts([job_description])
-        cv_embedding = self.data_processor.encode_texts([candidate_cv])
+        # Tạo DataFrame 1 dòng giống lúc huấn luyện
+        df = pd.DataFrame([{
+            "job_description": job_description,
+            "candidate_cv": candidate_cv,
+            "match": 0  # Dummy label để hàm không lỗi
+        }])
 
-        # Kết hợp embedding
-        X = np.concatenate([jd_embedding, cv_embedding], axis=1)
+        # Tạo đặc trưng
+        X, _ = self.data_processor.create_features(df)
 
-        # Tính cosine similarity
-        cosine_sim = np.dot(jd_embedding, cv_embedding.T)[0][0] / (
-            np.linalg.norm(jd_embedding) * np.linalg.norm(cv_embedding)
-        )
-
-        # Thêm các đặc trưng bổ sung
-        jd_length = len(job_description)
-        cv_length = len(candidate_cv)
-        X = np.concatenate([X, [[cosine_sim, jd_length, cv_length]]], axis=1)
-
-        # Scale dữ liệu đầu vào
+        # Scale với scaler đã fit
         X_scaled = self.data_processor.transform(X)
 
         # Dự đoán

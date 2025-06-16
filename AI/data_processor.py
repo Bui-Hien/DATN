@@ -24,7 +24,7 @@ class DataProcessor:
         self.scaler = StandardScaler()
 
         # Thêm TF-IDF vectorizer cho features bổ sung
-        self.tfidf_vectorizer = TfidfVectorizer(
+        self.vectorizer = TfidfVectorizer(
             max_features=500,
             ngram_range=(1, 2),
             min_df=2,

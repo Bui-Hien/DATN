@@ -185,42 +185,6 @@ public class StaffWorkScheduleServiceImpl extends GenericServiceImpl<StaffWorkSc
     }
 
     @Override
-    public void lockListScheduleByFromDateToDateAndListStaffIds(Date fromDate, Date toDate, List<UUID> staffIds) {
-        logger.info("Đang tiến hành khóa các lịch làm việc từ ngày {} đến ngày {} cho danh sách nhân viên: {}", fromDate, toDate, staffIds);
-
-        // Kiểm tra dữ liệu đầu vào
-        if (fromDate == null || toDate == null) {
-            throw new InvalidDataException("Ngày bắt đầu hoặc ngày kết thúc không được để trống");
-        }
-        if (fromDate.after(toDate)) {
-            throw new InvalidDataException("Ngày bắt đầu không được lớn hơn ngày kết thúc");
-        }
-        if (staffIds == null || staffIds.isEmpty()) {
-            throw new InvalidDataException("Danh sách nhân viên không được để trống");
-        }
-
-        // Lấy danh sách ca làm việc trong khoảng thời gian và của các nhân viên chỉ định
-        List<StaffWorkSchedule> schedules = staffWorkScheduleRepository
-                .findByWorkingDateBetweenAndStaffIds(fromDate, toDate, staffIds);
-
-        // Kiểm tra nếu không tìm thấy ca làm việc nào
-        if (schedules.isEmpty()) {
-            logger.warn("Không tìm thấy lịch làm việc nào trong khoảng thời gian và danh sách nhân viên đã chọn.");
-            return;
-        }
-
-        // Đánh dấu là đã khóa và lưu lại
-        List<StaffWorkSchedule> lockedSchedules = new ArrayList<>();
-        for (StaffWorkSchedule schedule : schedules) {
-            schedule.setIsLocked(true); // Đánh dấu là đã khóa
-            lockedSchedules.add(schedule);
-        }
-
-        repository.saveAll(lockedSchedules);
-        logger.info("Đã khóa thành công {} lịch làm việc.", schedules.size());
-    }
-
-    @Override
     public StaffWorkScheduleDto markAttendance(StaffWorkScheduleDto dto) {
         // Kiểm tra ID ca làm việc không được để trống
         if (dto == null || dto.getId() == null) {
@@ -546,6 +510,60 @@ public class StaffWorkScheduleServiceImpl extends GenericServiceImpl<StaffWorkSc
     }
 
     @Override
+    public Boolean deleteMarkAttendanceById(UUID id) {
+        if (id == null) {
+            logger.warn("ID đầu vào null - không thể xóa chấm công");
+            return false;
+        }
+
+        logger.info("Bắt đầu xóa chấm công theo ID: {}", id);
+        StaffWorkSchedule entity = repository.findById(id).orElse(null);
+
+        if (entity != null) {
+            entity.setCheckIn(null);
+            entity.setCheckOut(null);
+            entity.setShiftWorkStatus(DatnConstants.ShiftWorkStatus.CREATED.getValue());
+            repository.save(entity);
+            logger.info("Đã xóa chấm công thành công cho ID: {}", id);
+            return true;
+        } else {
+            logger.warn("Không tìm thấy thực thể với ID: {} để xóa chấm công", id);
+            throw new ResourceNotFoundException("Không tìm thấy dữ liệu để xóa với ID: " + id);
+        }
+    }
+
+
+    @Override
+    public int deleteMultipleMarkAttendance(List<UUID> ids) {
+        if (ids == null || ids.isEmpty()) {
+            logger.warn("Danh sách ID rỗng - không có dữ liệu để xóa chấm công");
+            return 0;
+        }
+
+        logger.info("Bắt đầu xóa chấm công cho {} bản ghi", ids.size());
+        List<StaffWorkSchedule> staffWorkScheduleList = new ArrayList<>();
+
+        for (UUID id : ids) {
+            StaffWorkSchedule item = repository.findById(id).orElse(null);
+            if (item != null) {
+                logger.info("→ Tìm thấy bản ghi ID: {}, tiến hành xóa check-in/out", id);
+                item.setCheckIn(null);
+                item.setCheckOut(null);
+                item.setShiftWorkStatus(DatnConstants.ShiftWorkStatus.CREATED.getValue());
+                staffWorkScheduleList.add(item);
+            } else {
+                logger.warn("Không tìm thấy bản ghi ID: {} trong DB, bỏ qua", id);
+            }
+        }
+
+        List<StaffWorkSchedule> saved = repository.saveAll(staffWorkScheduleList);
+        logger.info("Đã xóa chấm công thành công cho {} bản ghi", saved.size());
+
+        return saved.size();
+    }
+
+
+    @Override
     public StaffWorkScheduleDto getByStaffAndWorkingDateAndShiftWorkType(StaffWorkScheduleSearchDto dto) {
         if (dto == null || dto.getWorkingDate() == null || dto.getStaffId() == null || dto.getShiftWorkType() == null) {
             throw new InvalidDataException("Không đủ dữ liệụ để tìm kiếm ca làm việc");
@@ -561,7 +579,6 @@ public class StaffWorkScheduleServiceImpl extends GenericServiceImpl<StaffWorkSc
         throw new InvalidDataException("Không tìm thấy ca làm việc");
 
     }
-
 
     private int convertJavaDayOfWeek(int javaDayOfWeek) {
         return javaDayOfWeek == Calendar.SUNDAY ? 7 : javaDayOfWeek - 1;

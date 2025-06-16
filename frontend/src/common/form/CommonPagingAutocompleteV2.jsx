@@ -44,6 +44,7 @@ function MyPagingAutocomplete({
                                   label,
                                   oldStyle = false,
                                   required,
+                                  disabled = false,
                                   getOptionDisabled,
                                   readOnly = false,
                                   ...otherProps
@@ -162,6 +163,7 @@ function MyPagingAutocomplete({
             id={name}
             options={options}
             loading={loading && !readOnly}
+            disabled={disabled || readOnly}
             onOpen={onOpen}
             open={readOnly ? false : open}
             onClose={onClose}

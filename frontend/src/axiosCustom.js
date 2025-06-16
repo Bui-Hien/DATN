@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {refreshToken} from "./auth/authService";
-import {API_ENDPOINT} from "./appConfig";
+import {API_ENDPOINT, LOGIN_PAGE} from "./appConfig";
+import moment from 'moment-timezone';
 
 const getAccessToken = () => localStorage.getItem("access_token");
 const getRefreshToken = () => localStorage.getItem("refresh_token");
@@ -27,12 +28,27 @@ api.interceptors.request.use(
             config.headers.Authorization = `Bearer ${token}`;
         }
         if (!isExcluded && !token) {
-            window.location.href = "/Login";
+            window.location.href =LOGIN_PAGE;
         }
+        if (config.data && typeof config.data === "object") {
+            const convertDates = (obj) => {
+                for (const key in obj) {
+                    const value = obj[key];
+                    if (value instanceof Date) {
+                        obj[key] = moment(value).tz("Asia/Ho_Chi_Minh").format(); // ISO string +07:00
+                    } else if (typeof value === "object" && value !== null) {
+                        convertDates(value); // đệ quy nếu nested object
+                    }
+                }
+            };
+            convertDates(config.data);
+        }
+
         return config;
     },
     (error) => Promise.reject(error)
 );
+
 
 
 api.interceptors.response.use(

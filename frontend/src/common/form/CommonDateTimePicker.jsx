@@ -76,26 +76,30 @@ const Component = ({
         if (!val && val !== 0) return null;
 
         if (val instanceof Date) {
-            if (isNaN(val.getTime())) return null;
-            return val;
+            return isNaN(val.getTime())
+                ? null
+                : moment(val).tz("Asia/Ho_Chi_Minh").toDate();
         }
 
         if (typeof val === "number") {
             const d = new Date(val);
-            if (isNaN(d.getTime())) return null;
-            return d;
+            return isNaN(d.getTime())
+                ? null
+                : moment(d).tz("Asia/Ho_Chi_Minh").toDate();
         }
 
         if (typeof val === "string") {
-            const m = moment(val, ["DD/MM/YYYY", moment.ISO_8601], true);
+            const m = moment.tz(val, moment.ISO_8601, "Asia/Ho_Chi_Minh");
             if (m.isValid()) return m.toDate();
-            const d = new Date(val);
-            if (isNaN(d.getTime())) return null;
-            return d;
+            const m2 = moment.tz(val, "DD/MM/YYYY", "Asia/Ho_Chi_Minh");
+            if (m2.isValid()) return m2.toDate();
+
+            return null;
         }
 
         return null;
     };
+
 
     const [value, setValue] = useState(() => parseToDate(field.value));
 
@@ -108,8 +112,10 @@ const Component = ({
 
         setValue(newValue);
 
-        // Luôn truyền Date hoặc null về Formik (không truyền số)
-        let newDate = newValue instanceof Date && !isNaN(newValue.getTime()) ? newValue : null;
+        // ✅ Chuyển sang ISO string có +07:00
+        let newDate = newValue instanceof Date && !isNaN(newValue.getTime())
+            ? moment(newValue).tz("Asia/Ho_Chi_Minh").format()
+            : null;
 
         if (!notDelay) {
             if (debounceTimer) clearTimeout(debounceTimer);
@@ -131,7 +137,6 @@ const Component = ({
             }
         }
     };
-
 
     const [debounceTimer, setDebounceTimer] = useState(null);
 

@@ -20,6 +20,7 @@ spring:
         format_sql: true
   jackson:
     default-property-inclusion: NON_NULL
+    time-zone: Asia/Ho_Chi_Minh
   web:
     resources:
       static-locations: file:uploads/
@@ -39,6 +40,7 @@ endpoint:
   confirmUser: http://localhost:${server.port}/api/auth/reset-password
 server:
   port: 8071
+
 jwt:
   expiryHour: 1
   expiryDay: 14

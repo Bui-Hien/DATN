@@ -22,10 +22,12 @@ function TimeSheetDetailIndex() {
         handleSetSearchObject,
         searchObject,
         pagingStaffWorkSchedule,
-        resetStore
+        resetStore,
+        handleSetTimeSheetDetail
     } = staffWorkScheduleStore;
 
     useEffect(() => {
+        handleSetTimeSheetDetail()
         handleSetSearchObject({
             ...searchObject,
             timeSheetDetail: true

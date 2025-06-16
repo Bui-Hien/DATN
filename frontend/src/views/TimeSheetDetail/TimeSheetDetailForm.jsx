@@ -1,4 +1,4 @@
-import React, {memo, useEffect, useMemo, useRef} from "react";
+import React, {memo, useEffect, useMemo, useRef, useState} from "react";
 import {Form, Formik, useFormikContext} from "formik";
 import {useTranslation} from "react-i18next";
 import {useStore} from "../../stores";
@@ -8,7 +8,7 @@ import {Button, DialogActions, DialogContent} from "@mui/material";
 import {observer} from "mobx-react-lite";
 import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from "@mui/icons-material/Close";
-import {ShiftWorkType} from "../../LocalConstants";
+import {ShiftWorkType, SystemRole} from "../../LocalConstants";
 import CommonDateTimePicker from "../../common/form/CommonDateTimePicker";
 import CommonSelectInput from "../../common/form/CommonSelectInput";
 import ChooseSelectedStaff from "../../common/CommonSelectedStaff/ChooseSelectedStaff";
@@ -17,7 +17,7 @@ import {toast} from "react-toastify";
 
 function TimeSheetDetailForm({isPerson = false}) {
     const {t} = useTranslation();
-    const {staffWorkScheduleStore, staffStore} = useStore();
+    const {staffWorkScheduleStore, staffStore, authStore} = useStore();
     const {
         handleClose,
         selectedRow,
@@ -28,6 +28,11 @@ function TimeSheetDetailForm({isPerson = false}) {
         handleSetSelectedRow,
         handleGetByStaffAndWorkingDateAndShiftWorkType
     } = staffWorkScheduleStore;
+
+    const {
+        hasRole,
+        roles
+    } = authStore;
 
     const validationSchema = Yup.object({
         shiftWorkType: Yup.number().required(t("validation.required")),
@@ -62,18 +67,22 @@ function TimeSheetDetailForm({isPerson = false}) {
         await markAttendance(newValue)
     }
 
+    const [isEdit, setIsEdit] = useState(true);
+
     useEffect(() => {
-        const innitData = async () => {
-            await staffStore.getCurrentStaff()
-            handleSetSelectedRow({
-                staff: staffStore.selectedRow,
-                workingDate: new Date(),
-            })
-        }
-        if (isPerson && openCreateEditPopup) {
-            innitData();
-        }
-    }, [isPerson, openCreateEditPopup, staffStore, handleSetSelectedRow])
+            const innitData = async () => {
+                await staffStore.getCurrentStaff()
+                handleSetSelectedRow({
+                    staff: staffStore.selectedRow,
+                    workingDate: new Date(),
+                })
+            }
+            if (isEdit && openCreateEditPopup) {
+                innitData();
+            }
+            setIsEdit(!hasRole([SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER, SystemRole.ROLE_HR]))
+        },
+        [isEdit, roles, openCreateEditPopup, staffStore, handleSetSelectedRow])
 
     return (
         <CommonPopupV2
@@ -108,7 +117,7 @@ function TimeSheetDetailForm({isPerson = false}) {
                                                 name={"staff"}
                                                 multiline={false}
                                                 required
-                                                disabled={isPerson}
+                                                disabled={isEdit}
                                             />
                                         </div>
                                         <div className="col-span-12">
@@ -137,7 +146,7 @@ function TimeSheetDetailForm({isPerson = false}) {
                                                 name="checkIn"
                                                 isDateTimePicker={true}
                                                 required
-                                                disabled={isPerson}
+                                                disabled={isEdit}
                                             />
                                         </div>
                                         <div className="col-span-12 md:col-span-6">
@@ -145,7 +154,7 @@ function TimeSheetDetailForm({isPerson = false}) {
                                                 label={t("Thời gian chấm công ra")}
                                                 name="checkOut"
                                                 isDateTimePicker={true}
-                                                disabled={isPerson}
+                                                disabled={isEdit}
                                             />
                                         </div>
                                     </div>
@@ -241,7 +250,9 @@ function FormikEffects({
             !values.id) { // Chỉ auto-fill khi đang tạo mới
             setValues(prev => ({
                 ...prev,
-                ...listByStaffAndWorkingDate[0]
+                ...listByStaffAndWorkingDate[0],
+                checkIn: listByStaffAndWorkingDate[0]?.checkIn || new Date(),
+                checkOut: listByStaffAndWorkingDate[0]?.checkIn ? (listByStaffAndWorkingDate[0]?.checkOut || new Date()) : null
             }));
         }
     }, [listByStaffAndWorkingDate, setValues, values.id]);
@@ -262,11 +273,15 @@ function FormikEffects({
                 !isSameDate(currentWorkingDate, prevWorkingDate) ||
                 currentShiftWorkType !== prevShiftWorkType)) {
 
-            handleGetByStaffAndWorkingDateAndShiftWorkType({
+            const response = handleGetByStaffAndWorkingDateAndShiftWorkType({
                 staffId: currentStaffId,
                 workingDate: currentWorkingDate,
                 shiftWorkType: currentShiftWorkType,
             });
+            setValues(prev => ({
+                ...prev,
+                ...response
+            }));
         }
     }, [values.staff?.id, values.workingDate, values.shiftWorkType, handleGetByStaffAndWorkingDateAndShiftWorkType]);
 

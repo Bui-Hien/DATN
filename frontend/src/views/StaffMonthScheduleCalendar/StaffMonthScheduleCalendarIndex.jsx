@@ -120,7 +120,7 @@ const WorkScheduleCalendar = () => {
     }
     useEffect(() => {
         getValueForm(getStartMonth(currentDate), getEndMonth(currentDate));
-    }, [currentDate, currentStaff?.id]);
+    }, [currentDate, currentStaff?.id, openCreateEditPopup]);
 
     const handleSubmitForm = (values) => {
         const {month, year} = values;
@@ -174,6 +174,7 @@ const WorkScheduleCalendar = () => {
             </div>
         );
     };
+
 
     return (
         <div className="p-6 bg-white">

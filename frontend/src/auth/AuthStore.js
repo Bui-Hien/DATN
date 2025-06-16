@@ -29,6 +29,12 @@ export default class AuthStore {
             return null;
         }
     }
+    hasRole = (requiredRoles) => {
+        if (!Array.isArray(requiredRoles)) {
+            requiredRoles = [requiredRoles];
+        }
+        return requiredRoles.some(role => this.roles.includes(role));
+    };
 
     resetStore = () => {
         this.currentUser = null;

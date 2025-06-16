@@ -50,3 +50,13 @@ export const deleteMultipleStaffWorkScheduleByIds = (obj) => {
     return api.post(url, obj);
 };
 
+export const deleteMarkAttendanceById = (id) => {
+    let url = API_PATH + "/mark-attendance/" + id;
+    return api.delete(url);
+};
+
+export const deleteMultipleMarkAttendanceByIds = (obj) => {
+    let url = API_PATH + "/mark-attendance-delete-multiple";
+    return api.post(url, obj);
+};
+
