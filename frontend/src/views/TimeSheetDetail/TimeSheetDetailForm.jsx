@@ -242,7 +242,7 @@ function FormikEffects({
             workingDate: values.workingDate,
             shiftWorkType: values.shiftWorkType
         };
-    }, [values.staff?.id, values.workingDate, getListByStaffAndWorkingDate]);
+    }, [values.staff?.id, values.workingDate]);
 
     // Effect 2: Auto-fill form khi chỉ có 1 shift
     useEffect(() => {
@@ -283,7 +283,7 @@ function FormikEffects({
                 ...response
             }));
         }
-    }, [values.staff?.id, values.workingDate, values.shiftWorkType, handleGetByStaffAndWorkingDateAndShiftWorkType]);
+    }, [values.staff?.id, values.workingDate, values.shiftWorkType]);
 
     return null;
 }

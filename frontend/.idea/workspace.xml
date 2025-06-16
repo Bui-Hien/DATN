@@ -5,24 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e47dca97-3d3a-416a-b068-5f4a89d0539a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../AI/data_processor.py" beforeDir="false" afterPath="$PROJECT_DIR$/../AI/data_processor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AI/model_trainer.py" beforeDir="false" afterPath="$PROJECT_DIR$/../AI/model_trainer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AI/models/job_cv_match_model.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AI/predictor.py" beforeDir="false" afterPath="$PROJECT_DIR$/../AI/predictor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/LocalFunction.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/LocalFunction.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/auth/AuthStore.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/auth/AuthStore.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/axiosCustom.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/axiosCustom.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/form/CommonDateTimePicker.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/form/CommonDateTimePicker.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/form/CommonPagingAutocompleteV2.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/form/CommonPagingAutocompleteV2.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/StaffMonthScheduleCalendar/StaffMonthScheduleCalendarIndex.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/StaffMonthScheduleCalendar/StaffMonthScheduleCalendarIndex.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/StaffWorkSchedule/StaffWorkScheduleService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/StaffWorkSchedule/StaffWorkScheduleService.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/StaffWorkSchedule/StaffWorkScheduleStore.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/StaffWorkSchedule/StaffWorkScheduleStore.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/TimeSheetDetail/TimeSheetDetailForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/TimeSheetDetail/TimeSheetDetailForm.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/TimeSheetDetail/TimeSheetDetailIndex.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/TimeSheetDetail/TimeSheetDetailIndex.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/TimeSheetDetail/TimeSheetDetailList.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/TimeSheetDetail/TimeSheetDetailList.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -143,7 +126,7 @@
       <workItem from="1750005762817" duration="4503000" />
       <workItem from="1750012596649" duration="133000" />
       <workItem from="1750041028021" duration="203000" />
-      <workItem from="1750090845312" duration="8339000" />
+      <workItem from="1750090845312" duration="8678000" />
     </task>
     <servers />
   </component>
