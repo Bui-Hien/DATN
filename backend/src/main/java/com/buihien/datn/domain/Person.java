@@ -47,9 +47,6 @@ public class Person extends AuditableEntity {
     @Column(name = "tax_code")
     private String taxCode; // Mã số thuế
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    protected User user;
-
     @Column(name = "education_level")
     protected Integer educationLevel; //DatnConstants.EducationLevel // Trình độ học vấn (tiến sĩ, thạc sĩ, cử nhân, kỹ sư, trung cấp, cao đẳng, ...)
 
@@ -170,14 +167,6 @@ public class Person extends AuditableEntity {
 
     public void setTaxCode(String taxCode) {
         this.taxCode = taxCode;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public Integer getEducationLevel() {

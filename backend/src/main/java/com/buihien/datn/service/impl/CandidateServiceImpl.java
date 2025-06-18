@@ -79,12 +79,6 @@ public class CandidateServiceImpl extends GenericServiceImpl<Candidate, Candidat
         entity.setMaritalStatus(dto.getMaritalStatus());
         entity.setTaxCode(dto.getTaxCode());
 
-        User user = null;
-        if (dto.getUser() != null && dto.getUser().getId() != null) {
-            user = userRepository.findById(dto.getUser().getId()).orElse(null);
-        }
-        entity.setUser(user);
-
         entity.setEducationLevel(dto.getEducationLevel());
         entity.setHeight(dto.getHeight());
         entity.setWeight(dto.getWeight());
@@ -350,13 +344,6 @@ public class CandidateServiceImpl extends GenericServiceImpl<Candidate, Candidat
 
         entity.setMaritalStatus(candidate.getMaritalStatus());
         entity.setTaxCode(candidate.getTaxCode());
-
-        User user = null;
-        if (candidate.getUser() != null && candidate.getUser().getId() != null) {
-            user = userRepository.findById(candidate.getUser().getId()).orElse(null);
-        }
-        entity.setUser(user);
-
 
         entity.setEducationLevel(candidate.getEducationLevel());
         entity.setHeight(candidate.getHeight());

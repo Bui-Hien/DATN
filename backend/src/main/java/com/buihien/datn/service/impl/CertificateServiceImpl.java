@@ -5,8 +5,10 @@ import com.buihien.datn.domain.FileDescription;
 import com.buihien.datn.domain.Person;
 import com.buihien.datn.dto.CertificateDto;
 import com.buihien.datn.dto.search.SearchDto;
+import com.buihien.datn.exception.InvalidDataException;
 import com.buihien.datn.exception.ResourceNotFoundException;
 import com.buihien.datn.generic.GenericServiceImpl;
+import com.buihien.datn.repository.CertificateRepository;
 import com.buihien.datn.repository.PersonRepository;
 import com.buihien.datn.service.CertificateService;
 import com.buihien.datn.service.FileDescriptionService;
@@ -31,6 +33,8 @@ public class CertificateServiceImpl extends GenericServiceImpl<Certificate, Cert
     private FileDescriptionService fileDescriptionService;
     @Autowired
     private PersonRepository personRepository;
+    @Autowired
+    private CertificateRepository certificateRepository;
 
     @Override
     protected CertificateDto convertToDto(Certificate entity) {
@@ -58,6 +62,11 @@ public class CertificateServiceImpl extends GenericServiceImpl<Certificate, Cert
             throw new ResourceNotFoundException("Người dùng không tồn tại");
         }
         entity.setPerson(person);
+        //check trung code cuar cac chung chi
+        List<Certificate> checkDoubleCode = certificateRepository.findCertificateByCode(dto.getCode(), person.getIdNumber());
+        if (checkDoubleCode != null && !checkDoubleCode.isEmpty()) {
+            throw new InvalidDataException("Mã chứng chỉ không được trùng");
+        }
         FileDescription newFile = null;
         if (dto.getCertificateFile() != null && dto.getCertificateFile().getId() != null) {
             newFile = fileDescriptionService.getEntityById(dto.getCertificateFile().getId());

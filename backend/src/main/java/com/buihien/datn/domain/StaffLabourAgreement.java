@@ -13,7 +13,7 @@ public class StaffLabourAgreement extends AuditableEntity {
 
     private Integer contractType;//ContractType thu viec, chinh thuc, thoi vu, xac dinh thoi han, khong xac dinh thoi han
 
-    @Column(name = "labour_agreement_number")
+    @Column(name = "labour_agreement_number", unique = true)
     private String labourAgreementNumber;// so hop dong
 
     @Column(name = "start_date")

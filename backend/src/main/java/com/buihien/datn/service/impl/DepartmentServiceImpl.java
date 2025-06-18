@@ -98,6 +98,13 @@ public class DepartmentServiceImpl extends GenericServiceImpl<Department, Depart
         }
 
         if (dto.getPositions() != null && !dto.getPositions().isEmpty()) {
+            Set<String> doubleCode = new HashSet<>();
+            for (PositionDto positionDto : dto.getPositions()) {
+                doubleCode.add(positionDto.getCode());
+            }
+            if (doubleCode.size() < dto.getPositions().size()) {
+                throw new InvalidDataException("Mã chức vụ trong phòng ban không được trùng");
+            }
             for (PositionDto positionDto : dto.getPositions()) {
                 Position position = null;
                 if (positionDto.getId() != null) {
@@ -127,8 +134,8 @@ public class DepartmentServiceImpl extends GenericServiceImpl<Department, Depart
 
         // Gán lại positionManager (sau khi các vị trí đã được lưu)
         Position positionManager = null;
-        if (dto.getPositionManager() != null && dto.getPositionManager().getCode() != null) {
-            positionManager = positionRepository.findByCode(dto.getPositionManager().getCode()).orElse(null);
+        if (dto.getPositionManager() != null && dto.getPositionManager().getId() != null) {
+            positionManager = positionRepository.findById(dto.getPositionManager().getId()).orElse(null);
         }
         entity.setPositionManager(positionManager);
 

@@ -7,6 +7,8 @@ import jakarta.persistence.*;
 @Table(name = "tbl_position")
 @Entity
 public class Position extends BaseObject {
+    @Column(name = "code")
+    private String code;
 
     @ManyToOne
     @JoinColumn(name = "department_id")
@@ -18,6 +20,16 @@ public class Position extends BaseObject {
 
     @Column(name = "is_main")
     private Boolean isMain;
+
+    @Override
+    public String getCode() {
+        return code;
+    }
+
+    @Override
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public Position() {
     }

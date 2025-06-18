@@ -6,14 +6,15 @@ import com.buihien.datn.domain.Staff;
 import com.buihien.datn.domain.User;
 import com.buihien.datn.dto.StaffDto;
 import com.buihien.datn.dto.search.StaffSearchDto;
+import com.buihien.datn.exception.ResourceNotFoundException;
 import com.buihien.datn.generic.GenericServiceImpl;
-import com.buihien.datn.repository.CandidateRepository;
 import com.buihien.datn.repository.SalaryTemplateRepository;
 import com.buihien.datn.repository.StaffRepository;
-import com.buihien.datn.repository.UserRepository;
 import com.buihien.datn.service.FileDescriptionService;
 import com.buihien.datn.service.StaffService;
 import jakarta.persistence.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -24,18 +25,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 public class StaffServiceImpl extends GenericServiceImpl<Staff, StaffDto, StaffSearchDto> implements StaffService {
-    @Autowired
-    private UserRepository userRepository;
+    private static final Logger logger = LoggerFactory.getLogger(StaffServiceImpl.class);
+
     @Autowired
     private StaffRepository staffRepository;
-    @Autowired
-    private CandidateRepository candidateRepository;
     @Autowired
     private FileDescriptionService fileDescriptionService;
     @Autowired
@@ -71,12 +72,6 @@ public class StaffServiceImpl extends GenericServiceImpl<Staff, StaffDto, StaffS
 
         entity.setMaritalStatus(dto.getMaritalStatus());
         entity.setTaxCode(dto.getTaxCode());
-
-        User user = null;
-        if (dto.getUser() != null && dto.getUser().getId() != null) {
-            user = userRepository.findById(dto.getUser().getId()).orElse(null);
-        }
-        entity.setUser(user);
 
         entity.setEducationLevel(dto.getEducationLevel());
         entity.setHeight(dto.getHeight());
@@ -243,6 +238,41 @@ public class StaffServiceImpl extends GenericServiceImpl<Staff, StaffDto, StaffS
             return new PageImpl<>(q.getResultList(), PageRequest.of(pageIndex, pageSize), (long) qCount.getSingleResult());
         }
         return new PageImpl<>(q.getResultList());
+    }
+
+    @Override
+    public Boolean deleteById(UUID id) {
+        logger.info("Đang xóa thực thể với ID: {}", id);
+        Staff entity = repository.findById(id).orElse(null);
+        if (entity != null) {
+            entity.setVoided(true);
+            repository.save(entity);
+            logger.info("Đã xóa thực thể thành công với ID: {}", id);
+            return true;
+        } else {
+            logger.warn("Không tìm thấy thực thể để xóa với ID: {}", id);
+            throw new ResourceNotFoundException("Không tìm thấy dữ liệu để xóa với ID: " + id);
+        }
+    }
+
+    @Override
+    public int deleteMultiple(List<UUID> ids) {
+        logger.info("Đang xóa nhiều thực thể với các ID: {}", ids);
+        if (ids == null || ids.isEmpty()) {
+            logger.warn("Danh sách ID rỗng. Không có thực thể nào để xóa.");
+            throw new ResourceNotFoundException("Danh sách ID rỗng. Không có thực thể nào để xóa.");
+        }
+        List<Staff> staffs = new ArrayList<>();
+        for (UUID id : ids) {
+            Staff entity = repository.findById(id).orElse(null);
+            if (entity != null) {
+                entity.setVoided(true);
+                staffs.add(entity);
+            }
+        }
+        staffs = repository.saveAll(staffs);
+        logger.info("Đã xóa st công {} thực thể.", staffs.size());
+        return staffs.size();
     }
 
     @Override

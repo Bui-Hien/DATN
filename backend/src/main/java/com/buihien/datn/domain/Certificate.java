@@ -1,13 +1,12 @@
 package com.buihien.datn.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Table(name = "tbl_certificate")
 @Entity
 public class Certificate extends BaseObject {
+    @Column(name = "code")
+    private String code;
     @ManyToOne
     @JoinColumn(name = "person_id")
     private Person person;
@@ -19,6 +18,16 @@ public class Certificate extends BaseObject {
     private FileDescription certificateFile; // Tài liệu bằng cấp đã upload
 
     public Certificate() {
+    }
+
+    @Override
+    public String getCode() {
+        return code;
+    }
+
+    @Override
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public Person getPerson() {

@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Valid
 public class StaffDto extends PersonDto {
@@ -28,6 +29,11 @@ public class StaffDto extends PersonDto {
     public StaffDto() {
     }
 
+    public StaffDto(UUID id, String staffCode, String displayName) {
+        this.setId(id);
+        this.setStaffCode(staffCode);
+        this.setDisplayName(displayName);
+    }
     public StaffDto(Staff entity, Boolean isGetFull) {
         super(entity, isGetFull);
         if (entity != null) {

@@ -28,7 +28,6 @@ public class PersonDto extends AuditableDto {
     @ValidEnumValue(enumClass = DatnConstants.MaritalStatus.class, message = "Tình trạng hôn nhân không hợp lệ")
     protected Integer maritalStatus;
     protected String taxCode;
-    protected UserDto user;
     @ValidEnumValue(enumClass = DatnConstants.EducationLevel.class, message = "Trình độ học vấn không hợp lệ")
     protected Integer educationLevel;
     protected Double height;
@@ -60,10 +59,6 @@ public class PersonDto extends AuditableDto {
 
             if (entity.getAvatar() != null) {
                 this.avatar = new FileDescriptionDto(entity.getAvatar());
-            }
-
-            if (entity.getUser() != null && isGetFull) {
-                this.user = new UserDto(entity.getUser(), false); // Tránh vòng lặp đệ quy
             }
 
             this.educationLevel = entity.getEducationLevel();
@@ -182,14 +177,6 @@ public class PersonDto extends AuditableDto {
 
     public void setTaxCode(String taxCode) {
         this.taxCode = taxCode;
-    }
-
-    public UserDto getUser() {
-        return user;
-    }
-
-    public void setUser(UserDto user) {
-        this.user = user;
     }
 
     public Integer getEducationLevel() {
