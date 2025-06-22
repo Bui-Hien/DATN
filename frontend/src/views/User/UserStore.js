@@ -1,11 +1,5 @@
 import {makeAutoObservable} from "mobx";
-import {
-    deleteUser,
-    deleteMultipleUserByIds,
-    getUserById,
-    pagingUser,
-    saveUser,
-} from "./UserService";
+import {deleteMultipleUserByIds, deleteUser, getUserById, pagingUser, saveUser, changePassword} from "./UserService";
 import {toast} from "react-toastify";
 import i18n from "i18next";
 import {SearchObject} from "./SearchObject";
@@ -23,6 +17,7 @@ export default class UserStore {
     selectedRow = new UserObject();
     selectedDataList = [];
     isOpenFilter = false;
+    openChangePassword = false;
 
     constructor() {
         makeAutoObservable(this);
@@ -39,6 +34,7 @@ export default class UserStore {
         this.openConfirmDeleteListPopup = false;
         this.selectedDataList = [];
         this.isOpenFilter = false;
+        this.openChangePassword = false;
     };
 
     pagingUser = async () => {
@@ -96,6 +92,7 @@ export default class UserStore {
         this.openConfirmDeletePopup = false;
         this.openCreateEditPopup = false;
         this.openConfirmDeleteListPopup = false;
+        this.openChangePassword = false;
     };
 
     handleDelete = (row) => {
@@ -152,6 +149,24 @@ export default class UserStore {
             toast.success(i18n.t("toast.save_success"));
             this.handleClose();
             await this.pagingUser();
+        } catch (error) {
+            console.error(error);
+            if (error?.response?.data?.message) {
+                toast.error(error?.response?.data?.message);
+            } else {
+                toast.error(i18n.t("toast.error"));
+            }
+        }
+    };
+
+    handleOpenChangePassword = () => {
+        this.openChangePassword = true;
+    }
+    handleChangePassword = async (data) => {
+        try {
+            await changePassword(data);
+            toast.success(i18n.t("toast.save_success"));
+            this.handleClose();
         } catch (error) {
             console.error(error);
             if (error?.response?.data?.message) {

@@ -6,7 +6,7 @@ import {Tooltip} from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CommonTable from "../../common/CommonTable";
-import {Gender, ShiftWorkStatus, ShiftWorkType} from "../../LocalConstants";
+import {ShiftWorkStatus, ShiftWorkType} from "../../LocalConstants";
 import {getDate} from "../../LocalFunction";
 
 function TimeSheetDetailList() {

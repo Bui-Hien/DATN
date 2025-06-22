@@ -80,6 +80,15 @@ public class UserServiceImpl extends GenericServiceImpl<User, UserDto, SearchDto
     }
 
     @Override
+    public User getCurrentUserEntity() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof User) {
+            return (User) authentication.getPrincipal();
+        }
+        throw new SecurityException("Bạn chưa đăng nhập");
+    }
+
+    @Override
     protected UserDto convertToDto(User entity) {
         return new UserDto(entity);
     }

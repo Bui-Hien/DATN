@@ -42,7 +42,7 @@ function UserForm() {
             confirmPassword: updatePassword
                 ? Yup.string()
                     .required(t("validation.required"))
-                    .oneOf([Yup.ref("password")], t("validation.confirmPasswordNotMatch"))
+                    .oneOf([Yup.ref("password")], t("Mật khẩu mới và mật khẩu xác nhận không khớp"))
                 : Yup.string().notRequired(),
         });
 

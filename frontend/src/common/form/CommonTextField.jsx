@@ -1,6 +1,9 @@
 import React, {memo, useEffect, useState} from "react";
 import {FormControl, styled, TextField} from "@mui/material";
 import {FastField, getIn} from "formik";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import IconButton from "@mui/material/IconButton";
 
 // Dùng styled API thay thế makeStyles
 const EndAdornmentWrapper = styled("span")({
@@ -107,6 +110,13 @@ const MyTextField = ({
         }
     }, [otherProps.value]);
 
+    const [showPassword, setShowPassword] = useState(false);
+    const isPassword = type === "password";
+
+    const handleClickShowPassword = () => {
+        setShowPassword((prev) => !prev);
+    };
+
     const configTextfield = {
         ...field,
         ...otherProps,
@@ -117,10 +127,22 @@ const MyTextField = ({
         fullWidth: true,
         variant: variant || "outlined",
         size: size || "small",
-        type: type || "",
+        type: isPassword ? (!showPassword ? "password" : "text") : type || "",
         InputLabelProps: {
             htmlFor: name,
             shrink: true,
+        },
+        InputProps: {
+            endAdornment: isPassword ? (
+                <IconButton
+                    onClick={handleClickShowPassword}
+                    edge="end"
+                    size="small"
+                    tabIndex={-1}
+                >
+                    {showPassword ? <VisibilityOff/> : <Visibility/>}
+                </IconButton>
+            ) : endAdornment,
         },
         sx: {
             ...(multiline ? MultilineStyle : {}),
@@ -145,7 +167,7 @@ const MyTextField = ({
             )}
 
             <FormControl fullWidth>
-                <TextField {...configTextfield} />
+                <TextField {...configTextfield}/>
                 {endAdornment && <EndAdornmentWrapper>{endAdornment}</EndAdornmentWrapper>}
             </FormControl>
         </>

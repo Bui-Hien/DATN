@@ -24,4 +24,5 @@ public interface UserService extends GenericService<UserDto, SearchDto> {
     User findUserByRole(String role);
 
     UserDto getCurrentUser();
+    User getCurrentUserEntity();
 }

@@ -43,12 +43,12 @@ export default observer(function LoginIndex() {
                         <Card className="w-96 shadow-lg">
                             <CardContent>
                                 <Typography variant="h5" className="text-center mb-4 font-bold">
-                                    {i18next.t("login.title")}
+                                    {i18next.t("Đăng nhập")}
                                 </Typography>
                                 <Grid container spacing={2}>
                                     <Grid item xs={12}>
                                         <CommonTextField
-                                            label={i18next.t("login.userName")}
+                                            label={i18next.t("Tên đăng nhập")}
                                             fullWidth
                                             name="username"
                                             required
@@ -56,7 +56,7 @@ export default observer(function LoginIndex() {
                                     </Grid>
                                     <Grid item xs={12}>
                                         <CommonTextField
-                                            label={i18next.t("login.password")}
+                                            label={i18next.t("Mật khẩu")}
                                             type="password"
                                             fullWidth
                                             name="password"
@@ -67,7 +67,7 @@ export default observer(function LoginIndex() {
                                         <Button type="submit" variant="contained" color="primary" fullWidth
                                                 disabled={isSubmitting}
                                         >
-                                            {i18next.t("login.submit")}
+                                            {i18next.t("Đăng nhập")}
                                         </Button>
                                     </Grid>
                                 </Grid>

@@ -6,7 +6,6 @@ import {Tooltip} from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CommonTable from "../../common/CommonTable";
-import {getDate} from "../../LocalFunction";
 import CheckIcon from "@mui/icons-material/Check";
 
 function PersonBankAccountList() {

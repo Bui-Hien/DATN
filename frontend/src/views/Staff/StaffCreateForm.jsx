@@ -1,4 +1,4 @@
-import React, {memo, useEffect} from "react";
+import React, {memo} from "react";
 import {Form, Formik} from "formik";
 import {useTranslation} from "react-i18next";
 import {useStore} from "../../stores";
@@ -11,9 +11,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from "@mui/icons-material/Close";
 import CommonSelectInput from "../../common/form/CommonSelectInput";
 import {Gender} from "../../LocalConstants";
-import CommonPagingAutocompleteV2 from "../../common/form/CommonPagingAutocompleteV2";
 import {useNavigate} from "react-router-dom";
-import {pagingCountry} from "../Country/CountryService";
 
 function StaffCreateForm(props) {
     const navigate = useNavigate();

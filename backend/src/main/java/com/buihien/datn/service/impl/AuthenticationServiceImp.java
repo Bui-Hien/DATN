@@ -148,18 +148,18 @@ public class AuthenticationServiceImp implements AuthenticationService {
     @Override
     @Transactional
     public void changePassword(ChangePasswordDto request) {
-        if (request == null || request.getUsername() == null || request.getOldPassword() == null || request.getPassword() == null || request.getConfirmPassword() == null) {
-            throw new InvalidDataException("Invalid request data");
+        if (request == null || request.getOldPassword() == null || request.getPassword() == null || request.getConfirmPassword() == null) {
+            throw new InvalidDataException("Vui lòng nhập đầy đủ dữ liệu");
         }
-        User user = userService.getByUsername(request.getUsername());
+        User user = userService.getCurrentUserEntity();
         if (user == null) {
-            throw new ResourceNotFoundException("User not found");
+            throw new ResourceNotFoundException("Người dùng không tồn tại");
         }
         if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
-            throw new InvalidDataException("Old password is incorrect");
+            throw new InvalidDataException("Mật khẩu hiện tại không chính xác");
         }
         if (!request.getPassword().equals(request.getConfirmPassword())) {
-            throw new InvalidDataException("New passwords do not match");
+            throw new InvalidDataException("Mật khẩu mới và mật khẩu xác nhận không khớp");
         }
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setLastLoginFailures(null);

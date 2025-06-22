@@ -6,8 +6,6 @@ import {Tooltip} from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CommonTable from "../../common/CommonTable";
-import {AdministrativeUnitLevel, SalaryPeriodStatus} from "../../LocalConstants";
-import {getDate} from "../../LocalFunction";
 
 function UserList() {
     const {t} = useTranslation();
@@ -63,7 +61,7 @@ function UserList() {
         {
             accessorKey: "roles",
             header: t("Quyền hạn người dùng"),
-            Cell: ({ row }) => {
+            Cell: ({row}) => {
                 const roles = row.original.roles || [];
 
                 const roleNames = roles

@@ -35,8 +35,8 @@ export default class StaffStore {
         this.selectedDataList = [];
         this.isOpenFilter = false;
     };
-    handleSetIsProfile = () => {
-        this.isProfile = true;
+    handleSetIsProfile = (state) => {
+        this.isProfile = state;
     }
     pagingStaff = async () => {
         try {

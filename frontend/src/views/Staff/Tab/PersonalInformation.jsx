@@ -2,7 +2,7 @@ import React, {memo, useEffect} from "react";
 import {observer} from "mobx-react-lite";
 import TabAccordion from "../../../common/Accordion/TabAccordion";
 import Avatar from "@mui/material/Avatar";
-import {API_ENDPOINT, HOME_PAGE} from "../../../appConfig";
+import {API_ENDPOINT} from "../../../appConfig";
 import FileUploadWithPreview from "../../../common/UploadFile/FileUploadWithPreview";
 import BackupIcon from '@mui/icons-material/Backup';
 import {Button} from "@mui/material";
@@ -13,33 +13,22 @@ import * as Yup from "yup";
 import {useNavigate, useParams} from "react-router-dom";
 import CommonTextField from "../../../common/form/CommonTextField";
 import CommonSelectInput from "../../../common/form/CommonSelectInput";
-import {
-    AdministrativeUnitLevel,
-    EducationLevel,
-    EmployeeStatus,
-    Gender,
-    MaritalStatus,
-    StaffPhase
-} from "../../../LocalConstants";
-import {pagingCountry} from "../../Country/CountryService";
+import {EducationLevel, EmployeeStatus, Gender, MaritalStatus, StaffPhase} from "../../../LocalConstants";
 import CommonPagingAutocompleteV2 from "../../../common/form/CommonPagingAutocompleteV2";
 import CommonDateTimePicker from "../../../common/form/CommonDateTimePicker";
-import {pagingEthnics} from "../../Ethnics/EthnicsService";
-import {pagingReligion} from "../../Religion/ReligionService";
-import {pagingAdministrativeUnit} from "../../AdministrativeUnit/AdministrativeUnitService";
 import {calculateDateDifference} from "../../../LocalFunction";
-import {pagingDocumentTemplate} from "../../DocumentTemplate/DocumentTemplateService";
 import CommonCheckBox from "../../../common/form/CommonCheckBox";
 import CloseIcon from "@mui/icons-material/Close";
 import SaveIcon from "@mui/icons-material/Save";
 import {pagingSalaryTemplate} from "../../SalaryTemplate/SalaryTemplateService";
 import KeyIcon from '@mui/icons-material/Key';
+
 function PersonalInformation() {
     const {id} = useParams();
     const navigate = useNavigate();
     const {t} = useTranslation();
     const [uploadedFile, setUploadedFile] = React.useState(false);
-    const {staffStore} = useStore();
+    const {staffStore, userStore} = useStore();
 
     const {
         saveStaff,
@@ -49,6 +38,7 @@ function PersonalInformation() {
         getCurrentStaff
     } = staffStore;
 
+    const {handleOpenChangePassword} = userStore;
     const validationSchema = Yup.object({
         firstName: Yup.string()
             .trim()
@@ -74,7 +64,7 @@ function PersonalInformation() {
         if (isProfile) {
             getCurrentStaff();
         }
-    }, [])
+    }, [isProfile])
 
     async function handleSaveForm(values) {
         await saveStaff(values);
@@ -348,13 +338,11 @@ function PersonalInformation() {
                                         variant="outlined"
                                         color="secondary"
                                         disabled={isSubmitting}
-                                        onClick={() => {
-                                            navigate(`/staff`)
-                                        }}
+                                        onClick={handleOpenChangePassword}
                                         className="rounded-lg px-4 py-2 !mr-2 !bg-red-500"
                                         startIcon={<KeyIcon/>}
                                     >
-                                        {t("general.button.resetPassWord")}
+                                        {t("Đổi mật khẩu")}
                                     </Button>
 
                                 ) : (

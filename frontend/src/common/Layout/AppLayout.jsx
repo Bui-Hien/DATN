@@ -220,6 +220,7 @@ function AppLayout({routes}) {
                     }}
                 >
                     <Routes>
+                        <Route path="/" element={<Navigate to={HOME_PAGE} replace/>}/>
                         {routes?.map((item, index) => {
                             const hasAccess = !item.auth || item.auth.some(role => roles.includes(role));
                             if (hasAccess) {
@@ -233,7 +234,6 @@ function AppLayout({routes}) {
                             }
                             return null;
                         })}
-                        <Route path="/" element={<Navigate to={HOME_PAGE} replace />} />
                         <Route path="*" element={<NotFound/>}/>
                     </Routes>
                 </Box>
