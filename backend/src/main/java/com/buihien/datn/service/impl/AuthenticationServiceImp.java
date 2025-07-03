@@ -49,7 +49,7 @@ public class AuthenticationServiceImp implements AuthenticationService {
     public TokenResponseDto accessToken(SignInDto signInRequest) {
         User user = userService.getByUsername(signInRequest.getUsername());
         if (user == null) {
-            throw new ResourceNotFoundException("User not found");
+            throw new ResourceNotFoundException("Không tìm thấy người dùng");
         }
 
         if (!user.isEnabled()) {
@@ -69,7 +69,7 @@ public class AuthenticationServiceImp implements AuthenticationService {
                 user.setVoided(true);
             }
             userService.saveUser(user);
-            throw new InvalidDataException("Invalid username or password");
+            throw new InvalidDataException("Tên người dùng hoặc mật khẩu không chính xác");
         }
 
         // Lấy danh sách quyền của user

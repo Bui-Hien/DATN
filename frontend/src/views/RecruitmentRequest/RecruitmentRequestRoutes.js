@@ -9,7 +9,7 @@ const RecruitmentRequestRoutes = [
         path: ConstantList.ROOT_PATH + "recruitment-request",
         exact: true,
         component: ViewComponent,
-        auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER],
+        auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER, SystemRole.ROLE_HR],
     },
 ];
 

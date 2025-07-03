@@ -10,7 +10,7 @@ import SalaryResultItemToolbar from "./SalaryResultItemToolbar";
 function SalaryResultItemIndex() {
     const {t} = useTranslation();
     const {id} = useParams();
-    const {salaryResultItemStore} = useStore();
+    const {salaryResultItemStore, salaryResultStore} = useStore();
 
     const {
         pagingSalaryResultItem,
@@ -18,6 +18,7 @@ function SalaryResultItemIndex() {
         handleSetSearchObject,
         resetStore,
     } = salaryResultItemStore;
+    const {selectedRow: salaryResult} = salaryResultStore;
 
     useEffect(() => {
         if (!id) return;
@@ -35,7 +36,7 @@ function SalaryResultItemIndex() {
                 <CommonBreadcrumb routeSegments={[
                     {name: t("Lương")},
                     {name: t("Bảng lương")},
-                    {name: t("Chi tiết bảng lương")}
+                    {name: t(`Chi tiết bảng lương - ${salaryResult?.name}`)}
                 ]}/>
             </div>
             <div className="index-card grid grid-cols-12">

@@ -70,16 +70,16 @@ function SalaryResultItemToolbar() {
                                     {/*>*/}
                                     {/*    {t("Tính toán lại")}*/}
                                     {/*</Button>*/}
-                                    <Button
-                                        startIcon={<LockOutlineIcon/>}
-                                    >
-                                        {t("Khóa bảng lương")}
-                                    </Button>
-                                    <Button
-                                        startIcon={<DeleteIcon/>}
-                                    >
-                                        {t("Xóa bảng lương")}
-                                    </Button>
+                                    {/*<Button*/}
+                                    {/*    startIcon={<LockOutlineIcon/>}*/}
+                                    {/*>*/}
+                                    {/*    {t("Khóa bảng lương")}*/}
+                                    {/*</Button>*/}
+                                    {/*<Button*/}
+                                    {/*    startIcon={<DeleteIcon/>}*/}
+                                    {/*>*/}
+                                    {/*    {t("Xóa bảng lương")}*/}
+                                    {/*</Button>*/}
                                 </ButtonGroup>
                             </div>
                         </div>

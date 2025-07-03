@@ -16,8 +16,8 @@ export default observer(function LoginIndex() {
     const {loginObject, resetStore, handleLogin} = loginStore;
 
     const validationSchema = Yup.object({
-        username: Yup.string().required(i18next.t("validate.required")).nullable(),
-        password: Yup.string().required(i18next.t("validate.required")).nullable(),
+        username: Yup.string().required(i18next.t("validation.required")).nullable(),
+        password: Yup.string().required(i18next.t("validation.required")).nullable(),
     });
 
     const handleSubmitForm = async (values) => {

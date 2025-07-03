@@ -9,7 +9,7 @@ const StaffMonthScheduleCalendarRoutes = [
         path: ConstantList.ROOT_PATH + "staff-month-schedule-calendar",
         exact: true,
         component: ViewComponent,
-        auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER],
+        auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER, SystemRole.ROLE_HR, SystemRole.ROLE_USER],
     },
 ];
 

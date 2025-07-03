@@ -21,8 +21,9 @@ import PropTypes from "prop-types";
 import {observer} from "mobx-react-lite";
 import {navigations} from "../../navigations";
 import NotFound from "./NotFound";
-import {HOME_PAGE} from "../../appConfig";
-
+import {HOME_PAGE, LOGIN_PAGE} from "../../appConfig";
+import LogoutIcon from '@mui/icons-material/Logout';
+import AlertDialog from "../CommonConfirmationDialog";
 
 const COLORS = {
     rootActiveBg: '#ef4444',    // Cho cha cấp 1
@@ -39,8 +40,16 @@ function AppLayout({routes}) {
     const {authStore} = useStore();
     const {
         roles,
+        currentUser
     } = authStore;
+    const handleLogout = () => {
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        setShouldOpenLogout(false)
+        navigate(LOGIN_PAGE)
+    };
 
+    const [shouldOpenLogout, setShouldOpenLogout] = React.useState(false);
     // Hàm xử lý đóng/mở menu con
     const toggleExpand = (itemPath) => {
         setExpandedItems(prev => ({
@@ -161,21 +170,34 @@ function AppLayout({routes}) {
     return (
         <Box sx={{display: "flex", height: "100vh", overflow: "hidden"}}>
             <CssBaseline/>
-
             {/* AppBar */}
-            <AppBar position="fixed" className="!bg-slate-800">
-                <Toolbar>
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={() => setOpen(!open)}
-                        edge="start"
-                    >
-                        <MenuIcon/>
-                    </IconButton>
-                    <Typography variant="h6" noWrap component="div">
-                        TLU
-                    </Typography>
+            <AppBar position="fixed" className="!bg-slate-700">
+                <Toolbar className={"flex justify-between"}>
+                    <div className="flex items-center">
+                        <IconButton
+                            color="inherit"
+                            aria-label="open drawer"
+                            onClick={() => setOpen(!open)}
+                            edge="start"
+                        >
+                            <MenuIcon/>
+                        </IconButton>
+                        <Typography variant="h6" noWrap component="div">
+                            TLU
+                        </Typography>
+                    </div>
+                    <div className="">
+                        <IconButton
+                            color="inherit"
+                            aria-label="open drawer"
+                            onClick={() => {
+                                setShouldOpenLogout(true)
+                            }}
+                            edge="start"
+                        >
+                            <LogoutIcon/>
+                        </IconButton>
+                    </div>
                 </Toolbar>
             </AppBar>
 
@@ -183,7 +205,7 @@ function AppLayout({routes}) {
             <Drawer
                 variant="permanent"
                 open={open}
-                className="h-screen !bg-slate-800"
+                className="h-screen !bg-slate-700"
                 sx={{
                     '& .MuiDrawer-paper': {
                         position: 'relative',
@@ -238,6 +260,17 @@ function AppLayout({routes}) {
                     </Routes>
                 </Box>
             </Box>
+            {shouldOpenLogout && (
+                <AlertDialog
+                    open={shouldOpenLogout}
+                    onConfirmDialogClose={() => setShouldOpenLogout(false)}
+                    onYesClick={handleLogout}
+                    title={"Bạn có chắc muốn đăng xuất không?"}
+                    text={`Đăng xuất tài khoản ${currentUser?.username}`}
+                    agree={"Đăng xuất"}
+                    cancel={"Hủy"}
+                />
+            )}
         </Box>
     );
 }

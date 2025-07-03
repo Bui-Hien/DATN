@@ -84,6 +84,26 @@ export default class SalaryResultStore {
         }
     };
 
+    handleSetSelectedRow = async (id) => {
+        try {
+            if (id) {
+                const {data} = await getSalaryResultById(id);
+                this.selectedRow = {
+                    ...new SalaryResultObject(),
+                    ...data.data,
+                };
+            } else {
+                this.selectedRow = new SalaryResultObject();
+            }
+        } catch (error) {
+            console.error(error);
+            if (error?.response?.data?.message) {
+                toast.error(error?.response?.data?.message);
+            } else {
+                toast.error(i18n.t("toast.error"));
+            }
+        }
+    }
     handleOpenCreateEdit = async (id) => {
         try {
             if (id) {

@@ -9,7 +9,7 @@ const StaffWorkScheduleRoutes = [
         path: ConstantList.ROOT_PATH + "staff-work-schedule",
         exact: true,
         component: ViewComponent,
-        auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER],
+        auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER, SystemRole.ROLE_HR],
     },
 ];
 

@@ -12,5 +12,5 @@ import java.util.UUID;
 @Repository
 public interface CertificateRepository extends JpaRepository<Certificate, UUID> {
     @Query("SELECT entity FROM Certificate entity WHERE entity.code = :code AND entity.person.id =:personId")
-    List<Certificate> findCertificateByCode(@Param("code") String code, @Param("personId") String personId);
+    List<Certificate> findCertificateByCode(@Param("code") String code, @Param("personId") UUID personId);
 }

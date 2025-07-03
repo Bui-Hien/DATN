@@ -9,7 +9,7 @@ const ProfessionRoutes = [
         path: ConstantList.ROOT_PATH + "administration/profession",
         exact: true,
         component: ViewComponent,
-        auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER],
+        auth: [SystemRole.ROLE_ADMIN],
     },
 ];
 

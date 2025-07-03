@@ -33,7 +33,8 @@ function CandidateToolbar() {
         handleTogglePopupFilter,
         isOpenFilter,
         handleUpdateStatusList,
-        handleUpdatePreScreenedList
+        handleUpdatePreScreenedList,
+        currentTab
     } = candidateStore;
 
     async function handleFilter(values) {
@@ -93,7 +94,7 @@ function CandidateToolbar() {
                                             handleUpdateStatusList(CandidateStatus.HIRED.value)
                                         }}
                                         startIcon={<HowToRegIcon/>}
-                                        disabled={selectedDataList?.length <= 0}
+                                        disabled={selectedDataList?.length <= 0 || currentTab === CandidateStatus.HIRED.value}
                                     >
                                         {t("Nhân việc")}
                                     </Button>

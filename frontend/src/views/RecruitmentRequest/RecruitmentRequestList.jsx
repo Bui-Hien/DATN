@@ -90,6 +90,20 @@ function RecruitmentRequestList() {
             accessorKey: "request",
             header:
                 t("Yêu cầu tuyển dụng"),
+            Cell: ({row}) => {
+                const value = row.original.request;
+                return (
+                    <span style={{
+                        display: 'inline-block',
+                        maxWidth: 300, // hoặc width cụ thể bạn muốn
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap'
+                    }}>
+                        {value || ""}
+                    </span>
+                );
+            }
         },
         {
             accessorKey: "description",

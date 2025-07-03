@@ -9,7 +9,7 @@ const DepartmentRoutes = [
         path: ConstantList.ROOT_PATH + "organization/department",
         exact: true,
         component: ViewComponent,
-        auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER],
+        auth: [SystemRole.ROLE_ADMIN],
     },
 ];
 

@@ -63,7 +63,7 @@ public class CertificateServiceImpl extends GenericServiceImpl<Certificate, Cert
         }
         entity.setPerson(person);
         //check trung code cuar cac chung chi
-        List<Certificate> checkDoubleCode = certificateRepository.findCertificateByCode(dto.getCode(), person.getIdNumber());
+        List<Certificate> checkDoubleCode = certificateRepository.findCertificateByCode(dto.getCode(), person.getId());
         if (checkDoubleCode != null && !checkDoubleCode.isEmpty()) {
             throw new InvalidDataException("Mã chứng chỉ không được trùng");
         }

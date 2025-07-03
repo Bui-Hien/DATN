@@ -10,19 +10,19 @@ const StaffRoutes = [
         path: ConstantList.ROOT_PATH + "staff",
         exact: true,
         component: ViewComponent,
-        auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER],
+        auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER, SystemRole.ROLE_HR],
     },
     {
         path: ConstantList.ROOT_PATH + "staff/:id",
         exact: true,
         component: ViewProfileStaffComponent,
-        auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER],
+        auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER, SystemRole.ROLE_HR],
     },
     {
         path: ConstantList.ROOT_PATH + "profile",
         exact: true,
         component: ViewProfileStaffComponent,
-        auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER],
+        auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER, SystemRole.ROLE_HR, SystemRole.ROLE_USER],
     },
 ];
 

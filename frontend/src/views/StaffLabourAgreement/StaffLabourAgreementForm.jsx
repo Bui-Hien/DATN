@@ -42,7 +42,13 @@ function StaffLabourAgreementForm() {
         workingHour: Yup.number().nullable().required(t("validation.required")),
         workingHourWeekMin: Yup.number().nullable().required(t("validation.required")),
         salary: Yup.number().nullable().required(t("validation.required")),
-        signedDate: Yup.date().nullable(),
+        signedDate: Yup.date()
+            .nullable()
+            .when("contractType", {
+                is: (val) => val !== ContractType.UNLIMITED_TERM.value,
+                then: (schema) => schema.required(t("validation.required")),
+                otherwise: (schema) => schema.nullable()
+            }),
         agreementStatus: Yup.number().nullable().required(t("validation.required")),
     });
 
@@ -78,7 +84,7 @@ function StaffLabourAgreementForm() {
                 initialValues={selectedRow}
                 onSubmit={handleSaveForm}
             >
-                {({isSubmitting}) => (
+                {({isSubmitting, values}) => (
                     <Form autoComplete="off">
                         <DialogContent className="p-6">
                             <div className="grid grid-cols-12 gap-2">
@@ -98,6 +104,7 @@ function StaffLabourAgreementForm() {
                                         options={ContractType.getListData()}
                                         disabled={staffStore.isProfile}
                                         readOnly={staffStore.isProfile}
+                                        required
                                     />
                                 </div>
                                 <div className="col-span-12 md:col-span-4">
@@ -143,13 +150,17 @@ function StaffLabourAgreementForm() {
                                         readOnly={staffStore.isProfile}
                                         required/>
                                 </div>
-                                <div className="col-span-12 md:col-span-4">
-                                    <CommonDateTimePicker
-                                        label={t("Ngày hết hạn")}
-                                        name="signedDate"
-                                        disabled={staffStore.isProfile}
-                                        readOnly={staffStore.isProfile}/>
-                                </div>
+                                {values?.contractType!==ContractType.UNLIMITED_TERM.value && (
+                                    <div className="col-span-12 md:col-span-4">
+                                        <CommonDateTimePicker
+                                            label={t("Ngày hết hạn")}
+                                            name="signedDate"
+                                            disabled={staffStore.isProfile}
+                                            readOnly={staffStore.isProfile}
+                                            required={values?.contractType!==ContractType.UNLIMITED_TERM.value}
+                                        />
+                                    </div>
+                                )}
                                 <div className="col-span-12 md:col-span-4">
                                     <CommonSelectInput
                                         label={t("Trạng thái hợp đồng")}

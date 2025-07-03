@@ -268,10 +268,10 @@ function PersonalInformation() {
                                         </div>
                                         <div className="col-span-12 md:col-span-4  xl:col-span-3">
                                             <CommonTextField
-                                                label={t("Ngày bắt đầu chính thức")}
+                                                label={t("Số ngày thử việc")}
                                                 name="apprenticeDays"
                                                 value={calculateDateDifference(values?.recruitmentDate, values?.startDate)}
-                                                disabled={isProfile}
+                                                disabled={true}
                                                 readOnly={isProfile}
                                             />
                                         </div>
@@ -302,22 +302,22 @@ function PersonalInformation() {
                                                 readOnly={isProfile}
                                             />
                                         </div>
-                                        <div className="col-span-12 md:col-span-4 xl:col-span-3">
-                                            <CommonCheckBox
-                                                label={t("Bắt buộc chấm công")}
-                                                name="requireAttendance"
-                                                disabled={isProfile}
-                                                readOnly={isProfile}
-                                            />
-                                        </div>
-                                        <div className="col-span-12 md:col-span-4 xl:col-span-3">
-                                            <CommonCheckBox
-                                                label={t("Cho phép chấm công ngoài văn phòng")}
-                                                name="allowExternalIpTimekeeping"
-                                                disabled={isProfile}
-                                                readOnly={isProfile}
-                                            />
-                                        </div>
+                                        {/*<div className="col-span-12 md:col-span-4 xl:col-span-3">*/}
+                                        {/*    <CommonCheckBox*/}
+                                        {/*        label={t("Bắt buộc chấm công")}*/}
+                                        {/*        name="requireAttendance"*/}
+                                        {/*        disabled={isProfile}*/}
+                                        {/*        readOnly={isProfile}*/}
+                                        {/*    />*/}
+                                        {/*</div>*/}
+                                        {/*<div className="col-span-12 md:col-span-4 xl:col-span-3">*/}
+                                        {/*    <CommonCheckBox*/}
+                                        {/*        label={t("Cho phép chấm công ngoài văn phòng")}*/}
+                                        {/*        name="allowExternalIpTimekeeping"*/}
+                                        {/*        disabled={isProfile}*/}
+                                        {/*        readOnly={isProfile}*/}
+                                        {/*    />*/}
+                                        {/*</div>*/}
                                         <div className="col-span-12 md:col-span-4  xl:col-span-3">
                                             <CommonPagingAutocompleteV2
                                                 label={t("Mẫu bảng lương")}

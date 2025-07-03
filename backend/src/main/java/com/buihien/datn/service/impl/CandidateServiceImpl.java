@@ -31,8 +31,7 @@ import java.util.stream.Collectors;
 @Service
 public class CandidateServiceImpl extends GenericServiceImpl<Candidate, CandidateDto, CandidateSearchDto> implements CandidateService {
     private static final Logger logger = LoggerFactory.getLogger(CandidateServiceImpl.class);
-    @Autowired
-    private UserRepository userRepository;
+
     @Autowired
     private PositionRepository positionRepository;
     @Autowired

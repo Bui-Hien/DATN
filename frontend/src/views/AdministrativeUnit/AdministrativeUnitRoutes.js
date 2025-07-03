@@ -9,7 +9,7 @@ const AdministrativeUnitRoutes = [
         path: ConstantList.ROOT_PATH + "administration/administrative-unit",
         exact: true,
         component: ViewComponent,
-        auth: [SystemRole.ROLE_ADMIN, SystemRole.ROLE_MANAGER],
+        auth: [SystemRole.ROLE_ADMIN],
     },
 ];
 

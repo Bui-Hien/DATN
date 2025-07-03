@@ -8,6 +8,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import CommonTable from "../../common/CommonTable";
 import {useNavigate} from "react-router-dom";
 import VisibilityIcon from '@mui/icons-material/Visibility';
+
 function SalaryResultList() {
     const {t} = useTranslation();
     const navigate = useNavigate();
@@ -22,7 +23,8 @@ function SalaryResultList() {
         totalElements,
         setPageIndex,
         setPageSize,
-        handleSelectListDelete
+        handleSelectListDelete,
+        handleSetSelectedRow
     } = salaryResultStore;
 
 
@@ -43,7 +45,10 @@ function SalaryResultList() {
                     <Tooltip title={t("Xem chi tiết bảng lương")} placement="top">
                         <VisibilityIcon
                             className="cursor-pointer ml-4"
-                            onClick={() => navigate(`/salary-result/${row.original.id}`)}
+                            onClick={() => {
+                                navigate(`/salary-result/${row.original.id}`)
+                                handleSetSelectedRow(row.original.id)
+                            }}
                         />
                     </Tooltip>
                     <Tooltip title={t("Xóa")} placement="top">
