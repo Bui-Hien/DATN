@@ -2,6 +2,7 @@ package com.buihien.datn.configuration;
 
 import com.buihien.datn.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
@@ -20,6 +21,8 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 
 @Configuration
 public class AppConfig {
+    @Value("${cors.allowed-origins}")
+    private String allowedOrigins;
     @Autowired
     private UserService userService;
     @Autowired
@@ -35,8 +38,9 @@ public class AppConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(request -> {
                     var corsConfig = new org.springframework.web.cors.CorsConfiguration();
-                    corsConfig.addAllowedOrigin("http://localhost:3000");
-                    corsConfig.addAllowedOrigin("http://localhost:8080"); // Thêm cả backend
+                    for (String origin : allowedOrigins.split(",")) {
+                        corsConfig.addAllowedOrigin(origin.trim());
+                    }
                     corsConfig.addAllowedMethod("*");
                     corsConfig.addAllowedHeader("*");
                     corsConfig.setAllowCredentials(true);

@@ -15,6 +15,7 @@ import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -31,7 +32,8 @@ import java.util.stream.Collectors;
 @Service
 public class CandidateServiceImpl extends GenericServiceImpl<Candidate, CandidateDto, CandidateSearchDto> implements CandidateService {
     private static final Logger logger = LoggerFactory.getLogger(CandidateServiceImpl.class);
-
+    @Value("${host-ai:http://127.0.0.1:5000}")
+    private String hostAI;
     @Autowired
     private PositionRepository positionRepository;
     @Autowired
@@ -255,7 +257,7 @@ public class CandidateServiceImpl extends GenericServiceImpl<Candidate, Candidat
 
     @Override
     public Integer preScreened(CandidateStatusDto dto) {
-        String targetUrl = "http://127.0.0.1:5000/api/pre-screened";
+        String targetUrl = hostAI + "/api/pre-screened";
 
         List<CandidateStatusItemDto> requestPayload = new ArrayList<>();
 
@@ -289,7 +291,8 @@ public class CandidateServiceImpl extends GenericServiceImpl<Candidate, Candidat
                     targetUrl,
                     HttpMethod.POST,
                     requestEntity,
-                    new ParameterizedTypeReference<>() {}
+                    new ParameterizedTypeReference<>() {
+                    }
             );
         } catch (Exception e) {
             System.err.println("Lỗi gọi Flask API: " + e.getMessage());

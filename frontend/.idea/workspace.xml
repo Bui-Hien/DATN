@@ -4,19 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e47dca97-3d3a-416a-b068-5f4a89d0539a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../AI/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/../AI/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AI/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/../AI/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AI/data_processor.py" beforeDir="false" afterPath="$PROJECT_DIR$/../AI/data_processor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AI/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../AI/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AI/model_trainer.py" beforeDir="false" afterPath="$PROJECT_DIR$/../AI/model_trainer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AI/models/job_cv_match_model.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AI/predictor.py" beforeDir="false" afterPath="$PROJECT_DIR$/../AI/predictor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AI/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../AI/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/raw_data.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="e47dca97-3d3a-416a-b068-5f4a89d0539a" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -50,7 +38,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/workspace/DATN/frontend",
+    "last_opened_file_path": "C:/workspace/DATN/frontend/src/views",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -64,9 +52,9 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\workspace\DATN\frontend\src\views" />
       <recent name="C:\workspace\DATN\frontend\src\views\User" />
       <recent name="C:\workspace\DATN\frontend\src\views\Candidate" />
-      <recent name="C:\workspace\DATN\frontend\src\views" />
       <recent name="C:\workspace\DATN\frontend\src\views\RecruitmentRequest" />
       <recent name="C:\workspace\DATN\frontend\src\views\StaffWorkScheduleSummary" />
     </key>
@@ -142,6 +130,7 @@
       <workItem from="1750515228161" duration="593000" />
       <workItem from="1750753157410" duration="63000" />
       <workItem from="1751554752872" duration="13000" />
+      <workItem from="1751554770951" duration="10060000" />
     </task>
     <servers />
   </component>
