@@ -1,12 +1,12 @@
 
-# 📦 Dự Án Tốt Nghiệp - Hệ Thống Quản Lý Nhân Sự & Tuyển Dụng Tích Hợp AI
+# Dự Án Tốt Nghiệp - Hệ Thống Quản Lý Nhân Sự & Tuyển Dụng Tích Hợp AI
 
-## 🧠 Mô Tả
+## Mô Tả
 Dự án xây dựng một hệ thống quản lý nhân sự và tuyển dụng tích hợp trí tuệ nhân tạo (AI) giúp tự động hóa việc lọc hồ sơ (CV), quản lý chiến dịch tuyển dụng, và hỗ trợ đánh giá ứng viên.
 
 ---
 
-## 📁 Cấu Trúc Thư Mục
+## Cấu Trúc Thư Mục
 
 ```
 DATN/
@@ -37,7 +37,7 @@ DATN/
 
 ---
 
-## ⚙️ Môi Trường & Phiên Bản
+## Môi Trường & Phiên Bản
 
 | Thành phần    | Phiên bản               |
 |---------------|--------------------------|
@@ -52,7 +52,7 @@ DATN/
 
 ---
 
-## 🛠️ Các Bước Cài Đặt & Chạy Dự Án
+## Các Bước Cài Đặt & Chạy Dự Án
 
 ### 1. Backend - Spring Boot
 
