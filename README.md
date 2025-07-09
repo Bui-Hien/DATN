@@ -1,8 +1,11 @@
 
 # Dự Án Tốt Nghiệp - Hệ Thống Quản Lý Nhân Sự & Tuyển Dụng Tích Hợp AI
+<<<<<<< HEAD
 
 ## Mô Tả
 Dự án xây dựng một hệ thống quản lý nhân sự và tuyển dụng tích hợp trí tuệ nhân tạo (AI) giúp tự động hóa việc lọc hồ sơ (CV), quản lý chiến dịch tuyển dụng, và hỗ trợ đánh giá ứng viên.
+=======
+>>>>>>> c2ac8be861d2787c76a731b783cd3f054666dc52
 
 ---
 
