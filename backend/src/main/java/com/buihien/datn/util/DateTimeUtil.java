@@ -186,6 +186,22 @@ public class DateTimeUtil {
         cal.set(Calendar.MILLISECOND, 0);
         return cal.getTime();
     }
+    public static Date getTime(Date timeSource, Date dateSource) {
+        Calendar timeCal = Calendar.getInstance();
+        timeCal.setTime(timeSource); // giờ từ date1
+
+        Calendar dateCal = Calendar.getInstance();
+        dateCal.setTime(dateSource); // ngày từ date2
+
+        // Gán giờ từ timeCal vào dateCal
+        dateCal.set(Calendar.HOUR_OF_DAY, timeCal.get(Calendar.HOUR_OF_DAY));
+        dateCal.set(Calendar.MINUTE, timeCal.get(Calendar.MINUTE));
+        dateCal.set(Calendar.SECOND, timeCal.get(Calendar.SECOND));
+        dateCal.set(Calendar.MILLISECOND, timeCal.get(Calendar.MILLISECOND));
+
+        return dateCal.getTime();
+    }
+
 
     public static boolean isSameDay(Date date1, Date date2) {
         Calendar cal1 = Calendar.getInstance();

@@ -46,8 +46,8 @@ public class SetupDataServiceImpl implements SetupDataService {
     }
 
     private void createUserAdmin() {
-        User user = userService.findUserByRole(DatnConstants.ROLE_ADMIN);
-        if (user != null) return;
+        List<User> user = userService.findUserByRole(DatnConstants.ROLE_ADMIN);
+        if (user != null && !user.isEmpty()) return;
         Role role = roleRepository.findByName(DatnConstants.ROLE_ADMIN).orElse(null);
         UserDto userDto = new UserDto();
         userDto.setUsername("admin");

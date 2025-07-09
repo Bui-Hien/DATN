@@ -65,8 +65,8 @@ public class UserServiceImpl extends GenericServiceImpl<User, UserDto, SearchDto
     }
 
     @Override
-    public User findUserByRole(String role) {
-        return userRepository.findUserByRole(role).orElse(null);
+    public List<User> findUserByRole(String role) {
+        return userRepository.findUserByRole(role);
     }
 
     @Override

@@ -15,8 +15,7 @@ import StaffShiftStatistics from "./StaffShiftStatistics";
 import {getEndMonth, getStartMonth, Years} from "../../LocalFunction";
 import CommonSelectInput from "../../common/form/CommonSelectInput";
 import {Form, Formik} from "formik";
-import 'moment/locale/vi';
-moment.locale('vi');
+
 const localizer = momentLocalizer(moment);
 
 const WorkScheduleCalendar = () => {
@@ -282,7 +281,6 @@ const WorkScheduleCalendar = () => {
             {/* Calendar */}
             <div style={{height: '600px'}} className="border rounded-lg overflow-hidden">
                 <Calendar
-                    culture="vi"
                     localizer={localizer}
                     events={events}
                     startAccessor="start"

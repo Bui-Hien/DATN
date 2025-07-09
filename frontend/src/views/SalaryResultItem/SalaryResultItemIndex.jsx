@@ -18,7 +18,7 @@ function SalaryResultItemIndex() {
         handleSetSearchObject,
         resetStore,
     } = salaryResultItemStore;
-    const {selectedRow: salaryResult} = salaryResultStore;
+    const {selectedRow: salaryResult, handleGetSalaryResultById} = salaryResultStore;
 
     useEffect(() => {
         if (!id) return;
@@ -27,6 +27,7 @@ function SalaryResultItemIndex() {
             ownerId: id
         })
         pagingSalaryResultItem()
+        handleGetSalaryResultById(id)
         return resetStore;
     }, []);
 
@@ -36,7 +37,7 @@ function SalaryResultItemIndex() {
                 <CommonBreadcrumb routeSegments={[
                     {name: t("Lương")},
                     {name: t("Bảng lương")},
-                    {name: t(`Chi tiết bảng lương - ${salaryResult?.name}`)}
+                    {name: t(`${salaryResult?.name}`)}
                 ]}/>
             </div>
             <div className="index-card grid grid-cols-12">

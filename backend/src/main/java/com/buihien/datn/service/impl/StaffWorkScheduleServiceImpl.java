@@ -243,8 +243,8 @@ public class StaffWorkScheduleServiceImpl extends GenericServiceImpl<StaffWorkSc
                     throw new InvalidDataException("Ca làm việc không tồn tại");
                 }
 
-                Date expectedStart = shiftWorkType.getStartTime();
-                Date expectedEnd = shiftWorkType.getEndTime();
+                Date expectedStart = DateTimeUtil.getTime(shiftWorkType.getStartTime(), dto.getWorkingDate());
+                Date expectedEnd =  DateTimeUtil.getTime(shiftWorkType.getEndTime(), dto.getWorkingDate());
 
                 // Tính toán số giờ làm việc thực tế và yêu cầu
                 long plannedDurationMillis = expectedEnd.getTime() - expectedStart.getTime();
@@ -444,11 +444,19 @@ public class StaffWorkScheduleServiceImpl extends GenericServiceImpl<StaffWorkSc
             q.setParameter("shiftWorkType", dto.getShiftWorkType());
         }
         if (dto.getFromDate() != null) {
-            q.setParameter("fromDate", dto.getFromDate());
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(dto.getFromDate());
+            cal.add(Calendar.DAY_OF_MONTH, -7);
+            q.setParameter("fromDate", cal.getTime());
         }
+
         if (dto.getToDate() != null) {
-            q.setParameter("toDate", dto.getToDate());
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(dto.getToDate());
+            cal.add(Calendar.DAY_OF_MONTH, +7);
+            q.setParameter("toDate", cal.getTime());
         }
+
         if (dto.getTimeSheetDetail() != null && dto.getTimeSheetDetail()) {
             q.setParameter("excludedShiftWorkStatus", DatnConstants.ShiftWorkStatus.CREATED.getValue());
         }

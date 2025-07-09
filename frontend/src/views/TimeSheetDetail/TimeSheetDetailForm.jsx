@@ -72,10 +72,16 @@ function TimeSheetDetailForm({isPerson = false}) {
     useEffect(() => {
             const innitData = async () => {
                 await staffStore.getCurrentStaff()
-                handleSetSelectedRow({
-                    staff: staffStore.selectedRow,
-                    workingDate: new Date(),
-                })
+                if (selectedRow?.id) {
+                    handleSetSelectedRow({
+                        staff: staffStore.selectedRow,
+                    })
+                } else {
+                    handleSetSelectedRow({
+                        staff: staffStore.selectedRow,
+                        workingDate: new Date(),
+                    })
+                }
             }
             if (isEdit && openCreateEditPopup) {
                 innitData();
@@ -125,6 +131,7 @@ function TimeSheetDetailForm({isPerson = false}) {
                                                 label={t("Ngày làm việc")}
                                                 name="workingDate"
                                                 required
+                                                disabled={isEdit}
                                             />
                                         </div>
                                         <div className="col-span-12">

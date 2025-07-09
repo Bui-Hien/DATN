@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Table(name = "tbl_user")
 @Entity
-public class User extends AuditableEntity implements UserDetails {
+public class  User extends AuditableEntity implements UserDetails {
     private static final long serialVersionUID = 1L;
     @Column(name = "username", unique = true, nullable = false)
     private String username;
