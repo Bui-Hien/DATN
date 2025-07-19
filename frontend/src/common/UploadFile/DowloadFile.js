@@ -9,7 +9,7 @@ const handleDownload = async (fileData) => {
     }
 
     try {
-        const fileUrl = `${API_ENDPOINT}/${fileData.filePath}`;
+        const fileUrl = `${API_ENDPOINT}/api/file-description/${fileData.filePath}`;
 
         // Gọi API tải file dạng blob
         const response = await api.get(fileUrl, {

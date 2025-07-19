@@ -12,6 +12,7 @@ import com.buihien.datn.repository.SalaryTemplateRepository;
 import com.buihien.datn.repository.StaffRepository;
 import com.buihien.datn.service.FileDescriptionService;
 import com.buihien.datn.service.StaffService;
+import com.buihien.datn.util.CacheUtils;
 import jakarta.persistence.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -235,9 +236,82 @@ public class StaffServiceImpl extends GenericServiceImpl<Staff, StaffDto, StaffS
             q.setFirstResult(pageIndex * pageSize);
             q.setMaxResults(pageSize);
 
-            return new PageImpl<>(q.getResultList(), PageRequest.of(pageIndex, pageSize), (long) qCount.getSingleResult());
+            List<StaffDto> content = q.getResultList();
+            long totalElements = (long) qCount.getSingleResult();
+            Page<StaffDto> page = new PageImpl<>(content, PageRequest.of(pageIndex, pageSize), totalElements);
+
+            return page;
         }
+
         return new PageImpl<>(q.getResultList());
+    }
+
+    @Override
+    public StaffDto saveOrUpdate(StaffDto dto) {
+        if (dto == null) {
+            logger.warn("Thông tin đầu vào bị null. Không thể lưu.");
+            throw new ResourceNotFoundException("Thông tin đầu vào bị null. Không thể lưu.");
+        }
+
+        Staff savedEntity = repository.save(this.convertToEntity(dto));
+        CacheUtils.HashMapStaff.put(savedEntity.getId(), savedEntity);
+
+        if (dto.getId() != null) {
+            logger.info("Cập nhật thông tin thành công: {}", savedEntity.getId());
+        } else {
+            logger.info("Lưu thông tin mới thành công: {}", savedEntity.getId());
+        }
+
+        return this.convertToDto(savedEntity);
+    }
+
+    @Override
+    public Integer saveOrUpdateList(List<StaffDto> dtos) {
+        if (dtos == null || dtos.isEmpty()) {
+            logger.warn("Danh sách dữ liệu trống. Không thể lưu.");
+            return 0;
+        }
+
+        // Chuyển đổi DTO thành Entity
+        List<Staff> entities = dtos.stream()
+                .map(this::convertToEntity)
+                .collect(Collectors.toList());
+
+        // Lưu vào database
+        List<Staff> savedEntities = repository.saveAll(entities);
+        savedEntities.forEach(savedEntity -> CacheUtils.HashMapStaff.put(savedEntity.getId(), savedEntity));
+        logger.info("Đã lưu thành công {} bản ghi.", savedEntities.size());
+        return savedEntities.size();
+    }
+
+    @Override
+    public StaffDto getById(UUID id) {
+        logger.info("Đang tìm kiếm thực thể với ID: {}", id);
+
+        long startTime = System.nanoTime(); // ⏱ Bắt đầu đo thời gian
+
+        Staff staff = CacheUtils.HashMapStaff.get(id);
+
+        if (staff == null) {
+            staff = repository.findById(id)
+                    .map(found -> {
+                        CacheUtils.HashMapStaff.put(id, found); // ⚡ Cache lại nếu tìm thấy
+                        return found;
+                    })
+                    .orElse(null);
+        }
+
+        long endTime = System.nanoTime(); // ⏱ Kết thúc đo thời gian
+        long durationMs = (endTime - startTime) / 1_000_000;
+        logger.info("Size cache staff: {} MB", CacheUtils.HashMapStaff.getMemoryUsage());
+
+        if (staff != null) {
+            logger.info("Lấy thực thể thành công. Thời gian truy xuất: {} ms", durationMs);
+            return convertToDto(staff);
+        } else {
+            logger.warn("Không tìm thấy thực thể với ID: {}. Thời gian thực thi: {} ms", id, durationMs);
+            throw new ResourceNotFoundException("Không tìm thấy dữ liệu với ID: " + id);
+        }
     }
 
     @Override
@@ -247,6 +321,7 @@ public class StaffServiceImpl extends GenericServiceImpl<Staff, StaffDto, StaffS
         if (entity != null) {
             entity.setVoided(true);
             repository.save(entity);
+            CacheUtils.HashMapStaff.remove(id);
             logger.info("Đã xóa thực thể thành công với ID: {}", id);
             return true;
         } else {
@@ -271,6 +346,7 @@ public class StaffServiceImpl extends GenericServiceImpl<Staff, StaffDto, StaffS
             }
         }
         staffs = repository.saveAll(staffs);
+        CacheUtils.HashMapStaff.removes(ids);
         logger.info("Đã xóa st công {} thực thể.", staffs.size());
         return staffs.size();
     }

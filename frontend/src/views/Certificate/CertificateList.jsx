@@ -65,27 +65,27 @@ function CertificateList() {
             header:
                 t("Mô tả chứng chỉ"),
         },
-        {
-            accessorKey: "certificateFile",
-            header:
-                t("Tải chứng chỉ"),
-            Cell: ({row}) => (
-                <div className="flex justify-center align-center">
-                    <FileDownloadIcon
-                        onClick={() => {
-                            const fileId = row.original?.certificateFile?.id;
-                            if (fileId) {
-                                handleDownload(row.original?.certificateFile);
-                            }
-                        }}
-                        style={{
-                            cursor: row.original?.certificateFile?.id ? 'pointer' : 'default',
-                            opacity: row.original?.certificateFile?.id ? 1 : 0.3,
-                        }}
-                    />
-                </div>
-            )
-        },
+        // {
+        //     accessorKey: "certificateFile",
+        //     header:
+        //         t("Tải chứng chỉ"),
+        //     Cell: ({row}) => (
+        //         <div className="flex justify-center align-center">
+        //             <FileDownloadIcon
+        //                 onClick={() => {
+        //                     const fileId = row.original?.certificateFile?.id;
+        //                     if (fileId) {
+        //                         handleDownload(row.original?.certificateFile);
+        //                     }
+        //                 }}
+        //                 style={{
+        //                     cursor: row.original?.certificateFile?.id ? 'pointer' : 'default',
+        //                     opacity: row.original?.certificateFile?.id ? 1 : 0.3,
+        //                 }}
+        //             />
+        //         </div>
+        //     )
+        // },
     ];
 
     return (

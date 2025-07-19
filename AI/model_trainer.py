@@ -98,3 +98,5 @@ class ModelTrainer:
 
         joblib.dump(obj, model_path)
         logger.info(f"💾 Model saved to: {model_path}")
+
+

@@ -228,19 +228,10 @@ export function formatVNDMoney(amount) {
         return "-";
     }
 
-    // Round to 2 decimal places and format with commas for thousands
-    const formattedAmount = Number(amount).toFixed(2);
-    let parts = formattedAmount.split(".");
-    let integerPart = parts[0];
-    let decimalPart = parts[1];
+    const number = Number(amount);
 
-    // Format integer part with commas
-    integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
-    // Combine integer and decimal parts
-    return `${integerPart}.${decimalPart}`;
+    return number.toLocaleString("vi-VN"); // hoặc thêm ' ₫' nếu muốn
 }
-
 // TO DO IF ELSE - SALARY_ITEM_VALUE_TYPE
 export function formatValue(displayValue, displayValueType) {
     // Kiểm tra nếu item không có valueType thì trả về giá trị gốc
